@@ -1,21 +1,21 @@
-#summary SUMÁRIO DOS CASOS DE USO.
+#summary Lista de casos de uso do SCA
 
-* Realizar Inscrição (CSU01)
+* Realizar Inscrição (CasoUso01)
 
-* Visualizar Avaliações (CSU02)
+* Visualizar Avaliações (CasoUso02)
 
-* Fornecer Grade de Disponibilidades (CSU03)
+* Fornecer Grade de Disponibilidades (CasoUso03)
 
-* Lançar Avaliações (CSU04)
+* Lançar Avaliações (CasoUso04)
 
-* Manter Disciplina (CSU05)
+* Manter Disciplina (CasoUso05)
 
-* Visualizar Andamento de Inscrições (CSU06)
+* Visualizar Andamento de Inscrições (CasoUso06)
 
-* Atualizar Informações sobre Professor (CSU07)
+* Atualizar Informações sobre Professor (CasoUso07)
 
-* Atender Listas de Espera (CSU08)
+* Atender Listas de Espera (CasoUso08)
 
-* Fornecer Habilitações (CSU09)
+* Fornecer Habilitações (CasoUso09)
 
-* Obter Diário de Classe (CSU14)
+* Obter Diário de Classe (CasoUso14)
