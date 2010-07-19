@@ -1,0 +1,12 @@
+#summary SUMÁRIO DOS CASOS DE USO.
+
+* Realizar Inscrição (CSU01)
+* Visualizar Avaliações (CSU02)
+* Fornecer Grade de Disponibilidades (CSU03)
+* Lançar Avaliações (CSU04)
+* Manter Disciplina (CSU05)
+* Visualizar Andamento de Inscrições (CSU06)
+* Atualizar Informações sobre Professor (CSU07)
+* Atender Listas de Espera (CSU08)
+* Fornecer Habilitações (CSU09)
+* Obter Diário de Classe (CSU14)
