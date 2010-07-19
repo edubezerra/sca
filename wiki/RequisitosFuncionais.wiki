@@ -1,11 +1,4 @@
-#summary One-sentence summary of this page.
-
-= Introduction =
-
-Lista de requisitos funcionais do sistema.
-
-
-= Details =
+#summary Lista de requisitos funcionais do sistema.
 
 * R1. O Sistema deve permitir que alunos visualizem as notas obtidas por semestre letivo.
 
