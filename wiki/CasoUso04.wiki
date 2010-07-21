@@ -1,0 +1,29 @@
+Lançar Avaliações (CSU04)
+
+Sumário: Professor realiza o lançamento de avaliações (notas e freqüências) para alunos das ofertas de disciplinas lecionadas por ele no semestre corrente.
+
+Ator Primário: Professor
+
+Precondições: O Professor está identificado pelo sistema.
+
+Fluxo Principal
+ # O Professor solicita o lançamento de notas.
+ # O sistema exibe a lista de turmas do semestre letivo corrente nas quais o Professor lecionou.
+ # O Professor seleciona a turma para a qual deseja realizar o lançamento de notas.
+ # Para cada aluno, o sistema exibe a lista de alunos da turma selecionada e requisita a primeira nota (A1), a segunda nota (A2) e a quantidade de faltas.
+ # O Professor fornece as notas de A1 e de A2 e a quantidade de faltas solicitadas.
+ # O sistema exibe o resultado da avaliação de cada aluno, conforme regra de negócio RN06.
+ # O Professor confirma o lançamento.
+ # O sistema registra as avaliações e freqüências, e o caso de uso termina.
+
+Fluxo Alternativo (7): Erro no lançamento (O professor detecta que lançou uma avaliação ou freqüência errada para algum aluno.)
+ * a.	O professor corrige a informação lançada erroneamente.
+ * b.	O sistema aceita a correção, e o caso de uso continua a partir do passo 7.
+
+Fluxos de Exceção (4): Avaliação em branco ou errada
+ * a. O Professor não fornece alguma nota, ou freqüência, ou fornece dados inválidos: 
+ * b. O sistema reporta o fato e o caso de uso retorna ao passo 4.
+
+Pós-condições: as avaliações de uma turma lecionada pelo professor foram lançadas no sistema.
+
+Regras de Negócio: RN05, RN06
