@@ -1,0 +1,19 @@
+= Visualizar Avaliações (CSU02) = 
+
+Sumário: Aluno visualiza avaliação que recebeu (notas e freqüência) nas turmas em que participou em um semestre letivo.
+
+Ator Primário: Aluno
+
+Precondições: O Aluno está identificado pelo sistema.
+
+Fluxo Principal
+ # O Aluno solicita a visualização das avaliações para as turmas em que participou.
+ # O sistema exibe os semestres letivos nos quais o Aluno se inscreveu em pelo menos turma cujo lançamento já tenha sido encerrado.
+ # O Aluno seleciona os semestres letivos para as turmas cujas avaliações deseja visualizar.
+ # O sistema exibe uma lista de avaliações agrupadas pelos semestres letivos selecionados e por turma.
+ # O aluno visualiza as avaliações, e o caso de uso termina.
+
+Fluxo de Exceção (2): Aluno sem inscrição
+ * a. Não há semestre letivo no qual o Aluno tenha participado em alguma turma: o sistema reporta o fato e o caso de uso termina.
+
+Pós-condições: O Aluno obteve as avaliações que desejava visualizar.
