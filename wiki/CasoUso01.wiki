@@ -19,15 +19,15 @@ Fluxo Principal
  # O sistema registra as inscrições do Aluno, envia os dados sobre as mesmas para o Sistema de Faturamento, e o caso de uso termina.
 
 Fluxo Alternativo (4): Inclusão em lista de espera
-a. Se não há oferta disponível para alguma disciplina selecionada pelo aluno  (conforme a RN02), o sistema fornece a possibilidade de inserir o Aluno em uma lista de espera.
-b. Se o Aluno aceitar, o sistema o insere na lista de espera e apresenta a posição na qual o aluno foi inserido na lista. O caso de uso retorna ao passo 4.
-c. Se o Aluno não aceitar, o caso de uso prossegue a partir do passo 4.
+ * a. Se não há oferta disponível para alguma disciplina selecionada pelo aluno  (conforme a RN02), o sistema fornece a possibilidade de inserir o Aluno em uma lista de espera.
+ * b. Se o Aluno aceitar, o sistema o insere na lista de espera e apresenta a posição na qual o aluno foi inserido na lista. O caso de uso retorna ao passo 4.
+ * c. Se o Aluno não aceitar, o caso de uso prossegue a partir do passo 4.
 
 Fluxo Alternativo (5): Revisão das inscrições
-Aqui, é possível que o caso de uso retorne ao passo 3, conforme o Aluno queira revisar (inserir ou remover itens) a lista de disciplinas selecionadas.
+ * Aqui, é possível que o caso de uso retorne ao passo 3, conforme o Aluno queira revisar (inserir ou remover itens) a lista de disciplinas selecionadas.
 
 Fluxo de Exceção (4): Violação de RN01
-a. Se o Aluno atingiu a quantidade máxima de inscrições possíveis (conforme a RN01), o sistema informa ao aluno a quantidade de disciplinas que ele pode selecionar, e o caso de uso retorna ao passo 2.
+ * a. Se o Aluno atingiu a quantidade máxima de inscrições possíveis (conforme a RN01), o sistema informa ao aluno a quantidade de disciplinas que ele pode selecionar, e o caso de uso retorna ao passo 2.
 
 Pós-condições: O aluno foi inscrito em uma das turmas de cada uma das disciplinas desejadas, ou foi adicionado a uma ou mais listas de espera.
 
