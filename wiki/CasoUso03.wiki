@@ -15,4 +15,18 @@ Fluxo Principal
  # Professor confirma o registro da grade.
  # Sistema confirma a grade fornecida e o caso de uso termina.
 
-Pós-condições: N/A.
+Fluxo Alternativo (3): Modificação na grade atual
+a. O Professor solicita que o sistema apresente a mesma grade do semestre atual.
+b. O sistema apresenta a configuração de grade requisitada.
+c. O professor realiza as modificações que deseja na grade e solicita o seu registro.
+d. O sistema registra a grade alterada e o caso de uso termina.
+
+Fluxo de Exceção (3): Disciplinas não fornecidas
+a. Se o Professor não forneceu disciplina alguma: o sistema reporta o fato e o caso de uso continua a partir do passo 2.
+
+Fluxo de Exceção (3): Dias e horários não fornecidos
+a. Se o Professor não fornecer dia e horário algum: o sistema reporta o fato e o caso de uso continua a partir do passo 4.
+
+Pós-condições: o sistema registrou a disponibilidade do Professor para o próximo semestre letivo.
+
+Regras de Negócio: RN04
