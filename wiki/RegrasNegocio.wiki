@@ -5,22 +5,22 @@
 
 = Regras do negócio do SCA = 
 
-== Quantidade máxima de inscrições por semestre letivo (RN01) ==
+== Quantidade máxima de inscrições por semestre letivo (!RegraNegocio01) ==
 Em um semestre letivo, um aluno não pode se inscrever em uma quantidade de disciplinas cuja soma de créditos ultrapasse 20.
 
-== Quantidade de alunos possíveis (RN02) ==
+== Quantidade de alunos possíveis (!RegraNegocio02) ==
 Uma oferta de disciplina em uma turma não pode ter mais de 40 alunos inscritos.
 
-== Pré-requisitos para uma disciplina (RN03) ==
+== Pré-requisitos para uma disciplina (!RegraNegocio03) ==
 Um aluno não pode se inscrever em uma disciplina para a qual não possua os pré-requisitos necessários.
 
-==Habilitação para lecionar disciplina (RN04)==
+==Habilitação para lecionar disciplina (!RegraNegocio04)==
 Um professor só pode lecionar disciplinas para as quais esteja habilitado.
 
-==Cancelamento de matrícula (RN05)==
+==Cancelamento de matrícula (!RegraNegocio05)==
 Um aluno deve ter a matrícula cancelada se for reprovado mais de duas vezes na mesma disciplina.
 
-==Política de Avaliação de Alunos (RN06)==
+==Política de Avaliação de Alunos (!RegraNegocio06)==
 A nota de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
  * Se o aluno obtém nota maior ou igual a 7.0 (sete), está aprovado.
  * Se o aluno obtém nota maior ou igual 5.0 (cinco) e menor que 7.0 (sete), deve fazer a avaliação final.
@@ -28,5 +28,5 @@ A nota de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média 
  * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente reprovado.
 
 
-==Prioridade em Listas de Espera (RN07)==
+==Prioridade em Listas de Espera (!RegraNegocio07)==
 Ao criar uma nova oferta de disciplina para alocar alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
