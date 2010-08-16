@@ -26,4 +26,4 @@ Fluxos de Exceção (4): Avaliação em branco ou errada
 
 Pós-condições: as avaliações de uma turma lecionada pelo professor foram lançadas no sistema.
 
-Regras de Negócio: RN05, RN06
+Regras de Negócio: [RegraNegocio05], RN06
