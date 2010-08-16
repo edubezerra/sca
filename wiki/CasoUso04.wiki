@@ -12,7 +12,7 @@ Fluxo Principal
  # O Professor seleciona a turma para a qual deseja realizar o lançamento de notas.
  # Para cada aluno, o sistema exibe a lista de alunos da turma selecionada e requisita a primeira nota (A1), a segunda nota (A2) e a quantidade de faltas.
  # O Professor fornece as notas de A1 e de A2 e a quantidade de faltas solicitadas.
- # O sistema exibe o resultado da avaliação de cada aluno, conforme regra de negócio [RegrasNegocio##RegraNegocio06].
+ # O sistema exibe o resultado da avaliação de cada aluno, conforme regra de negócio [RegrasNegocio#RegraNegocio06].
  # O Professor confirma o lançamento.
  # O sistema registra as avaliações e freqüências, e o caso de uso termina.
 
@@ -26,4 +26,4 @@ Fluxos de Exceção (4): Avaliação em branco ou errada
 
 Pós-condições: as avaliações de uma turma lecionada pelo professor foram lançadas no sistema.
 
-Regras de Negócio: [RegrasNegocio#RegraNegocio05], [RegrasNegocio##RegraNegocio06]
+Regras de Negócio: [RegrasNegocio#RegraNegocio05], [RegrasNegocio#RegraNegocio06]
