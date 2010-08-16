@@ -21,11 +21,11 @@ Fluxo Alternativo (3): Modificação na grade atual
  * c. Professor realiza as modificações que deseja na grade e solicita o seu registro.
  * d. Sistema registra a grade alterada e o caso de uso termina.
 
-Fluxo de Exceção (3): O Professor não forneceu disciplina alguma. 
- * a. Sistema reporta o fato e o caso de uso continua a partir do passo 2.
+Fluxo de Exceção (4): O Professor não forneceu disciplina alguma. 
+ * a. Sistema reporta o fato e o caso de uso continua a partir do passo 3.
 
-Fluxo de Exceção (3): Professor não forneceu dias e horários.
- * a. Sistema reporta o fato e o caso de uso continua a partir do passo 4.
+Fluxo de Exceção (4): Professor não forneceu dias e horários.
+ * a. Sistema reporta o fato e o caso de uso continua a partir do passo 3.
 
 Pós-condições: o sistema registrou a disponibilidade do Professor para o próximo semestre letivo.
 
