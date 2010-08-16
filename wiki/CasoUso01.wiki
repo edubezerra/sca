@@ -12,13 +12,13 @@ Precondições: O Aluno está identificado pelo sistema.
 
 Fluxo Principal
  # Aluno solicita a realização de inscrições.
- # Sistema apresenta as disciplinas em que o aluno pode se inscrever (conforme a RegraNegocio03). 
+ # Sistema apresenta as disciplinas em que o aluno pode se inscrever (conforme a  [RegrasNegocio#RegraNegocio03]). 
  # Aluno define a lista de disciplinas que deseja cursar no próximo semestre letivo e as submete para inscrição.
  # Para cada disciplina selecionada, o sistema informa as turmas nas quais o Aluno foi inscrito. Para cada turma, o sistema informa o professor, os horários e os respectivos locais das aulas.
  # Aluno confirma as inscrições. 
  # Sistema registra as inscrições do Aluno, envia os dados sobre as mesmas para o Sistema de Faturamento, e o caso de uso termina.
 
-Fluxo Alternativo (4): Não há oferta disponível para alguma disciplina selecionada pelo aluno (conforme a RegraNegocio02), 
+Fluxo Alternativo (4): Não há oferta disponível para alguma disciplina selecionada pelo aluno (conforme a  [RegrasNegocio#RegraNegocio02]), 
  * a. Sistema fornece a possibilidade de inserir o Aluno em uma lista de espera.
  * b. Se o Aluno aceitar, o sistema o insere na lista de espera e apresenta a posição na qual o aluno foi inserido na lista. O caso de uso retorna ao passo 4.
  * c. Se o Aluno não aceitar, o caso de uso prossegue a partir do passo 4.
@@ -31,4 +31,4 @@ Fluxo de Exceção (4): Violação de RegraNegocio01 - Aluno atingiu a quantidad
 
 Pós-condições: O aluno foi inscrito em uma das turmas de cada uma das disciplinas desejadas, ou foi adicionado a uma ou mais listas de espera.
 
-Regras de Negócio: [RegrasNegocio#RegraNegocio01], RegraNegocio02, RegraNegocio03
+Regras de Negócio: [RegrasNegocio#RegraNegocio01],  [RegrasNegocio#RegraNegocio02],  [RegrasNegocio#RegraNegocio03]
