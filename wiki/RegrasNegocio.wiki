@@ -8,26 +8,31 @@
  * _*Nome*_: Quantidade máxima de inscrições por semestre letivo
  * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em uma quantidade de disciplinas cuja soma de créditos ultrapasse 20.
 
-== Quantidade de alunos possíveis (!RegraNegocio02) ==
-Uma oferta de disciplina em uma turma não pode ter mais de 40 alunos inscritos.
+== !RegraNegocio02 ==
+ * _*Nome*_: Quantidade de alunos possíveis 
+ * _*Descrição*_: Uma oferta de disciplina em uma turma não pode ter mais de 40 alunos inscritos.
 
-== Pré-requisitos para uma disciplina (!RegraNegocio03) ==
-Um aluno não pode se inscrever em uma disciplina para a qual não possua os pré-requisitos necessários.
+== !RegraNegocio03 ==
+ * _*Nome*_: Pré-requisitos para uma disciplina
+ * _*Descrição*_: Um aluno não pode se inscrever em uma disciplina para a qual não possua os pré-requisitos necessários.
 
-==Habilitação para lecionar disciplina (!RegraNegocio04)==
-Um professor só pode lecionar disciplinas para as quais esteja habilitado.
+== !RegraNegocio04 ==
+ * _*Nome*_: Habilitação para lecionar disciplina
+ * _*Descrição*_: Um professor só pode lecionar disciplinas para as quais esteja habilitado.
 
-==Cancelamento de matrícula (!RegraNegocio05)==
-Um aluno deve ter a matrícula cancelada se for reprovado mais de duas vezes na mesma disciplina.
+== !RegraNegocio05 ==
+ * _*Nome*_: Cancelamento de matrícula
+ * _*Descrição*_: Um aluno deve ter a matrícula cancelada se for reprovado mais de duas vezes na mesma disciplina.
 
-==Política de Avaliação de Alunos (!RegraNegocio06)==
-A nota de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
- * Se o aluno obtém nota maior ou igual a 7.0 (sete), está aprovado.
- * Se o aluno obtém nota maior ou igual 5.0 (cinco) e menor que 7.0 (sete), deve fazer a avaliação final.
- * Se o aluno obtém nota menor que 5.0 (cinco) está reprovado.
- * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente reprovado.
-
+== !RegraNegocio06 ==
+ * _*Nome*_: Política de avaliação de alunos
+ * _*Descrição*_: 
+ *  * A nota de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
+ *  * Se o aluno obtém nota maior ou igual a 7.0 (sete), está aprovado.
+ *  * Se o aluno obtém nota maior ou igual 5.0 (cinco) e menor que 7.0 (sete), deve fazer a avaliação final.
+ *  * Se o aluno obtém nota menor que 5.0 (cinco) está reprovado.
+ *  * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente reprovado.
 
 == !RegraNegocio07 ==
  * Nome: Prioridade em Listas de Espera
- * Descrição: Ao criar uma nova oferta de disciplina para alocar alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
+ * _*Descrição*_:Ao criar uma nova oferta de disciplina para alocar alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
