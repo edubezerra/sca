@@ -31,4 +31,4 @@ Fluxo de Exceção (4): Violação de RegraNegocio01 - Aluno atingiu a quantidad
 
 Pós-condições: O aluno foi inscrito em uma das turmas de cada uma das disciplinas desejadas, ou foi adicionado a uma ou mais listas de espera.
 
-Regras de Negócio: RegraNegocio01, RegraNegocio02, RegraNegocio03
+Regras de Negócio: [RegrasNegocio#RegraNegocio01], RegraNegocio02, RegraNegocio03
