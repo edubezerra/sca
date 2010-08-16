@@ -11,7 +11,7 @@ Pré-condições: N/A.
 Fluxo Principal
  # Professor fornece sua matrícula para validação.
  # Sistema apresenta a lista de disciplinas disponíveis (conforme RN04), e a lista de dias da semana e de horários do semestre letivo seguinte.
- # Professor informa (1) cada disciplina que deseja lecionar e cada disponibilidade para o próximo semestre letivo.
+ # Professor informa (1) cada disciplina que deseja lecionar e (2) cada disponibilidade para o próximo semestre letivo.
  # Professor confirma o registro da grade.
  # Sistema confirma a grade fornecida e o caso de uso termina.
 
