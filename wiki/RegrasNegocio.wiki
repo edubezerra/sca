@@ -4,8 +4,9 @@
 
 = Regras do negócio do SCA = 
 
-== Quantidade máxima de inscrições por semestre letivo (!RegraNegocio01) ==
-Em um semestre letivo, um aluno não pode se inscrever em uma quantidade de disciplinas cuja soma de créditos ultrapasse 20.
+== RegraNegocio01 ==
+ * _*Nome*_: Quantidade máxima de inscrições por semestre letivo
+ * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em uma quantidade de disciplinas cuja soma de créditos ultrapasse 20.
 
 == Quantidade de alunos possíveis (!RegraNegocio02) ==
 Uma oferta de disciplina em uma turma não pode ter mais de 40 alunos inscritos.
