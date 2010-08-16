@@ -28,5 +28,6 @@ A nota de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média 
  * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente reprovado.
 
 
-==Prioridade em Listas de Espera (!RegraNegocio07)==
-Ao criar uma nova oferta de disciplina para alocar alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
+== !RegraNegocio07 ==
+ * Nome: Prioridade em Listas de Espera (
+ * Descrição: Ao criar uma nova oferta de disciplina para alocar alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
