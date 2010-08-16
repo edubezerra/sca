@@ -1,7 +1,7 @@
 #summary Regras do negócio.
 
 = Conteúdo = 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="2" />
 
 = Regras do negócio do SCA = 
 
