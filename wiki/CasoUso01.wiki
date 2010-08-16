@@ -11,23 +11,23 @@ Atores Secundários: Sistema de Faturamento
 Precondições: O Aluno está identificado pelo sistema.
 
 Fluxo Principal
- # O Aluno solicita a realização de inscrições.
- # O sistema apresenta as disciplinas em que o aluno pode se inscrever (conforme a RN03). 
- # O Aluno define a lista de disciplinas que deseja cursar no próximo semestre letivo e as submete para inscrição.
+ # Aluno solicita a realização de inscrições.
+ # Sistema apresenta as disciplinas em que o aluno pode se inscrever (conforme a RegraNegocio03). 
+ # Aluno define a lista de disciplinas que deseja cursar no próximo semestre letivo e as submete para inscrição.
  # Para cada disciplina selecionada, o sistema informa as turmas nas quais o Aluno foi inscrito. Para cada turma, o sistema informa o professor, os horários e os respectivos locais das aulas.
- # O Aluno confirma as inscrições. 
- # O sistema registra as inscrições do Aluno, envia os dados sobre as mesmas para o Sistema de Faturamento, e o caso de uso termina.
+ # Aluno confirma as inscrições. 
+ # Sistema registra as inscrições do Aluno, envia os dados sobre as mesmas para o Sistema de Faturamento, e o caso de uso termina.
 
-Fluxo Alternativo (4): Inclusão em lista de espera
- * a. Se não há oferta disponível para alguma disciplina selecionada pelo aluno  (conforme a RN02), o sistema fornece a possibilidade de inserir o Aluno em uma lista de espera.
+Fluxo Alternativo (4): Não há oferta disponível para alguma disciplina selecionada pelo aluno (conforme a RegraNegocio02), 
+ * a. Sistema fornece a possibilidade de inserir o Aluno em uma lista de espera.
  * b. Se o Aluno aceitar, o sistema o insere na lista de espera e apresenta a posição na qual o aluno foi inserido na lista. O caso de uso retorna ao passo 4.
  * c. Se o Aluno não aceitar, o caso de uso prossegue a partir do passo 4.
 
 Fluxo Alternativo (5): Revisão das inscrições
  * Aqui, é possível que o caso de uso retorne ao passo 3, conforme o Aluno queira revisar (inserir ou remover itens) a lista de disciplinas selecionadas.
 
-Fluxo de Exceção (4): Violação de RN01
- * a. Se o Aluno atingiu a quantidade máxima de inscrições possíveis (conforme a RN01), o sistema informa ao aluno a quantidade de disciplinas que ele pode selecionar, e o caso de uso retorna ao passo 2.
+Fluxo de Exceção (4): Violação de RegraNegocio01 - Aluno atingiu a quantidade máxima de inscrições possíveis, 
+ * a. Sistema informa ao aluno a quantidade de créditos que ele pode selecionar, e o caso de uso retorna ao passo 2.
 
 Pós-condições: O aluno foi inscrito em uma das turmas de cada uma das disciplinas desejadas, ou foi adicionado a uma ou mais listas de espera.
 
