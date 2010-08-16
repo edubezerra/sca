@@ -1,0 +1,18 @@
+#summary Fornecer Grade de Disponibilidades (CSU03)
+
+= Fornecer Grade de Disponibilidades (CSU03) = 
+
+Sumário: Professor fornece a sua grade de disponibilidade (disciplinas que deseja lecionar, juntamente com dias e horários em que está disponível) para o próximo semestre letivo.
+
+Ator Primário: Professor
+
+Pré-condições: N/A.
+
+Fluxo Principal
+ # Professor fornece sua matrícula para validação.
+ # Sistema apresenta a lista de disciplinas disponíveis (conforme RN04), e a lista de dias da semana e de horários do semestre letivo seguinte.
+ # Professor informa (1) cada disciplina que deseja lecionar e cada disponibilidade para o próximo semestre letivo.
+ # Professor confirma o registro da grade.
+ # Sistema confirma a grade fornecida e o caso de uso termina.
+
+Pós-condições: N/A.
