@@ -26,7 +26,7 @@ Fluxo Alternativo (4): Não há oferta disponível para alguma disciplina seleci
 Fluxo Alternativo (5): Revisão das inscrições
  * Aqui, é possível que o caso de uso retorne ao passo 3, conforme o Aluno queira revisar (inserir ou remover itens) a lista de disciplinas selecionadas.
 
-Fluxo de Exceção (4): Violação de [RegrasNegocio#RegraNegocio00] - Aluno selecionou disciplinas de turmas para as quais há choque de horários. 
+Fluxo de Exceção (4): Violação de [RegrasNegocio#RegraNegocio00] - Aluno selecionou turmas para as quais há choque de horários. 
  * a. Sistema informa as turmas em que houve choque de horários, juntamente com os respectivos horários de cada uma, e o caso de uso retorna ao passo 2.
 
 Fluxo de Exceção (4): Violação de [RegrasNegocio#RegraNegocio01] - Aluno atingiu a quantidade máxima de inscrições possíveis. 
