@@ -13,8 +13,8 @@
  * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em uma quantidade de disciplinas cuja soma de créditos ultrapasse 20.
 
 == !RegraNegocio02 ==
- * _*Nome*_: Quantidade de alunos possíveis 
- * _*Descrição*_: Uma oferta de disciplina em uma turma não pode ter mais de 40 alunos inscritos.
+ * _*Nome*_: Quantidade de alunos inscritos 
+ * _*Descrição*_: Uma turma não pode ter mais alunos inscritos do que a capacidade máxima definida para ela.
 
 == !RegraNegocio03 ==
  * _*Nome*_: Pré-requisitos para uma disciplina
