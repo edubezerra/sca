@@ -2,6 +2,18 @@
 
 * Realizar Inscrição (CasoUso01)
 
+* Cancelar Inscrição (CasoUso01)
+
+* Visualizar Avaliações e Frequências (CasoUso01)
+
+* Solicitar Histórico Escolar (CasoUso01)
+
+* Obter Diário de Classe (CasoUso01)
+
+* Abrir Turma (CasoUso01)
+
+* Fechar Turma (CasoUso01)
+
 * Visualizar Avaliações (CasoUso02)
 
 * Fornecer Grade de Disponibilidades (CasoUso03)
