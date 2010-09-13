@@ -26,6 +26,6 @@
 
 * Solicitar Histórico Escolar (CasoUso12)
 
-* Obter Diário de Classe (CasoUso13)
+* Atender Listas de Espera (CasoUso13)
 
 * Obter Diário de Classe (CasoUso14)
