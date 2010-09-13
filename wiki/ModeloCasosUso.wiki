@@ -2,23 +2,13 @@
 
 * Realizar Inscrição (CasoUso01)
 
-* Cancelar Inscrição (CasoUso01)
+* Cancelar Inscrição (CasoUso00)
 
-* Visualizar Avaliações e Frequências (CasoUso01)
-
-* Solicitar Histórico Escolar (CasoUso01)
-
-* Obter Diário de Classe (CasoUso01)
-
-* Abrir Turma (CasoUso01)
-
-* Fechar Turma (CasoUso01)
-
-* Visualizar Avaliações (CasoUso02)
+* Visualizar Avaliações e Frequências (CasoUso02)
 
 * Fornecer Grade de Disponibilidades (CasoUso03)
 
-* Lançar Avaliações (CasoUso04)
+* Lançar Avaliações e Frequências (CasoUso04)
 
 * Manter Disciplina (CasoUso05)
 
@@ -29,5 +19,13 @@
 * Atender Listas de Espera (CasoUso08)
 
 * Fornecer Habilitações (CasoUso09)
+
+* Abrir Turma (CasoUso10)
+
+* Fechar Turma (CasoUso11)
+
+* Solicitar Histórico Escolar (CasoUso12)
+
+* Obter Diário de Classe (CasoUso13)
 
 * Obter Diário de Classe (CasoUso14)
