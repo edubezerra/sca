@@ -1,0 +1,41 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+Atender Listas de Espera (CSU08)
+
+Sumário: Coordenador atende às demandas representadas pelas listas de espera por vagas para uma disciplina.
+
+Ator Primário: Coordenador
+
+Atores Secundários: Sistema de Faturamento
+
+Precondições: O Coordenador está identificado pelo sistema.
+
+Fluxo Principal
+  * O sistema apresenta as listas de espera existentes para as disciplinas.
+  * O Coordenador seleciona uma das listas de espera.
+  * O sistema apresenta os detalhes da lista de espera selecionada (data de criação e quantidade de alunos).
+  * O Coordenador fornece os dias e respectivos horários da oferta de disciplina que deseja criar.
+  * O sistema apresenta as salas e os professores disponíveis nos dias e horários fornecidos pelo Coordenador.
+  * O Coordenador seleciona um professor e uma ou mais salas.
+  * O Coordenador fornece a quantidade de alunos a serem alocados na nova oferta de disciplina (conforme RN02).
+  * A partir de uma lista fornecida pelo sistema, o Coordenador seleciona a turma na qual deseja alocar a oferta de disciplina.
+  * O sistema cria a oferta de disciplina e transfere a quantidade de alunos fornecida no passo 7 da lista de espera para a oferta recém-criada, de acordo com a ordem dos alunos nessa lista.
+  * Se o Coordenador deseja continuar o atendimento das listas de espera, o caso de uso retorna ao passo 1; caso contrário, o sistema envia os dados de inscrições de alunos para o sistema de faturamento e o caso de uso termina.
+
+Fluxo de Exceção(7): Violação de RN02
+a. Se a quantidade de alunos que o Coordenador fornecer for inválida (violar a regra do negócio RN02), o sistema reporta o fato e solicita um novo valor.
+b. O Coordenador corrige o valor e o caso de uso prossegue a partir do passo 8.
+
+Regras de Negócio: RN02
