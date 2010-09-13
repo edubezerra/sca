@@ -1,6 +1,6 @@
-= Atender Listas de Espera (CSU08) =
+= Atender Lista de Espera (CSU08) =
 
-Sumário: Coordenador atende às demandas representadas pelas listas de espera por vagas para uma disciplina.
+Sumário: Coordenador cria uma turma para atender às demandas representadas por uma lista de espera por vagas para uma disciplina.
 
 Ator Primário: Coordenador
 
@@ -9,16 +9,14 @@ Atores Secundários: Sistema de Faturamento
 Pré-condições: O Coordenador está identificado pelo sistema.
 
 Fluxo Principal
-  # O sistema apresenta as listas de espera existentes para as disciplinas.
+  # O sistema apresenta as listas de espera abertas para as disciplinas.
   # O Coordenador seleciona uma das listas de espera.
   # O sistema apresenta os detalhes da lista de espera selecionada (data de criação e quantidade de alunos).
-  # O Coordenador fornece os dias e respectivos horários da oferta de disciplina que deseja criar.
-  # O sistema apresenta as salas e os professores disponíveis nos dias e horários fornecidos pelo Coordenador.
-  # O Coordenador seleciona um professor e uma ou mais salas.
-  # O Coordenador fornece a quantidade de alunos a serem alocados na nova oferta de disciplina (conforme [RegrasNegocio#RegraNegocio02]).
-  # A partir de uma lista fornecida pelo sistema, o Coordenador seleciona a turma na qual deseja alocar a oferta de disciplina.
-  # O sistema cria a oferta de disciplina e transfere a quantidade de alunos fornecida no passo 7 da lista de espera para a oferta recém-criada, de acordo com a ordem dos alunos nessa lista.
-  # Se o Coordenador deseja continuar o atendimento das listas de espera, o caso de uso retorna ao passo 1; caso contrário, o sistema envia os dados de inscrições de alunos para o sistema de faturamento e o caso de uso termina.
+  # O Coordenador fornece o código, dias e respectivos horários de aula da turma a criar.
+  # O sistema apresenta as salas e os professores disponíveis nos dias e horários fornecidos.
+  # O Coordenador o professor e uma ou mais salas para a turma, assim como a quantidade de alunos a serem alocados para a criação da nova turma (conforme [RegrasNegocio#RegraNegocio02]).
+  # O sistema cria a turma e transfere a quantidade de alunos fornecida no passo 7 da lista de espera para a oferta recém-criada, de acordo com a ordem dos alunos nessa lista.
+  # O sistema envia os dados de inscrições de alunos para o sistema de faturamento, e o caso de uso termina.
 
 Fluxo de Exceção(7): A quantidade de alunos que o Coordenador fornece é inválida (viola a RN02), 
  * a. O sistema reporta o fato e solicita um novo valor.
