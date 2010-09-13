@@ -8,12 +8,11 @@ Precondições: O Aluno está identificado pelo sistema.
 
 Fluxo Principal
  # O Aluno solicita a visualização das avaliações para as turmas em que participou.
- # O sistema exibe os semestres letivos nos quais o Aluno se inscreveu em pelo menos turma cujo lançamento já tenha sido encerrado.
+ # O sistema exibe os semestres letivos nos quais o Aluno se inscreveu em pelo menos uma turma cujo lançamento já tenha sido encerrado.
  # O Aluno seleciona os semestres letivos para as turmas cujas avaliações deseja visualizar.
- # O sistema exibe uma lista de avaliações agrupadas pelos semestres letivos selecionados e por turma.
- # O aluno visualiza as avaliações, e o caso de uso termina.
+ # O sistema exibe uma lista de avaliações, agrupadas pelos semestres letivos selecionados e por turma, e o caso de uso termina.
 
-Fluxo de Exceção (2): Aluno sem inscrição
- * a. Não há semestre letivo no qual o Aluno tenha participado em alguma turma: o sistema reporta o fato e o caso de uso termina.
+Fluxo de Exceção (2): Não há semestre letivo no qual o Aluno tenha participado em alguma turma. 
+ * a. O sistema reporta o fato e o caso de uso termina.
 
-Pós-condições: O Aluno obteve as avaliações que desejava visualizar.
+Pós-condições: N/A.
