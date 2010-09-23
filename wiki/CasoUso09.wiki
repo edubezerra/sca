@@ -12,7 +12,7 @@ Fluxo Principal
  # O professor solicita o registro de suas habilitações.
  # O sistema apresenta duas listas de disciplinas: a lista de disciplinas que compõem as habilitações atuais do professor (La); lista de todas as disciplinas da grade curricular atual do curso, à exceção das contidas em La (Lb).
  # O professor solicita a transferência de itens entre (La) e (Lb), conforme queira remover ou adicionar habilitações.
- # O sistema atualiza as listas La e Lb apresentadas, de acordo com as traferências solicitadas.
+ # O sistema atualiza as listas La e Lb apresentadas, de acordo com as transferências solicitadas.
  # O professor confirma o registro das habilitações, e o caso de uso termina.
 
 Pós-condições:
