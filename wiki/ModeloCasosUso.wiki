@@ -16,8 +16,6 @@
 
 * Atualizar Informações sobre Professor (CasoUso07)
 
-* Atender Listas de Espera (CasoUso08)
-
 * Fornecer Habilitações (CasoUso09)
 
 * Abrir Turma (CasoUso10)
