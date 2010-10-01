@@ -1,7 +1,5 @@
 #summary Lista de casos de uso do SCA
 
-[http://code.google.com/p/sca-oo/downloads/funcao-retangulos.png]
-
 * Realizar Inscrição (CasoUso01)
 
 * Cancelar Inscrição (CasoUso00)
