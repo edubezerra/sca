@@ -1,8 +1,6 @@
 #summary Lista de casos de uso do SCA
 
-[http://code.google.com/p/sca-oo/downloads/detail?name=SCA%20-%20Diagrama%20de%20Casos%20de%20Uso%20%28Figura_04_11%29.jpg]
-
-[http://code.google.com/p/sca-oo/downloads]
+[http://code.google.com/p/sca-oo/downloads/funcao-retangulos.png]
 
 * Realizar Inscrição (CasoUso01)
 
