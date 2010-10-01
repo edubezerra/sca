@@ -1,5 +1,7 @@
 #summary Lista de casos de uso do SCA
 
+http://code.google.com/p/sca-oo/downloads/detail?name=SCA%20-%20Diagrama%20de%20Casos%20de%20Uso%20%28Figura_04_11%29.jpg&can=2&q=
+
 * Realizar Inscrição (CasoUso01)
 
 * Cancelar Inscrição (CasoUso00)
