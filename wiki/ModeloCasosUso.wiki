@@ -37,8 +37,8 @@
 
 * * Lançar Avaliações e Frequências (CasoUso04)
 
-* * Obter Diário de Classe (CasoUso14) - Professor obtém o diário de classe para determinado mês do semestre letivo corrente.
+* * Obter Diário de Classe (CasoUso14)
 
 * * Visualizar Avaliações e Freqüências
 
-* * Solicitar Histórico Escolar (CasoUso12) - Aluno solicita a produção de seu histórico escolar.
+* * Solicitar Histórico Escolar (CasoUso12)
