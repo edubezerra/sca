@@ -1,0 +1,40 @@
+#summary Descrição do caso de uos *Manter Disciplina* (CSU05).
+
+= Manter Disciplina (CSU05) = 
+
+Sumário: DRE realiza o cadastro (inclusão, remoção, alteração e consulta) dos dados sobre disciplinas.
+
+Ator Primário: DRE
+
+Fluxo Principal
+ # DRE requisita a manutenção de disciplinas.
+ # O sistema apresenta as operações que podem ser realizadas: a inclusão de uma nova disciplina, a alteração dos dados de uma disciplina, a exclusão de uma disciplina e a consulta de disciplinas.
+ # O DRE indica a opção a realizar ou opta por finalizar o caso de uso.
+ # O DRE seleciona a operação desejada: Inclusão, Exclusão, Alteração ou Consulta.
+ # Se o DRE deseja continuar com a manutenção, o caso de uso retorna ao passo 2; caso contrário, o caso de uso termina.
+
+Fluxo Alternativo (4): Inclusão
+ * a. O DRE requisita a inclusão de uma disciplina.
+ * b. O sistema apresenta um formulário em branco para que os detalhes da disciplina (código, nome e quantidade de créditos) sejam incluídos.
+ * c. O DRE fornece os detalhes da nova disciplina.
+ * d. O sistema apresenta uma lista de disciplinas para que o DRE selecione as que são pré-requisitos para a disciplina a ser criada.
+ * e. O DRE define zero ou mais disciplinas como pré-requisitos.
+ * f. O sistema verifica a validade dos dados. Se os dados forem válidos, inclui a nova disciplina; caso contrário, o sistema reporta o fato, solicita novos dados e repete a verificação.
+
+Fluxo Alternativo (4): Remoção
+ * a. O DRE seleciona uma disciplina e requisita o sistema que a remova.
+ * b. Se a disciplina pode ser removida, o sistema realiza a remoção; caso contrário, o sistema reporta o fato.
+
+Fluxo Alternativo (4): Alteração
+ * a. O DRE altera um ou mais dos detalhes sobre uma disciplina e requisita a sua atualização.
+ * b. O sistema verifica a validade dos dados e, se eles forem válidos, altera os dados na lista de disciplinas da faculdade.
+
+Fluxo Alternativo (4): Consulta
+ * a. O DRE solicita a realização de uma consulta sobre a lista de disciplinas.
+ * b. O sistema apresenta uma lista com os códigos de todas as disciplinas, permitindo que o usuário selecione a disciplina desejada.
+ * c. O DRE seleciona uma disciplina.
+ * d. O sistema apresenta os detalhes da disciplina e seus pré-requisitos (se existirem) no formulário de disciplinas.
+
+Pós-condições:
+ * uma disciplina foi inserida, removida, ou os detalhes de uma disciplia pré-existente foram alterados.
+ * no caso de inclusão ou atualização, um ou mais pré-requisitos foram definidos.
