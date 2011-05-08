@@ -31,9 +31,9 @@
 * * Atualizar Informações sobre Professor (CasoUso07)
 
 ----
-* * Acompanhamento de Semestre Letivo
+* Acompanhamento de Semestre Letivo
 
-* Visualizar Avaliações e Frequências (CasoUso02)
+* * Visualizar Avaliações e Frequências (CasoUso02)
 
 * * Lançar Avaliações e Frequências (CasoUso04)
 
