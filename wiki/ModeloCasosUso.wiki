@@ -9,9 +9,11 @@
 
 * * Visualizar Andamento de Inscrições (CasoUso06)
 
-* * Abrir Turma (Coordenador abre uma turma.)
+* * Abrir Turma (CasoUso10) - Coordenador abre uma turma.
 
-* * Fechar Turma (Coordenador fecha uma turma.)
+* * Fechar Turma (CasoUso11)- Coordenador fecha uma turma.
+
+* * Atender Listas de Espera (CasoUso13)
 
 ----
 * Gerenciamento de Recursos Acadêmicos
@@ -40,10 +42,3 @@
 * * Visualizar Avaliações e Freqüências
 
 * * Solicitar Histórico Escolar (CasoUso12) - Aluno solicita a produção de seu histórico escolar.
-
-
-* Abrir Turma (CasoUso10)
-
-* Fechar Turma (CasoUso11)
-
-* Atender Listas de Espera (CasoUso13)
