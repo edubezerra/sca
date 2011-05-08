@@ -1,7 +1,9 @@
 #summary Descrição do caso de uso Manter Disciplina (CSU05).
 
 = Manter Disciplina (CSU05) = 
----
+
+----
+
 Sumário: DRE realiza o cadastro (inclusão, remoção, alteração e consulta) dos dados sobre disciplinas.
 
 Ator Primário: DRE
