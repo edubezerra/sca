@@ -1,5 +1,8 @@
 #summary Lista de casos de uso do SCA
 
+Exemplo de adição de imagem em página no Google Code
+<img src="http://pythonxy.googlecode.com/files/pythonxy-logo.png">
+
 ----
 * Gerenciamento de Inscrições
 
