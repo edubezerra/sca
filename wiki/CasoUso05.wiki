@@ -1,4 +1,4 @@
-#summary Descrição do caso de uso *Manter Disciplina* (CSU05).
+#summary Descrição do caso de uso Manter Disciplina (CSU05).
 
 = Manter Disciplina (CSU05) = 
 ---
