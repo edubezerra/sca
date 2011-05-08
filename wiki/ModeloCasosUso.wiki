@@ -1,29 +1,49 @@
 #summary Lista de casos de uso do SCA
 
-* Realizar Inscrição (CasoUso01)
+----
+* Gerenciamento de Inscrições
 
-* Cancelar Inscrição (CasoUso00)
+* * Realizar Inscrição (CasoUso01)
+
+* * Cancelar Inscrição (CasoUso00)
+
+* * Visualizar Andamento de Inscrições (CasoUso06)
+
+* * Abrir Turma (Coordenador abre uma turma.)
+
+* * Fechar Turma (Coordenador fecha uma turma.)
+
+----
+* Gerenciamento de Recursos Acadêmicos
+
+* * Manter Grade Curricular (Coordenador define informações sobre uma grade curricular; ver definição deste termo no glossário.)
+
+* * Manter Disciplina (CasoUso05)
+
+* * Manter Aluno
+
+* * Fornecer Grade de Disponibilidades (CasoUso03)
+
+* * Fornecer Habilitações (CasoUso09)
+
+* * Atualizar Informações sobre Professor (CasoUso07)
+
+----
+* Acompanhamento de Semestre Letivo
 
 * Visualizar Avaliações e Frequências (CasoUso02)
 
-* Fornecer Grade de Disponibilidades (CasoUso03)
+* * Lançar Avaliações e Frequências (CasoUso04)
 
-* Lançar Avaliações e Frequências (CasoUso04)
+* * Obter Diário de Classe (CasoUso14) - Professor obtém o diário de classe para determinado mês do semestre letivo corrente.
 
-* Manter Disciplina (CasoUso05)
+* * Visualizar Avaliações e Freqüências
 
-* Visualizar Andamento de Inscrições (CasoUso06)
+* * Solicitar Histórico Escolar (CasoUso12) - Aluno solicita a produção de seu histórico escolar.
 
-* Atualizar Informações sobre Professor (CasoUso07)
-
-* Fornecer Habilitações (CasoUso09)
 
 * Abrir Turma (CasoUso10)
 
 * Fechar Turma (CasoUso11)
 
-* Solicitar Histórico Escolar (CasoUso12)
-
 * Atender Listas de Espera (CasoUso13)
-
-* Obter Diário de Classe (CasoUso14)
