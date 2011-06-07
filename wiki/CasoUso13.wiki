@@ -1,4 +1,4 @@
-= Atender Lista de Espera (CSU08) =
+= Atender Lista de Espera (CSU13) =
 
 Sumário: Coordenador cria uma turma para atender às demandas representadas por uma lista de espera por vagas para uma disciplina.
 
