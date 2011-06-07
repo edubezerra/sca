@@ -1,4 +1,4 @@
-Lançar Avaliações (CSU04)
+= Lançar Avaliações e Frequencias (CSU04)=
 
 Sumário: Professor realiza o lançamento de avaliações (notas e freqüências) para alunos das ofertas de disciplinas lecionadas por ele no semestre corrente.
 
