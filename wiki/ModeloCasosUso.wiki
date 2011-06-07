@@ -3,7 +3,7 @@
 <img src="http://sca-oo.googlecode.com/files/SCA - Diagrama de Casos de Uso (Figura_04_11).jpg">
 
 ----
-* Gerenciamento de Inscrições
+==Gerenciamento de Inscrições==
 
 * * *Realizar Inscrição* (CasoUso01)
 
@@ -18,7 +18,7 @@
 * * *Atender Listas de Espera* (CasoUso13)
 
 ----
-* Gerenciamento de Recursos Acadêmicos
+==Gerenciamento de Recursos Acadêmicos==
 
 * * Manter Grade Curricular (Coordenador define informações sobre uma grade curricular; ver definição deste termo no glossário.)
 
@@ -33,7 +33,7 @@
 * * Atualizar Informações sobre Professor (CasoUso07)
 
 ----
-* Acompanhamento de Semestre Letivo
+==Acompanhamento de Semestre Letivo==
 
 * * *Visualizar Avaliações e Frequências* (CasoUso02)
 
