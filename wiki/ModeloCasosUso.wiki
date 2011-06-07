@@ -28,7 +28,7 @@
 
 * * *Fornecer Grade de Disponibilidades* (CasoUso03)
 
-* * Definir Habilitações (CasoUso09)
+* * Fornecer Habilitações (CasoUso09)
 
 * * Atualizar Informações sobre Professor (CasoUso07)
 
