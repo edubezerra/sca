@@ -5,7 +5,7 @@
 ----
 * Gerenciamento de Inscrições
 
-* * Realizar Inscrição (CasoUso01)
+* * *Realizar Inscrição* (CasoUso01)
 
 * * Cancelar Inscrição (CasoUso00)
 
@@ -15,7 +15,7 @@
 
 * * Fechar Turma (CasoUso11)- Coordenador fecha uma turma.
 
-* * Atender Listas de Espera (CasoUso13)
+* * *Atender Listas de Espera* (CasoUso13)
 
 ----
 * Gerenciamento de Recursos Acadêmicos
@@ -26,7 +26,7 @@
 
 * * Manter Aluno
 
-* * Fornecer Grade de Disponibilidades (CasoUso03)
+* * *Fornecer Grade de Disponibilidades* (CasoUso03)
 
 * * Fornecer Habilitações (CasoUso09)
 
@@ -35,12 +35,10 @@
 ----
 * Acompanhamento de Semestre Letivo
 
-* * Visualizar Avaliações e Frequências (CasoUso02)
+* * *Visualizar Avaliações e Frequências* (CasoUso02)
 
 * * Lançar Avaliações e Frequências (CasoUso04)
 
 * * Obter Diário de Classe (CasoUso14)
-
-* * Visualizar Avaliações e Freqüências
 
 * * Solicitar Histórico Escolar (CasoUso12)
