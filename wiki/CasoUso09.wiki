@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
-= Definir Habilitações (CSU09) =
+= Fornecer Habilitações (CSU09) =
 
 Sumário: Professor informa suas habilitações, i.e., as disciplinas da grade curricular que está apto a lecionar.
 
