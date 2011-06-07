@@ -37,7 +37,7 @@
 
 * * *Visualizar Avaliações e Frequências* (CasoUso02)
 
-* * Lançar Avaliações e Frequências (CasoUso04)
+* * *Lançar Avaliações e Frequências* (CasoUso04)
 
 * * Obter Diário de Classe (CasoUso14)
 
