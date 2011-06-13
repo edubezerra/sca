@@ -14,7 +14,7 @@ Fluxo Principal
   # O sistema apresenta os detalhes da lista de espera selecionada (data de criação e quantidade de alunos).
   # O Coordenador fornece o código, dias e respectivos horários de aula da turma a criar.
   # O sistema apresenta as salas e os professores disponíveis nos dias e horários fornecidos.
-  # O Coordenador o professor e uma ou mais salas para a turma, assim como a quantidade de alunos a serem alocados para a criação da nova turma (conforme [RegrasNegocio#RegraNegocio02]).
+  # O Coordenador seleciona o professor e uma ou mais salas para a turma, assim como a quantidade de alunos a serem alocados para a criação da nova turma (conforme [RegrasNegocio#RegraNegocio02]).
   # O sistema cria a turma e transfere a quantidade de alunos fornecida no passo 7 da lista de espera para a oferta recém-criada, de acordo com a ordem dos alunos nessa lista.
   # O sistema envia os dados de inscrições de alunos para o sistema de faturamento, e o caso de uso termina.
 
