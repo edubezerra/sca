@@ -2,7 +2,7 @@
 
 = Cancelar Inscrições (CSU00) = 
 
-Sumário: Aluno usa o sistema para cancelar inscrição feitas previamente.
+Sumário: Aluno usa o sistema para cancelar inscrições realizadas previamente.
 
 Ator Primário: Aluno
 
