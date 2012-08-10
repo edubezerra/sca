@@ -13,8 +13,8 @@ Precondições: O Aluno está identificado pelo sistema.
 Fluxo Principal
  # Aluno solicita a realização de inscrições.
  # Sistema apresenta as disciplinas (e respectivos códigos das turmas) em que o aluno pode se inscrever (conforme a  [RegrasNegocio#RegraNegocio03]). 
- # Aluno define a lista de disciplinas que deseja cursar no próximo semestre letivo e as submete para inscrição.
- # Para cada disciplina selecionada, o sistema informa as turmas nas quais o Aluno foi inscrito. Para cada turma, o sistema informa o professor, os horários e os respectivos locais das aulas.
+ # Aluno escolhe a lista de turmas que deseja cursar no próximo semestre letivo e as submete para inscrição.
+ # Para cada turma, o sistema informa o professor, os horários e os respectivos locais das aulas.
  # Aluno confirma as inscrições. 
  # Sistema registra as inscrições do Aluno, envia os dados sobre as mesmas para o Sistema de Faturamento, e o caso de uso termina.
 
