@@ -1,4 +1,4 @@
-#summary Lista de requisitos funcionais do sistema.
+#summary Definições dos principais conceitos envolvidos no SCA.
 
  * 1. Aluno: representa um aluno da faculdade.
  * 2. Aula: representa o acontecimento semanal de uma aula de alguma turma. Toda aula acontece em uma sala da faculdade.
