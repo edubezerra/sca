@@ -1,0 +1,23 @@
+Visualizar Andamento de Inscrições (CSU06)
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Sumário: O Coordenador usa o sistema para visualizar o andamento de inscrições sendo realizadas pelos alunos em disciplinas ofertadas para o próximo semestre letivo.
+
+Ator Primário: Coordenador
+Precondições: O Coordenador  está identificado pelo sistema.
+
+Fluxo Principal
+1. O Coordenador  solicita a visualização do andamento de inscrições realizadas pelos alunos.
+2. O sistema exibe a lista de disciplinas para as quais existe pelo menos uma oferta para o próximo semestre.
+3. O Coordenador  seleciona a disciplina para a qual deseja visualizar o andamento de inscrições.
+4. O sistema exibe a lista de turmas nas quais existe oferta para a disciplina selecionada, juntamente  com as distribuições correspondentes:  professor, horários, locais e situação (aberta ou fechada).
+5. O Coordenador  seleciona uma das turmas.
+6. O sistema apresenta a lista de alunos inscritos na turma para a disciplina selecionada, ordenados por data de inscrição.
+7. O Coordenador  visualiza as informações.
+8. Se o Coordenador  deseja continuar a visualização, o caso de uso retorna ao passo 5; é também possível que o caso de uso retorne ao passo 3, de acordo com a ação do Coordenador; caso contrário, o caso de uso termina.
