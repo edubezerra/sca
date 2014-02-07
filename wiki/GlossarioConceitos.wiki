@@ -9,7 +9,7 @@
  * 5. *Grade de Disponibilidades*: representa disponibilidades de um professor em um determinado semestre letivo. Uma disponibilidade é composta pelos dias da semana (e os respectivos intervalos) de um determinado semestre letivo nos quais um professor está disponível para lecionar (i.e., ser alocado a alguma turma). Representa também as disciplinas que o professor está apto a lecionar nesse mesmo semestre letivo.
  * 6. *Grade Curricular*: uma grade curricular corresponde a um conjunto de disciplinas, juntamente com os pré-requisitos de cada uma delas. De tempos em tempos, a instituição de ensino atualiza a sua grade curricular. Nessa atualização, novas disciplinas podem ser criadas, assim como disciplinas existentes podem ser removidas da grade.
  * 7. *Lista de Espera*: representa uma lista dos alunos que estão esperando a abertura de uma turma para determinada disciplina.
- * 8. *SemestreLetivo*: representa um semestre letivo. Por exemplo, 2013.1 ou 2014.2.
+ * 8. *Semestre Letivo*: representa um semestre letivo. Por exemplo, 2013.1 ou 2014.2.
  * 9. *Participação*: representa a participação de um aluno em alguma turma. A participação de um aluno em uma turma possui uma avaliação.
  * 10. *Professor*: representa o indivíduo que leciona as disciplinas ofertadas por meio de turmas pela faculdade.
  * 11. *Sala*: representa um dos locais que podem ser utilizados para as aulas de uma ou mais turmas ofertadas.
