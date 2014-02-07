@@ -1,6 +1,6 @@
 = Atender Lista de Espera (CSU08) =
 
-Sumário: Coordenador cria uma turma para atender às demandas representadas por uma lista de espera por vagas para uma disciplina.
+Sumário: Coordenador cria uma turma para atender às demandas representadas por uma lista de espera por vagas em turma de uma disciplina.
 
 Ator Primário: Coordenador
 
@@ -25,4 +25,5 @@ Fluxo de Exceção(7): A quantidade de alunos que o Coordenador fornece é invá
 Regras de Negócio: [RegrasNegocio#RegraNegocio02]
 
 Pós-condições: 
- * Aluno foi inscrito.
+ * Uma turma foi criada.
+ * Alunos selecionados foram inscritos na turma recém-criada e removidos da lista de espera.
