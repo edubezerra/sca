@@ -15,7 +15,7 @@
 
 * * Fechar Turma (CasoUso11)- Coordenador fecha uma turma.
 
-* * Atender Listas de Espera (CasoUso13)
+* * Atender Listas de Espera (CasoUso08)
 
 * * Montar Grade de Horários ()
 
