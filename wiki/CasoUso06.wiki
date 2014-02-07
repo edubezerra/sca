@@ -1,4 +1,6 @@
-Visualizar Andamento de Inscrições (CSU06)
+#summary Visualizar Andamento de Inscrições (CSU06)
+
+= Visualizar Andamento de Inscrições (CSU06) = 
 
 Sumário: O Coordenador usa o sistema para visualizar o andamento de inscrições sendo realizadas pelos alunos em disciplinas ofertadas para o próximo semestre letivo.
 
