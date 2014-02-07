@@ -1,12 +1,5 @@
 Visualizar Andamento de Inscrições (CSU06)
 
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
 Sumário: O Coordenador usa o sistema para visualizar o andamento de inscrições sendo realizadas pelos alunos em disciplinas ofertadas para o próximo semestre letivo.
 
 Ator Primário: Coordenador
