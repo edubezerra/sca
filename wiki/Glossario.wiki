@@ -1,7 +1,10 @@
-* 1. Aluno: representa um aluno da faculdade.
-* 2. Aula: representa o acontecimento semanal de uma aula de alguma turma. Toda aula acontece em uma sala da faculdade.
-3. Avaliação: representa uma avaliação atribuída à participação de um alu- no em uma turma aberta para alguma disciplina da faculdade.
-4. Disciplina: uma disciplina componente da grade curricular da faculdade.
+#summary Lista de requisitos funcionais do sistema.
+
+ * 1. Aluno: representa um aluno da faculdade.
+ * 2. Aula: representa o acontecimento semanal de uma aula de alguma turma. Toda aula acontece em uma sala da faculdade.
+ * 3. Avaliação: representa uma avaliação atribuída à participação de um aluno em uma turma aberta para alguma disciplina da faculdade.
+ * 4. Disciplina: uma disciplina componente da grade curricular da faculdade.
+
 5. Grade de Disponibilidades: representa disponibilidades de um professor em um determinado semestre letivo. Uma disponibilidade é composta pelos dias da semana (e os respectivos intervalos) de um determinado semestre letivo nos quais um professor está disponível para lecionar (i.e., ser alocado a alguma turma). Representa também as disciplinas que o professor está apto a lecionar nesse mesmo semestre letivo.
 6. Grade Curricular: uma grade curricular corresponde a um conjunto de disciplinas, juntamente com os pré-requistos de cada uma delas. De tem- pos em tempos, a instituição de ensino atualiza a sua grade curricular. Nessa atualização, novas disciplinas podem ser criadas, assim como dis- ciplinas existentes podem ser removidas da grade.
 7. Lista de Espera: representa uma lista dos alunos que estão esperando a abertura de uma turma para determinada disciplina.
