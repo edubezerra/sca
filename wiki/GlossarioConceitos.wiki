@@ -15,5 +15,5 @@
  # *`Professor`*: representa o indivíduo que leciona as disciplinas ofertadas por meio de turmas.
  # *`Local`*: representa um dos locais que podem ser utilizados para as aulas de uma ou mais turmas.
  # *`SemestreLetivo`*: representa um semestre letivo. Por exemplo, 2013.1 ou 2014.2.
- # *`Turma`*: representa uma turma aberta em algum semestre letivo para determinada disciplina. Uma turma é a contra-partida temporal de uma disciplina.
  # *`TempoAula`*: representa um intervalo de tempo em que pode ser alocada a aula de determinada turma. Por exemplo, a tabela apresentada no endereço a seguir contém 17 tempos de aula: https://code.google.com/p/sca-oo/wiki/ExemploTempoAula. Tempos de aula estão distribuídos nos turnos, manhã, tarde ou noite.
+ # *`Turma`*: representa uma turma aberta em algum semestre letivo para determinada disciplina. Uma turma é a contra-partida temporal de uma disciplina.
