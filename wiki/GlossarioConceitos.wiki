@@ -16,7 +16,6 @@
  # *`Local`*: representa um dos locais que podem ser utilizados para as aulas de uma ou mais turmas.
  # *`SemestreLetivo`*: representa um semestre letivo. Por exemplo, 2013.1 ou 2014.2.
  # *`TempoAula`*: representa um intervalo de tempo em que pode ser alocada a aula de determinada turma. Tempos de aula estão distribuídos nos turnos, manhã, tarde ou noite. A tabela a seguir apresenta 17 tempos de aula.
-
 || *ID* || *Manhã* || *Tarde* || *Noite* ||
 || 1º	|| 07:00 - 07:50	|| 12:40 - 13:30	|| 18:20 - 19:10 ||
 || 2º	|| 07:55 - 08:45	|| 13:35 - 14:25	|| 19:10 - 20:00 ||
@@ -24,5 +23,4 @@
 || 4º	|| 09:55 - 10:45	|| 15:35 - 16:25	|| 21:00 - 21:50 ||
 || 5º	|| 10:50 - 11:40	|| 16:30 - 17:20	|| 21:50 - 22:40 ||
 || 6º	|| 11:45 - 12:35	|| 17:25 - 18:15	 ||
-
  # *`Turma`*: representa uma turma aberta em algum semestre letivo para determinada disciplina. Uma turma é a contra-partida temporal de uma disciplina.
