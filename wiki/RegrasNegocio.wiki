@@ -2,7 +2,7 @@
 
 == !RegraNegocio00 ==
  * _*Nome*_: Choques de horários
- * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever turmas de disciplinas paras as quais haja choque de horários.
+ * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em turmas de disciplinas para as quais haja choque de horários.
 
 == !RegraNegocio01 ==
  * _*Nome*_: Quantidade máxima de inscrições por semestre letivo
