@@ -6,7 +6,7 @@
 
 == !RegraNegocio01 ==
  * _*Nome*_: Quantidade máxima de inscrições por semestre letivo
- * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em uma quantidade de disciplinas cuja soma de créditos ultrapasse 20.
+ * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em uma quantidade em turmas cujo somatório de créditos das disciplinas correspondentes ultrapasse 20.
 
 == !RegraNegocio02 ==
  * _*Nome*_: Quantidade de alunos inscritos 
@@ -14,7 +14,7 @@
 
 == !RegraNegocio03 ==
  * _*Nome*_: Pré-requisitos para uma disciplina
- * _*Descrição*_: Um aluno não pode se inscrever em uma disciplina para a qual não possua os pré-requisitos necessários.
+ * _*Descrição*_: Um aluno não pode se inscrever em uma turma de uma disciplina para a qual não possua os pré-requisitos necessários.
 
 == !RegraNegocio04 ==
  * _*Nome*_: Habilitação para lecionar disciplina
