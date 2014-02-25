@@ -18,7 +18,7 @@ Fluxo Principal
  # Aluno confirma as inscrições. 
  # Sistema registra as inscrições do Aluno, envia os dados sobre as mesmas para o Sistema de Faturamento, e o caso de uso termina.
 
-Fluxo Alternativo (4): Não há oferta disponível para alguma disciplina selecionada pelo aluno (conforme a  [RegrasNegocio#RegraNegocio02]), 
+Fluxo Alternativo (4): Não há vaga disponível para alguma turma selecionada pelo aluno (conforme a  [RegrasNegocio#RegraNegocio02]), 
  * a. Sistema fornece a possibilidade de inserir o Aluno em uma lista de espera.
  * b. Se o Aluno aceitar, o sistema o insere na lista de espera e apresenta a posição na qual o aluno foi inserido na lista. O caso de uso retorna ao passo 4.
  * c. Se o Aluno não aceitar, o caso de uso prossegue a partir do passo 4.
