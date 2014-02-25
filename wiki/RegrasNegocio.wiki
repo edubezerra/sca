@@ -2,11 +2,11 @@
 
 == !RegraNegocio00 ==
  * _*Nome*_: Choques de horários
- * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em turmas de disciplinas para as quais haja choque de horários.
+ * _*Descrição*_: Em um período letivo, um aluno não pode se inscrever em turmas de disciplinas para as quais haja choque de horários.
 
 == !RegraNegocio01 ==
  * _*Nome*_: Quantidade máxima de inscrições por semestre letivo
- * _*Descrição*_: Em um semestre letivo, um aluno não pode se inscrever em uma quantidade em turmas cujo somatório de créditos das disciplinas correspondentes ultrapasse 20.
+ * _*Descrição*_: Em um período letivo, um aluno não pode se inscrever em uma quantidade em turmas cujo somatório de créditos das disciplinas correspondentes ultrapasse 20.
 
 == !RegraNegocio02 ==
  * _*Nome*_: Quantidade de alunos inscritos 
@@ -18,7 +18,7 @@
 
 == !RegraNegocio04 ==
  * _*Nome*_: Habilitação para lecionar disciplina
- * _*Descrição*_: Um professor só pode lecionar disciplinas para as quais esteja habilitado.
+ * _*Descrição*_: Um professor somente pode lecionar disciplinas para as quais esteja habilitado.
 
 == !RegraNegocio05 ==
  * _*Nome*_: Cancelamento de matrícula
