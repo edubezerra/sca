@@ -6,7 +6,7 @@
 
 == !RegraNegocio01 ==
  * _*Nome*_: Quantidade máxima de inscrições por semestre letivo
- * _*Descrição*_: Em um período letivo, um aluno não pode se inscrever em uma quantidade em turmas cujo somatório de créditos das disciplinas correspondentes ultrapasse 20.
+ * _*Descrição*_: Em um período letivo, um aluno não pode se inscrever em uma quantidade de turmas cujo somatório de créditos das disciplinas correspondentes ultrapasse 20.
 
 == !RegraNegocio02 ==
  * _*Nome*_: Quantidade de alunos inscritos 
