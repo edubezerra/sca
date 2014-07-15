@@ -22,7 +22,7 @@
 
 == !RegraNegocio05 ==
  * _*Nome*_: Cancelamento de matrícula
- * _*Descrição*_: Um aluno deve ter a matrícula cancelada se for reprovado mais de duas vezes na mesma disciplina.
+ * _*Descrição*_: Um aluno deve ter a matrícula cancelada se for reprovado, por média ou por faltas, mais de duas vezes na mesma disciplina.
 
 == !RegraNegocio06 ==
  * _*Nome*_: Política de avaliação de alunos
