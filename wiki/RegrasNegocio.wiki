@@ -26,11 +26,11 @@
 
 == !RegraNegocio06 ==
  * _*Nome*_: Política de avaliação de alunos
- * _*Descrição*_: A nota de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
-    * Se o aluno obtém nota maior ou igual a 7.0 (sete), está aprovado.
-    * Se o aluno obtém nota maior ou igual 5.0 (cinco) e menor que 7.0 (sete), deve fazer a avaliação final.
-    * Se o aluno obtém nota menor que 5.0 (cinco) está reprovado.
-    * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente reprovado.
+ * _*Descrição*_: A _nota parcial_ (NP) de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média simples de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
+    * Se o aluno obtém NP maior ou igual a 7.0 (sete), está _aprovado por média_.
+    * Se o aluno obtém NP menor que 3.0 (três) está _reprovado por média_.
+    * Se o aluno obtém NP maior ou igual 5.0 (cinco) e menor que 7.0 (sete), deve fazer o exame final. Se a média simples entre a nota do exame final (NF)e a NP for igual ou maior do que 5,0, está _aprovado por média_. Em caso contrário, está _reprovado por média_.
+    * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente _reprovado por faltas_, independente da nota que obtiver.
 
 == !RegraNegocio07 ==
  * _*Nome*_: Prioridade em Listas de Espera
