@@ -26,12 +26,12 @@
 
 == !RegraNegocio06 ==
  * _*Nome*_: Política de avaliação de alunos
- * _*Descrição*_: A _nota parcial_ (NP) de um aluno em uma disciplina (um valor de 0 a 10) é obtida pela média simples de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
-    * Se o aluno obtém NP maior ou igual a 7.0 (sete), está _aprovado por média_.
-    * Se o aluno obtém NP menor que 3.0 (três) está _reprovado por média_.
-    * Se o aluno obtém NP maior ou igual 5.0 (cinco) e menor que 7.0 (sete), deve fazer o exame final. Se a média simples entre a nota do exame final (NF)e a NP for igual ou maior do que 5,0, está _aprovado por média_. Em caso contrário, está _reprovado por média_.
+ * _*Descrição*_: A _nota parcial_ (NP) de um aluno em uma turma (um valor de 0 a 10) é obtida pela média simples de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
+    * Se o aluno obtém NP maior ou igual a 7,0 (sete), está _aprovado por média_.
+    * Se o aluno obtém NP menor que 3,0 (três) está _reprovado por média_.
+    * Se o aluno obtém NP maior ou igual 5,0 (cinco) e menor que 7,0 (sete), deve fazer o exame final. Se a média simples entre a nota do exame final (NF)e a NP for igual ou maior do que 5,0, está _aprovado por média_. Em caso contrário, está _reprovado por média_.
     * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente _reprovado por faltas_, independente da nota que obtiver.
 
 == !RegraNegocio07 ==
  * _*Nome*_: Prioridade em Listas de Espera
- * _*Descrição*_: Ao criar uma nova oferta de disciplina para alocar alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
+ * _*Descrição*_: Ao criar uma turma para alocar alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
