@@ -13,8 +13,8 @@
  * _*Descrição*_: Uma turma não pode ter mais alunos inscritos do que a capacidade máxima definida para ela.
 
 == !RegraNegocio03 ==
- * _*Nome*_: Pré-requisitos para uma disciplina
- * _*Descrição*_: Um aluno não pode se inscrever em uma turma de uma disciplina para a qual não possua os pré-requisitos necessários.
+ * _*Nome*_: Restrição sobre turmas possíveis para inscrição
+ * _*Descrição*_: Um aluno não pode se inscrever em uma turma de uma disciplina para a qual não possua os pré-requisitos necessários. Além disso, um aluno não pode se inscrever em uma turma de alguma disciplina que já tenha cursado com aprovação.
 
 == !RegraNegocio04 ==
  * _*Nome*_: Habilitação para lecionar disciplina
@@ -35,7 +35,3 @@
 == !RegraNegocio07 ==
  * _*Nome*_: Prioridade em Listas de Espera
  * _*Descrição*_: Ao criar uma turma para inscrever alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
-
-== !RegraNegocio08 ==
- * _*Nome*_: Restrição sobre disciplinas para inscrição
- * _*Descrição*_: Um aluno não pode se inscrever em uma turma de uma disciplina que já tenha cursado com aprovação.
