@@ -11,4 +11,4 @@ Fluxo Principal
  # O Coordenador  solicita a visualização do andamento de inscrições realizadas pelos alunos.
  # O sistema exibe a lista de turmas ofertadas para o próximo semestre (nome professor responsável, horários e locais de aula e situação (aberta ou fechada).
  # O Coordenador  seleciona a turma para a qual deseja visualizar o andamento de inscrições.
- # O sistema apresenta a lista de alunos inscritos na turma para a disciplina selecionada, ordenados por data de inscrição, e o caso de uso termina.
+ # O sistema apresenta a lista de alunos inscritos na turma selecionada (ordenada por data de inscrição). Para cada inscrição, o sistema apresenta nome e matrícula do aluno, assim como a data de realização da inscrição, e o caso de uso termina.
