@@ -1,0 +1,17 @@
+# Fornecer Habilitações (CSU09) #
+
+Sumário: Professor informa suas habilitações, i.e., as disciplinas da grade curricular que está apto a lecionar.
+
+Ator Primário: Professor
+
+Precondições: O Professor está identificado pelo sistema.
+
+Fluxo Principal
+  1. O professor solicita o registro de suas habilitações.
+  1. O sistema apresenta duas listas de disciplinas: a lista de disciplinas que compõem as habilitações atuais do professor (La); lista de todas as disciplinas da grade curricular atual do curso, à exceção das contidas em La (Lb).
+  1. O professor solicita a transferência de itens entre (La) e (Lb), conforme queira remover ou adicionar habilitações.
+  1. O sistema atualiza as listas La e Lb apresentadas, de acordo com as transferências solicitadas.
+  1. O professor confirma o registro das habilitações, e o caso de uso termina.
+
+Pós-condições:
+  * A lista de disciplinas correspondente às habilitações do professor foi atualizada.

@@ -1,0 +1,17 @@
+# Glossário de conceitos #
+
+  1. **`Aluno`**: representa um discente da instituição de ensino.
+  1. **`Aula`**: representa o acontecimento (i.e., o evento) semanal de uma aula de alguma turma. Toda aula acontece em uma sala.
+  1. **`Avaliação`**: representa uma avaliação atribuída à participação de um aluno em uma turma aberta para alguma disciplina.
+  1. **`Disciplina`**: uma disciplina componente da grade curricular.
+  1. **`DiárioClasse`**: corresponde a um formulário que contém os nomes dos alunos inscritos em determinada turma. Nesse formulário, o professor lança a quantidade  de faltas e as avaliações de cada aluno.
+  1. **`GradeDisponibilidades`**: representa disponibilidades de um professor em um determinado semestre letivo. Uma disponibilidade é composta pelos dias da semana (e os respectivos intervalos) de um determinado semestre letivo nos quais um professor está disponível para lecionar (i.e., ser alocado a alguma turma). Representa também as disciplinas que o professor está apto a lecionar nesse mesmo semestre letivo.
+  1. **`GradeCurricular`**: uma grade curricular corresponde a um conjunto de disciplinas, juntamente com os pré-requisitos de cada uma delas. De tempos em tempos, a instituição de ensino atualiza a sua grade curricular. Nessa atualização, novas disciplinas podem ser criadas, assim como disciplinas existentes podem ser removidas da grade.
+  1. **`Inscrição`**:  representa o registro de que um determinado aluno solicitou sua matrícula em uma determinada turma associada a uma disciplina.
+  1. **Intervalo**: corresponde a um intervalo de tempo. Formado por um horário de início e um horário de término. Serve para delimitar a duração da ocorrência de determinado evento com precisão de minutos. Por exemplo, 18:20h `<`--`>` 21:50h pode ser representado como um intervalo de duração igual a 210 minutos.
+  1. **`ListaEspera`**: representa uma lista dos alunos que estão esperando a abertura de uma turma para determinada disciplina.
+  1. **`Professor`**: representa o indivíduo que leciona as disciplinas ofertadas por meio de turmas.
+  1. **`Local`**: representa um dos locais que podem ser utilizados para as aulas de uma ou mais turmas.
+  1. **`SemestreLetivo`**: representa um semestre letivo. Por exemplo, 2013.1 ou 2014.2.
+  1. **`TempoAula`**: representa um intervalo de tempo em que pode ser alocada a aula de determinada turma. Por exemplo, a tabela apresentada no endereço a seguir contém 17 tempos de aula: https://code.google.com/p/sca-oo/wiki/ExemploTempoAula. Tempos de aula estão distribuídos em turnos (manhã, tarde ou noite).
+  1. **`Turma`**: representa uma turma aberta em algum semestre letivo para determinada disciplina. Uma turma é a contra-partida temporal de uma disciplina.

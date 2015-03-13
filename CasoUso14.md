@@ -1,0 +1,3 @@
+# Obter Diário de Classe #
+
+Sumário: Professor obtém o diário de classe para determinado mês do semestre letivo corrente.

@@ -1,0 +1,29 @@
+# Atender Lista de Espera (CSU08) #
+
+Sumário: Coordenador cria uma turma para atender às demandas representadas por uma lista de espera por vagas em turma de uma disciplina.
+
+Ator Primário: Coordenador
+
+Atores Secundários: Sistema de Faturamento
+
+Pré-condições: O Coordenador está identificado pelo sistema.
+
+Fluxo Principal
+  1. O sistema apresenta as listas de espera abertas para as disciplinas.
+  1. O Coordenador seleciona uma das listas de espera.
+  1. O sistema apresenta os detalhes da lista de espera selecionada (data de criação e quantidade de alunos).
+  1. O Coordenador fornece o código, dias e respectivos horários de aula da turma a criar.
+  1. O sistema apresenta as salas e os professores disponíveis nos dias e horários fornecidos.
+  1. O Coordenador seleciona o professor e uma ou mais salas para a turma, assim como a quantidade de alunos a serem alocados para a criação da nova turma (conforme [RegrasNegocio#RegraNegocio02](RegrasNegocio#RegraNegocio02.md)).
+  1. O sistema cria a turma e transfere a quantidade de alunos fornecida no passo 7 da lista de espera para a oferta recém-criada, de acordo com a ordem dos alunos nessa lista.
+  1. O sistema envia os dados de inscrições de alunos para o sistema de faturamento, e o caso de uso termina.
+
+Fluxo de Exceção(7): A quantidade de alunos que o Coordenador fornece é inválida (viola a RN02),
+  * a. O sistema reporta o fato e solicita um novo valor.
+  * b. O Coordenador corrige o valor e o caso de uso prossegue a partir do passo 8.
+
+Regras de Negócio: [RegrasNegocio#RegraNegocio02](RegrasNegocio#RegraNegocio02.md)
+
+Pós-condições:
+  * Uma turma foi criada.
+  * Alunos selecionados foram inscritos na turma recém-criada e removidos da lista de espera.

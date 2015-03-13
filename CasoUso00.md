@@ -1,0 +1,17 @@
+# Cancelar Inscrições (CSU00) #
+
+Sumário: Aluno usa o sistema para cancelar inscrições realizadas previamente.
+
+Ator Primário: Aluno
+
+Atores Secundários: Sistema de Faturamento
+
+Precondições: O Aluno está identificado pelo sistema.
+
+Fluxo Principal
+  1. Aluno solicita o cancelamento de inscrições.
+  1. Sistema apresenta as disciplinas (e respectivos códigos das turmas) em que o aluno está inscrito para o semestre letivo corrente.
+  1. Aluno define a lista de turmas para as quais deseja cancelar a inscrição as submete para cancelamento.
+  1. Sistema realiza o cancelamento das inscrições, envia os dados sobre as mesmas para o Sistema de Faturamento, e o caso de uso termina.
+
+Regras de Negócio: N/A

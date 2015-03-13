@@ -1,0 +1,37 @@
+# Regras do negócio do SCA #
+
+## RegraNegocio00 ##
+  * _**Nome**_: Choques de horários
+  * _**Descrição**_: Em um período letivo, um aluno não pode se inscrever em turmas de disciplinas para as quais haja choque de horários.
+
+## RegraNegocio01 ##
+  * _**Nome**_: Quantidade máxima de inscrições por semestre letivo
+  * _**Descrição**_: Em um período letivo, um aluno não pode se inscrever em uma quantidade de turmas cujo somatório de créditos das disciplinas correspondentes ultrapasse 20.
+
+## RegraNegocio02 ##
+  * _**Nome**_: Quantidade de alunos inscritos
+  * _**Descrição**_: Uma turma não pode ter mais alunos inscritos do que a capacidade máxima definida para ela.
+
+## RegraNegocio03 ##
+  * _**Nome**_: Restrição sobre turmas possíveis para inscrição
+  * _**Descrição**_: Um aluno não pode se inscrever em uma turma de uma disciplina para a qual não possua os pré-requisitos necessários. Além disso, um aluno não pode se inscrever em uma turma de alguma disciplina que já tenha cursado com aprovação.
+
+## RegraNegocio04 ##
+  * _**Nome**_: Habilitação para lecionar disciplina
+  * _**Descrição**_: Um professor somente pode lecionar disciplinas para as quais esteja habilitado.
+
+## RegraNegocio05 ##
+  * _**Nome**_: Cancelamento de matrícula
+  * _**Descrição**_: Um aluno deve ter a matrícula cancelada se for reprovado, por média ou por faltas, mais de duas vezes na mesma disciplina.
+
+## RegraNegocio06 ##
+  * _**Nome**_: Política de avaliação de alunos
+  * _**Descrição**_: A _nota parcial_ (NP) de um aluno em uma turma (um valor de 0 a 10) é obtida pela média simples de duas avaliações durante o semestre, A1 e A2, ou pela freqüência nas aulas.
+    * Se o aluno obtém NP maior ou igual a 7,0 (sete), então sua média final (MF) é igual a NP e ele está _aprovado por média_.
+    * Se o aluno obtém NP menor que 3,0 (três), então MF é igual a NP e ele está _reprovado por média_.
+    * Se o aluno obtém NP maior ou igual 5,0 (cinco) e menor que 7,0 (sete), deve fazer o exame final, que resulta em uma nota, NF. Nesse caso, MF é igual à média simples entre NF e NP. Se MF for igual ou maior do que 5,0, está _aprovado por média_. Em caso contrário, está _reprovado por média_.
+    * Se o aluno tiver uma freqüência menor que 75% em uma turma, está automaticamente _reprovado por faltas_, independente do valor de MF.
+
+## RegraNegocio07 ##
+  * _**Nome**_: Prioridade em Listas de Espera
+  * _**Descrição**_: Ao criar uma turma para inscrever alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
