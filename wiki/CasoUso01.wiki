@@ -1,6 +1,6 @@
-#summary Realizar Inscrições (CSU01)
-
 = Realizar Inscrições (CSU01) = 
+
+#summary Realizar Inscrições (CSU01)
 
 Sumário: Aluno usa o sistema para realizar inscrição em disciplinas.
 
