@@ -1,0 +1,35 @@
+div {
+	/*
+	border: 1px;
+	border-color: red;
+	border-style: solid;
+	*/
+	
+}
+
+div.table,form.table {
+	display: table;
+	width: 100%;
+}
+
+div.row,form.row {
+	display: table-row;
+	height: 30px;
+}
+
+div.field,form.field {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+div.field .lastfield,form.field .lastfield {
+	float: right;
+}
+
+div.field input,form.field input {
+	width: 80px;
+}
+
+div.field input.big,form.field input.big {
+	width: 160px;
+}

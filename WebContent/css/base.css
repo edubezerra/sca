@@ -1,0 +1,32 @@
+.question {
+	display: inline; /* same line as radio */
+	font-size: 18px;
+}
+
+.discipline {
+	display: inline-block; /* do not get all width space */
+	font-size: 18px;
+	font-weight: bolder;
+	background-color: #DDD;
+	border: 1px solid #CCC;
+	padding: 5px;
+	margin: 10px;
+}
+
+.info {
+	display: inline-block; /* do not get all width space */
+	color: #111;
+	background-color: #DDD;
+	border: 1px solid #CCC;
+	padding: 3px;
+	margin: 0px 0px 20px 10px;
+}
+
+.error {
+	display: inline-block; /* do not get all width space */
+	color: #300;
+	background-color: #EDD;
+	border: 1px solid #CAA;
+	padding: 3px;
+	margin: 0px 0px 20px 10px;
+}
