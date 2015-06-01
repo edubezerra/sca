@@ -2,7 +2,6 @@ package br.cefetrj.sca.infra.jpa;
 
 import java.util.List;
 
-import javax.el.MethodNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -42,12 +41,11 @@ public class DisciplinaDaoJpa implements DisciplinaDao {
 
 	@Override
 	public void gravar(List<Disciplina> lista) {
-		throw new MethodNotFoundException();
 	}
 
 	@Override
 	public Disciplina getByNome(String nome) {
-		throw new MethodNotFoundException();
+		return null;
 	}
 
 	@Override

@@ -72,12 +72,6 @@ public class AuthDAOMoodle implements IAuthDAO {
 				}
 
 				rd.close();
-
-				// System.out.println(responseMessage.toString());
-				// On success:
-				// {"token":"000a000aaaaa00aa00a00aa0a0000000"}
-				// On error:
-				// {"error":"The username was not found in the database","stacktrace":null,"debuginfo":null,"reproductionlink":null}
 			}
 
 			ObjectMapper mapper = new ObjectMapper();
