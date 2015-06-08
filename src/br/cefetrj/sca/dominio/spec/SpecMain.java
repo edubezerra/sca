@@ -2,8 +2,8 @@ package br.cefetrj.sca.dominio.spec;
 
 import java.util.List;
 
-import br.cefetrj.sca.LocalAulaRepositorio;
 import br.cefetrj.sca.dominio.LocalAula;
+import br.cefetrj.sca.dominio.LocalAulaRepositorio;
 
 public class SpecMain {
 
