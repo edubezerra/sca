@@ -2,7 +2,7 @@ package br.cefetrj.sca.service;
 
 public interface AutenticacaoService {
 
-	public abstract void autentica(String matricula, String senha);
+	public abstract void autentica(String cpf, String senha);
 	/*
 	 * public String logoutUser(String session_id) {
 	 * 

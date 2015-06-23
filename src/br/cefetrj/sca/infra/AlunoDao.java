@@ -16,4 +16,6 @@ public interface AlunoDao {
 
 	public abstract List<Aluno> obterTodos();
 
+	public abstract Aluno getAlunoPorCPF(String cpf);
+
 }

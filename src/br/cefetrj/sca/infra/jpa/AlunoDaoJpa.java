@@ -33,4 +33,16 @@ public class AlunoDaoJpa extends GenericDaoJpa<Aluno> implements AlunoDao {
 	public List<Aluno> obterTodos() {
 		return super.obterTodos(Aluno.class);
 	}
+
+	@Override
+	public Aluno getAlunoPorCPF(String cpf) {
+		String consulta = "SELECT a from Aluno a WHERE a.cpf = ?";
+		Object array[] = { cpf };
+		try {
+			return super.obterEntidade(consulta, array);
+		} catch (NoResultException ex) {
+			logger.info(ex.getMessage());
+			return null;
+		}
+	}
 }

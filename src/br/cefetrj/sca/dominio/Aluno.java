@@ -37,12 +37,22 @@ public class Aluno {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
 
+	private String cpf;
+
 	public Long getId() {
 		return id;
 	}
 
 	@SuppressWarnings("unused")
 	private Aluno() {
+	}
+
+	public Aluno(String nome, String matricula, String cpf) {
+		this(nome, matricula);
+		if (cpf == null || cpf.equals("")) {
+			throw new IllegalArgumentException("CPF deve ser fornecido.");
+		}
+		this.cpf = cpf;
 	}
 
 	public Aluno(String nome, String matricula) {
@@ -83,6 +93,10 @@ public class Aluno {
 
 	public String getEmail() {
 		return email.getEndereco();
+	}
+	
+	public String getCPF() {
+		return this.cpf;
 	}
 
 }

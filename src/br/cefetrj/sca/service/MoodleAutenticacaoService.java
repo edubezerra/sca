@@ -21,19 +21,19 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 	 * @see br.cefetrj.sca.service.AutenticacaoService#autentica(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void autentica(String matricula, String senha) {
+	public void autentica(String cpf, String senha) {
 
-		if (matricula == null || matricula.isEmpty()) {
-			throw new IllegalArgumentException("Matricula inválida");
+		if (cpf == null || cpf.isEmpty()) {
+			throw new IllegalArgumentException("Forneça o CPF!");
 		}
 
 		if (senha == null || senha.isEmpty()) {
-			throw new IllegalArgumentException("Senha inválida");
+			throw new IllegalArgumentException("Forneça a senha!");
 		}
 
 		// remote login
 		RemoteLoginResponse response = authRepository
-				.getRemoteLoginResponse(matricula, senha);
+				.getRemoteLoginResponse(cpf, senha);
 
 		if (response.getError() != null || response.getToken() == null
 				|| response.getToken().trim().isEmpty()) {
@@ -44,7 +44,7 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Aluno aluno = alunoRepo.getByMatricula(matricula);
+		Aluno aluno = alunoRepo.getByCPF(cpf);
 
 		// local user exists?
 		if (aluno == null) {

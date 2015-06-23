@@ -28,4 +28,8 @@ public class AlunoRepositorio {
 	public Aluno getByMatricula(String matriculaAluno) {
 		return dao.getAlunoPorMatricula(matriculaAluno);
 	}
+
+	public Aluno getByCPF(String cpf) {
+		return dao.getAlunoPorCPF(cpf);
+	}
 }
