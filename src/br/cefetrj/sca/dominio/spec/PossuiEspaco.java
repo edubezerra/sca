@@ -12,6 +12,6 @@ public class PossuiEspaco extends CompositeSpecification<LocalAula> {
 
 	@Override
 	public boolean isSatisfiedBy(LocalAula local) {
-		return local.getCapacidade() < this.capacidadeReferencia;
+		return local.getCapacidade() >= this.capacidadeReferencia;
 	}
 }

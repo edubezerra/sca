@@ -14,10 +14,27 @@ public class SpecMain {
 				.and(new PossuiEspaco(TAMANHO_TURMA));
 		List<LocalAula> locais = mRepositorio
 				.findAllBySpecification(desalocadoAndPossuiEspaco);
+		/**
+		 * Imprime todos os locais de aula que est~ao desalocados e comportam a
+		 * turma em quest~ao.
+		 */
 		for (LocalAula localAula : locais) {
 			System.out.println(localAula.getId() + "\t"
 					+ localAula.getCapacidade());
 		}
+		
+		/**
+		 * Imprime todos os locais de aula que estao desalocados.
+		 */
+		Specification<LocalAula> desalocado = new EstaDesalocado();
+		locais = mRepositorio
+				.findAllBySpecification(desalocado);
+		for (LocalAula localAula : locais) {
+			System.out.println(localAula.getId() + "\t"
+					+ localAula.getCapacidade());
+		}
+		
+		
 	}
 
 }

@@ -22,7 +22,7 @@ public class TurmaRepositorio {
 		return turmaDAO.recuperarTodos();
 	}
 
-	public void gravar(Turma turma) {
+	public void adicionar(Turma turma) {
 		turmaDAO.gravar(turma);
 	}
 

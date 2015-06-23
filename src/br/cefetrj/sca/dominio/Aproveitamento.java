@@ -50,6 +50,11 @@ public class Aproveitamento {
 	}
 
 	public void setNotaP2(BigDecimal notaP2) {
+		if (notaP2 == null)
+			throw new IllegalArgumentException("Nota de P2 não pode ser nula.");
+		if (notaP2.doubleValue() < 0.0 || notaP2.doubleValue() > 10.0)
+			throw new IllegalArgumentException(
+					"Valor inválido para nota de P1.");
 		this.notaP2 = notaP2;
 	}
 

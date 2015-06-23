@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SCA - Avaliação</title>
+<title>SCA - AvaliaÃ§Ã£o de Turmas</title>
 <link href="${pageContext.request.contextPath}/css/base.css"
 	rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/form.css"
@@ -14,7 +14,7 @@
 </head>
 <body class="basic-grey">
 
-	<h1>Sistema de Controle Acadêmico (SCA)</h1>
+	<h1>Sistema de Controle AcadÃªmico (SCA)</h1>
 
 	<c:if test="${requestScope.error != null}">
 		<div>
@@ -33,7 +33,7 @@
 			action="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal"
 			method="post">
 			<div class="field">
-				<div>Matrícula:</div>
+				<div>MatrÃ­cula:</div>
 			</div>
 			<div class="field">
 				<input type="text" name="matricula" value="" size="30"

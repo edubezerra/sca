@@ -14,7 +14,8 @@ import br.cefetrj.sca.dominio.contas.Email;
 @Entity
 public class Aluno {
 
-	private static final int TAM_MATRICULA = 10;
+	private static final int TAM_MIN_MATRICULA = 10;
+	private static final int TAM_MAX_MATRICULA = 11;
 
 	@Id
 	@GeneratedValue
@@ -52,9 +53,10 @@ public class Aluno {
 		if (matricula == null || matricula.equals("")) {
 			throw new IllegalArgumentException("Matrícula não pode ser vazia.");
 		}
-		if (matricula.length() != TAM_MATRICULA) {
-			throw new IllegalArgumentException("Matrícula deve ter "
-					+ TAM_MATRICULA + " caracteres: " + matricula);
+		if (!(matricula.length() >= TAM_MIN_MATRICULA && matricula.length() <= TAM_MAX_MATRICULA)) {
+			throw new IllegalArgumentException("Matrícula deve ter entre "
+					+ TAM_MIN_MATRICULA + " e " + TAM_MAX_MATRICULA
+					+ " caracteres: " + matricula);
 		}
 		this.nome = nome;
 		this.matricula = matricula;

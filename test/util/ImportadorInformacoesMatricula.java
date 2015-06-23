@@ -64,7 +64,7 @@ public class ImportadorInformacoesMatricula {
 
 	public static void main(String[] args) {
 		ImportadorInformacoesMatricula iim = new ImportadorInformacoesMatricula();
-		iim.importarPlanilha("./grades-curriculares/Matrícula-DEPIN-2015-1.xls");
+		iim.importarPlanilha("./planilhas/Matrícula-DEPIN-2015-1.xls");
 		iim.gravarDadosImportados("SCAPU");
 	}
 

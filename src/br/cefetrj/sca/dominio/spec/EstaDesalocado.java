@@ -6,7 +6,8 @@ public class EstaDesalocado extends CompositeSpecification<LocalAula> {
 
 	@Override
 	public boolean isSatisfiedBy(LocalAula local) {
-		// TODO: um local de aula est[a desalocado sem não está associado a nenhuma aula.
+		// TODO: um local de aula est[a desalocado sem 
+		// não está associado a nenhuma aula.
 		return true;
 	}
 }
