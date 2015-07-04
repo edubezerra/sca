@@ -15,7 +15,7 @@
 </head>
 <body class="basic-grey">
 
-	<h1>Avaliação de turmas</h1>
+	<h1>Avaliação de turmas cursadas em ${requestScope.periodoLetivo}</h1>
 
 	<c:if test="${requestScope.error != null}">
 		<div>

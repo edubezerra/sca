@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.AuthRepository;
-import br.cefetrj.sca.service.util.RemoteLoginResponse;
 
 @Component
 public class MoodleAutenticacaoService implements AutenticacaoService {
@@ -17,8 +16,12 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 	@Autowired
 	private AlunoRepositorio alunoRepo;
 
-	/* (non-Javadoc)
-	 * @see br.cefetrj.sca.service.AutenticacaoService#autentica(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.cefetrj.sca.service.AutenticacaoService#autentica(java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
 	public void autentica(String cpf, String senha) {
@@ -32,17 +35,20 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 		}
 
 		// remote login
-		RemoteLoginResponse response = authRepository
-				.getRemoteLoginResponse(cpf, senha);
+		String response = authRepository.getRemoteLoginResponse(cpf, senha);
 
-		if (response.getError() != null || response.getToken() == null
-				|| response.getToken().trim().isEmpty()) {
-			String error = "Cannot authenticate user in remote auth service.";
-			error += "\nError: ";
-			error += ((response.getError() == null) ? ("Null") : (response
-					.getError()));
-			throw new IllegalArgumentException(error);
+		if (response == null || response.isEmpty()) {
+			 throw new IllegalArgumentException("Usuário não reconhecido.");
 		}
+
+		// if (response.getError() != null || response.getToken() == null
+		// || response.getToken().trim().isEmpty()) {
+		// String error = "Cannot authenticate user in remote auth service.";
+		// error += "\nError: ";
+		// error += ((response.getError() == null) ? ("Null") : (response
+		// .getError()));
+		// throw new IllegalArgumentException(error);
+		// }
 
 		Aluno aluno = alunoRepo.getByCPF(cpf);
 

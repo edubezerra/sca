@@ -29,7 +29,7 @@
 	<ul>
 		<li><a
 			href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
-				Avaliar turmas</a></li>
+				Avaliar turmas (${requestScope.periodoLetivo})</a></li>
 	</ul>
 </body>
 </html>

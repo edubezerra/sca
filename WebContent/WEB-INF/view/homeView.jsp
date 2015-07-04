@@ -1,3 +1,4 @@
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page session="false"%>
 <!DOCTYPE html>
@@ -33,10 +34,10 @@
 			action="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal"
 			method="post">
 			<div class="field">
-				<div>Matrícula:</div>
+				<div>CPF:</div>
 			</div>
 			<div class="field">
-				<input type="text" name="matricula" value="" size="30"
+				<input type="text" name="cpf" value="" size="30"
 					maxlength="16" />
 			</div>
 			<br/>

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.dominio.SemestreLetivo;
 import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
@@ -34,11 +36,22 @@ public class AvaliacaoTurmaService {
 	@Autowired
 	private QuesitoRepositorio quesitoRepo;
 
-	public SolicitaAvaliacaoResponse solicitaAvaliacaoMatricula(String matricula) {
-		validaAluno(matricula);
+	/**
+	 * Essa opsis é invocada quando um aluno solicita a avaliação de turmas.
+	 * 
+	 * @param cpf
+	 *            CPF do aluno solicitante.
+	 * 
+	 * @return
+	 */
+	public SolicitaAvaliacaoResponse iniciarAvaliacoes(String cpf) {
+		validaAluno(cpf);
 
-		List<Turma> turmas = turmaRepo.getTurmasCursadas(matricula,
-				SemestreLetivo.SEMESTRE_LETIVO_CORRENTE);
+		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+				.getInstance();
+
+		List<Turma> turmas = turmaRepo.getTurmasCursadas(cpf,
+				periodoAvaliacao.getSemestreLetivo());
 
 		SolicitaAvaliacaoResponse response = new SolicitaAvaliacaoResponse();
 		AvaliacaoTurma turmaAvaliada;
@@ -46,7 +59,7 @@ public class AvaliacaoTurmaService {
 		for (Turma turma : turmas) {
 
 			turmaAvaliada = avaliacaoRepo.getAvaliacaoTurma(turma.getCodigo(),
-					matricula);
+					cpf);
 
 			response.add(response.new Item(turma.getCodigo(), turma
 					.getDisciplina().getNome(), turmaAvaliada != null));
@@ -55,9 +68,9 @@ public class AvaliacaoTurmaService {
 		return response;
 	}
 
-	public SolicitaAvaliacaoTurmaResponse solicitaAvaliacaoTurma(
-			String matricula, String codigoTurma) {
-		Aluno aluno = validaAluno(matricula);
+	public SolicitaAvaliacaoTurmaResponse solicitaAvaliacaoTurma(String cpf,
+			String codigoTurma) {
+		Aluno aluno = validaAluno(cpf);
 		Turma turma = validaTurma(codigoTurma);
 
 		if (!turma.isAlunoInscrito(aluno)) {
@@ -65,7 +78,7 @@ public class AvaliacaoTurmaService {
 					"Erro: aluno não inscrito na turma informada.");
 		}
 
-		if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, matricula) != null) {
+		if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, cpf) != null) {
 			throw new IllegalArgumentException(
 					"Erro: turma já avaliada pelo aluno.");
 		}
@@ -89,12 +102,12 @@ public class AvaliacaoTurmaService {
 		return response;
 	}
 
-	public void avaliaTurma(String matricula, String codigoTurma,
+	public void avaliaTurma(String cpf, String codigoTurma,
 			List<Integer> respostas, String sugestoes) {
-		Aluno aluno = validaAluno(matricula);
+		Aluno aluno = validaAluno(cpf);
 		Turma turma = validaTurma(codigoTurma);
 
-		if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, matricula) != null) {
+		if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, cpf) != null) {
 			throw new IllegalArgumentException(
 					"Erro: turma já avaliada pelo aluno.");
 		}
@@ -104,7 +117,8 @@ public class AvaliacaoTurmaService {
 
 		if (respostas == null || respostas.size() != numRespostas) {
 			throw new IllegalArgumentException(
-					"Erro: número de respostas inválido. Por favor, forne;a respostas para todos os quesitos.");
+					"Erro: número de respostas inválido. "
+							+ "Por favor, forneça respostas para todos os quesitos.");
 		}
 
 		List<Alternativa> alternativas = new ArrayList<Alternativa>();
@@ -134,21 +148,22 @@ public class AvaliacaoTurmaService {
 
 	}
 
-	private Aluno validaAluno(String matricula) {
-		if (matricula == null || matricula.trim().equals("")) {
-			throw new IllegalArgumentException("Erro: matricula inválida.");
+	private Aluno validaAluno(String cpf) {
+		if (cpf == null || cpf.trim().equals("")) {
+			throw new IllegalArgumentException("Erro: CPF inválido!");
 		}
 
 		Aluno aluno;
 
 		try {
-			aluno = alunoRepo.getByMatricula(matricula);
+			aluno = alunoRepo.getByCPF(cpf);
 		} catch (Exception exc) {
 			aluno = null;
 		}
 
 		if (aluno == null) {
-			throw new IllegalArgumentException("Erro: aluno inexistente.");
+			throw new IllegalArgumentException("Erro: Aluno não encontrado ("
+					+ cpf + ")");
 		}
 
 		return aluno;

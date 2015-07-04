@@ -1,10 +1,12 @@
 package br.cefetrj.sca.apresentacao;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
+import br.cefetrj.sca.infra.autoavaliacao.ImportadorInscricoes;
+import br.cefetrj.sca.infra.autoavaliacao.ImportadorQuestionarioAvaliacao;
+import br.cefetrj.sca.infra.autoavaliacao.UploadFile;
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoTurmaService;
 
 @Controller
-@SessionAttributes("matricula")
+@SessionAttributes("cpf")
 @RequestMapping("/avaliacaoTurma")
 public class AvaliacaoTurmaController {
 
@@ -36,22 +42,63 @@ public class AvaliacaoTurmaController {
 		return "/homeView";
 	}
 
+	@RequestMapping(value = "/selecionaPlanilhaInscricoes", method = RequestMethod.GET)
+	public String selecionarPlanilhaInscricoes(HttpSession session, Model model) {
+		return "/avaliacaoTurma/uploadView";
+	}
+
+	@RequestMapping(value = "/importaQuestionario", method = RequestMethod.GET)
+	public String importarQuestionario(HttpServletRequest request,
+			HttpServletResponse response, Model model) {
+		try {
+			ImportadorQuestionarioAvaliacao.run();
+			model.addAttribute("info", "Importação finalizada com sucesso.");
+			return "/avaliacaoTurma/uploadView";
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			return "/avaliacaoTurma/uploadView";
+		}
+	}
+
+	@RequestMapping(value = "/importaInscricoes", method = RequestMethod.POST)
+	public String importarInscricoes(HttpServletRequest request,
+			HttpServletResponse response, Model model) {
+		UploadFile uploader = new UploadFile();
+		try {
+			File f = uploader.receberArquivo(request);
+			String codigosCursos[] = { "BCC", "WEB" };
+			ImportadorInscricoes importador = new ImportadorInscricoes(codigosCursos);
+			importador.importarPlanilha(f);
+			importador.gravarDadosImportados();
+			model.addAttribute("info", "Importação finalizada com sucesso.");
+			return "/avaliacaoTurma/uploadView";
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+			return "/avaliacaoTurma/uploadView";
+		}
+	}
+
 	@RequestMapping(value = "/avaliacaoTurmas", method = RequestMethod.GET)
 	public String solicitaAvaliacao(HttpSession session, Model model) {
-		String matricula = (String) session.getAttribute("matricula");
-		model.addAttribute("turmas",
-				service.solicitaAvaliacaoMatricula(matricula));
-		model.addAttribute("matricula", matricula);
+		String cpf = (String) session.getAttribute("cpf");
+		model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
+		model.addAttribute("cpf", cpf);
+		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+				.getInstance();
+		model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
 		return "/avaliacaoTurma/solicitaAvaliacaoMatriculaView";
 	}
 
 	@RequestMapping(value = "/menuPrincipal", method = RequestMethod.POST)
-	public String menuPrincipal(HttpSession session, @RequestParam String matricula,
+	public String menuPrincipal(HttpSession session, @RequestParam String cpf,
 			@RequestParam String senha, Model model) {
 
 		try {
-			authService.autentica(matricula, senha);
-			session.setAttribute("matricula", matricula);
+			authService.autentica(cpf, senha);
+			session.setAttribute("cpf", cpf);
+			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+					.getInstance();
+			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
 			return "/avaliacaoTurma/menuPrincipalView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -60,13 +107,14 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/solicitaAvaliacaoTurma", method = RequestMethod.POST)
-	public String solicitaAvaliacaoTurma(
-			@ModelAttribute("matricula") String matricula, // get from session
+	public String solicitaAvaliacaoTurma(@ModelAttribute("cpf") String cpf, // get
+																			// from
+																			// session
 			@RequestParam String codigoTurma, Model model) {
 
 		try {
 			model.addAttribute("questoes",
-					service.solicitaAvaliacaoTurma(matricula, codigoTurma));
+					service.solicitaAvaliacaoTurma(cpf, codigoTurma));
 
 			return "/avaliacaoTurma/solicitaAvaliacaoTurmaView";
 		} catch (Exception exc) {
@@ -78,7 +126,7 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/avaliaTurma", method = RequestMethod.POST)
 	public String avaliaTurma(
-			@ModelAttribute("matricula") String matricula, // get from session
+			@ModelAttribute("cpf") String cpf, // get from session
 			@RequestParam String codigoTurma, @RequestParam String sugestoes,
 			HttpServletRequest request, Model model) {
 
@@ -103,7 +151,7 @@ public class AvaliacaoTurmaController {
 		}
 
 		try {
-			service.avaliaTurma(matricula, codigoTurma, respostas, sugestoes);
+			service.avaliaTurma(cpf, codigoTurma, respostas, sugestoes);
 			model.addAttribute("info", "Avaliação registrada.");
 
 		} catch (Exception exc) {
@@ -125,20 +173,21 @@ public class AvaliacaoTurmaController {
 		return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula";
 	}
 
-	
 	@RequestMapping(value = "/menuPrincipal")
-	public String solicitaNovamenteAvaliacaoMatricula() {
+	public String solicitaNovamenteAvaliacaoMatricula(Model model) {
+		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+				.getInstance();
+		model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
 		return "/avaliacaoTurma/menuPrincipalView";
 	}
 
 	@RequestMapping(value = "/solicitaNovamenteAvaliacaoMatricula")
 	public String solicitaNovamenteAvaliacaoMatricula(
-			@ModelAttribute("matricula") String matricula, // get from session
+			@ModelAttribute("cpf") String cpf, // get from session
 			Model model) {
 
 		try {
-			model.addAttribute("turmas",
-					service.solicitaAvaliacaoMatricula(matricula));
+			model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
 
 			return "/avaliacaoTurma/solicitaAvaliacaoMatriculaView";
 		} catch (Exception exc) {

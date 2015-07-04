@@ -8,8 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.infra.IAuthDAO;
@@ -19,13 +17,13 @@ import br.cefetrj.sca.service.util.RemoteLoginResponse;
 public class AuthDAOMoodle implements IAuthDAO {
 
 	// moodle.org valid username and pass is teste_login, teste_login
-	private String serviceURL = "http://eic.cefet-rj.br/moodle/login/token.php";
+	private String serviceURL = "http://eic.cefet-rj.br/moodle/login/auth.php";
 
 	@Override
-	public RemoteLoginResponse getRemoteLoginResponse(String username,
-			String password) {
+	public String getRemoteLoginResponse(String username, String password) {
 
-		RemoteLoginResponse response;
+		// RemoteLoginResponse response;
+		String responseMessage = null;
 
 		try {
 			// from
@@ -35,7 +33,7 @@ public class AuthDAOMoodle implements IAuthDAO {
 			// original author Jerome Mouneyrac jerome@moodle.com
 
 			String urlParameters;
-			
+
 			urlParameters = "username=" + URLEncoder.encode(username, "UTF-8")
 					+ "&password=" + URLEncoder.encode(password, "UTF-8")
 					+ "&service="
@@ -59,41 +57,42 @@ public class AuthDAOMoodle implements IAuthDAO {
 			}
 
 			// Get Response
-			StringBuilder responseMessage = new StringBuilder();
 			{
 				InputStream is = con.getInputStream();
 				BufferedReader rd = new BufferedReader(
 						new InputStreamReader(is));
 				String line;
 
+				StringBuilder responseBuilder = new StringBuilder();
 				while ((line = rd.readLine()) != null) {
-					responseMessage.append(line);
-					responseMessage.append('\r');
+					responseBuilder.append(line);
+					responseBuilder.append('\r');
+					responseMessage = responseBuilder.toString();
 				}
 
 				rd.close();
 			}
 
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.configure(
-					DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
-					false);
-
-			try {
-				response = mapper.readValue(responseMessage.toString(),
-						RemoteLoginResponse.class);
-			} catch (Exception ex) {
-				response = new RemoteLoginResponse(null,
-						"Jackson mapper error.\nResponse message: "
-								+ responseMessage + "\nError message: "
-								+ ex.getMessage());
-			}
+			// ObjectMapper mapper = new ObjectMapper();
+			// mapper.configure(
+			// DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
+			// false);
+			//
+			// try {
+			// response = mapper.readValue(responseMessage.toString(),
+			// RemoteLoginResponse.class);
+			// } catch (Exception ex) {
+			// response = new RemoteLoginResponse(null,
+			// "Jackson mapper error.\nResponse message: "
+			// + responseMessage + "\nError message: "
+			// + ex.getMessage());
+			// }
 
 		} catch (Exception ex) {
-			response = new RemoteLoginResponse(null,
-					"HTTP request error.\nError message: " + ex.getMessage());
+			throw new RuntimeException("HTTP request error.\nError message: "
+					+ ex.getMessage());
 		}
 
-		return response;
+		return responseMessage.toString();
 	}
 }

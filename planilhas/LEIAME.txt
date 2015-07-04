@@ -1,0 +1,3 @@
+Matricula-DEPIN-XXXX-X
+
+	contém as solicitações de matrícula de cada aluno para um determinado período letivo.

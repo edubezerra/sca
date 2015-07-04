@@ -94,9 +94,8 @@ public class Aluno {
 	public String getEmail() {
 		return email.getEndereco();
 	}
-	
-	public String getCPF() {
-		return this.cpf;
-	}
 
+	public String getCpf() {
+		return cpf;
+	}
 }

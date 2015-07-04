@@ -11,7 +11,7 @@
 	<bean id="FornecerGradeServiceBean" class="br.cefetrj.sca.service.FornecerGradeService" />
 	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
-	<bean id="AutenticacaoServiceBean" class="br.cefetrj.sca.service.MockAutenticacaoService" />
+	<bean id="AutenticacaoServiceBean" class="br.cefetrj.sca.service.MoodleAutenticacaoService" />
 	<bean id="AuthDAOMoodleBean" class="br.cefetrj.sca.infra.moodle.AuthDAOMoodle" />
 
 	<bean id="AuthRepositoryBean" class="br.cefetrj.sca.dominio.repositorio.AuthRepository" />
@@ -30,8 +30,4 @@
 	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
 	<bean id="QuesitoDaoBean" class="br.cefetrj.sca.infra.jpa.QuesitoDaoJpa" />
 	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
-
-
 </beans>
-
-

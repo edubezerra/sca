@@ -39,11 +39,12 @@ public class TurmaDaoJpa implements TurmaDao {
 	}
 
 	@Override
-	public List<Turma> getTurmasCursadas(String matricula,
+	public List<Turma> getTurmasCursadas(String cpf,
 			SemestreLetivo semestreLetivo) {
-		String consulta = "SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a WHERE t.semestreLetivo.ano = ? AND t.semestreLetivo.periodo = ? AND a.matricula = ?";
+		String consulta = "SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a "
+				+ "WHERE t.semestreLetivo.ano = ? AND t.semestreLetivo.periodo = ? AND a.cpf = ?";
 		Object array[] = { semestreLetivo.getAno(),
-				semestreLetivo.getPeriodo(), matricula };
+				semestreLetivo.getPeriodo(), cpf };
 
 		return genericDAO.obterEntidades(consulta, array);
 	}

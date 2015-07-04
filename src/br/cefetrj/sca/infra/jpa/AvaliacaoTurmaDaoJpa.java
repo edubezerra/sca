@@ -11,9 +11,10 @@ public class AvaliacaoTurmaDaoJpa extends GenericDaoJpa<AvaliacaoTurma>
 
 	@Override
 	public AvaliacaoTurma getAvaliacaoTurmaAluno(String codigoTurma,
-			String matricula) {
-		String consulta = "SELECT a from AvaliacaoTurma a WHERE a.turmaAvaliada.codigo = ? AND a.alunoAvaliador.matricula = ?";
-		Object array[] = { codigoTurma, matricula };
+			String cpf) {
+		String consulta = "SELECT a FROM AvaliacaoTurma a "
+				+ "WHERE a.turmaAvaliada.codigo = ? AND a.alunoAvaliador.cpf = ?";
+		Object array[] = { codigoTurma, cpf };
 		return super.tentaObterEntidade(consulta, array);
 	}
 }
