@@ -30,7 +30,7 @@
 			<property name="hibernate.connection.pool_size" value="25" />
 			<property name="hibernate.connection.autoReconnect" value="true" />
 
-			<property name="hibernate.connection.url" value="jdbc:mysql://eic.cefet-rj.br:3306/SCABD" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/SCABD" />
 
 			<property name="hibernate.connection.username" value="sca_usr" />
 			<property name="hibernate.connection.password" value="SCA@2010" />
