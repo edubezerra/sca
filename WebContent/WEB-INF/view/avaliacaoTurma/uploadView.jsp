@@ -30,7 +30,7 @@
 	</c:if>
 
 	<form
-		action="${pageContext.request.contextPath}/avaliacaoTurma/importaPlanilhaMatriculas"
+		action="${pageContext.request.contextPath}/avaliacaoTurma/importaInscricoes"
 		method="post" enctype="multipart/form-data">
 		Selecione o arquivo : <input type="file" name="filetoupload">
 		<br /> <input type="submit" value="Upload">

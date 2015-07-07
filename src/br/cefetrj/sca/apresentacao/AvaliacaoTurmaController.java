@@ -42,11 +42,6 @@ public class AvaliacaoTurmaController {
 		return "/homeView";
 	}
 
-	@RequestMapping(value = "/selecionaPlanilhaInscricoes", method = RequestMethod.GET)
-	public String selecionarPlanilhaInscricoes(HttpSession session, Model model) {
-		return "/avaliacaoTurma/uploadView";
-	}
-
 	@RequestMapping(value = "/importaQuestionario", method = RequestMethod.GET)
 	public String importarQuestionario(HttpServletRequest request,
 			HttpServletResponse response, Model model) {
@@ -58,6 +53,11 @@ public class AvaliacaoTurmaController {
 			model.addAttribute("error", e.getMessage());
 			return "/avaliacaoTurma/uploadView";
 		}
+	}
+
+	@RequestMapping(value = "/selecionaPlanilhaInscricoes", method = RequestMethod.GET)
+	public String selecionarPlanilhaInscricoes(HttpSession session, Model model) {
+		return "/avaliacaoTurma/uploadView";
 	}
 
 	@RequestMapping(value = "/importaInscricoes", method = RequestMethod.POST)
