@@ -11,13 +11,12 @@ import java.net.URLEncoder;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.infra.IAuthDAO;
-import br.cefetrj.sca.service.util.RemoteLoginResponse;
 
 @Component
 public class AuthDAOMoodle implements IAuthDAO {
 
 	// moodle.org valid username and pass is teste_login, teste_login
-	private String serviceURL = "http://eic.cefet-rj.br/moodle/login/auth.php";
+	private String serviceURL = "http://localhost/moodle/login/auth.php";
 
 	@Override
 	public String getRemoteLoginResponse(String username, String password) {

@@ -36,15 +36,15 @@
 	<c:if test="${requestScope.questoes != null}">
 
 		<div>
-			<p class="discipline">${requestScope.questoes.getNomeDisciplina()}
-				(${requestScope.questoes.getCodigoTurma()})</p>
+			<p class="discipline">${requestScope.nomeDisciplina}
+				(${requestScope.codigoTurma})</p>
 		</div>
 
 		<form
 			action="${pageContext.request.contextPath}/avaliacaoTurma/avaliaTurma"
 			method="post">
 			<input type="hidden" name="codigoTurma"
-				value="${requestScope.questoes.getCodigoTurma()}" />
+				value="${requestScope.codigoTurma}" />
 			<c:forEach items="${requestScope.questoes}" var="quesito"
 				varStatus="i">
 				<h3>${i.index + 1})&nbsp;${quesito.quesito}</h3>

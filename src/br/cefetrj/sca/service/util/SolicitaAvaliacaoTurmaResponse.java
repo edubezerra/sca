@@ -41,4 +41,7 @@ public class SolicitaAvaliacaoTurmaResponse extends
 	public String getNomeDisciplina() {
 		return nomeDisciplina;
 	}
+	public void setNomeDisciplina(String nomeDisciplina) {
+		this.nomeDisciplina = nomeDisciplina;
+	}
 }

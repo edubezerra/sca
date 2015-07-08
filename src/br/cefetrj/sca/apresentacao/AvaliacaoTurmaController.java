@@ -24,6 +24,7 @@ import br.cefetrj.sca.infra.autoavaliacao.ImportadorQuestionarioAvaliacao;
 import br.cefetrj.sca.infra.autoavaliacao.UploadFile;
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoTurmaService;
+import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
 @Controller
 @SessionAttributes("cpf")
@@ -67,7 +68,8 @@ public class AvaliacaoTurmaController {
 		try {
 			File f = uploader.receberArquivo(request);
 			String codigosCursos[] = { "BCC", "WEB" };
-			ImportadorInscricoes importador = new ImportadorInscricoes(codigosCursos);
+			ImportadorInscricoes importador = new ImportadorInscricoes(
+					codigosCursos);
 			importador.importarPlanilha(f);
 			importador.gravarDadosImportados();
 			model.addAttribute("info", "Importação finalizada com sucesso.");
@@ -85,7 +87,8 @@ public class AvaliacaoTurmaController {
 		model.addAttribute("cpf", cpf);
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
-		model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+		model.addAttribute("periodoLetivo",
+				periodoAvaliacao.getSemestreLetivo());
 		return "/avaliacaoTurma/solicitaAvaliacaoMatriculaView";
 	}
 
@@ -98,7 +101,8 @@ public class AvaliacaoTurmaController {
 			session.setAttribute("cpf", cpf);
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 					.getInstance();
-			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+			model.addAttribute("periodoLetivo",
+					periodoAvaliacao.getSemestreLetivo());
 			return "/avaliacaoTurma/menuPrincipalView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -113,8 +117,11 @@ public class AvaliacaoTurmaController {
 			@RequestParam String codigoTurma, Model model) {
 
 		try {
-			model.addAttribute("questoes",
-					service.solicitaAvaliacaoTurma(cpf, codigoTurma));
+			SolicitaAvaliacaoTurmaResponse resp = service
+					.solicitaAvaliacaoTurma(cpf, codigoTurma);
+			model.addAttribute("questoes", resp);
+			model.addAttribute("nomeDisciplina", resp.getNomeDisciplina());
+			model.addAttribute("codigoTurma", resp.getCodigoTurma());
 
 			return "/avaliacaoTurma/solicitaAvaliacaoTurmaView";
 		} catch (Exception exc) {
@@ -177,7 +184,8 @@ public class AvaliacaoTurmaController {
 	public String solicitaNovamenteAvaliacaoMatricula(Model model) {
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
-		model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+		model.addAttribute("periodoLetivo",
+				periodoAvaliacao.getSemestreLetivo());
 		return "/avaliacaoTurma/menuPrincipalView";
 	}
 

@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +21,8 @@ import org.apache.commons.io.FilenameUtils;
 
 public class UploadFile {
 
-	String saveFile = "C:/tmp/";
+	String saveFile = "/tmp";
+	protected Logger logger = Logger.getLogger(UploadFile.class.getName());
 
 	public File receberArquivo(HttpServletRequest req) {
 		try {
@@ -56,6 +59,7 @@ public class UploadFile {
 				return null;
 			}
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Planilha não pode ser importada.", e);
 			throw new RuntimeException("Planilha não pode ser importada.", e);
 		}
 	}
@@ -95,7 +99,7 @@ public class UploadFile {
 				}
 			}
 		} catch (Exception e) {
-
+			logger.log(Level.SEVERE, "Planilha não pode ser importada.", e);
 		} finally {
 			out.close();
 		}
