@@ -1,9 +1,12 @@
 package br.cefetrj.sca.apresentacao;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +34,9 @@ import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 @RequestMapping("/avaliacaoTurma")
 public class AvaliacaoTurmaController {
 
+	protected Logger logger = Logger.getLogger(AvaliacaoTurmaController.class
+			.getName());
+
 	@Autowired
 	private AvaliacaoTurmaService service;
 
@@ -51,6 +57,7 @@ public class AvaliacaoTurmaController {
 			model.addAttribute("info", "Importação finalizada com sucesso.");
 			return "/avaliacaoTurma/uploadView";
 		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage());
 			model.addAttribute("error", e.getMessage());
 			return "/avaliacaoTurma/uploadView";
 		}
@@ -110,6 +117,15 @@ public class AvaliacaoTurmaController {
 		}
 	}
 
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	protected String logout(HttpSession session) {
+		// invalidate the session if exists
+		if (session != null) {
+			session.invalidate();
+		}
+		return "/homeView";
+	}
+
 	@RequestMapping(value = "/solicitaAvaliacaoTurma", method = RequestMethod.POST)
 	public String solicitaAvaliacaoTurma(@ModelAttribute("cpf") String cpf, // get
 																			// from
@@ -160,7 +176,6 @@ public class AvaliacaoTurmaController {
 		try {
 			service.avaliaTurma(cpf, codigoTurma, respostas, sugestoes);
 			model.addAttribute("info", "Avaliação registrada.");
-
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			model.addAttribute("codigoTurma", codigoTurma);

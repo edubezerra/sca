@@ -45,7 +45,7 @@ public class AvaliacaoTurmaService {
 	 * @return
 	 */
 	public SolicitaAvaliacaoResponse iniciarAvaliacoes(String cpf) {
-		validaAluno(cpf);
+		getAlunoPorCPF(cpf);
 
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
@@ -70,8 +70,8 @@ public class AvaliacaoTurmaService {
 
 	public SolicitaAvaliacaoTurmaResponse solicitaAvaliacaoTurma(String cpf,
 			String codigoTurma) {
-		Aluno aluno = validaAluno(cpf);
-		Turma turma = validaTurma(codigoTurma);
+		Aluno aluno = getAlunoPorCPF(cpf);
+		Turma turma = getTurmaPorCodigo(codigoTurma);
 
 		if (!turma.isAlunoInscrito(aluno)) {
 			throw new IllegalArgumentException(
@@ -104,74 +104,72 @@ public class AvaliacaoTurmaService {
 
 	public void avaliaTurma(String cpf, String codigoTurma,
 			List<Integer> respostas, String sugestoes) {
-		Aluno aluno = validaAluno(cpf);
-		Turma turma = validaTurma(codigoTurma);
 
-		if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, cpf) != null) {
-			throw new IllegalArgumentException(
-					"Erro: turma já avaliada pelo aluno.");
-		}
+		Aluno aluno = getAlunoPorCPF(cpf);
+		Turma turma = getTurmaPorCodigo(codigoTurma);
 
-		List<Quesito> quesitos = quesitoRepo.obterTodos();
-		int numRespostas = quesitos.size();
-
-		if (respostas == null || respostas.size() != numRespostas) {
-			throw new IllegalArgumentException(
-					"Erro: número de respostas inválido. "
-							+ "Por favor, forneça respostas para todos os quesitos.");
-		}
-
-		List<Alternativa> alternativas = new ArrayList<Alternativa>();
-		Quesito quesito;
-		Integer resposta;
-
-		for (int i = 0; i < quesitos.size(); ++i) {
-			quesito = quesitos.get(i);
-			resposta = respostas.get(i);
-
-			if (resposta < 0 || resposta > quesito.getAlternativas().size()) {
+		if(aluno != null && turma != null){
+			if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, cpf) != null) {
 				throw new IllegalArgumentException(
-						"Erro: código de resposta inválido: " + resposta + ".");
+						"Erro: turma já avaliada pelo aluno.");
 			}
 
-			alternativas.add(quesito.getAlternativas().get(resposta));
+			List<Quesito> quesitos = quesitoRepo.obterTodos();
+			int numRespostas = quesitos.size();
+
+			if (respostas == null || respostas.size() != numRespostas) {
+				throw new IllegalArgumentException(
+						"Erro: número de respostas inválido. "
+								+ "Por favor, forneça respostas para todos os quesitos.");
+			}
+
+			List<Alternativa> alternativas = new ArrayList<Alternativa>();
+			Quesito quesito;
+			Integer resposta;
+
+			for (int i = 0; i < quesitos.size(); ++i) {
+				quesito = quesitos.get(i);
+				resposta = respostas.get(i);
+
+				if (resposta < 0 || resposta > quesito.getAlternativas().size()) {
+					throw new IllegalArgumentException(
+							"Erro: código de resposta inválido: " + resposta + ".");
+				}
+
+				alternativas.add(quesito.getAlternativas().get(resposta));
+			}
+
+			AvaliacaoTurma avaliacao = new AvaliacaoTurma(aluno, turma,
+					alternativas);
+
+			if (sugestoes != null && sugestoes.trim().length() > 0) {
+				avaliacao.setSugestoes(sugestoes);
+			}
+
+			avaliacaoRepo.adicionar(avaliacao);
 		}
-
-		AvaliacaoTurma avaliacao = new AvaliacaoTurma(aluno, turma,
-				alternativas);
-
-		if (sugestoes != null && sugestoes.trim().length() > 0) {
-			avaliacao.setSugestoes(sugestoes);
-		}
-
-		avaliacaoRepo.adicionar(avaliacao);
-
 	}
 
-	private Aluno validaAluno(String cpf) {
+	private Aluno getAlunoPorCPF(String cpf) {
 		if (cpf == null || cpf.trim().equals("")) {
-			throw new IllegalArgumentException("Erro: CPF inválido!");
+			throw new IllegalArgumentException("CPF deve ser fornecido!");
 		}
 
-		Aluno aluno;
+		Aluno aluno = null;
 
 		try {
 			aluno = alunoRepo.getByCPF(cpf);
-		} catch (Exception exc) {
-			aluno = null;
-		}
-
-		if (aluno == null) {
-			throw new IllegalArgumentException("Erro: Aluno não encontrado ("
-					+ cpf + ")");
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Aluno não encontrado (" + cpf
+					+ ")", e);
 		}
 
 		return aluno;
 	}
 
-	private Turma validaTurma(String codigoTurma) {
+	private Turma getTurmaPorCodigo(String codigoTurma) {
 		if (codigoTurma == null || codigoTurma.trim().equals("")) {
-			throw new IllegalArgumentException("Erro: código turma inválido.");
+			throw new IllegalArgumentException("Código da turma é inválido.");
 		}
 
 		Turma turma;
