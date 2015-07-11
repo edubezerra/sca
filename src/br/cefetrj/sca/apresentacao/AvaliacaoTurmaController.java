@@ -1,7 +1,6 @@
 package br.cefetrj.sca.apresentacao;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.infra.autoavaliacao.ImportadorInscricoes;
@@ -51,11 +51,17 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/importaQuestionario", method = RequestMethod.GET)
 	public String importarQuestionario(HttpServletRequest request,
-			HttpServletResponse response, Model model) {
+			HttpServletResponse response, Model model, HttpSession session) {
 		try {
-			ImportadorQuestionarioAvaliacao.run();
-			model.addAttribute("info", "Importação finalizada com sucesso.");
-			return "/avaliacaoTurma/uploadView";
+			String cpf = (String) session.getAttribute("cpf");
+			if (cpf == null || !cpf.equals("usuarioeic")) {
+				session.invalidate();
+				return "/homeView";
+			} else {
+				ImportadorQuestionarioAvaliacao.run();
+				model.addAttribute("info", "Importação finalizada com sucesso.");
+				return "/avaliacaoTurma/uploadView";
+			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage());
 			model.addAttribute("error", e.getMessage());
@@ -65,22 +71,32 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/selecionaPlanilhaInscricoes", method = RequestMethod.GET)
 	public String selecionarPlanilhaInscricoes(HttpSession session, Model model) {
-		return "/avaliacaoTurma/uploadView";
+		String cpf = (String) session.getAttribute("cpf");
+		if (cpf == null || !cpf.equals("usuarioeic")) {
+			return "/homeView";
+		} else {
+			return "/avaliacaoTurma/uploadView";
+		}
 	}
 
 	@RequestMapping(value = "/importaInscricoes", method = RequestMethod.POST)
 	public String importarInscricoes(HttpServletRequest request,
-			HttpServletResponse response, Model model) {
-		UploadFile uploader = new UploadFile();
+			HttpServletResponse response, Model model, HttpSession session) {
 		try {
-			File f = uploader.receberArquivo(request);
-			String codigosCursos[] = { "BCC", "WEB" };
-			ImportadorInscricoes importador = new ImportadorInscricoes(
-					codigosCursos);
-			importador.importarPlanilha(f);
-			importador.gravarDadosImportados();
-			model.addAttribute("info", "Importação finalizada com sucesso.");
-			return "/avaliacaoTurma/uploadView";
+			String cpf = (String) session.getAttribute("cpf");
+			if (cpf == null || !cpf.equals("usuarioeic")) {
+				return "/homeView";
+			} else {
+				UploadFile uploader = new UploadFile();
+				File f = uploader.receberArquivo(request);
+				String codigosCursos[] = { "BCC", "WEB" };
+				ImportadorInscricoes importador = new ImportadorInscricoes(
+						codigosCursos);
+				importador.importarPlanilha(f);
+				importador.gravarDadosImportados();
+				model.addAttribute("info", "Importação finalizada com sucesso.");
+				return "/avaliacaoTurma/uploadView";
+			}
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 			return "/avaliacaoTurma/uploadView";

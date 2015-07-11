@@ -32,7 +32,7 @@
 				Avaliar turmas (${requestScope.periodoLetivo})</a></li>
 		<li><a
 			href="${pageContext.request.contextPath}/avaliacaoTurma/logout">
-				Sair </a></li>
+				Sair do sistema</a></li>
 	</ul>
 </body>
 </html>
