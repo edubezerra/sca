@@ -28,7 +28,7 @@ public class HomeController {
 
 		String formattedDate = dateFormat.format(date);
 
-		model.addAttribute("info", "Horário no servidor: " + formattedDate);
+		model.addAttribute("info", formattedDate);
 
 		return "homeView";
 	}

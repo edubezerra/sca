@@ -31,7 +31,7 @@
 			href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
 				Avaliar turmas (${requestScope.periodoLetivo})</a></li>
 		<li><a
-			href="${pageContext.request.contextPath}/avaliacaoTurma/logout">
+			href="${pageContext.request.contextPath}/logout">
 				Sair do sistema</a></li>
 	</ul>
 </body>

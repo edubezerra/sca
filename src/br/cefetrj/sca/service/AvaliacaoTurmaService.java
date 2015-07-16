@@ -103,12 +103,13 @@ public class AvaliacaoTurmaService {
 	}
 
 	public void avaliaTurma(String cpf, String codigoTurma,
-			List<Integer> respostas, String sugestoes) {
+			List<Integer> respostas, String aspectosPositivos,
+			String aspectosNegativos) {
 
 		Aluno aluno = getAlunoPorCPF(cpf);
 		Turma turma = getTurmaPorCodigo(codigoTurma);
 
-		if(aluno != null && turma != null){
+		if (aluno != null && turma != null) {
 			if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, cpf) != null) {
 				throw new IllegalArgumentException(
 						"Erro: turma já avaliada pelo aluno.");
@@ -133,7 +134,8 @@ public class AvaliacaoTurmaService {
 
 				if (resposta < 0 || resposta > quesito.getAlternativas().size()) {
 					throw new IllegalArgumentException(
-							"Erro: código de resposta inválido: " + resposta + ".");
+							"Erro: código de resposta inválido: " + resposta
+									+ ".");
 				}
 
 				alternativas.add(quesito.getAlternativas().get(resposta));
@@ -142,8 +144,14 @@ public class AvaliacaoTurmaService {
 			AvaliacaoTurma avaliacao = new AvaliacaoTurma(aluno, turma,
 					alternativas);
 
-			if (sugestoes != null && sugestoes.trim().length() > 0) {
-				avaliacao.setSugestoes(sugestoes);
+			if (aspectosPositivos != null
+					&& aspectosPositivos.trim().length() > 0) {
+				avaliacao.setAspectosPositivos(aspectosPositivos);
+			}
+
+			if (aspectosNegativos != null
+					&& aspectosNegativos.trim().length() > 0) {
+				avaliacao.setAspectosNegativos(aspectosNegativos);
 			}
 
 			avaliacaoRepo.adicionar(avaliacao);

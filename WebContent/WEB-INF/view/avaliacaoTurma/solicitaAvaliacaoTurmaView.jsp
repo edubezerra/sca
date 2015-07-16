@@ -60,9 +60,16 @@
 			</c:forEach>
 
 			<div>
-				<h4>Forneça sugestões ou críticas para a avaliação da
-					disciplina:</h4>
-				<textarea name="sugestoes" maxlength="8192"
+				<h4>Descreva aspectos que você considerou positivos, se existirem:</h4>
+				<textarea name="aspectosPositivos" maxlength="8192"
+					placeholder="(opcional, max 8192 caracteres)"></textarea>
+			</div>
+
+			<br />
+
+			<div>
+				<h4>Descreva aspectos que você considerou negativos, se existirem:</h4>
+				<textarea name="aspectosNegativos" maxlength="8192"
 					placeholder="(opcional, max 8192 caracteres)"></textarea>
 			</div>
 

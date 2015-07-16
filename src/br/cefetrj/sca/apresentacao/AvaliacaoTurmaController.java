@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.infra.autoavaliacao.ImportadorInscricoes;
@@ -106,13 +105,34 @@ public class AvaliacaoTurmaController {
 	@RequestMapping(value = "/avaliacaoTurmas", method = RequestMethod.GET)
 	public String solicitaAvaliacao(HttpSession session, Model model) {
 		String cpf = (String) session.getAttribute("cpf");
-		model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
-		model.addAttribute("cpf", cpf);
-		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-				.getInstance();
-		model.addAttribute("periodoLetivo",
-				periodoAvaliacao.getSemestreLetivo());
-		return "/avaliacaoTurma/solicitaAvaliacaoMatriculaView";
+
+		try {
+			model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
+			model.addAttribute("cpf", cpf);
+			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+					.getInstance();
+			model.addAttribute("periodoLetivo",
+					periodoAvaliacao.getSemestreLetivo());
+			return "/avaliacaoTurma/apresentaListagemTurmasView";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
+	@RequestMapping(value = "/menuPrincipal")
+	public String solicitaNovamenteAvaliacaoMatricula(HttpSession session,
+			Model model) {
+		String cpf = (String) session.getAttribute("cpf");
+		if (cpf != null) {
+			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+					.getInstance();
+			model.addAttribute("periodoLetivo",
+					periodoAvaliacao.getSemestreLetivo());
+			return "/avaliacaoTurma/menuPrincipalView";
+		} else {
+			return "/homeView";
+		}
 	}
 
 	@RequestMapping(value = "/menuPrincipal", method = RequestMethod.POST)
@@ -131,15 +151,6 @@ public class AvaliacaoTurmaController {
 			model.addAttribute("error", exc.getMessage());
 			return "/homeView";
 		}
-	}
-
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	protected String logout(HttpSession session) {
-		// invalidate the session if exists
-		if (session != null) {
-			session.invalidate();
-		}
-		return "/homeView";
 	}
 
 	@RequestMapping(value = "/solicitaAvaliacaoTurma", method = RequestMethod.POST)
@@ -166,8 +177,10 @@ public class AvaliacaoTurmaController {
 	@RequestMapping(value = "/avaliaTurma", method = RequestMethod.POST)
 	public String avaliaTurma(
 			@ModelAttribute("cpf") String cpf, // get from session
-			@RequestParam String codigoTurma, @RequestParam String sugestoes,
-			HttpServletRequest request, Model model) {
+			@RequestParam String codigoTurma,
+			@RequestParam String aspectosPositivos,
+			@RequestParam String aspectosNegativos, HttpServletRequest request,
+			Model model) {
 
 		Map<String, String[]> parameters = request.getParameterMap();
 		List<Integer> respostas = new ArrayList<Integer>();
@@ -190,7 +203,8 @@ public class AvaliacaoTurmaController {
 		}
 
 		try {
-			service.avaliaTurma(cpf, codigoTurma, respostas, sugestoes);
+			service.avaliaTurma(cpf, codigoTurma, respostas, aspectosPositivos,
+					aspectosNegativos);
 			model.addAttribute("info", "Avaliação registrada.");
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -211,15 +225,6 @@ public class AvaliacaoTurmaController {
 		return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula";
 	}
 
-	@RequestMapping(value = "/menuPrincipal")
-	public String solicitaNovamenteAvaliacaoMatricula(Model model) {
-		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-				.getInstance();
-		model.addAttribute("periodoLetivo",
-				periodoAvaliacao.getSemestreLetivo());
-		return "/avaliacaoTurma/menuPrincipalView";
-	}
-
 	@RequestMapping(value = "/solicitaNovamenteAvaliacaoMatricula")
 	public String solicitaNovamenteAvaliacaoMatricula(
 			@ModelAttribute("cpf") String cpf, // get from session
@@ -228,7 +233,7 @@ public class AvaliacaoTurmaController {
 		try {
 			model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
 
-			return "/avaliacaoTurma/solicitaAvaliacaoMatriculaView";
+			return "/avaliacaoTurma/apresentaListagemTurmasView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 

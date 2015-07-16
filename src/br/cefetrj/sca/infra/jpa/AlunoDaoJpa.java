@@ -1,6 +1,7 @@
 package br.cefetrj.sca.infra.jpa;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.persistence.NoResultException;
 
@@ -41,7 +42,7 @@ public class AlunoDaoJpa extends GenericDaoJpa<Aluno> implements AlunoDao {
 		try {
 			return super.obterEntidade(consulta, array);
 		} catch (NoResultException ex) {
-			logger.info(ex.getMessage());
+			logger.log(Level.SEVERE, ex.getMessage() + ": " + cpf);
 			return null;
 		}
 	}

@@ -25,7 +25,7 @@ import br.cefetrj.sca.dominio.Turma;
  * @see br.cefetrj.sca.dominio.avaliacaoturma.Quesito
  * @see br.cefetrj.sca.dominio.avaliacaoturma.Alternativa
  * 
- * @author Eduardo
+ * @author Eduardo Bezerra
  * 
  */
 @Entity
@@ -34,9 +34,19 @@ public class AvaliacaoTurma {
 	@GeneratedValue
 	private Long id;
 
+	/**
+	 * Aspectos positivos informados pelo aluno.
+	 */
 	@Lob
 	@Column(length = 8192)
-	private String sugestoes;
+	private String aspectosPositivos;
+
+	/**
+	 * Aspectos negativos informados pelo aluno.
+	 */
+	@Lob
+	@Column(length = 8192)
+	private String aspectosNegativos;
 
 	/**
 	 * Alternativas selecionadas pelo aluno para cada um dos quesitos de
@@ -83,11 +93,19 @@ public class AvaliacaoTurma {
 		return respostas;
 	}
 
-	public String getSugestoes() {
-		return sugestoes;
+	public String getAspectosPositivos() {
+		return this.aspectosPositivos;
 	}
 
-	public void setSugestoes(String sugestoes) {
-		this.sugestoes = sugestoes;
+	public void setAspectosPositivos(String texto) {
+		this.aspectosPositivos = texto;
+	}
+
+	public String getAspectosNegativos() {
+		return this.aspectosNegativos;
+	}
+
+	public void setAspectosNegativos(String texto) {
+		this.aspectosNegativos = texto;
 	}
 }

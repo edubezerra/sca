@@ -1,5 +1,8 @@
 package br.cefetrj.sca.service;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +12,9 @@ import br.cefetrj.sca.dominio.repositorio.AuthRepository;
 
 @Component
 public class MoodleAutenticacaoService implements AutenticacaoService {
+
+	protected Logger logger = Logger.getLogger(MoodleAutenticacaoService.class
+			.getName());
 
 	@Autowired
 	private AuthRepository authRepository;
@@ -38,7 +44,15 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 		String response = authRepository.getRemoteLoginResponse(cpf, senha);
 
 		if (response == null || response.isEmpty()) {
-			 throw new IllegalArgumentException("Usuário não reconhecido.");
+			logger.log(Level.SEVERE, "Nenhum resposta recebida.");
+			throw new IllegalArgumentException("Usuário não reconhecido.");
+		}
+
+		if (!response.equals(cpf)) {
+			logger.log(Level.SEVERE, "Resposta inesperada: " + response);
+			String error = "Seu usuário não está registrado. "
+					+ "Entre em contato com o administrador do sistema.";
+			throw new IllegalArgumentException(error);
 		}
 
 		// if (response.getError() != null || response.getToken() == null
@@ -75,4 +89,11 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 	 * 
 	 * return "User deauthenticated successfully."; }
 	 */
+	
+	public static void main(String[] args) {
+		MoodleAutenticacaoService main = new MoodleAutenticacaoService();
+		main.authRepository = new AuthRepository();
+		main.autentica("usuarioeic", "usuario@EIC2010");
+		System.out.println("Done!");
+	}
 }

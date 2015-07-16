@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Component;
 
@@ -15,8 +17,10 @@ import br.cefetrj.sca.infra.IAuthDAO;
 @Component
 public class AuthDAOMoodle implements IAuthDAO {
 
+	protected Logger logger = Logger.getLogger(AuthDAOMoodle.class.getName());
+
 	// moodle.org valid username and pass is teste_login, teste_login
-	private String serviceURL = "http://localhost/moodle/login/auth.php";
+	private String serviceURL = "http://eic.cefet-rj.br/moodle/login/auth.php";
 
 	@Override
 	public String getRemoteLoginResponse(String username, String password) {
@@ -65,8 +69,9 @@ public class AuthDAOMoodle implements IAuthDAO {
 				StringBuilder responseBuilder = new StringBuilder();
 				while ((line = rd.readLine()) != null) {
 					responseBuilder.append(line);
-					responseBuilder.append('\r');
 					responseMessage = responseBuilder.toString();
+					responseMessage = responseMessage.substring(1,
+							responseBuilder.length() - 1);
 				}
 
 				rd.close();
@@ -88,10 +93,11 @@ public class AuthDAOMoodle implements IAuthDAO {
 			// }
 
 		} catch (Exception ex) {
+			logger.log(Level.SEVERE, ex.getMessage(), ex);
 			throw new RuntimeException("HTTP request error.\nError message: "
 					+ ex.getMessage());
 		}
 
-		return responseMessage.toString();
+		return responseMessage;
 	}
 }
