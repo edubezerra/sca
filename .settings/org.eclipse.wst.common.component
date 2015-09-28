@@ -4,6 +4,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
         <property name="java-output-path" value="/SCA/build/classes"/>
-        <property name="context-root" value="prod/sca"/>
+        <property name="context-root" value="sca"/>
     </wb-module>
 </project-modules>

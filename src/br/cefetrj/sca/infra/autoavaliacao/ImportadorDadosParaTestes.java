@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 import br.cefetrj.sca.infra.autoavaliacao.ImportadorInscricoes;
 import br.cefetrj.sca.infra.autoavaliacao.ImportadorQuestionarioAvaliacao;
 
-public class ImportadosDados {
+public class ImportadorDadosParaTestes {
 
 	public static void main(String[] args) {
 		EntityManagerFactory emf = Persistence
