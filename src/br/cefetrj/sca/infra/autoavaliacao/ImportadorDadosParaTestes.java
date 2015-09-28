@@ -13,11 +13,8 @@ public class ImportadorDadosParaTestes {
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("SCAPU");
 
-		if (args.length != 1) {
-			System.out.println("Forneça o nome da planilha para importação.");
-			System.exit(1);
-		}
-		String arquivoPlanilha = args[0];
+		String planilhaMatriculas = "./planilhas/MatriculasAceitas-2015.1.xls";
+		String planilhaAlocacoesDocentes = "./planilhas/ALOCACAO.DOCENTES.2015.1.xls";
 
 		EntityManager em = emf.createEntityManager();
 
@@ -26,7 +23,9 @@ public class ImportadorDadosParaTestes {
 
 			ImportadorQuestionarioAvaliacao.run();
 
-			ImportadorInscricoes.run(em, arquivoPlanilha);
+			ImportadorInscricoes.run(em, planilhaMatriculas);
+
+			ImportadorAlocacoesDocentesTurmas.run(em, planilhaAlocacoesDocentes);
 
 			em.getTransaction().commit();
 

@@ -233,7 +233,6 @@ public class Turma {
 	 *         nessa turma; <code>false</code> em caso contrário.
 	 */
 	public boolean aprovado(Aluno a) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -247,5 +246,9 @@ public class Turma {
 
 	public int getQtdInscritos() {
 		return this.inscricoes.size();
+	}
+
+	public void setProfessor(Professor professor) {
+		this.professor = professor;
 	}
 }
