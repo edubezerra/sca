@@ -53,10 +53,10 @@ public class ImportadorInscricoes {
 	 */
 	private HashMap<String, String> alunos_cpfs;
 
-	/**
-	 * Dicionário de pares (código, nome) de cada aluno.
-	 */
-	private HashMap<String, String> disciplinas;
+//	/**
+//	 * Dicionário de pares (código, nome) de cada aluno.
+//	 */
+//	private HashMap<String, String> disciplinas;
 
 	/**
 	 * código, semestre letivo { ano, período }
@@ -83,7 +83,7 @@ public class ImportadorInscricoes {
 		this.codigosCursos = Arrays.asList(codigosCursos);
 		alunos_nomes = new HashMap<>();
 		alunos_cpfs = new HashMap<>();
-		disciplinas = new HashMap<>();
+//		disciplinas = new HashMap<>();
 		turmas = new HashMap<>();
 		turmas_disciplinas = new HashMap<>();
 		turmas_alunos = new HashMap<>();
@@ -163,7 +163,7 @@ public class ImportadorInscricoes {
 			String disciplina_nome = sheet.getCell(
 					colunasList.indexOf("NOME_DISCIPLINA"), i).getContents();
 
-			disciplinas.put(disciplina_codigo, disciplina_nome);
+//			disciplinas.put(disciplina_codigo, disciplina_nome);
 
 			String turma_codigo = sheet.getCell(
 					colunasList.indexOf("COD_TURMA"), i).getContents();
@@ -218,14 +218,14 @@ public class ImportadorInscricoes {
 					alunos_cpfs.get(matricula)));
 		}
 
-		/**
-		 * Realiza a persistência de objetos <code>Disciplina</code>.
-		 */
-		Set<String> disciplinasIt = disciplinas.keySet();
-		for (String codigoDisciplina : disciplinasIt) {
-			em.persist(new Disciplina(disciplinas.get(codigoDisciplina),
-					codigoDisciplina, 4));
-		}
+//		/**
+//		 * Realiza a persistência de objetos <code>Disciplina</code>.
+//		 */
+//		Set<String> disciplinasIt = disciplinas.keySet();
+//		for (String codigoDisciplina : disciplinasIt) {
+//			em.persist(new Disciplina(disciplinas.get(codigoDisciplina),
+//					codigoDisciplina, "4"));
+//		}
 
 		/**
 		 * Realiza a persistência de objetos <code>Turma</code> e dos
@@ -267,9 +267,6 @@ public class ImportadorInscricoes {
 
 		System.out.println("Foram importados " + alunos_nomes.keySet().size()
 				+ " alunos.");
-
-		System.out.println("Foram importadas " + disciplinas.keySet().size()
-				+ " disciplinas.");
 
 		System.out.println("Foram importadas " + turmas.keySet().size()
 				+ " turmas.");
