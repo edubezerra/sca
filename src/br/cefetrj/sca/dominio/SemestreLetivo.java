@@ -9,15 +9,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 
 @Embeddable
-public class SemestreLetivo {
+public final class SemestreLetivo {
 	public enum EnumPeriodo {
 		PRIMEIRO, SEGUNDO
 	};
 
-	private Integer ano;
+	final private Integer ano;
 
 	@Enumerated(EnumType.ORDINAL)
-	private EnumPeriodo periodo;
+	final private EnumPeriodo periodo;
 
 	@Transient
 	public static final SemestreLetivo SEMESTRE_LETIVO_CORRENTE;
@@ -47,6 +47,8 @@ public class SemestreLetivo {
 
 	@SuppressWarnings("unused")
 	private SemestreLetivo() {
+		this.ano = null;
+		this.periodo = null;
 	}
 
 	public SemestreLetivo(Integer ano, EnumPeriodo periodo) {
@@ -93,13 +95,15 @@ public class SemestreLetivo {
 
 	public SemestreLetivo proximo() {
 		SemestreLetivo outro = new SemestreLetivo(ano, periodo);
+		EnumPeriodo outroPeriodo;
+		int outroAno;
 		if (outro.periodo == EnumPeriodo.PRIMEIRO) {
-			outro.periodo = EnumPeriodo.SEGUNDO;
+			outroPeriodo = EnumPeriodo.SEGUNDO;
 		} else {
-			outro.periodo = EnumPeriodo.PRIMEIRO;
-			outro.ano++;
+			outroPeriodo = EnumPeriodo.PRIMEIRO;
+			outroAno = this.ano + 1;
 		}
-		return outro;
+		return new SemestreLetivo(ano, outroPeriodo);
 	}
 
 	public static void main(String args[]) {
