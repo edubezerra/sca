@@ -6,6 +6,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -39,6 +40,9 @@ public class Aluno {
 
 	private String cpf;
 
+	@ManyToOne
+	private Curso curso;
+
 	public Long getId() {
 		return id;
 	}
@@ -64,16 +68,14 @@ public class Aluno {
 			throw new IllegalArgumentException("Matrícula não pode ser vazia.");
 		}
 		if (!(matricula.length() >= TAM_MIN_MATRICULA && matricula.length() <= TAM_MAX_MATRICULA)) {
-			throw new IllegalArgumentException("Matrícula deve ter entre "
-					+ TAM_MIN_MATRICULA + " e " + TAM_MAX_MATRICULA
-					+ " caracteres: " + matricula);
+			throw new IllegalArgumentException("Matrícula deve ter entre " + TAM_MIN_MATRICULA + " e "
+					+ TAM_MAX_MATRICULA + " caracteres: " + matricula);
 		}
 		this.nome = nome;
 		this.matricula = matricula;
 	}
 
-	public Aluno(String nome, String matricula, Date dataNascimento,
-			String enderecoEmail) {
+	public Aluno(String nome, String matricula, Date dataNascimento, String enderecoEmail) {
 		this(nome, matricula);
 		this.dataNascimento = dataNascimento;
 		this.email = new Email(enderecoEmail);
@@ -97,5 +99,12 @@ public class Aluno {
 
 	public String getCpf() {
 		return cpf;
+	}
+
+	public void setCurso(Curso curso) {
+		if (curso == null) {
+			throw new IllegalArgumentException("Curso deve ser definido!");
+		}
+		this.curso = curso;
 	}
 }

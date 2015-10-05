@@ -38,7 +38,9 @@ public class Professor {
 	private Set<GradeDisponibilidade> grades;
 
 	@ManyToMany(cascade = CascadeType.MERGE)
-	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = { @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
+	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = {
+			@JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
 	private Set<Disciplina> habilitacoes;
 
 	@ManyToOne
@@ -69,13 +71,12 @@ public class Professor {
 		if (matricula == null || matricula.isEmpty()) {
 			throw new IllegalArgumentException("Matrícula é obrigatório.");
 		}
-		if (matricula.length() != TAMANHO_MATRICULA) {
-			throw new IllegalArgumentException("Matrícula deve ter tamanho "
-					+ TAMANHO_MATRICULA + ".");
-		}
+		// if (matricula.length() != TAMANHO_MATRICULA) {
+		// throw new IllegalArgumentException("Matrícula deve ter tamanho "
+		// + TAMANHO_MATRICULA + ".");
+		// }
 		if (!contemApenasDigitos(matricula)) {
-			throw new IllegalArgumentException(
-					"Matrícula deve conter apenas dígitos.");
+			throw new IllegalArgumentException("Matrícula deve conter apenas dígitos: " + matricula + ".");
 		}
 		this.matricula = matricula;
 	}

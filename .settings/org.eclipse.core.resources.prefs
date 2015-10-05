@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/view/avaliacaoTurma/apresentaListagemTurmasView.jsp=UTF-8
 encoding//WebContent/WEB-INF/view/avaliacaoTurma/menuPrincipalView.jsp=UTF-8
@@ -5,3 +6,8 @@ encoding//WebContent/WEB-INF/view/avaliacaoTurma/solicitaAvaliacaoTurmaView.jsp=
 encoding//WebContent/WEB-INF/view/homeView.jsp=UTF-8
 encoding//src/br/cefetrj/sca/dominio/Turma.java=UTF-8
 encoding/<project>=UTF-8
+=======
+eclipse.preferences.version=1
+encoding//src/br/cefetrj/sca/infra/cargadados/ImportadorDocentesTurmasAlocacoes.java=UTF-8
+encoding/<project>=UTF-8
+>>>>>>> 2201b9413d30d5dd7d6fe09275f382ed15f2f230

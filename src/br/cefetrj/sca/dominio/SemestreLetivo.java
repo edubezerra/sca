@@ -33,8 +33,7 @@ public final class SemestreLetivo {
 			periodo = EnumPeriodo.PRIMEIRO;
 		else
 			periodo = EnumPeriodo.SEGUNDO;
-		SEMESTRE_LETIVO_CORRENTE = new SemestreLetivo(
-				calendar.get(Calendar.YEAR), periodo);
+		SEMESTRE_LETIVO_CORRENTE = new SemestreLetivo(calendar.get(Calendar.YEAR), periodo);
 	}
 
 	public Integer getAno() {
@@ -53,17 +52,23 @@ public final class SemestreLetivo {
 
 	public SemestreLetivo(Integer ano, EnumPeriodo periodo) {
 		super();
+		if(ano == null) {
+			throw new IllegalArgumentException("Ano deve ser fornecido.");
+		}
+		if(periodo == null) {
+			throw new IllegalArgumentException("Período deve ser fornecido.");
+		}
 		this.ano = ano;
 		this.periodo = periodo;
 	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ano;
-		int temp = periodo == EnumPeriodo.PRIMEIRO ? 1 : 2;
-		result = prime * result + temp;
+		result = prime * result + ((ano == null) ? 0 : ano.hashCode());
+		result = prime * result + ((periodo == null) ? 0 : periodo.hashCode());
 		return result;
 	}
 
@@ -76,7 +81,10 @@ public final class SemestreLetivo {
 		if (getClass() != obj.getClass())
 			return false;
 		SemestreLetivo other = (SemestreLetivo) obj;
-		if (ano != other.ano)
+		if (ano == null) {
+			if (other.ano != null)
+				return false;
+		} else if (!ano.equals(other.ano))
 			return false;
 		if (periodo != other.periodo)
 			return false;
@@ -94,20 +102,32 @@ public final class SemestreLetivo {
 	}
 
 	public SemestreLetivo proximo() {
+<<<<<<< HEAD
 		SemestreLetivo outro = new SemestreLetivo(ano, periodo);
 		EnumPeriodo outroPeriodo;
 		int outroAno;
 		if (outro.periodo == EnumPeriodo.PRIMEIRO) {
 			outroPeriodo = EnumPeriodo.SEGUNDO;
+=======
+		EnumPeriodo outroPeriodo;
+		Integer outroAno;
+		if (this.periodo == EnumPeriodo.PRIMEIRO) {
+			outroPeriodo = EnumPeriodo.SEGUNDO;
+			outroAno = this.ano;
+>>>>>>> 2201b9413d30d5dd7d6fe09275f382ed15f2f230
 		} else {
 			outroPeriodo = EnumPeriodo.PRIMEIRO;
 			outroAno = this.ano + 1;
 		}
+<<<<<<< HEAD
 		return new SemestreLetivo(ano, outroPeriodo);
 	}
 
 	public static void main(String args[]) {
 		System.out.println(SemestreLetivo.SEMESTRE_LETIVO_CORRENTE);
 		System.out.println(SemestreLetivo.SEMESTRE_LETIVO_CORRENTE.proximo());
+=======
+		return new SemestreLetivo(outroAno, outroPeriodo);
+>>>>>>> 2201b9413d30d5dd7d6fe09275f382ed15f2f230
 	}
 }
