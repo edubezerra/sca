@@ -1,4 +1,4 @@
-package br.cefetrj.sca.infra.autoavaliacao;
+package br.cefetrj.sca.infra.cargadados;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,13 @@ import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
-public class ImportadorAlocacoesDocentesTurmas {
+/**
+ * Realiza a carga de horários de objetos Professor, Turma. Realiza também carga
+ * de dados relativos a alocações de professores a turmas.
+ *
+ */
+
+public class ImportadorDocentesTurmasAlocacoes {
 	/**
 	 * Dicionário de pares (matrícula, nome) de cada aluno.
 	 */
@@ -29,12 +35,13 @@ public class ImportadorAlocacoesDocentesTurmas {
 	/**
 	 * Dicionário de pares (código da turma, código da disciplina).
 	 */
-	private HashMap<String, String> turmas_docentes = new HashMap<>();;
+	private HashMap<String, String> turmas_docentes = new HashMap<>();
 
-	public static void run(EntityManager em, String arquivoPlanilha) {
+	public static void run(EntityManager em) {
 		System.out.println("ImportadorInformacoesMatricula.main()");
 		try {
-			ImportadorAlocacoesDocentesTurmas iim = new ImportadorAlocacoesDocentesTurmas();
+			String arquivoPlanilha = "./planilhas/ALOCACAO.DOCENTES.2015.1.xls";
+			ImportadorDocentesTurmasAlocacoes iim = new ImportadorDocentesTurmasAlocacoes();
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
 		} catch (BiffException | IOException e) {

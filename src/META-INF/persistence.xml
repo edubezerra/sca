@@ -10,6 +10,8 @@
 
 		<class>br.cefetrj.sca.dominio.contas.Email</class>
 
+		<class>br.cefetrj.sca.dominio.Curso</class>
+		<class>br.cefetrj.sca.dominio.VersaoGradeCurso</class>
 		<class>br.cefetrj.sca.dominio.Aluno</class>
 		<class>br.cefetrj.sca.dominio.Aproveitamento</class>
 		<class>br.cefetrj.sca.dominio.Aula</class>

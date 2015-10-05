@@ -1,4 +1,4 @@
-package br.cefetrj.sca.infra.autoavaliacao;
+package br.cefetrj.sca.infra.cargadados;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,21 +44,6 @@ import br.cefetrj.sca.dominio.Turma;
 public class ImportadorInscricoes {
 
 	/**
-	 * Dicionário de pares (matrícula, nome) de cada aluno.
-	 */
-	private HashMap<String, String> alunos_nomes;
-
-	/**
-	 * Dicionário de pares (matrícula, CPF) de cada aluno.
-	 */
-	private HashMap<String, String> alunos_cpfs;
-
-//	/**
-//	 * Dicionário de pares (código, nome) de cada aluno.
-//	 */
-//	private HashMap<String, String> disciplinas;
-
-	/**
 	 * código, semestre letivo { ano, período }
 	 */
 	private HashMap<String, SemestreLetivo> turmas;
@@ -81,9 +66,6 @@ public class ImportadorInscricoes {
 
 	public ImportadorInscricoes(String[] codigosCursos) {
 		this.codigosCursos = Arrays.asList(codigosCursos);
-		alunos_nomes = new HashMap<>();
-		alunos_cpfs = new HashMap<>();
-//		disciplinas = new HashMap<>();
 		turmas = new HashMap<>();
 		turmas_disciplinas = new HashMap<>();
 		turmas_alunos = new HashMap<>();
@@ -141,29 +123,15 @@ public class ImportadorInscricoes {
 
 			String aluno_matricula = sheet.getCell(
 					colunasList.indexOf("MATR_ALUNO"), i).getContents();
-			String aluno_nome = sheet.getCell(
-					colunasList.indexOf("NOME_PESSOA"), i).getContents();
-
-			String aluno_cpf = sheet.getCell(colunasList.indexOf("CPF"), i)
-					.getContents();
 			/**
 			 * No Moodle, o CPF do aluno é armazenado sem os pontos separadores,
 			 * enquanto que os valores de CPFs provenientes do SIE possuem
 			 * pontos. A instrução a seguir tem o propósito de uniformizar a
 			 * representação.
 			 */
-			aluno_cpf = aluno_cpf.replace(".", "");
-
-			alunos_nomes.put(aluno_matricula, aluno_nome);
-			alunos_cpfs.put(aluno_matricula, aluno_cpf);
 
 			String disciplina_codigo = sheet.getCell(
 					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
-
-			String disciplina_nome = sheet.getCell(
-					colunasList.indexOf("NOME_DISCIPLINA"), i).getContents();
-
-//			disciplinas.put(disciplina_codigo, disciplina_nome);
 
 			String turma_codigo = sheet.getCell(
 					colunasList.indexOf("COD_TURMA"), i).getContents();
@@ -210,24 +178,6 @@ public class ImportadorInscricoes {
 		em.getTransaction().begin();
 
 		/**
-		 * Realiza persistências de objetos Aluno.
-		 */
-		Set<String> alunosIt = alunos_nomes.keySet();
-		for (String matricula : alunosIt) {
-			em.persist(new Aluno(alunos_nomes.get(matricula), matricula,
-					alunos_cpfs.get(matricula)));
-		}
-
-//		/**
-//		 * Realiza a persistência de objetos <code>Disciplina</code>.
-//		 */
-//		Set<String> disciplinasIt = disciplinas.keySet();
-//		for (String codigoDisciplina : disciplinasIt) {
-//			em.persist(new Disciplina(disciplinas.get(codigoDisciplina),
-//					codigoDisciplina, "4"));
-//		}
-
-		/**
 		 * Realiza a persistência de objetos <code>Turma</code> e dos
 		 * respectivos objetos <code>Inscricao</code>.
 		 */
@@ -264,9 +214,6 @@ public class ImportadorInscricoes {
 		}
 
 		em.getTransaction().commit();
-
-		System.out.println("Foram importados " + alunos_nomes.keySet().size()
-				+ " alunos.");
 
 		System.out.println("Foram importadas " + turmas.keySet().size()
 				+ " turmas.");

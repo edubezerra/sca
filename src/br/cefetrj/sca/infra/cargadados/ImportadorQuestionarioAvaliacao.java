@@ -1,4 +1,4 @@
-package br.cefetrj.sca.infra.autoavaliacao;
+package br.cefetrj.sca.infra.cargadados;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

@@ -1,20 +1,26 @@
-package br.cefetrj.sca.infra.autoavaliacao;
+package br.cefetrj.sca.infra.cargadados;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import br.cefetrj.sca.infra.autoavaliacao.ImportadorInscricoes;
-import br.cefetrj.sca.infra.autoavaliacao.ImportadorQuestionarioAvaliacao;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class ImportadorDadosParaTestes {
+import br.cefetrj.sca.infra.cargadados.ImportadorInscricoes;
+import br.cefetrj.sca.infra.cargadados.ImportadorQuestionarioAvaliacao;
+
+public class ImportadorTudo {
+	private static ApplicationContext context;
 
 	public static void main(String[] args) {
+		context = new ClassPathXmlApplicationContext(
+				new String[] { "applicationContext.xml" });
+
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("SCAPU");
 
 		String planilhaMatriculas = "./planilhas/MatriculasAceitas-2015.1.xls";
-		String planilhaAlocacoesDocentes = "./planilhas/ALOCACAO.DOCENTES.2015.1.xls";
 
 		EntityManager em = emf.createEntityManager();
 
@@ -25,7 +31,7 @@ public class ImportadorDadosParaTestes {
 
 			ImportadorInscricoes.run(em, planilhaMatriculas);
 
-			ImportadorAlocacoesDocentesTurmas.run(em, planilhaAlocacoesDocentes);
+			ImportadorDocentesTurmasAlocacoes.run(em);
 
 			em.getTransaction().commit();
 

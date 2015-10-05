@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,6 +55,12 @@ public class Disciplina {
 					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
 	private Set<Disciplina> preReqs = new HashSet<Disciplina>();
 
+	/**
+	 * A versão da grade curricular a que esta disciplna pertence.
+	 */
+	@ManyToOne
+	VersaoGradeCurso versaoCurso;
+	
 	@SuppressWarnings("unused")
 	private Disciplina() {
 	}
@@ -114,4 +121,15 @@ public class Disciplina {
 	public Long getId() {
 		return id;
 	}
+
+	public void alocarEmVersao(VersaoGradeCurso versaoCurso) {
+		this.versaoCurso = versaoCurso;
+	}
+
+	@Override
+	public String toString() {
+		return "Disciplina [nome=" + nome + ", codigo=" + codigo + ", versaoCurso=" + versaoCurso + "]";
+	}
+	
+	
 }

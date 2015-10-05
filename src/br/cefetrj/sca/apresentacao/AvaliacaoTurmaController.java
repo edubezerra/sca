@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.infra.autoavaliacao.ImportadorInscricoes;
-import br.cefetrj.sca.infra.autoavaliacao.ImportadorQuestionarioAvaliacao;
 import br.cefetrj.sca.infra.autoavaliacao.UploadFile;
+import br.cefetrj.sca.infra.cargadados.ImportadorInscricoes;
+import br.cefetrj.sca.infra.cargadados.ImportadorQuestionarioAvaliacao;
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoTurmaService;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
