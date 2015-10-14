@@ -2,13 +2,7 @@
     <wb-module deploy-name="sca">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-<<<<<<< HEAD
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
-        <property name="java-output-path" value="/sca/build/classes"/>
-        <property name="context-root" value="prod/sca"/>
-=======
         <property name="context-root" value="sca"/>
         <property name="java-output-path" value="/sca/build/classes"/>
->>>>>>> 2201b9413d30d5dd7d6fe09275f382ed15f2f230
     </wb-module>
 </project-modules>

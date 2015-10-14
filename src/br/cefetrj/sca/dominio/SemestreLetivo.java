@@ -102,32 +102,16 @@ public final class SemestreLetivo {
 	}
 
 	public SemestreLetivo proximo() {
-<<<<<<< HEAD
-		SemestreLetivo outro = new SemestreLetivo(ano, periodo);
-		EnumPeriodo outroPeriodo;
-		int outroAno;
-		if (outro.periodo == EnumPeriodo.PRIMEIRO) {
-			outroPeriodo = EnumPeriodo.SEGUNDO;
-=======
 		EnumPeriodo outroPeriodo;
 		Integer outroAno;
 		if (this.periodo == EnumPeriodo.PRIMEIRO) {
 			outroPeriodo = EnumPeriodo.SEGUNDO;
 			outroAno = this.ano;
->>>>>>> 2201b9413d30d5dd7d6fe09275f382ed15f2f230
 		} else {
 			outroPeriodo = EnumPeriodo.PRIMEIRO;
 			outroAno = this.ano + 1;
 		}
-<<<<<<< HEAD
 		return new SemestreLetivo(ano, outroPeriodo);
 	}
 
-	public static void main(String args[]) {
-		System.out.println(SemestreLetivo.SEMESTRE_LETIVO_CORRENTE);
-		System.out.println(SemestreLetivo.SEMESTRE_LETIVO_CORRENTE.proximo());
-=======
-		return new SemestreLetivo(outroAno, outroPeriodo);
->>>>>>> 2201b9413d30d5dd7d6fe09275f382ed15f2f230
-	}
 }
