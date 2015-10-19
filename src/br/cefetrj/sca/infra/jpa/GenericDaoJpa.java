@@ -141,6 +141,7 @@ public class GenericDaoJpa<T> {
 	}
 
 	public EntityManager getEntityManager() {
+		
 		return entityManager;
 	}
 }

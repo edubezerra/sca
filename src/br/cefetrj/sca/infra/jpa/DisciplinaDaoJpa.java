@@ -19,7 +19,7 @@ public class DisciplinaDaoJpa implements DisciplinaDao {
 		genericDAO.alterar(disciplina);
 	}
 
-	public void excluir(Disciplina disciplina) throws DAOException {
+	public void excluir(Disciplina disciplina) {
 		genericDAO.excluir(Disciplina.class, disciplina.getId());
 	}
 

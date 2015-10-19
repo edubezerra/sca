@@ -15,9 +15,6 @@ public class DisciplinaRepositorio {
 	@Autowired
 	private DisciplinaDao dao;
 
-	private DisciplinaRepositorio() {
-	}
-
 	public void adicionar(Disciplina d) {
 		dao.gravar(d);
 	}
