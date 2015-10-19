@@ -13,4 +13,8 @@ public class ItemVenda {
 		return produto.getPreco() * quantidade;
 	}
 
+	public Produto getProduto() {
+		return produto;
+	}
+
 }

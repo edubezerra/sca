@@ -9,7 +9,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.SemestreLetivo;
@@ -34,74 +33,74 @@ public class CreationDB {
 		Professor prof1 = new Professor("1234567", "Eduardo Bezerra",
 				"edubezerra@gmail.com");
 
-		Disciplina disc1 = new Disciplina("MICROECONOMIA", "GADM7708", 2);
+		Disciplina disc1 = new Disciplina("MICROECONOMIA", "GADM7708", "2");
 		Disciplina disc2 = new Disciplina("SIMULAÇÕES EMPRESARIAIS",
-				"GADM7731", 2);
-		Disciplina disc3 = new Disciplina("GESTÃO ESTRATÉGICA", "GADM7741", 2);
-		Disciplina disc4 = new Disciplina("ECONOMIA BRASILEIRA", "GADM7756", 2);
+				"GADM7731", "2");
+		Disciplina disc3 = new Disciplina("GESTÃO ESTRATÉGICA", "GADM7741", "2");
+		Disciplina disc4 = new Disciplina("ECONOMIA BRASILEIRA", "GADM7756", "2");
 		Disciplina disc5 = new Disciplina("ARQUITETURA DE COMPUTADORES",
-				"GTSI1211", 4);
+				"GTSI1211", "4");
 		Disciplina disc6 = new Disciplina("PROGRAMAÇÃO DE CLIENTE WEB",
-				"GTSI1212", 4);
+				"GTSI1212", "4");
 		Disciplina disc7 = new Disciplina(
-				"PROJETO DE ALGORITMOS COMPUTACIONAIS", "GTSI1213", 4);
-		Disciplina disc8 = new Disciplina("LÓGICA MATEMÁTICA", "GTSI1214", 4);
+				"PROJETO DE ALGORITMOS COMPUTACIONAIS", "GTSI1213", "4");
+		Disciplina disc8 = new Disciplina("LÓGICA MATEMÁTICA", "GTSI1214", "4");
 		Disciplina disc9 = new Disciplina("INTRODUÇÃO À ADMINISTRAÇÃO",
-				"GTSI1215", 2);
+				"GTSI1215", "2");
 		Disciplina disc10 = new Disciplina("SISTEMAS OPERACIONAIS", "GTSI1221",
-				4);
-		Disciplina disc11 = new Disciplina("ESTRUTURAS DE DADOS", "GTSI1222", 4);
-		Disciplina disc12 = new Disciplina("MATEMÁTICA DISCRETA", "GTSI1223", 4);
+				"4");
+		Disciplina disc11 = new Disciplina("ESTRUTURAS DE DADOS", "GTSI1222", "4");
+		Disciplina disc12 = new Disciplina("MATEMÁTICA DISCRETA", "GTSI1223", "4");
 		Disciplina disc13 = new Disciplina("METODOLOGIA CIENTÍFICA",
-				"GTSI1224", 2);
+				"GTSI1224", "2");
 		Disciplina disc14 = new Disciplina("ENGENHARIA DE REQUISITOS",
-				"GTSI1231", 4);
+				"GTSI1231", "4");
 		Disciplina disc15 = new Disciplina(
-				"FUNDAMENTOS DE REDES DE COMPUTADORES", "GTSI1232", 4);
+				"FUNDAMENTOS DE REDES DE COMPUTADORES", "GTSI1232", "4");
 		Disciplina disc16 = new Disciplina("PROGRAMAÇÃO ORIENTADA A OBJETOS",
-				"GTSI1233", 4);
-		Disciplina disc17 = new Disciplina("EMPREENDEDORISMO", "GTSI1234", 2);
+				"GTSI1233", "4");
+		Disciplina disc17 = new Disciplina("EMPREENDEDORISMO", "GTSI1234", "2");
 		Disciplina disc18 = new Disciplina("ESTATÍSTICA E PROBABILIDADE",
-				"GTSI1235", 4);
+				"GTSI1235", "4");
 		Disciplina disc19 = new Disciplina("PROJETO E CONSTRUÇÃO DE SISTEMAS",
-				"GTSI1254", 4);
+				"GTSI1254", "4");
 		Disciplina disc20 = new Disciplina("EXPRESSÃO ORAL E ESCRITA",
-				"GTSI1273", 2);
+				"GTSI1273", "2");
 		Disciplina disc21 = new Disciplina("RESPONSABILIDADE SOCIAL",
-				"GTSI1277", 2);
+				"GTSI1277", "2");
 		Disciplina disc22 = new Disciplina(
-				"ARQUITETURAS AVANÇADAS DE COMPUTADORES", "GTSI1301", 2);
-		Disciplina disc23 = new Disciplina("SISTEMAS DIGITAS", "GTSI1302", 4);
+				"ARQUITETURAS AVANÇADAS DE COMPUTADORES", "GTSI1301", "2");
+		Disciplina disc23 = new Disciplina("SISTEMAS DIGITAS", "GTSI1302", "4");
 		Disciplina disc24 = new Disciplina("PROJETO DE BANCO DE DADOS",
-				"GTSI7311", 4);
+				"GTSI7311", "4");
 		Disciplina disc25 = new Disciplina("MODELAGEM DE PROJETO DE SISTEMAS",
-				"GTSI7312", 4);
+				"GTSI7312", "4");
 		Disciplina disc26 = new Disciplina("ADMINISTRAÇÃO DE BANCO DE DADOS",
-				"GTSI7415", 4);
+				"GTSI7415", "4");
 		Disciplina disc27 = new Disciplina(
-				"PROJETO DE SOFTWARE ORIENTADOS A OBJETOS", "GTSI7418", 4);
+				"PROJETO DE SOFTWARE ORIENTADOS A OBJETOS", "GTSI7418", "4");
 		Disciplina disc28 = new Disciplina("PROGRAMAÇÃO DE SERVIDORES WEB",
-				"GTSI7518", 4);
+				"GTSI7518", "4");
 		Disciplina disc29 = new Disciplina("PROJETO DE INTERFACES", "GTSI7519",
-				4);
-		Disciplina disc30 = new Disciplina("PADRÕES DE SOFTWARE", "GTSI7520", 4);
+				"4");
+		Disciplina disc30 = new Disciplina("PADRÕES DE SOFTWARE", "GTSI7520", "4");
 		Disciplina disc31 = new Disciplina("ENGENHARIA DE SOFTWARE",
-				"GTSI7521", 4);
-		Disciplina disc32 = new Disciplina("PROJETO FINAL I", "GTSI7523", 4);
+				"GTSI7521", "4");
+		Disciplina disc32 = new Disciplina("PROJETO FINAL I", "GTSI7523", "4");
 		Disciplina disc33 = new Disciplina("TÓPICOS AVANÇADOS EM INFORMÁTICA",
-				"GTSI7624", 2);
+				"GTSI7624", "2");
 		Disciplina disc34 = new Disciplina("NEGÓCIOS NA INTERNET", "GTSI7625",
-				2);
+				"2");
 		Disciplina disc35 = new Disciplina("SEGURANÇA DA INFORMAÇÃO",
-				"GTSI7626", 2);
+				"GTSI7626", "2");
 		Disciplina disc36 = new Disciplina("INFORMÁTICA E SOCIEDADE",
-				"GTSI7627", 2);
-		Disciplina disc37 = new Disciplina("PROJETO FINAL II", "GTSI7628", 4);
+				"GTSI7627", "2");
+		Disciplina disc37 = new Disciplina("PROJETO FINAL II", "GTSI7628", "4");
 		Disciplina disc38 = new Disciplina(
-				"ESTÁGIO SUPERVISIONADO (TECNÓLOGO EM WEB)", "GTSI7629", 8);
+				"ESTÁGIO SUPERVISIONADO (TECNÓLOGO EM WEB)", "GTSI7629", "8");
 		Disciplina disc39 = new Disciplina(
 				"APLICAÇÕES NA INTERNET PARA TV DIGITAL INTERATIVA",
-				"GTSI7702", 4);
+				"GTSI7702", "4");
 
 		Disciplina[] disciplinas = { disc1, disc2, disc3, disc4, disc5, disc6,
 				disc7, disc8, disc9, disc10, disc11, disc12, disc13, disc14,

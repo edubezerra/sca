@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import br.cefetrj.sca.dominio.contas.Email;
+import br.cefetrj.sca.dominio.gradesdisponibilidade.GradeDisponibilidade;
 
 @Entity
 public class Professor {
