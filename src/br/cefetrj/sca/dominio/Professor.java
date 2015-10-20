@@ -46,9 +46,6 @@ public class Professor {
 	@ManyToOne
 	private Departamento departamento;
 
-	@Embedded
-	private Email email;
-
 	public Long getId() {
 		return id;
 	}
@@ -59,15 +56,16 @@ public class Professor {
 	}
 
 	public Professor(String matricula, String nome, String email) {
-		this(matricula, nome);
-		this.email = new Email(email);
+		this(matricula);
+		this.pessoa = new Pessoa(nome, new Email(email));
 	}
 
 	public Professor(String matricula, String nome) {
-		if (nome == null || nome.isEmpty()) {
-			throw new IllegalArgumentException("Nome é obrigatório.");
-		}
+		this(matricula);
 		this.pessoa = new Pessoa(nome);
+	}
+
+	public Professor(String matricula) {
 		if (matricula == null || matricula.isEmpty()) {
 			throw new IllegalArgumentException("Matrícula é obrigatório.");
 		}

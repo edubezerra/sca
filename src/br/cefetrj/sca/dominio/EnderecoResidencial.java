@@ -3,7 +3,7 @@ package br.cefetrj.sca.dominio;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Endereco {
+public class EnderecoResidencial {
 	
 	String rua;
 	String numero;
@@ -11,7 +11,7 @@ public class Endereco {
 	String cidade;
 	String UF;
 	
-	public Endereco(){
+	public EnderecoResidencial(){
 		
 	}
 	

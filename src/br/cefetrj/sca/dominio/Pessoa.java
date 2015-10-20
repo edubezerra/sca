@@ -20,7 +20,7 @@ public class Pessoa {
 	private Email email;
 
 	@Embedded
-	private Endereco endereco;
+	private EnderecoResidencial enderecoResidencial;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
@@ -31,12 +31,15 @@ public class Pessoa {
 	}
 
 	public Pessoa(String nome) {
+		if (nome == null || nome.isEmpty()) {
+			throw new IllegalArgumentException("Nome é obrigatório.");
+		}
 		this.nome = nome;
 	}
 
-	public Pessoa(String nome, Endereco endereco) {
+	public Pessoa(String nome, EnderecoResidencial endereco) {
 		this(nome);
-		this.endereco = endereco;
+		this.enderecoResidencial = endereco;
 	}
 
 	public Pessoa(String nome, Date dataNascimento, String enderecoEmail) {
@@ -66,6 +69,11 @@ public class Pessoa {
 		}
 	}
 
+	public Pessoa(String nome, Email email) {
+		this(nome);
+		this.email = email;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -74,12 +82,12 @@ public class Pessoa {
 		this.nome = nome;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
+	public EnderecoResidencial getEnderecoResidencial() {
+		return enderecoResidencial;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setEnderecoResidencial(EnderecoResidencial endereco) {
+		this.enderecoResidencial = endereco;
 	}
 
 	public Date getDataNascimento() {
