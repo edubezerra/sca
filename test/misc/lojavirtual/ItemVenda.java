@@ -17,4 +17,9 @@ public class ItemVenda {
 		return produto;
 	}
 
+	public String getNomeProduto() {
+		return this.produto.getNome();
+	}
+
+	
 }

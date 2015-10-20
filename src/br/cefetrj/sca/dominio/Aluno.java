@@ -23,20 +23,13 @@ public class Aluno {
 	private Long id;
 
 	/**
-	 * Nome do aluno.
-	 */
-	private String nome;
-
-	/**
 	 * Matrícula do aluno, composta de <code>TAM_MATRICULA</code> carateres.
 	 */
 	private String matricula;
 
-	@Embedded
-	private Email email;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataNascimento;
+	@Embedded
+	Pessoa pessoa;
 
 	private String cpf;
 
@@ -68,25 +61,26 @@ public class Aluno {
 			throw new IllegalArgumentException("Matrícula não pode ser vazia.");
 		}
 		if (!(matricula.length() >= TAM_MIN_MATRICULA && matricula.length() <= TAM_MAX_MATRICULA)) {
-			throw new IllegalArgumentException("Matrícula deve ter entre " + TAM_MIN_MATRICULA + " e "
-					+ TAM_MAX_MATRICULA + " caracteres: " + matricula);
+			throw new IllegalArgumentException("Matrícula deve ter entre "
+					+ TAM_MIN_MATRICULA + " e " + TAM_MAX_MATRICULA
+					+ " caracteres: " + matricula);
 		}
-		this.nome = nome;
+		this.pessoa = new Pessoa(nome);
 		this.matricula = matricula;
 	}
 
-	public Aluno(String nome, String matricula, Date dataNascimento, String enderecoEmail) {
+	public Aluno(String nome, String matricula, Date dataNascimento,
+			String enderecoEmail) {
 		this(nome, matricula);
-		this.dataNascimento = dataNascimento;
-		this.email = new Email(enderecoEmail);
+		this.pessoa = new Pessoa(nome, dataNascimento, enderecoEmail);
 	}
 
 	public String getNome() {
-		return nome;
+		return this.pessoa.getNome();
 	}
 
 	public Date getDataNascimento() {
-		return dataNascimento;
+		return pessoa.getDataNascimento();
 	}
 
 	public String getMatricula() {
@@ -94,7 +88,7 @@ public class Aluno {
 	}
 
 	public String getEmail() {
-		return email.getEndereco();
+		return pessoa.getEmail().toString();
 	}
 
 	public String getCpf() {

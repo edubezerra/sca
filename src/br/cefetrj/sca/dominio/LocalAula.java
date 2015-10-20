@@ -13,6 +13,8 @@ public class LocalAula {
 
 	Integer capacidade;
 
+	private String descricao;
+
 	public LocalAula(Integer capacidade) {
 		if (capacidade == null || capacidade <= 0) {
 			throw new IllegalArgumentException(
@@ -21,11 +23,19 @@ public class LocalAula {
 		this.capacidade = capacidade;
 	}
 
+	public LocalAula(String descricao) {
+		this.descricao = descricao;
+	}
+
 	public Integer getCapacidade() {
 		return this.capacidade;
 	}
 
 	public Long getId() {
 		return this.id;
+	}
+	
+	public String getDescricao() {
+		return descricao;
 	}
 }

@@ -69,8 +69,8 @@ public class ImportadorDiscentes {
 		/**
 		 * Realiza a persistência dos objetos Aluno.
 		 */
-		Set<String> alunosIt = alunos_matriculas.keySet();
-		for (String matricula : alunosIt) {
+		Set<String> matriculas = alunos_matriculas.keySet();
+		for (String matricula : matriculas) {
 			em.persist(alunos_matriculas.get(matricula));
 		}
 

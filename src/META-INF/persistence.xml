@@ -10,12 +10,14 @@
 
 		<class>br.cefetrj.sca.dominio.contas.Email</class>
 
+		<class>br.cefetrj.sca.dominio.Pessoa</class>
+
 		<class>br.cefetrj.sca.dominio.Aluno</class>
 		<class>br.cefetrj.sca.dominio.Aproveitamento</class>
 		<class>br.cefetrj.sca.dominio.Aula</class>
 		<class>br.cefetrj.sca.dominio.Departamento</class>
 		<class>br.cefetrj.sca.dominio.Disciplina</class>
-		<class>br.cefetrj.sca.dominio.GradeDisponibilidade</class>
+		<class>br.cefetrj.sca.dominio.gradesdisponibilidade.GradeDisponibilidade</class>
 		<class>br.cefetrj.sca.dominio.Inscricao</class>
 		<class>br.cefetrj.sca.dominio.Intervalo</class>
 		<class>br.cefetrj.sca.dominio.ItemHorario</class>

@@ -6,6 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Aula {
@@ -20,14 +21,18 @@ public class Aula {
 	@Embedded
 	private Intervalo intervalo;
 
+	@ManyToOne
+	private LocalAula local;
+
 	@SuppressWarnings("unused")
 	private Aula() {
 	}
 
-	public Aula(EnumDiaSemana dia, String strInicio, String strFim) {
+	public Aula(EnumDiaSemana dia, String strInicio, String strFim, LocalAula local) {
 		super();
 		this.dia = dia;
 		this.intervalo = new Intervalo(strInicio, strFim);
+		this.local = local;
 	}
 
 	public EnumDiaSemana getDia() {

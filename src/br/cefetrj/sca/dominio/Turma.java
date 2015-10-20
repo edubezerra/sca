@@ -55,7 +55,7 @@ public class Turma {
 	/**
 	 * Informações sobre locais e horários de aulas dessa turma.
 	 */
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "TURMA_ID", referencedColumnName = "ID")
 	private List<Aula> aulas = new ArrayList<>();
 
@@ -250,5 +250,12 @@ public class Turma {
 
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
+	}
+
+	public void adicionarAula(String diaSemana, String horarioInicio,
+			String horarioTermino, String local) {
+		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
+				horarioTermino, local);
+		this.aulas.add(a);
 	}
 }
