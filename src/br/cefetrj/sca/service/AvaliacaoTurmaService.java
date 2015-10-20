@@ -42,7 +42,8 @@ public class AvaliacaoTurmaService {
 	 * @param cpf
 	 *            CPF do aluno solicitante.
 	 * 
-	 * @return
+	 * @return objeto com informações para construir formulário de avaliações.
+	 * 
 	 */
 	public SolicitaAvaliacaoResponse iniciarAvaliacoes(String cpf) {
 		getAlunoPorCPF(cpf);

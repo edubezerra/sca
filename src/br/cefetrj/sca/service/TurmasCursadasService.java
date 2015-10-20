@@ -30,15 +30,20 @@ public class TurmasCursadasService {
 	private DisciplinaRepositorio dr;
 
 	/**
+	 * 
+	 * @param aluno
+	 *            para o qual se deseja conhecer as turmar possíveis para ele se
+	 *            inscrever.
+	 * 
 	 * @return coleção de turmas cujas disciplinas da grade curricular estão
 	 *         disponíveis para o aluno cursar.
 	 */
-	public Set<Turma> getTurmasPossiveis(Aluno a) {
+	public Set<Turma> getTurmasPossiveis(Aluno aluno) {
 
 		Set<Turma> possiveis = new HashSet<Turma>();
 
-		Set<Disciplina> cursadas = getDisciplinasCursadasComAprovacao(a);
-		Set<Disciplina> indisponiveis = getDisciplinasIndisponiveis(a);
+		Set<Disciplina> cursadas = getDisciplinasCursadasComAprovacao(aluno);
+		Set<Disciplina> indisponiveis = getDisciplinasIndisponiveis(aluno);
 
 		List<Turma> abertas = rt
 				.getTurmasAbertas(SemestreLetivo.SEMESTRE_LETIVO_CORRENTE);
@@ -53,11 +58,18 @@ public class TurmasCursadasService {
 	}
 
 	/**
+	 * 
+	 * @param aluno
+	 *            aluno para o qual se deseja conhecer as disciplinas
+	 *            indisponíveis.
+	 * 
 	 * @return coleção de disciplinas da grade curricular que não estão
 	 *         disponíveis para o aluno cursar.
+	 * 
+	 * 
 	 */
-	public Set<Disciplina> getDisciplinasIndisponiveis(Aluno a) {
-		Set<Disciplina> cursadas = getDisciplinasCursadasComAprovacao(a);
+	public Set<Disciplina> getDisciplinasIndisponiveis(Aluno aluno) {
+		Set<Disciplina> cursadas = getDisciplinasCursadasComAprovacao(aluno);
 		Set<Disciplina> disciplinas = new HashSet<Disciplina>();
 		List<Disciplina> todas = dr.getDisciplinas();
 		for (Disciplina disciplina : todas) {
@@ -100,13 +112,18 @@ public class TurmasCursadasService {
 	}
 
 	/**
-	 * @return a coleção de disciplinas que o aluno já cursou com sucesso.
+	 * @param aluno
+	 *            aluno para o qual se deseja conhecer as disciplinas cursadas
+	 *            com aprovação.
+	 *            
+	 * @return aluno coleção de disciplinas que o aluno já cursou com sucesso.
 	 */
-	public Set<Disciplina> getDisciplinasCursadasComAprovacao(Aluno a) {
-		List<Turma> turmas = obterTurmasCursadasComAprovacao(a.getMatricula());
+	public Set<Disciplina> getDisciplinasCursadasComAprovacao(Aluno aluno) {
+		List<Turma> turmas = obterTurmasCursadasComAprovacao(aluno
+				.getMatricula());
 		Set<Disciplina> disciplinas = new HashSet<Disciplina>();
 		for (Turma turma : turmas) {
-			if (turma.aprovado(a)) {
+			if (turma.aprovado(aluno)) {
 				disciplinas.add(turma.getDisciplina());
 			}
 		}

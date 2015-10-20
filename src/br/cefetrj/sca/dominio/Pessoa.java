@@ -8,6 +8,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.cefetrj.sca.dominio.contas.Email;
+import br.com.caelum.stella.validation.CPFValidator;
+import br.com.caelum.stella.validation.InvalidStateException;
 
 @Embeddable
 public class Pessoa {
@@ -43,9 +45,25 @@ public class Pessoa {
 		this.email = new Email(enderecoEmail);
 	}
 
+	/**
+	 * 
+	 * @param nome
+	 *            nome completo.
+	 * @param cpf
+	 *            número do CPF.
+	 * 
+	 * @see <a
+	 *      href="http://github.com/caelum/caelum-stella/wiki/Validadores-core">http://github.com/caelum/caelum-stella/wiki/Validadores-core</a>
+	 */
 	public Pessoa(String nome, String cpf) {
 		this(nome);
-		this.cpf = cpf;
+		CPFValidator validator = new CPFValidator();
+		try {
+			validator.assertValid(cpf);
+			this.cpf = cpf;
+		} catch (InvalidStateException e) {
+			throw new IllegalArgumentException("CPF é inválido!");
+		}
 	}
 
 	public String getNome() {
@@ -79,7 +97,7 @@ public class Pessoa {
 	public void setEmail(Email email) {
 		this.email = email;
 	}
-	
+
 	public String getCpf() {
 		return cpf;
 	}

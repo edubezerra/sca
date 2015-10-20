@@ -32,8 +32,6 @@ public class Intervalo implements Cloneable {
 	 *            in�cio do intervalo, no formato hh:mm (e.g., "10:30")
 	 * @param strFim
 	 *            fim do intervalo, no formato H:mm (e.g., "12:00")
-	 * @throws ParseException
-	 *             se a o formato de in�cio ou fim n�o � hh:mm.
 	 * @throws IllegalArgumentException
 	 *             se o in�cio n�o for anterior ao fim.
 	 */

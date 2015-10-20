@@ -83,6 +83,12 @@ public class Turma {
 	 * <code>CAPACIDADE_PRESUMIDA</code>. O semestre letvo da turma criada é
 	 * <code>SemestreLetivo.SEMESTRE_LETIVO_CORRENTE</code>.
 	 * 
+	 * @param disciplina
+	 *            disciplina para a qual esta turma é criada.
+	 * 
+	 * @param codigo
+	 *            código da turma.
+	 * 
 	 */
 	public Turma(Disciplina disciplina, String codigo) {
 
@@ -109,6 +115,18 @@ public class Turma {
 	/**
 	 * Cria uma turma com disciplina, código, número de vagas e semestre letivo
 	 * fornecidos como parâmetros. A capacidade máxima da turma criada é igual a
+	 * 
+	 * @param disciplina
+	 *            disciplina para a qual a turma é aberta
+	 * 
+	 * @param codigo
+	 *            código da turma
+	 * 
+	 * @param numeroVagas
+	 *            quantidades de vagas oferecidas na turma
+	 * 
+	 * @param periodo
+	 *            período letivo em que a turma é ofertada
 	 */
 	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas,
 			SemestreLetivo periodo) {
@@ -177,6 +195,9 @@ public class Turma {
 	 * 
 	 * RN02: Uma turma não pode ter mais alunos inscritos do que a capacidade
 	 * máxima definida para ela.
+	 * 
+	 * @param aluno
+	 *            aluno para inscrever na turma.
 	 */
 	public void inscreverAluno(Aluno aluno) {
 		if (inscricoes.size() + 1 > capacidadeMaxima) {
