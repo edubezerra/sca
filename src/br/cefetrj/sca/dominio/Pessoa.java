@@ -23,6 +23,8 @@ public class Pessoa {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataNascimento;
 
+	private String cpf;
+
 	public Pessoa() {
 	}
 
@@ -39,6 +41,11 @@ public class Pessoa {
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.email = new Email(enderecoEmail);
+	}
+
+	public Pessoa(String nome, String cpf) {
+		this(nome);
+		this.cpf = cpf;
 	}
 
 	public String getNome() {
@@ -72,5 +79,8 @@ public class Pessoa {
 	public void setEmail(Email email) {
 		this.email = email;
 	}
-
+	
+	public String getCpf() {
+		return cpf;
+	}
 }

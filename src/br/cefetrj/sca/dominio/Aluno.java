@@ -7,10 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import br.cefetrj.sca.dominio.contas.Email;
 
 @Entity
 public class Aluno {
@@ -31,8 +27,6 @@ public class Aluno {
 	@Embedded
 	Pessoa pessoa;
 
-	private String cpf;
-
 	@ManyToOne
 	private Curso curso;
 
@@ -44,16 +38,11 @@ public class Aluno {
 	private Aluno() {
 	}
 
-	public Aluno(String nome, String matricula, String cpf) {
-		this(nome, matricula);
+	public Aluno(String nome, String cpf, String matricula) {
 		if (cpf == null || cpf.equals("")) {
 			throw new IllegalArgumentException("CPF deve ser fornecido.");
 		}
-		this.cpf = cpf;
-	}
 
-	public Aluno(String nome, String matricula) {
-		super();
 		if (nome == null || nome.equals("")) {
 			throw new IllegalArgumentException("Nome não pode ser vazio.");
 		}
@@ -65,13 +54,13 @@ public class Aluno {
 					+ TAM_MIN_MATRICULA + " e " + TAM_MAX_MATRICULA
 					+ " caracteres: " + matricula);
 		}
-		this.pessoa = new Pessoa(nome);
+		this.pessoa = new Pessoa(nome, cpf);
 		this.matricula = matricula;
 	}
 
-	public Aluno(String nome, String matricula, Date dataNascimento,
+	public Aluno(String nome, String cpf, String matricula, Date dataNascimento,
 			String enderecoEmail) {
-		this(nome, matricula);
+		this(nome, cpf, matricula);
 		this.pessoa = new Pessoa(nome, dataNascimento, enderecoEmail);
 	}
 
@@ -92,7 +81,7 @@ public class Aluno {
 	}
 
 	public String getCpf() {
-		return cpf;
+		return this.pessoa.getCpf();
 	}
 
 	public void setCurso(Curso curso) {

@@ -158,10 +158,6 @@ public class Turma {
 		return Collections.unmodifiableSet(this.inscricoes);
 	}
 
-	public void adicionarAula(EnumDiaSemana dia, String inicio, String fim) {
-		this.aulas.add(new Aula(dia, inicio, fim));
-	}
-
 	public void lancarAvaliacao(Aluno aluno, Aproveitamento avaliacao) {
 		Inscricao inscricao = getInscricao(aluno);
 		inscricao.registrarAvaliacao(avaliacao);
@@ -253,7 +249,7 @@ public class Turma {
 	}
 
 	public void adicionarAula(String diaSemana, String horarioInicio,
-			String horarioTermino, String local) {
+			String horarioTermino, LocalAula local) {
 		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
 				horarioTermino, local);
 		this.aulas.add(a);

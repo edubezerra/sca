@@ -1,5 +1,6 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,11 +27,6 @@ public class Professor {
 	private Long id;
 
 	/**
-	 * Nome completo do professor.
-	 */
-	private String nome;
-
-	/**
 	 * Matrícula do professor, composta apenas de dígitos e de tamanho 7.
 	 */
 	private String matricula;
@@ -42,8 +38,11 @@ public class Professor {
 	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = {
 			@JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
 					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
-	private Set<Disciplina> habilitacoes;
+	private Set<Disciplina> habilitacoes = new HashSet<>();
 
+	@Embedded
+	Pessoa pessoa;
+	
 	@ManyToOne
 	private Departamento departamento;
 
@@ -68,7 +67,7 @@ public class Professor {
 		if (nome == null || nome.isEmpty()) {
 			throw new IllegalArgumentException("Nome é obrigatório.");
 		}
-		this.nome = nome;
+		this.pessoa = new Pessoa(nome);
 		if (matricula == null || matricula.isEmpty()) {
 			throw new IllegalArgumentException("Matrícula é obrigatório.");
 		}
@@ -96,13 +95,12 @@ public class Professor {
 		return true;
 	}
 
-	public boolean estaHabilitado(Disciplina d) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean estaHabilitado(Disciplina disciplina) {
+		return this.habilitacoes.contains(disciplina);
 	}
 
 	public String getNome() {
-		return nome;
+		return this.pessoa.getNome();
 	}
 
 	public Set<Disciplina> getHabilitacoes() {
