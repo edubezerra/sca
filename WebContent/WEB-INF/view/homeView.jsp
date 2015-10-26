@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>SCA - Avaliação de Turmas</title>
+<title>SCA - Sistema de Controle Acadêmico</title>
 
 <link href="${pageContext.request.contextPath}/css/base.css"
 	rel="stylesheet" type="text/css" />
@@ -20,7 +20,7 @@
 
 <t:wrapper>
 	<jsp:attribute name="header">
-		<h1>Avaliação de Turmas por Discentes</h1>
+		<h1>SCA</h1>
     </jsp:attribute>
 
 	<jsp:body>
@@ -36,20 +36,6 @@
 			<p class="info">${requestScope.info}</p>
 		</div>
 	</c:if>
-
-<p>A avaliação de Turmas por Discentes ocorre em dois momentos: no primeiro e no segundo 
-semestre letivo de cada ano por meio de formulário eletrônico.</p>
-
-<p>As avaliações permanecem no banco de dados, sendo processadas pela Coordenação do Curso. 
-Os resultados são repassados ao professor de cada turma avaliada, na forma consolidada, 
-após o término do semestre letivo, para que os alunos não se sintam inibidos 
-ao avaliar seus atuais professores.</p>
-
-
-	Para acesso ao formulário de avaliação, utilize os campos abaixo. Entre com as mesmas credenciais que você utiliza para acesso ao
-	<a href="http://eic.cefet-rj.br/moodle/">Moodle da EIC</a>
-	<br>
-	<br>
 
 	<div class="table">
 		<form class="row"

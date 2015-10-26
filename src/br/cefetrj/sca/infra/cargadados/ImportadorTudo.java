@@ -31,7 +31,7 @@ public class ImportadorTudo {
 
 			ImportadorInscricoes.run(em, planilhaMatriculas);
 
-			ImportadorDocentesTurmasAlocacoes.run();
+			ImportadorTurmas.run();
 
 			em.getTransaction().commit();
 

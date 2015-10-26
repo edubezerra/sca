@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Aluno {
@@ -31,6 +32,7 @@ public class Aluno {
 	@ManyToOne
 	private Curso curso;
 
+	@OneToOne
 	private HistoricoEscolar historico;
 
 	public Long getId() {
@@ -98,4 +100,7 @@ public class Aluno {
 		return historico.getDisciplinasPossiveis();
 	}
 
+	public HistoricoEscolar getHistorico() {
+		return historico;
+	}
 }
