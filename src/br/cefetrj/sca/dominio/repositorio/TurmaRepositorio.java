@@ -38,4 +38,9 @@ public class TurmaRepositorio {
 	public Turma getByCodigo(String codigoTurma) {
 		return turmaDAO.getByCodigo(codigoTurma);
 	}
+
+	public Turma getTurmaPotCodigo(String codigoTurma) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

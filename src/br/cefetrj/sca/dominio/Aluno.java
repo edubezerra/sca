@@ -1,6 +1,7 @@
 package br.cefetrj.sca.dominio;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -29,6 +30,8 @@ public class Aluno {
 
 	@ManyToOne
 	private Curso curso;
+
+	private HistoricoEscolar historico;
 
 	public Long getId() {
 		return id;
@@ -90,4 +93,9 @@ public class Aluno {
 		}
 		this.curso = curso;
 	}
+
+	public List<Disciplina> getDisciplinasPossiveis() {
+		return historico.getDisciplinasPossiveis();
+	}
+
 }
