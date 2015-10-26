@@ -24,7 +24,7 @@ public class RegistrarHabilitacoesService {
 	}
 
 	public List<String> obterHabilitacoes(String matricula) {
-		professor = repo.obterProfessor(matricula);
+		professor = repo.getProfessor(matricula);
 		List<String> nomesHabilitacoes = new ArrayList<String>();
 		Set<Disciplina> disciplinas = professor.getHabilitacoes();
 		for (Disciplina disciplina : disciplinas) {

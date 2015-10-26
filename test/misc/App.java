@@ -3,8 +3,8 @@ package misc;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.service.FornecerGradeService;
+import br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidade;
+import br.cefetrj.sca.service.FornecerGradeDisponibilidadeService;
 
 public class App {
 	private static ApplicationContext context;
@@ -13,11 +13,11 @@ public class App {
 		context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
 
-		FornecerGradeService serv = (FornecerGradeService) context
+		FornecerGradeDisponibilidadeService serv = (FornecerGradeDisponibilidadeService) context
 				.getBean("FornecerGradeServiceBean");
 
-		Professor professor = serv.validarProfessor("1506449");
-		System.out.println(professor.getNome());
+		FichaDisponibilidade ficha = serv.validarProfessor("1506449");
+		System.out.println(ficha.getNomeProfessor());
 
 		try {
 			Thread.sleep(3000);

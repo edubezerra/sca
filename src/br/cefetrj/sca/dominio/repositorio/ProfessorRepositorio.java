@@ -17,7 +17,7 @@ public class ProfessorRepositorio {
 	private ProfessorRepositorio() {
 	}
 
-	public Professor obterProfessor(String matricula) {
+	public Professor getProfessor(String matricula) {
 		return dao.getProfessorPorMatricula(matricula);
 	}
 

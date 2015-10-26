@@ -23,7 +23,6 @@ import br.cefetrj.sca.dominio.ItemHorario;
 import br.cefetrj.sca.dominio.ItensHorario;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.SemestreLetivo;
-import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 
 @Entity
 public class GradeDisponibilidade implements Cloneable {
@@ -39,12 +38,9 @@ public class GradeDisponibilidade implements Cloneable {
 	@JoinTable(name = "GRADEDISPONIBILIDADE_DISCIPLINA", joinColumns = { @JoinColumn(name = "GRADE_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
 	private Set<Disciplina> disciplinas = new HashSet<Disciplina>();
 
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "GRADEDISPONIBILIDADE_ID", referencedColumnName = "ID")
 	private Set<ItemHorario> horarios = new HashSet<ItemHorario>();
-
-	@Transient
-	private DisciplinaRepositorio r;
 
 	@Embedded
 	private SemestreLetivo semestre;
@@ -90,24 +86,17 @@ public class GradeDisponibilidade implements Cloneable {
 		return professor;
 	}
 
-	public Disciplina adicionarDisciplina(String nome) {
-		Disciplina d;
-		d = r.getDisciplina(nome);
-		if (d == null) {
-			throw new IllegalArgumentException(
-					"Nome inv�lido para disciplina: " + "\"" + nome + "\".");
+	public Disciplina adicionarDisciplina(Disciplina disciplina) {
+		if (disciplina == null) {
+			throw new IllegalArgumentException("Disciplina não fornecida.");
 		}
-		if (!this.professor.estaHabilitado(d)) {
+		if (!this.professor.estaHabilitado(disciplina)) {
 			throw new IllegalArgumentException(
-					"Professor n�o est� habilitado para disciplina \""
-							+ d.getNome() + "\".");
+					"Professor não está habilitado para disciplina \""
+							+ disciplina.getNome() + "\".");
 		}
-		adicionarDisciplina(d);
-		return d;
-	}
-
-	private void adicionarDisciplina(Disciplina d) {
-		this.disciplinas.add(d);
+		this.disciplinas.add(disciplina);
+		return disciplina;
 	}
 
 	public void removerDisciplina(Disciplina disciplina) {

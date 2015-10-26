@@ -31,6 +31,9 @@
 			href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
 				Avaliar turmas (${requestScope.periodoLetivo})</a></li>
 		<li><a
+			href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
+				Fornecer Grade de Disponibilidades (${requestScope.periodoLetivo})</a></li>
+		<li><a
 			href="${pageContext.request.contextPath}/logout">
 				Sair do sistema</a></li>
 	</ul>

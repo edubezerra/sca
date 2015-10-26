@@ -1,5 +1,6 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -102,7 +103,7 @@ public class Professor {
 	}
 
 	public Set<Disciplina> getHabilitacoes() {
-		return this.getHabilitacoes();
+		return Collections.unmodifiableSet(this.habilitacoes);
 	}
 
 	public String getMatricula() {
@@ -124,5 +125,9 @@ public class Professor {
 
 	public Departamento getDepartmento() {
 		return departamento;
+	}
+
+	public void habilitarPara(Disciplina d) {
+		this.habilitacoes.add(d);
 	}
 }

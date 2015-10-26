@@ -135,24 +135,6 @@ public class AvaliacaoTurmaController {
 		}
 	}
 
-	@RequestMapping(value = "/menuPrincipal", method = RequestMethod.POST)
-	public String menuPrincipal(HttpSession session, @RequestParam String cpf,
-			@RequestParam String senha, Model model) {
-
-		try {
-			authService.autentica(cpf, senha);
-			session.setAttribute("cpf", cpf);
-			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-					.getInstance();
-			model.addAttribute("periodoLetivo",
-					periodoAvaliacao.getSemestreLetivo());
-			return "/avaliacaoTurma/menuPrincipalView";
-		} catch (Exception exc) {
-			model.addAttribute("error", exc.getMessage());
-			return "/homeView";
-		}
-	}
-
 	@RequestMapping(value = "/solicitaAvaliacaoTurma", method = RequestMethod.POST)
 	public String solicitaAvaliacaoTurma(@ModelAttribute("cpf") String cpf, // get
 																			// from
