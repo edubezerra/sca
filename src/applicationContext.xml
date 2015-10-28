@@ -8,7 +8,9 @@
 	<context:annotation-config />
 
 	<bean id="AvaliacaoTurmaServiceBean" class="br.cefetrj.sca.service.AvaliacaoTurmaService" />
-	<bean id="FornecerGradeServiceBean" class="br.cefetrj.sca.service.FornecerGradeService" />
+
+	<bean id="FornecerGradeServiceBean" class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService"/>
+
 	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
 	<bean id="AutenticacaoServiceBean" class="br.cefetrj.sca.service.MockAutenticacaoService" />
@@ -27,6 +29,8 @@
 	<bean id="AlunoFabricaBean" class="br.cefetrj.sca.dominio.AlunoFabrica" />
 
 	<bean id="CursoRepositorioBean" class="br.cefetrj.sca.infra.jpa.CursoRepositorioJpa" />
+
+	<bean id="FichaDisponibilidadeFabricaBean" class=" br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidadeFabrica" />
 
 	<bean id="ProfessorRepoBean" class="br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio" />
 	<bean id="QuesitoRepoBean" class="br.cefetrj.sca.dominio.repositorio.QuesitoRepositorio" />

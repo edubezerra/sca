@@ -11,7 +11,7 @@ public class AlunoFabrica {
 	}
 
 	public Aluno criar(String aluno_nome, String aluno_matricula, String aluno_cpf, String codigoSigla) {
-		Aluno aluno = new Aluno(aluno_nome, aluno_matricula, aluno_cpf);
+		Aluno aluno = new Aluno(aluno_nome, aluno_cpf, aluno_matricula);
 		Curso curso = crep.getPorSigla(codigoSigla);
 		aluno.setCurso(curso);
 		return aluno;

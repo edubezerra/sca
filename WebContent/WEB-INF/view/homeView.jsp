@@ -53,7 +53,7 @@ ao avaliar seus atuais professores.</p>
 
 	<div class="table">
 		<form class="row"
-				action="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal"
+				action="${pageContext.request.contextPath}/menuPrincipal"
 				method="post">
 
 

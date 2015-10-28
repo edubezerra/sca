@@ -7,10 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import br.cefetrj.sca.dominio.contas.Email;
 
 @Entity
 public class Aluno {
@@ -23,22 +19,13 @@ public class Aluno {
 	private Long id;
 
 	/**
-	 * Nome do aluno.
-	 */
-	private String nome;
-
-	/**
 	 * Matrícula do aluno, composta de <code>TAM_MATRICULA</code> carateres.
 	 */
 	private String matricula;
 
+
 	@Embedded
-	private Email email;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataNascimento;
-
-	private String cpf;
+	Pessoa pessoa;
 
 	@ManyToOne
 	private Curso curso;
@@ -51,16 +38,11 @@ public class Aluno {
 	private Aluno() {
 	}
 
-	public Aluno(String nome, String matricula, String cpf) {
-		this(nome, matricula);
+	public Aluno(String nome, String cpf, String matricula) {
 		if (cpf == null || cpf.equals("")) {
 			throw new IllegalArgumentException("CPF deve ser fornecido.");
 		}
-		this.cpf = cpf;
-	}
 
-	public Aluno(String nome, String matricula) {
-		super();
 		if (nome == null || nome.equals("")) {
 			throw new IllegalArgumentException("Nome não pode ser vazio.");
 		}
@@ -68,25 +50,26 @@ public class Aluno {
 			throw new IllegalArgumentException("Matrícula não pode ser vazia.");
 		}
 		if (!(matricula.length() >= TAM_MIN_MATRICULA && matricula.length() <= TAM_MAX_MATRICULA)) {
-			throw new IllegalArgumentException("Matrícula deve ter entre " + TAM_MIN_MATRICULA + " e "
-					+ TAM_MAX_MATRICULA + " caracteres: " + matricula);
+			throw new IllegalArgumentException("Matrícula deve ter entre "
+					+ TAM_MIN_MATRICULA + " e " + TAM_MAX_MATRICULA
+					+ " caracteres: " + matricula);
 		}
-		this.nome = nome;
+		this.pessoa = new Pessoa(nome, cpf);
 		this.matricula = matricula;
 	}
 
-	public Aluno(String nome, String matricula, Date dataNascimento, String enderecoEmail) {
-		this(nome, matricula);
-		this.dataNascimento = dataNascimento;
-		this.email = new Email(enderecoEmail);
+	public Aluno(String nome, String cpf, String matricula, Date dataNascimento,
+			String enderecoEmail) {
+		this(nome, cpf, matricula);
+		this.pessoa = new Pessoa(nome, dataNascimento, enderecoEmail);
 	}
 
 	public String getNome() {
-		return nome;
+		return this.pessoa.getNome();
 	}
 
 	public Date getDataNascimento() {
-		return dataNascimento;
+		return pessoa.getDataNascimento();
 	}
 
 	public String getMatricula() {
@@ -94,11 +77,11 @@ public class Aluno {
 	}
 
 	public String getEmail() {
-		return email.getEndereco();
+		return pessoa.getEmail().toString();
 	}
 
 	public String getCpf() {
-		return cpf;
+		return this.pessoa.getCpf();
 	}
 
 	public void setCurso(Curso curso) {

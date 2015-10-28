@@ -37,7 +37,11 @@ public class ImportadorDocentesTurmasAlocacoes {
 	 */
 	private HashMap<String, String> turmas_docentes = new HashMap<>();
 
-	public static void run(EntityManager em) {
+	public static void main(String[] args) {
+		ImportadorDocentesTurmasAlocacoes.run();
+	}
+
+	public static void run() {
 		System.out.println("ImportadorInformacoesMatricula.main()");
 		try {
 			String arquivoPlanilha = "./planilhas/ALOCACAO.DOCENTES.2015.1.xls";

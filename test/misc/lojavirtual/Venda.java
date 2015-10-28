@@ -78,15 +78,11 @@ public class Venda {
 			throw new IllegalArgumentException("Quantidade não é positiva!");
 		}
 		ItemVenda iv = new ItemVenda(p, qtd);
-		boolean jaPossui = false;
 		for (ItemVenda itemVenda : itensVenda) {
-			if (itemVenda.equals(iv)) {
-				jaPossui = true;
-				break;
+			if (itemVenda.getNomeProduto().equals(p.getNome())) {
+				throw new IllegalStateException(
+						"Pedido já possui um item com o mesmo produto!");
 			}
-		}
-		if (jaPossui) {
-			throw new IllegalStateException("Pedido já possui um item com o mesmo produto!");
 		}
 		this.itensVenda.add(iv);
 	}
@@ -102,18 +98,13 @@ public class Venda {
 		if (p == null) {
 			throw new IllegalArgumentException("Produto não informado!");
 		}
-		boolean contemProduto = false;
-		ItemVenda iv = null;
 		for (ItemVenda itemVenda : itensVenda) {
 			if (itemVenda.getProduto().equals(p)) {
-				contemProduto = true;
-				iv = itemVenda;
-				break;
+				this.itensVenda.remove(itemVenda);
+				return;
 			}
 		}
-		if (!contemProduto) {
-			throw new IllegalStateException("Produto informado não consta na venda!");
-		}
-		this.itensVenda.remove(iv);
+		throw new IllegalStateException(
+				"Produto informado não consta na venda!");
 	}
 }

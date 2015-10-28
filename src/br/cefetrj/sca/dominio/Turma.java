@@ -55,7 +55,7 @@ public class Turma {
 	/**
 	 * Informações sobre locais e horários de aulas dessa turma.
 	 */
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "TURMA_ID", referencedColumnName = "ID")
 	private List<Aula> aulas = new ArrayList<>();
 
@@ -83,6 +83,12 @@ public class Turma {
 	 * <code>CAPACIDADE_PRESUMIDA</code>. O semestre letvo da turma criada é
 	 * <code>SemestreLetivo.SEMESTRE_LETIVO_CORRENTE</code>.
 	 * 
+	 * @param disciplina
+	 *            disciplina para a qual esta turma é criada.
+	 * 
+	 * @param codigo
+	 *            código da turma.
+	 * 
 	 */
 	public Turma(Disciplina disciplina, String codigo) {
 
@@ -109,6 +115,18 @@ public class Turma {
 	/**
 	 * Cria uma turma com disciplina, código, número de vagas e semestre letivo
 	 * fornecidos como parâmetros. A capacidade máxima da turma criada é igual a
+	 * 
+	 * @param disciplina
+	 *            disciplina para a qual a turma é aberta
+	 * 
+	 * @param codigo
+	 *            código da turma
+	 * 
+	 * @param numeroVagas
+	 *            quantidades de vagas oferecidas na turma
+	 * 
+	 * @param periodo
+	 *            período letivo em que a turma é ofertada
 	 */
 	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas,
 			SemestreLetivo periodo) {
@@ -158,10 +176,6 @@ public class Turma {
 		return Collections.unmodifiableSet(this.inscricoes);
 	}
 
-	public void adicionarAula(EnumDiaSemana dia, String inicio, String fim) {
-		this.aulas.add(new Aula(dia, inicio, fim));
-	}
-
 	public void lancarAvaliacao(Aluno aluno, Aproveitamento avaliacao) {
 		Inscricao inscricao = getInscricao(aluno);
 		inscricao.registrarAvaliacao(avaliacao);
@@ -181,6 +195,9 @@ public class Turma {
 	 * 
 	 * RN02: Uma turma não pode ter mais alunos inscritos do que a capacidade
 	 * máxima definida para ela.
+	 * 
+	 * @param aluno
+	 *            aluno para inscrever na turma.
 	 */
 	public void inscreverAluno(Aluno aluno) {
 		if (inscricoes.size() + 1 > capacidadeMaxima) {
@@ -250,5 +267,12 @@ public class Turma {
 
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
+	}
+
+	public void adicionarAula(String diaSemana, String horarioInicio,
+			String horarioTermino, LocalAula local) {
+		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
+				horarioTermino, local);
+		this.aulas.add(a);
 	}
 }

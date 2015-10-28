@@ -9,9 +9,11 @@ public interface DisciplinaDao {
 
 	void gravar(List<Disciplina> lista);
 
-	Disciplina getByNome(String nome);
-
 	List<Disciplina> getDisciplinas();
 
 	void excluir(Disciplina disciplina);
+
+	Disciplina getByNome(String nome);
+
+	Disciplina getByCodigo(String codigoDisciplina);
 }

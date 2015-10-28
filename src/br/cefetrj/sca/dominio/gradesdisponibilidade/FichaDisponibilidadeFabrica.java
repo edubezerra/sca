@@ -20,13 +20,24 @@ public class FichaDisponibilidadeFabrica {
 	 * @param matriculaProfessor
 	 *            matrícula do professor para o qual criar a ficha de
 	 *            disponibilidade.
+	 * 
+	 * @return ficha de disponibilidades recém construída.
 	 */
 	public FichaDisponibilidade criar(String matriculaProfessor) {
-		Professor professor = profRepo.obterProfessor(matriculaProfessor);
-		FichaDisponibilidade ficha = new FichaDisponibilidade(professor.getMatricula(), professor.getNome());
-		ficha.definirDisciplinas(professor.getHabilitacoes());
-		ficha.definirTemposAula(ItemHorario.itens());
-		ficha.definirDiasSemana(EnumDiaSemana.dias());
-		return ficha;
+		Professor professor = profRepo.getProfessor(matriculaProfessor);
+		return criar(professor);
+	}
+
+	public FichaDisponibilidade criar(Professor professor) {
+		if (professor != null) {
+			FichaDisponibilidade ficha = new FichaDisponibilidade(
+					professor.getMatricula(), professor.getNome());
+			ficha.definirHabilitacoes(professor.getHabilitacoes());
+			ficha.definirTemposAula(ItemHorario.itens());
+			ficha.definirDiasSemana(EnumDiaSemana.dias());
+			return ficha;
+		} else {
+			return null;
+		}
 	}
 }

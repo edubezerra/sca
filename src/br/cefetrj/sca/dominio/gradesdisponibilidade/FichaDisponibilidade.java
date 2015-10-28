@@ -10,7 +10,7 @@ import br.cefetrj.sca.dominio.Intervalo;
 public class FichaDisponibilidade {
 	String nomeProfessor;
 	String matriculaProfessor;
-	List<Disciplina> disciplinas = new ArrayList<>();
+	List<Disciplina> habilitacoes = new ArrayList<>();
 	List<Intervalo> temposAula = new ArrayList<>();
 	List<String> diasSemana = new ArrayList<>();
 
@@ -27,16 +27,16 @@ public class FichaDisponibilidade {
 		return matriculaProfessor;
 	}
 
-	public List<Disciplina> getDisciplinas() {
-		return java.util.Collections.unmodifiableList(disciplinas);
+	public List<Disciplina> getHabilitacoes() {
+		return java.util.Collections.unmodifiableList(habilitacoes);
 	}
 
 	public List<Intervalo> getIntervalos() {
 		return java.util.Collections.unmodifiableList(temposAula);
 	}
 
-	public void definirDisciplinas(Set<Disciplina> habilitacoes) {
-		this.disciplinas.addAll(habilitacoes);
+	public void definirHabilitacoes(Set<Disciplina> habilitacoes) {
+		this.habilitacoes.addAll(habilitacoes);
 	}
 
 	public void definirTemposAula(List<Intervalo> itens) {

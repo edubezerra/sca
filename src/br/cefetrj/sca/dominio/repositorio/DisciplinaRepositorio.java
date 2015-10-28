@@ -15,9 +15,6 @@ public class DisciplinaRepositorio {
 	@Autowired
 	private DisciplinaDao dao;
 
-	private DisciplinaRepositorio() {
-	}
-
 	public void adicionar(Disciplina d) {
 		dao.gravar(d);
 	}
@@ -29,7 +26,7 @@ public class DisciplinaRepositorio {
 	 * @return a disciplina cujo nome foi passado como parâmetro, se existir;
 	 *         null em caso contrário.
 	 */
-	public Disciplina getDisciplina(String nome) {
+	public Disciplina getDisciplinaPorNome(String nome) {
 		return dao.getByNome(nome);
 	}
 
@@ -40,5 +37,9 @@ public class DisciplinaRepositorio {
 	public boolean estaContidaEm(Set<Disciplina> preReqs,
 			Set<Disciplina> cursadas) {
 		return cursadas.containsAll(preReqs);
+	}
+
+	public Disciplina getDisciplinaPorCodigo(String codigoDisciplina) {
+		return dao.getByCodigo(codigoDisciplina);
 	}
 }

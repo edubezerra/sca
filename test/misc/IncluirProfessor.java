@@ -3,7 +3,7 @@ package misc;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import br.cefetrj.sca.service.FornecerGradeService;
+import br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio;
 
 public class IncluirProfessor {
 	private static ApplicationContext context;
@@ -12,10 +12,10 @@ public class IncluirProfessor {
 		context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
 
-		FornecerGradeService serv = (FornecerGradeService) context
-				.getBean("FornecerGradeServiceBean");
+		ProfessorRepositorio serv = (ProfessorRepositorio) context
+				.getBean("ProfessorRepoBean");
 
-		serv.incluirProfessor("1506449", "Eduardo Bezerra");
+		serv.adicionar("1506449", "Eduardo Bezerra");
 
 		try {
 			Thread.sleep(3000);

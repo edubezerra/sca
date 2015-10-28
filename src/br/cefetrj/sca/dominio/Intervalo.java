@@ -15,10 +15,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Intervalo implements Cloneable {
 	/**
-	 * Formatador usado para trasformar as strings passadas na constru��o do
+	 * Formatador usado para trasformar as strings passadas na construção do
 	 * objeto em objeto da classe {@link Date} .
 	 */
-	private static DateFormat formatador = new SimpleDateFormat("hh:mm");
+	private static DateFormat formatador = new SimpleDateFormat("HH:mm");
 
 	/** inicio do intervalo. */
 	private Date inicio;
@@ -29,39 +29,37 @@ public class Intervalo implements Cloneable {
 	/**
 	 * 
 	 * @param strInicio
-	 *            in�cio do intervalo, no formato hh:mm (e.g., "10:30")
+	 *            início do intervalo (e.g., "10:30")
 	 * @param strFim
-	 *            fim do intervalo, no formato H:mm (e.g., "12:00")
-	 * @throws ParseException
-	 *             se a o formato de in�cio ou fim n�o � hh:mm.
+	 *            fim do intervalo (e.g., "12:00")
 	 * @throws IllegalArgumentException
-	 *             se o in�cio n�o for anterior ao fim.
+	 *             se o início não for anterior ao fim.
 	 */
 	public Intervalo(final String strInicio, final String strFim) {
 		try {
 			this.inicio = (Date) formatador.parse(strInicio);
 			this.fim = (Date) formatador.parse(strFim);
 		} catch (ParseException e) {
-			throw new IllegalArgumentException("Argumentos inv�lidos: ("
+			throw new IllegalArgumentException("Argumentos inválidos: ("
 					+ strInicio + ", " + strFim + ")", e);
 		}
 		if (inicio.after(fim)) {
 			throw new IllegalArgumentException(
-					"In�cio deve ser anterior ao fim.");
+					"Início do intervalo deve ser anterior ao fim.");
 		}
 	}
 
 	/**
 	 * 
 	 * @param dtInicio
-	 *            in�cio do intervalo, no formato hh:mm (e.g., "10:30")
+	 *            início do intervalo (e.g., "10:30")
 	 * @param dtFim
-	 *            fim do intervalo, no formato H:mm (e.g., "12:00")
+	 *            fim do intervalo (e.g., "12:00")
 	 */
 	private Intervalo(final Date dtInicio, final Date dtFim) {
 		if (dtInicio.after(dtFim)) {
 			throw new IllegalArgumentException(
-					"In�cio deve ser anterior ao fim.");
+					"Início deve ser anterior ao fim.");
 		}
 		this.inicio = dtInicio;
 		this.fim = dtFim;
@@ -96,8 +94,8 @@ public class Intervalo implements Cloneable {
 	 * Verifica se h� colis�o entre dois intervalos.
 	 * 
 	 * @param outroIntervalo
-	 *            o intervalo com o qual a compara��o � feita.
-	 * @return true se h� colis�o entre os intervalos; false em caso contr�rio.
+	 *            o intervalo com o qual a comparação é feita.
+	 * @return true se há colisão entre os intervalos; false em caso contr�rio.
 	 */
 	public Boolean colide(final Intervalo outroIntervalo) {
 		return !outroIntervalo.inicio.before(this.inicio)
@@ -123,8 +121,8 @@ public class Intervalo implements Cloneable {
 	 * iguais se eles possuem os mesmos in�cio e fim.
 	 * 
 	 * @param outroIntervalo
-	 *            o intervalo com o qual a compara��o � feita.
-	 * @return true se h� colis�o entre os intervalos; false em caso contr�rio.
+	 *            o intervalo com o qual a comparação é feita.
+	 * @return true se há colisão entre os intervalos; false em caso contr�rio.
 	 */
 	@Override
 	public boolean equals(Object outroIntervalo) {
@@ -160,4 +158,21 @@ public class Intervalo implements Cloneable {
 		}
 		return true;
 	}
+
+	public Intervalo unir(Intervalo outro) {
+		Intervalo primeiro, segundo;
+		if (this.inicio.equals(outro.fim)) {
+			primeiro = outro;
+			segundo = this;
+		} else if (outro.inicio.equals(this.fim)) {
+			primeiro = this;
+			segundo = outro;
+		} else {
+			throw new IllegalArgumentException(
+					"Intervalos não são compatíveis para união.");
+		}
+		Intervalo unido = new Intervalo(primeiro.getInicio(), segundo.getFim());
+		return unido;
+	}
+
 }

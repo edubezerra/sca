@@ -1,5 +1,7 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,11 +28,6 @@ public class Professor {
 	private Long id;
 
 	/**
-	 * Nome completo do professor.
-	 */
-	private String nome;
-
-	/**
 	 * Matrícula do professor, composta apenas de dígitos e de tamanho 7.
 	 */
 	private String matricula;
@@ -42,13 +39,13 @@ public class Professor {
 	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = {
 			@JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
 					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
-	private Set<Disciplina> habilitacoes;
-
-	@ManyToOne
-	private Departamento departamento;
+	private Set<Disciplina> habilitacoes = new HashSet<>();
 
 	@Embedded
-	private Email email;
+	Pessoa pessoa;
+	
+	@ManyToOne
+	private Departamento departamento;
 
 	public Long getId() {
 		return id;
@@ -60,15 +57,16 @@ public class Professor {
 	}
 
 	public Professor(String matricula, String nome, String email) {
-		this(matricula, nome);
-		this.email = new Email(email);
+		this(matricula);
+		this.pessoa = new Pessoa(nome, new Email(email));
 	}
 
 	public Professor(String matricula, String nome) {
-		if (nome == null || nome.isEmpty()) {
-			throw new IllegalArgumentException("Nome é obrigatório.");
-		}
-		this.nome = nome;
+		this(matricula);
+		this.pessoa = new Pessoa(nome);
+	}
+
+	public Professor(String matricula) {
 		if (matricula == null || matricula.isEmpty()) {
 			throw new IllegalArgumentException("Matrícula é obrigatório.");
 		}
@@ -96,17 +94,16 @@ public class Professor {
 		return true;
 	}
 
-	public boolean estaHabilitado(Disciplina d) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean estaHabilitado(Disciplina disciplina) {
+		return this.habilitacoes.contains(disciplina);
 	}
 
 	public String getNome() {
-		return nome;
+		return this.pessoa.getNome();
 	}
 
 	public Set<Disciplina> getHabilitacoes() {
-		return this.getHabilitacoes();
+		return Collections.unmodifiableSet(this.habilitacoes);
 	}
 
 	public String getMatricula() {
@@ -128,5 +125,9 @@ public class Professor {
 
 	public Departamento getDepartmento() {
 		return departamento;
+	}
+
+	public void habilitarPara(Disciplina d) {
+		this.habilitacoes.add(d);
 	}
 }
