@@ -21,12 +21,12 @@ import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
 /**
- * Realiza a carga de horários de objetos Professor, Turma. Realiza também carga
- * de dados relativos a alocações de professores a turmas.
+ * Realiza a carga de dados de objetos Turma (associações para professores e
+ * aulas).
  *
  */
 
-public class ImportadorDocentesTurmasAlocacoes {
+public class ImportadorTurmas {
 	/**
 	 * Dicionário de pares (matrícula, nome) de cada aluno.
 	 */
@@ -38,14 +38,14 @@ public class ImportadorDocentesTurmasAlocacoes {
 	private HashMap<String, String> turmas_docentes = new HashMap<>();
 
 	public static void main(String[] args) {
-		ImportadorDocentesTurmasAlocacoes.run();
+		ImportadorTurmas.run();
 	}
 
 	public static void run() {
 		System.out.println("ImportadorInformacoesMatricula.main()");
 		try {
 			String arquivoPlanilha = "./planilhas/ALOCACAO.DOCENTES.2015.1.xls";
-			ImportadorDocentesTurmasAlocacoes iim = new ImportadorDocentesTurmasAlocacoes();
+			ImportadorTurmas iim = new ImportadorTurmas();
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
@@ -56,16 +56,12 @@ public class ImportadorDocentesTurmasAlocacoes {
 	}
 
 	private void gravarDadosImportados() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("SCAPU");
 
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();
-
-		Set<String> profsIt = profs_nomes.keySet();
-		for (String matrProfessor : profsIt) {
-			em.persist(new Professor(matrProfessor, profs_nomes.get(matrProfessor)));
-		}
 
 		Set<String> ofertasIt = turmas_docentes.keySet();
 		for (String codTurma : ofertasIt) {
@@ -81,39 +77,43 @@ public class ImportadorDocentesTurmasAlocacoes {
 				turma = null;
 			}
 			if (turma != null) {
-				query = em.createQuery("from Professor p where p.matricula = ?");
+				query = em
+						.createQuery("from Professor p where p.matricula = ?");
 				query.setParameter(1, turmas_docentes.get(codTurma));
 
 				Professor professor = null;
 				try {
 					professor = (Professor) query.getSingleResult();
 				} catch (NoResultException e) {
-					System.out.println("Professor nao encontrado: " + turmas_docentes.get(codTurma));
+					System.out.println("Professor nao encontrado: "
+							+ turmas_docentes.get(codTurma));
 				}
 				if (professor != null) {
 					turma.setProfessor(professor);
 					em.merge(turma);
 				}
 			}
-
 		}
 		em.getTransaction().commit();
-
 	}
 
-	private void importarPlanilha(String arquivoPlanilha) throws BiffException, IOException {
+	private void importarPlanilha(String arquivoPlanilha) throws BiffException,
+			IOException {
 		File inputWorkbook = new File(arquivoPlanilha);
 		importarPlanilha(inputWorkbook);
 	}
 
-	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE",
-			"ANO", "PERIODO", "NOME_DOCENTE", "MATR_DOCENTE" };
+	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
+			"TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "ANO", "PERIODO",
+			"NOME_DOCENTE", "MATR_DOCENTE" };
 
-	private void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
+	private void importarPlanilha(File inputWorkbook) throws BiffException,
+			IOException {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
-		System.out.println("Iniciando importação de dados relativos alocações de docentes a turmas...");
+		System.out
+				.println("Iniciando importação de dados relativos alocações de docentes a turmas...");
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
@@ -125,17 +125,21 @@ public class ImportadorDocentesTurmasAlocacoes {
 			/**
 			 * Dados relativos aos docentes.
 			 */
-			String prof_matricula = sheet.getCell(colunasList.indexOf("MATR_DOCENTE"), i).getContents();
-			String prof_nome = sheet.getCell(colunasList.indexOf("NOME_DOCENTE"), i).getContents();
+			String prof_matricula = sheet.getCell(
+					colunasList.indexOf("MATR_DOCENTE"), i).getContents();
+			String prof_nome = sheet.getCell(
+					colunasList.indexOf("NOME_DOCENTE"), i).getContents();
 
 			profs_nomes.put(prof_matricula, prof_nome);
 
 			/**
 			 * Dados sobre alocações de turmas a professores.
 			 */
-			String matr_prof = sheet.getCell(colunasList.indexOf("MATR_DOCENTE"), i).getContents();
+			String matr_prof = sheet.getCell(
+					colunasList.indexOf("MATR_DOCENTE"), i).getContents();
 
-			String turma_codigo = sheet.getCell(colunasList.indexOf("COD_TURMA"), i).getContents();
+			String turma_codigo = sheet.getCell(
+					colunasList.indexOf("COD_TURMA"), i).getContents();
 
 			turmas_docentes.put(turma_codigo, matr_prof);
 		}

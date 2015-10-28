@@ -15,8 +15,8 @@ public class SpecMain {
 		List<LocalAula> locais = mRepositorio
 				.findAllBySpecification(desalocadoAndPossuiEspaco);
 		/**
-		 * Imprime todos os locais de aula que est~ao desalocados e comportam a
-		 * turma em quest~ao.
+		 * Imprime todos os locais de aula que estão desalocados e comportam a
+		 * turma em questão.
 		 */
 		for (LocalAula localAula : locais) {
 			System.out.println(localAula.getId() + "\t"
@@ -24,7 +24,7 @@ public class SpecMain {
 		}
 		
 		/**
-		 * Imprime todos os locais de aula que estao desalocados.
+		 * Imprime todos os locais de aula que estão desalocados.
 		 */
 		Specification<LocalAula> desalocado = new EstaDesalocado();
 		locais = mRepositorio

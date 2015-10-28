@@ -6,6 +6,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import br.cefetrj.sca.dominio.LocalAula;
+import br.cefetrj.sca.dominio.SemestreLetivo;
+
 abstract public class CompositeSpecification<T> implements Specification<T> {
 
 	@Override
@@ -27,5 +30,10 @@ abstract public class CompositeSpecification<T> implements Specification<T> {
 	public Class<T> getType() {
 		ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
 		return (Class<T>)type.getActualTypeArguments()[0];
+	}
+
+	public boolean isSatisfiedBy(LocalAula local, SemestreLetivo periodo) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

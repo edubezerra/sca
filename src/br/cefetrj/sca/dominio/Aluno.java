@@ -1,12 +1,14 @@
 package br.cefetrj.sca.dominio;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Aluno {
@@ -29,6 +31,9 @@ public class Aluno {
 
 	@ManyToOne
 	private Curso curso;
+
+	@OneToOne
+	private HistoricoEscolar historico;
 
 	public Long getId() {
 		return id;
@@ -89,5 +94,13 @@ public class Aluno {
 			throw new IllegalArgumentException("Curso deve ser definido!");
 		}
 		this.curso = curso;
+	}
+
+	public List<Disciplina> getDisciplinasPossiveis() {
+		return historico.getDisciplinasPossiveis();
+	}
+
+	public HistoricoEscolar getHistorico() {
+		return historico;
 	}
 }
