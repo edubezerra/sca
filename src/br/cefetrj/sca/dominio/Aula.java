@@ -51,4 +51,8 @@ public class Aula {
 		return id;
 	}
 
+	public LocalAula getLocal() {
+		return this.local;
+	}
+
 }
