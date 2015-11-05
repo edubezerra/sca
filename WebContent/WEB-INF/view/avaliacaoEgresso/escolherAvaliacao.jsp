@@ -1,5 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page session="false"%>
+<%@ page session="false" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,17 +28,11 @@
 
 	<ul>
 		<li><a
-			href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
-				Avaliar turmas (${requestScope.periodoLetivo})</a></li>
+			href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioMedio">
+				Avaliação Egresso Médio/Técnico </a></li>
 		<li><a
-			href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
-				Fornecer Grade de Disponibilidades (${requestScope.periodoLetivo})</a></li>
-				<li><a
-			href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
-				Avaliar Egresso (${requestScope.periodoLetivo})</a></li>
-		<li><a
-			href="${pageContext.request.contextPath}/logout">
-				Sair do sistema</a></li>
+			href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioGraduacao">
+				Avaliar Egresso Graduação</a></li>
 	</ul>
 </body>
 </html>

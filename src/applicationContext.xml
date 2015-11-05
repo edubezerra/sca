@@ -10,7 +10,7 @@
 	<bean id="AvaliacaoTurmaServiceBean" class="br.cefetrj.sca.service.AvaliacaoTurmaService" />
 
 	<bean id="FornecerGradeServiceBean" class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService"/>
-
+	<bean id="AvaliacaoEgressoServiceBean" class="br.cefetrj.sca.service.AvaliacaoEgressoService" />
 	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
 	<bean id="AutenticacaoServiceBean" class="br.cefetrj.sca.service.MockAutenticacaoService" />
