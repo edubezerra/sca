@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
-public class Aproveitamento {
+public class NotaFinal {
 
 	@Id
 	@GeneratedValue
@@ -25,7 +25,7 @@ public class Aproveitamento {
 	@Autowired
 	private EstrategiaAvaliacaoAluno estrategia;
 
-	private Aproveitamento() {
+	private NotaFinal() {
 	}
 
 	public Long getId() {

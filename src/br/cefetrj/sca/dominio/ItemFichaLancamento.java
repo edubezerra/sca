@@ -4,7 +4,7 @@ public class ItemFichaLancamento {
 
 	private String nomeAluno;
 	private String matriculaAluno;
-	private Aproveitamento aproveitamento;
+	private NotaFinal aproveitamento;
 
 	public ItemFichaLancamento(String nome, String matricula) {
 		this.nomeAluno = nome;

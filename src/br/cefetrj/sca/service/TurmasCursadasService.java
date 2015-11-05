@@ -101,7 +101,7 @@ public class TurmasCursadasService {
 						inscricao.getAluno().getMatricula())) {
 					EnumSituacaoFinalAvaliacao avaliacao = inscricao
 							.getAvaliacao();
-					if (avaliacao != EnumSituacaoFinalAvaliacao.AP) {
+					if (avaliacao != EnumSituacaoFinalAvaliacao.APROVADO) {
 						break;
 					}
 					turmas.add(turma);

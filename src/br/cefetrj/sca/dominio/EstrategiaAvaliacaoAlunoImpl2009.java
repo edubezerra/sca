@@ -12,7 +12,7 @@ public class EstrategiaAvaliacaoAlunoImpl2009 implements
 	 * Determina a nota final do aluno na turma correspondente, obtida pela
 	 * média simples entre as três notas obtidas.
 	 */
-	public BigDecimal getNotaFinal(Aproveitamento avaliacao) {
+	public BigDecimal getNotaFinal(NotaFinal avaliacao) {
 		double notaFinal = 0.0;
 		notaFinal = (avaliacao.getNotaP1().doubleValue()
 				+ avaliacao.getNotaP2().doubleValue() + avaliacao.getNotaP3()
@@ -25,7 +25,7 @@ public class EstrategiaAvaliacaoAlunoImpl2009 implements
 	 * possíveis são "A", "B", "C" e "I".
 	 */
 	@Override
-	public String getConceito(Aproveitamento avaliacao) {
+	public String getConceito(NotaFinal avaliacao) {
 		String grau;
 		if (avaliacao.getFrequencia().doubleValue() < 0.75)
 			grau = "I";
@@ -49,16 +49,16 @@ public class EstrategiaAvaliacaoAlunoImpl2009 implements
 	 * (aprovado) ou RM (reprovado por média).
 	 */
 	@Override
-	public EnumSituacaoFinalAvaliacao getSituacaoFinal(Aproveitamento avaliacao) {
+	public EnumSituacaoFinalAvaliacao getSituacaoFinal(NotaFinal avaliacao) {
 		String grau = this.getConceito(avaliacao);
 		if (avaliacao == null) {
 			return EnumSituacaoFinalAvaliacao.INDEFINIDA;
 		} else if (avaliacao.getFrequencia().doubleValue() < 0.75) {
-			return EnumSituacaoFinalAvaliacao.RF;
+			return EnumSituacaoFinalAvaliacao.REPROVADO_POR_FALTAS;
 		} else if (grau.equals("A") || grau.equals("B") || grau.equals("C")) {
-			return EnumSituacaoFinalAvaliacao.AP;
+			return EnumSituacaoFinalAvaliacao.APROVADO;
 		} else {
-			return EnumSituacaoFinalAvaliacao.RM;
+			return EnumSituacaoFinalAvaliacao.REPROVADO_POR_MEDIA;
 		}
 	}
 }

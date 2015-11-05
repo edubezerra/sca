@@ -3,10 +3,10 @@ package br.cefetrj.sca.dominio;
 import java.math.BigDecimal;
 
 public interface EstrategiaAvaliacaoAluno {
-	public String getConceito(Aproveitamento aproveitamento);
+	public String getConceito(NotaFinal aproveitamento);
 
 	public EnumSituacaoFinalAvaliacao getSituacaoFinal(
-			Aproveitamento aproveitamento);
+			NotaFinal aproveitamento);
 
-	public BigDecimal getNotaFinal(Aproveitamento aproveitamento);
+	public BigDecimal getNotaFinal(NotaFinal aproveitamento);
 }
