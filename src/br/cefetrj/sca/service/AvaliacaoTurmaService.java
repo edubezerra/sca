@@ -8,15 +8,13 @@ import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.dominio.SemestreLetivo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.AvaliacaoTurmaRepositorio;
-import br.cefetrj.sca.dominio.repositorio.QuesitoRepositorio;
+import br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.TurmaRepositorio;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoResponse;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
@@ -34,7 +32,7 @@ public class AvaliacaoTurmaService {
 	private AvaliacaoTurmaRepositorio avaliacaoRepo;
 
 	@Autowired
-	private QuesitoRepositorio quesitoRepo;
+	private FormularioAvaliacaoRepositorio formRepo;
 
 	/**
 	 * Essa opsis é invocada quando um aluno solicita a avaliação de turmas.
@@ -84,7 +82,7 @@ public class AvaliacaoTurmaService {
 					"Erro: turma já avaliada pelo aluno.");
 		}
 
-		List<Quesito> quesitos = quesitoRepo.obterTodos();
+		List<Quesito> quesitos = formRepo.obterQuesitos("Turma");
 
 		SolicitaAvaliacaoTurmaResponse response = new SolicitaAvaliacaoTurmaResponse(
 				codigoTurma, turma.getDisciplina().getNome());
@@ -116,7 +114,7 @@ public class AvaliacaoTurmaService {
 						"Erro: turma já avaliada pelo aluno.");
 			}
 
-			List<Quesito> quesitos = quesitoRepo.obterTodos();
+			List<Quesito> quesitos = formRepo.obterQuesitos("Turma");
 			int numRespostas = quesitos.size();
 
 			if (respostas == null || respostas.size() != numRespostas) {

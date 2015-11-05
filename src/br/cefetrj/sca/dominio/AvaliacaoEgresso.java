@@ -1,11 +1,15 @@
 package br.cefetrj.sca.dominio;
 
 
-import javax.persistence.Entity;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
@@ -21,24 +25,27 @@ public class AvaliacaoEgresso {
 	private Aluno alunoAvaliador;
 	
 	@ManyToOne
-	private FormularioAvaliacaoEgresso formEgresso;
-	
-	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Alternativa alternativa;
+	private FormularioAvaliacao formAvaliacao;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "RESPOSTA", joinColumns = {
+			@JoinColumn(name = "AVALIACAOEGRESSO_ID", referencedColumnName = "ID", nullable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "ALTERNATIVA_ID", referencedColumnName = "ID", nullable = false) })
+	private List<Alternativa> alternativas;
 	
 	@SuppressWarnings("unused")
 	private AvaliacaoEgresso() {
 	}
 
-	public AvaliacaoEgresso(Aluno aluno, FormularioAvaliacaoEgresso formulario, Alternativa alternativa) {
+	public AvaliacaoEgresso(Aluno aluno, FormularioAvaliacao formulario, Alternativa alternativa) {
 		if (aluno == null || formulario == null || alternativa == null) {
 			throw new IllegalArgumentException(
 					"Erro: argumentos inválidos para AvaliacaoEgresso().");
 		}
 
 		this.alunoAvaliador = aluno;
-		this.formEgresso = formulario;
+		this.formAvaliacao = formulario;
 	}
 
 	public Long getId() {
@@ -49,8 +56,8 @@ public class AvaliacaoEgresso {
 		return alunoAvaliador;
 	}
 	
-	public Alternativa getAlternativa() {
-		return alternativa;
+	public List<Alternativa> getAlternativas() {
+		return alternativas;
 	}
 
 }

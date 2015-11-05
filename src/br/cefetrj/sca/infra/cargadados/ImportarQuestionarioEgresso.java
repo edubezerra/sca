@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import br.cefetrj.sca.dominio.FormularioAvaliacaoEgresso;
+import br.cefetrj.sca.dominio.FormularioAvaliacao;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
@@ -15,7 +15,7 @@ public class ImportarQuestionarioEgresso {
 	public static void run() {
 		System.out.println("ImportadorQuestionarioEgresso.main()");
 		
-		FormularioAvaliacaoEgresso formGrad = new FormularioAvaliacaoEgresso();
+		FormularioAvaliacao formGrad = new FormularioAvaliacao("Egresso", "Avaliação do Egresso");
 		Quesito q1 = new Quesito("Atualmente o(a) Sr.(a) está:");
 		q1.adicionarAlternativa(new Alternativa("Trabalhando (vá para 2)"));
 		q1.adicionarAlternativa(new Alternativa("Trabalhando e estudando (vá para 2)"));
@@ -63,8 +63,8 @@ public class ImportarQuestionarioEgresso {
 		// criar a alternativa com a string de resposta
 		
 		Quesito q8 = new Quesito("O conhecimento técnico adquirido no CEFET-RJ durante sua formação foi suficiente e está adequado ao seu trabalho ?");
-		q6.adicionarAlternativa(new Alternativa("Sim"));
-		q6.adicionarAlternativa(new Alternativa("Não"));
+		q8.adicionarAlternativa(new Alternativa("Sim"));
+		q8.adicionarAlternativa(new Alternativa("Não"));
 		
 		Quesito q9 = new Quesito("Houve a necessidade do aprendizado de outros conhecimentos teóricos não abordados no seu curso ?");
 		q9.adicionarAlternativa(new Alternativa("Muitos"));
@@ -77,6 +77,7 @@ public class ImportarQuestionarioEgresso {
 		q10.adicionarAlternativa(new Alternativa("Práticas em laboratório"));
 		q10.adicionarAlternativa(new Alternativa("Aulas teóricas"));
 		q10.adicionarAlternativa(new Alternativa("Articulação teoria x práticas em laboratório"));
+		q10.adicionarAlternativa(new Alternativa("Outro. Qual?"));
 		// outro: qual? criar a alternativa com a string de resposta
 
 		Quesito q11 = new Quesito("Onde está LOCALIZADO o seu trabalho atual?");

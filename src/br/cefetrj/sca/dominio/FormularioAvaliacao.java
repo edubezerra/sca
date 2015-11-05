@@ -14,30 +14,49 @@ import javax.persistence.OneToMany;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
 @Entity
-public class FormularioAvaliacaoEgresso {
+public class FormularioAvaliacao {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	Long id;
+
+	String sigla;
+
+	String nome;
 
 	public Long getId() {
 		return id;
 	}
 
-	public FormularioAvaliacaoEgresso(){
-		
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "FORMULARIO_ID", referencedColumnName = "ID")
+	List<Quesito> quesitos;
+	
+	public FormularioAvaliacao(){
+	
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "FORMEGRESSO_ID", referencedColumnName = "ID")
-	private List<Quesito> quesitos;
+	public FormularioAvaliacao(String sigla, String nome) {
+		this.sigla = sigla;
+		this.nome = nome;
+	}
 
 	public void adicionarQuesito(Quesito quesito) {
 		if(quesitos == null){
 			quesitos = new ArrayList<Quesito>();
 		}
-		quesitos.add(quesito);
+		this.quesitos.add(quesito);
+	}
+
+	public String getNome() {
+		return nome;
 	}
 	
+	public String getSigla() {
+		return sigla;
+	}
 	
+	public List<Quesito> getQuesitos(){
+		return quesitos;
+	}
 }

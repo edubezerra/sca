@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
+import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoEgressoService;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
@@ -48,6 +49,8 @@ public class AvaliacaoEgressoController {
 		String cpf = (String) session.getAttribute("cpf");
 
 		try {
+			SolicitaAvaliacaoEgressoResponse resp = service.retornaQuestoes();		
+			model.addAttribute("questoes", resp);
 			model.addAttribute("cpf", cpf);
 			return "/avaliacaoEgresso/questionarioGraduacao";
 		} catch (Exception exc) {
@@ -56,11 +59,15 @@ public class AvaliacaoEgressoController {
 		}
 	}
 	
+	
 	@RequestMapping(value = "/questionarioMedio", method = RequestMethod.GET)
 	public String solicitaAvaliacaoMedio(HttpSession session, Model model) {
 		String cpf = (String) session.getAttribute("cpf");
 
 		try {
+			SolicitaAvaliacaoEgressoResponse quesitos = service.retornaQuestoes();	
+			
+			model.addAttribute("questoes", quesitos);
 			model.addAttribute("cpf", cpf);
 			return "/avaliacaoEgresso/questionarioMedio";
 		} catch (Exception exc) {
@@ -68,6 +75,7 @@ public class AvaliacaoEgressoController {
 			return "/homeView";
 		}
 	}
+	
 	
 	@RequestMapping(value = "/escolherAvaliacao", method = RequestMethod.GET)
 	public String escolherAvaliacao(HttpSession session, Model model) {
@@ -97,89 +105,33 @@ public class AvaliacaoEgressoController {
 		}
 	}
 
-	@RequestMapping(value = "/menuPrincipal", method = RequestMethod.POST)
-	public String menuPrincipal(HttpSession session, @RequestParam String cpf,
-			@RequestParam String senha, Model model) {
-
-		try {
-			authService.autentica(cpf, senha);
-			session.setAttribute("cpf", cpf);
-			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-					.getInstance();
-			model.addAttribute("periodoLetivo",
-					periodoAvaliacao.getSemestreLetivo());
-			return "/avaliacaoTurma/menuPrincipalView";
-		} catch (Exception exc) {
-			model.addAttribute("error", exc.getMessage());
-			return "/homeView";
-		}
-	}
-
-	@RequestMapping(value = "/solicitaAvaliacaoEgresso", method = RequestMethod.GET)
-	public String solicitaAvaliacaoTurma(@ModelAttribute("cpf") String cpf, // get
-																			// from
-																			// session
-			@RequestParam String codigoTurma, Model model) {
-
-		try {
-			SolicitaAvaliacaoTurmaResponse resp = service
-					.solicitaAvaliacaoEgresso(cpf, codigoTurma);
-			model.addAttribute("questoes", resp);
-			model.addAttribute("nomeDisciplina", resp.getNomeDisciplina());
-			model.addAttribute("codigoTurma", resp.getCodigoTurma());
-
-			return "/avaliacaoTurma/solicitaAvaliacaoTurmaView";
-		} catch (Exception exc) {
-			model.addAttribute("error", exc.getMessage());
-
-			return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula";
-		}
-	}
-
-	@RequestMapping(value = "/avaliaTurma", method = RequestMethod.POST)
+	@RequestMapping(value = "/avaliaEgresso", method = RequestMethod.POST)
 	public String avaliaTurma(
 			@ModelAttribute("cpf") String cpf, // get from session
-			@RequestParam String codigoTurma,
-			@RequestParam String aspectosPositivos,
-			@RequestParam String aspectosNegativos, HttpServletRequest request,
+			HttpServletRequest request,
 			Model model) {
 
 		Map<String, String[]> parameters = request.getParameterMap();
 		List<Integer> respostas = new ArrayList<Integer>();
 
 		try {
-			int i = 0;
-
+			int i = 1;
 			// parameters must contain only sorted quesitoX parameters
-			while (parameters.containsKey("quesito" + i)) {
-				respostas
-						.add(Integer.parseInt(parameters.get("quesito" + i)[0]));
+			while (parameters.containsKey("question-" + i)) {
+				String resposta = parameters.get("question-" + i)[0];
+				respostas.add(Integer.parseInt(resposta));
 				++i;
 			}
 		} catch (Exception exc) {
-			model.addAttribute("error",
-					"Erro: Respostas com conteúdo inválido.");
-			model.addAttribute("codigoTurma", codigoTurma);
-
+			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
 		}
 
 		try {
-			service.avaliaEgresso(cpf, codigoTurma, respostas, aspectosPositivos,
-					aspectosNegativos);
+			service.avaliaEgresso(cpf, respostas);
 			model.addAttribute("info", "Avaliação registrada.");
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			model.addAttribute("codigoTurma", codigoTurma);
-
-			int i = 0;
-
-			// parameters must contain only sorted quesitoX parameters
-			while (parameters.containsKey("quesito" + i)) {
-				model.addAttribute("oldQuesito" + i,
-						parameters.get("quesito" + i)[0]);
-				++i;
-			}
 
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
 		}
@@ -188,3 +140,5 @@ public class AvaliacaoEgressoController {
 	}
 
 }
+
+

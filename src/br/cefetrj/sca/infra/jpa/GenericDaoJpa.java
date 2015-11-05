@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.infra.DAOException;
 
 public class GenericDaoJpa<T> {
@@ -144,4 +145,5 @@ public class GenericDaoJpa<T> {
 		
 		return entityManager;
 	}
+
 }
