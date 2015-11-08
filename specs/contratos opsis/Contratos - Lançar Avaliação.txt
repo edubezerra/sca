@@ -1,0 +1,105 @@
+Lançar Avaliação
+
+Nome: SolicitaLancamentoNota()
+
+Responsabilidade: 	Exibir as opções de turma e disciplina disponíveis para lançamento de notas.
+		
+Tipo: 	Sistema
+
+Referências Cruzadas: 	CSU04
+
+Notas: 	Acesso super rápido ao banco de dados.
+
+Exceções: 	Não ter turma / disciplina vinculada ao professor.
+		Lançamento fora do período.
+		
+
+Saídas: 	O sistema exibe a lista de turmas correspondentes ao professor identificado, para o semestre corrente.
+
+Pré-Condições: 	O professor deve estar identificado no sistema.
+
+Pós-Condições: 	
+
+
+Nome: SelecionarTurma(turma: Turma)
+
+Responsabilidade: 	Escolher a turma para obter as disciplinas que o professor leciona. O sistema exibe a lista de disciplinas correspondentes ao professor identificado, para o semestre corrente.
+		
+Tipo: 	Sistema
+
+Referências Cruzadas: CSU04
+
+Notas: 
+
+Exceções: 	Lançamento fora do período
+
+Saídas: 	O sistema exibe a lista de disciplinas correspondentes ao professor identificado, para o semestre corrente.
+
+Pré-Condições:	O professor deve ter pelo menos uma turma associada.
+
+Pós-Condições:	
+
+
+
+Nome: SelecionarOfertaDisciplina(disciplina: Disciplina)
+
+Responsabilidade: 	Escolher a disciplina para o lançamento das avaliações. O sistema exibe a lista de alunos correspondentes à disciplina selecionada.
+	
+Tipo: 	Sistema
+
+Referências Cruzadas: CSU04
+
+Notas:		
+
+Exceções: 	Lançamento fora do período. 
+
+Saídas: 	O sistema exibe a lista de alunos correspondentes à disciplina selecionada.
+
+Pré-Condições:	Uma turma deve ter sido selecionada.
+			O professor deve ter pelo menos uma disciplina associada.	
+
+Pós-Condições:	
+
+
+Nome: Fornecer Resultado(idAluno: Integer; a1, a2: Float; faltas: Integer)
+
+Responsabilidade: 	Preencher as avaliações de cada aluno para uma determinada disciplina.
+		
+Tipo: 	Sistema
+
+Referências Cruzadas: CSU04
+
+Notas:		
+
+Exceções: 	Lançamento fora do período. 
+
+Saídas: 	
+
+Pré-Condições:	Uma disciplina deve ter sido selecionada.
+			A disciplina deve ter alunos associados.
+			
+Pós-Condições:	
+
+
+
+Nome: ConfirmarLancamento()
+
+Responsabilidade: 	Confirmar (verificar) se todos os itens foram preenchidos corretamente.
+		
+Tipo: 	Sistema
+
+Referências Cruzadas: CSU04
+
+Notas:		
+
+Exceções: 	Um ou mais itens não foram preenchidos corretamente.
+
+Saídas: 	O sistema exibe uma confirmação negativa ou positiva do preenchimento das avaliações.
+
+Pré-Condições:	As avaliações dos alunos devem ter sido preenchidas anteriormente.
+
+Pós-Condições:	Em caso positivo, uma avaliação é criada para cada participação de um aluno.
+			A avaliação é associada a uma participação do mesmo aluno.
+
+			
+

@@ -1,0 +1,34 @@
+Contratos - Visualizar Andamento Inscrições
+
+Nome: visualizarInscricoes()      
+Responsabilidade: Visualizar inscrições de alunos em disciplinas do próximo semestre. 
+Tipo: Sistema
+Referências cruzadas: Caso de Uso UC06.
+Notas: 
+Exceções: Se coordenador não for identificado, sistema reporta o erro.
+Saída:
+Pré-condições: O coordenador foi identificado no sistema.
+Pós-condições: N/A
+
+
+Nome: visualizarAndamentoIncricoes(id_disciplina:número) 
+Responsabilidade: Visualizar as disciplinas oferecidas.
+	                     Exibir lista de turmas por disciplina, professor, horários, locais e situação.
+Tipo: Sistema
+Referências cruzadas: Caso de Uso UC06.
+Notas:                         
+Exceções: Se identificador da disciplina for inválido, sistema reporta o erro.
+Saída:
+Pré-condições: identificador da disciplina é válido.
+Pós-condições: N/A
+
+
+Nome: visualizarInscritos(id_turma:número) 
+Responsabilidade: Exibir lista de alunos inscritos por turma e disciplina.
+Tipo: Sistema
+Referências cruzadas: Caso de Uso UC06.
+Notas:                         
+Exceções: Se identificador da turma for inválido, sistema reporta o erro.
+Saída:
+Pré-condições: o identificador da turma é válido.
+Pós-condições: N/A

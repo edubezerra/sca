@@ -1,0 +1,25 @@
+class InscricaoVO {
+	String nomeAluno;
+	List<String> nomesDisciplinas;
+	List<String> codigosTurmas;
+}
+
+InscricaoVO validarMatricula(String matriculaAluno)
+
+================
+
+boolean adicionarInscricao(String codigoTurma)
+
+================
+
+List<TurmaVO> realizarInscricao()
+
+================
+
+class TurmaVO {
+	String codigoTurma;
+	String nomeProfessor;
+	List<ItemGradeHorarios> horarios;
+	
+}
+TurmaVO obterDetalhesTurma(codigoTurma)

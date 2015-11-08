@@ -1,0 +1,103 @@
+
+Nome	solicitarListasEspera()
+Responsabilidade	Exibir as listas de espera quanto as vagas para cada disciplina.
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A
+Exceções	N/A
+Saída	N/A
+Pré-condições	N/A
+Pós-condições	•	Uma nova OfertaDisciplina foi criada.
+
+Nome	fornecerListaEspera(CUL: número)
+Responsabilidade	Carregar e exibir as informações sobre a lista de espera selecionada (disciplina; data da criação; quantidade de alunos).
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A
+Exceções	Informa se o CUL for inválido.
+Saída	N/A
+Pré-condições	N/A
+Pós-condições	N/A
+
+Nome	solicitarDisponibilidadeProfessorSala (dia: DiaSemana,
+horaInicio: Hora,
+horaFim: Hora)
+Responsabilidade	Carregar e exibir as disponibilidades de salas e professores de acordo com os dias e horários informados.
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A
+Exceções	N/A
+Saída	N/A
+Pré-condições	N/A
+Pós-condições	N/A
+
+ 
+
+Nome	fornecerProfessor(CUP: Número)
+Responsabilidade	Carregar e exibir as informações sobre o professor selecionado.
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A.
+Exceções	Informa se o CUP for inválido.
+Saída	N/A.
+Pré-condições	N/A.
+Pós-condições	Uma associação entre Professor e OfertaDiciplina foi criada;
+
+Nome	fornecerSala(CUS: Número, 
+dias: DiaSemana,
+horaInicio: Hora,
+horaFim: Hora)
+Responsabilidade	Apresentar as informações sobre a sala selecionada.
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A
+Exceções	Informa se o CUS é inválido.
+Saída	N/A
+Pré-condições	N/A
+Pós-condições	•	Um objeto Aula foi criado e associado a OfertaDiciplina;
+•	Uma associação entre Sala e Aula foi criada;
+•	Os atributos Aula.diaSemana, Aula.horaInicio e Aula.horaFim foram alterados;
+
+Nome	solicitarListaTurmas()
+Responsabilidade	Exibir a lista de turmas disponíveis.
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A
+Exceções	N/A
+Saída	N/A
+Pré-condições	N/A
+Pós-condições	N/A
+
+ 
+
+Nome	fornecerTurma(CUT: Número)
+Responsabilidade	Carregar e exibir as informações sobre a turma selecionada..
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A
+Exceções	Informa se o CUT for inválido
+Saída	N/A
+Pré-condições	N/A
+Pós-condições	Uma associação entre Turma e OfertaDiciplina foi criada;
+
+Nome	informarQuantidadeAlunos(quantidade : Número)
+Responsabilidade	Registrar e validar a quantidade de alunos para a nova oferta.
+Tipo	Sistema
+Referências cruzadas	RN02, CSU08
+Notas	N/A.
+Exceções	Caso a quantidade informada violar a RN02, reportar o erro.
+Saída	N/A.
+Pré-condições	N/A.
+Pós-condições	O atributo OfertaDiciplina.quantidadeAlunos foi alterado.
+
+Nome	alocarOfertaDiciplina()
+Responsabilidade	•	Tornar persistente as informações fornecidas no caso de uso.
+•	Exibir mensagem de confirmação de criação da nova oferta.
+Tipo	Sistema
+Referências cruzadas	CSU08
+Notas	N/A
+Exceções	N/A
+Saída	N/A
+Pré-condições	N/A
+Pós-condições	N/A
+
