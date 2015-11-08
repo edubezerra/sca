@@ -30,13 +30,18 @@ public class ImportadorHistoricosEscolares {
 	public ImportadorHistoricosEscolares(String[] codigosCursos) {
 	}
 
-	public static void run(EntityManager em, String arquivoPlanilha) {
+	public static void main(String[] args) {
+		String planilha = "./planilhas/BCC E WEB (HE 2012-).xls";
+		ImportadorHistoricosEscolares.run(planilha);
+	}
+
+	public static void run(String planilha) {
 		System.out.println("ImportadorHistoricosEscolares.main()");
 		try {
 			String codigosCursos[] = { "BCC" };
 			ImportadorHistoricosEscolares iim = new ImportadorHistoricosEscolares(
 					codigosCursos);
-			iim.importarPlanilha(arquivoPlanilha);
+			iim.importarPlanilha(planilha);
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -74,13 +79,6 @@ public class ImportadorHistoricosEscolares {
 		em.getTransaction().begin();
 
 		for (int i = 1; i < sheet.getRows(); i++) {
-
-			// String codigoCurso = sheet.getCell(
-			// colunasList.indexOf("COD_CURSO"), i).getContents();
-			//
-			// if (!codigosCursos.contains(codigoCurso)) {
-			// continue;
-			// }
 
 			String aluno_matricula = sheet.getCell(
 					colunasList.indexOf("MATR_ALUNO"), i).getContents();
@@ -120,10 +118,23 @@ public class ImportadorHistoricosEscolares {
 				situacaoFinal = EnumSituacaoFinalAvaliacao.INDEFINIDA;
 			} else if (situacao.equals("Isento por Transferência")) {
 				situacaoFinal = EnumSituacaoFinalAvaliacao.ISENTO_POR_TRANSFERENCIA;
+			} else if (situacao.equals("Trancamento Total")) {
+				situacaoFinal = EnumSituacaoFinalAvaliacao.TRANCAMENTO_TOTAL;
+			} else if (situacao.equals("Aproveitamento de Créditos")) {
+				situacaoFinal = EnumSituacaoFinalAvaliacao.APROVEITAMENTO_CREDITOS;
+			} else if (situacao.equals("Isento")) {
+				situacaoFinal = EnumSituacaoFinalAvaliacao.ISENTO;
 			} else {
 				System.err
 						.println("ERRO GRAVE: Valor inválido para a situação final de avaliação!");
 				System.exit(1);
+			}
+
+			if(disciplina_codigo.equals("TRT001")) {
+				/**
+				 * Esse código representa trancamento do período.
+				 */
+				continue;
 			}
 
 			Query queryDisciplina;

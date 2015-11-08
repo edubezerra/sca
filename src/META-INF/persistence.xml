@@ -16,7 +16,6 @@
 		<class>br.cefetrj.sca.dominio.Pessoa</class>
 
 		<class>br.cefetrj.sca.dominio.Aluno</class>
-		<class>br.cefetrj.sca.dominio.Aproveitamento</class>
 		<class>br.cefetrj.sca.dominio.Aula</class>
 		<class>br.cefetrj.sca.dominio.Departamento</class>
 		<class>br.cefetrj.sca.dominio.Disciplina</class>

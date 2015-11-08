@@ -21,8 +21,8 @@ import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
 /**
- * Realiza a carga de dados de objetos Turma (associações para professores e
- * aulas).
+ * Realiza a carga de dados de objetos <code>Turma</code> e também de suas
+ * associações para objetos <code>Professor</code>.
  *
  */
 

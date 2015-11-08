@@ -1,5 +1,6 @@
 package br.cefetrj.sca.dominio;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,7 +18,7 @@ public class ItemHistoricoEscolar {
 	@OneToOne
 	Disciplina disciplina;
 
-	@OneToOne
+	@Embedded
 	SemestreLetivo periodo;
 
 	@Enumerated(EnumType.ORDINAL)

@@ -9,16 +9,13 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
-import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.Turma;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+import br.cefetrj.sca.dominio.Professor;
 
 /**
  * Realiza a carga de objetos Professor.
