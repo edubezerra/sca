@@ -19,5 +19,4 @@ public class CursoRepositorioJpa implements CursoRepositorio {
 			return null;
 		}
 	}
-
 }

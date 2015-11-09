@@ -16,4 +16,8 @@ public interface DisciplinaDao {
 	Disciplina getByNome(String nome);
 
 	Disciplina getByCodigo(String codigoDisciplina);
+
+	Disciplina getByCodigo(String codigoDisciplina, String siglaCurso, String versaoCurso);
+
+	Disciplina getByNome(String nomeDisciplina, String siglaCurso, String versaoCurso);
 }

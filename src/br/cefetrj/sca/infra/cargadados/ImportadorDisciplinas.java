@@ -11,10 +11,10 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import br.cefetrj.sca.dominio.Curso;
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.VersaoGradeCurso;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -23,30 +23,31 @@ import jxl.read.biff.BiffException;
 
 public class ImportadorDisciplinas {
 
-	String colunas[] = { "COD_CURSO", "NUM_VERSAO", "DESCR_ESTRUTURA", "COD_DISCIPLINA", "NOME_UNIDADE",
-			"COD_ESTRUTURADO", "NOME_DISCIPLINA", "PERIODO_IDEAL", "CREDITOS", "TIPO_AULA", "NUM_HORAS", "CONTA_CH",
-			"TIPO_DISCIPLINA", "SITUACAO_VERSAO", "EMENTA", "CH_TOTAL", "ID_CURSO", "ID_VERSAO_CURSO",
-			"ID_ESTRUTURA_CUR", "DESCR_SITUACAO" };
+	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA",
+			"CH_TOTAL", "CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO", "COD_ESTRUTURADO", "NOME_UNIDADE",
+			"SIGLA_UNIDADE", "COD_CURSO", "NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
 
-	private HashMap<String, VersaoGradeCurso> disciplinas_versoes = new HashMap<>();
+	private HashMap<String, Curso> cursos = new HashMap<>();
+	private HashMap<String, VersaoGradeCurso> versoesCursos = new HashMap<>();
 
-	private static HashMap<String, Curso> cursos = new HashMap<>();
-	private static HashMap<String, List<VersaoGradeCurso>> versoesCursos = new HashMap<>();
-
-	private static List<Disciplina> disciplinas = new ArrayList<Disciplina>();
+	private List<Disciplina> disciplinas = new ArrayList<Disciplina>();
 
 	public static void main(String[] args) {
-		ImportadorDisciplinas.run();
+		run();
 	}
 
 	public static void run() {
 		System.out.println("ImportadorGradesCurriculares.run()");
 		try {
 			ImportadorDisciplinas iim = new ImportadorDisciplinas();
-			String arquivoPlanilha = "./planilhas/grades-curriculares/BCC-grade-2012.2.xls";
+			String arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
 
+			iim = new ImportadorDisciplinas();
+			arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
+			iim.importarPlanilha(arquivoPlanilha);
+			iim.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -78,10 +79,8 @@ public class ImportadorDisciplinas {
 		 * Realiza a persistência dos objetos Disciplina.
 		 */
 		for (Disciplina disciplina : disciplinas) {
-			VersaoGradeCurso versaoCurso = disciplinas_versoes.get(disciplina.getCodigo());
-			disciplina.alocarEmVersao(versaoCurso);
-			em.persist(disciplina);
 			System.out.println("Gravando disciplina: " + disciplina);
+			em.persist(disciplina);
 		}
 
 		em.getTransaction().commit();
@@ -105,44 +104,30 @@ public class ImportadorDisciplinas {
 		w = Workbook.getWorkbook(arquivoPlanilha, ws);
 		Sheet sheet = w.getSheet(0);
 
-		importarCursos(colunasList, sheet);
 		importarVersoesCursos(colunasList, sheet);
 		importarDisciplinas(colunasList, sheet);
 	}
 
-	private void importarCursos(List<String> colunasList, Sheet sheet) {
-		System.out.println("Iniciando importação de dados relativos a cursos...");
-		for (int i = 1; i < sheet.getRows(); i++) {
-			String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
-			String nome_unidade = sheet.getCell(colunasList.indexOf("NOME_UNIDADE"), i).getContents();
-			cursos.put(siglaCurso, new Curso(siglaCurso, nome_unidade));
-		}
-		System.out.println("Foram encontrados " + cursos.size() + " cursos.");
+	private VersaoGradeCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
+		EntityManager em = emf.createEntityManager();
+		Query query = em.createQuery("from VersaoGradeCurso versao "
+				+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");
+		query.setParameter("numeroVersao", numeroVersao);
+		query.setParameter("siglaCurso", siglaCurso);
+		return (VersaoGradeCurso) query.getSingleResult();
 	}
 
 	private void importarVersoesCursos(List<String> colunasList, Sheet sheet) {
 		System.out.println("Iniciando importação de dados relativos a versões de cursos...");
 		for (int i = 1; i < sheet.getRows(); i++) {
-			String cod_curso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+			String codCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
-			List<VersaoGradeCurso> versoes = versoesCursos.get(cod_curso);
-			if (versoes == null) {
-				versoes = new ArrayList<>();
-			}
-			if (versoesCursos.put(cod_curso, versoes) == null) {
-				versoes.add(new VersaoGradeCurso(numVersao));
+			if (versoesCursos.get(codCurso + numVersao) == null) {
+				VersaoGradeCurso versao = getVersaoCurso(codCurso, numVersao);
+				versoesCursos.put(codCurso + numVersao, versao);
 			}
 
-		}
-
-		Set<String> cursosIt = cursos.keySet();
-		for (String codCurso : cursosIt) {
-			Curso curso = cursos.get(codCurso);
-			List<VersaoGradeCurso> versoes = versoesCursos.get(codCurso);
-			for (VersaoGradeCurso versao : versoes) {
-				System.out.println("Registrando versão " + versao.getNumero() + " para curso " + curso.getSigla());
-				curso.registrarVersao(versao.getNumero());
-			}
 		}
 		System.out.println("Foram encontradas " + versoesCursos.size() + " versões de cursos.");
 	}
@@ -151,23 +136,28 @@ public class ImportadorDisciplinas {
 		System.out.println("Iniciando importação de dados relativos a disciplinas...");
 		for (int i = 1; i < sheet.getRows(); i++) {
 			String codigoDisciplina = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
-			String nome_disciplina = sheet.getCell(colunasList.indexOf("NOME_DISCIPLINA"), i).getContents();
+			String nomeDisciplina = sheet.getCell(colunasList.indexOf("NOME_DISCIPLINA"), i).getContents();
 			String creditos = sheet.getCell(colunasList.indexOf("CREDITOS"), i).getContents();
-			String num_horas = sheet.getCell(colunasList.indexOf("NUM_HORAS"), i).getContents();
-			String periodoIdeal = sheet.getCell(colunasList.indexOf("PERIODO_IDEAL"), i).getContents();
-			disciplinas.add(new Disciplina(codigoDisciplina, nome_disciplina, creditos, num_horas, periodoIdeal));
+			String numHoras = sheet.getCell(colunasList.indexOf("CH_TOTAL"), i).getContents();
 
-			String cod_curso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+			String codCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
 
-			Curso curso = cursos.get(cod_curso);
-			VersaoGradeCurso versao = curso.getVersao(numVersao);
-			if (versao == null) {
-				System.out.println("Versão " + numVersao + " não encontrada no curso " + cod_curso);
-				System.exit(1);
+			boolean entradaJaExiste = false;
+			for (Disciplina disciplina : disciplinas) {
+				if (disciplina.equals(codigoDisciplina)) {
+					entradaJaExiste = true;
+					break;
+				}
 			}
-			disciplinas_versoes.put(codigoDisciplina, versao);
-			System.out.println("Versão da disciplina " + codigoDisciplina + " eh " + versao);
+			if (!entradaJaExiste) {
+				Disciplina disciplina = new Disciplina(codigoDisciplina, nomeDisciplina, creditos, numHoras);
+				VersaoGradeCurso versaoCurso = versoesCursos.get(codCurso + numVersao);
+				disciplina.alocarEmVersao(versaoCurso);
+				disciplinas.add(disciplina);
+			} else {
+				System.err.println("Já existe disciplina com código " + codigoDisciplina);
+			}
 		}
 	}
 }

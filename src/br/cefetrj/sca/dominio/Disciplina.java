@@ -3,6 +3,7 @@ package br.cefetrj.sca.dominio;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -41,15 +42,10 @@ public class Disciplina {
 	private int cargaHoraria;
 
 	/**
-	 * O período ideal para o aluno cursar essa disciplina.
-	 */
-	private String periodoIdeal;
-
-	/**
 	 * Pré-requisitos desta disciplina. Uma disciplina pode ter zero ou mais
 	 * pré-requisitos.
 	 */
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "DISCIPLINA_PREREQS", joinColumns = {
 			@JoinColumn(name = "GRADE_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
 					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
@@ -60,7 +56,7 @@ public class Disciplina {
 	 */
 	@ManyToOne
 	VersaoGradeCurso versaoCurso;
-	
+
 	@SuppressWarnings("unused")
 	private Disciplina() {
 	}
@@ -77,7 +73,7 @@ public class Disciplina {
 		this.codigo = codigo;
 		try {
 			this.quantidadeCreditos = Integer.parseInt(quantidadeCreditos);
-			if (this.quantidadeCreditos <= 0) {
+			if (this.quantidadeCreditos < 0) {
 				throw new IllegalArgumentException("Valor inválido para quantidade de créditos.");
 			}
 		} catch (NumberFormatException e) {
@@ -85,14 +81,13 @@ public class Disciplina {
 		}
 	}
 
-	public Disciplina(String codigo, String nome, String quantidadeCreditos, String cargaHoraria, String periodoIdeal) {
+	public Disciplina(String codigo, String nome, String quantidadeCreditos, String cargaHoraria) {
 		this(nome, codigo, quantidadeCreditos);
 		try {
 			this.cargaHoraria = Integer.parseInt(cargaHoraria);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Valor inválido para carga horária.");
 		}
-		this.periodoIdeal = periodoIdeal;
 	}
 
 	public String getNome() {
@@ -108,8 +103,8 @@ public class Disciplina {
 	}
 
 	public void setQuantidadeCreditos(Integer quantidadeCreditos) {
-		if (this.quantidadeCreditos <= 0) {
-			throw new IllegalArgumentException("Valor inv�lido para quantidade de cr�ditos.");
+		if (this.quantidadeCreditos < 0) {
+			throw new IllegalArgumentException("Valor inválido para quantidade de créditos: " + quantidadeCreditos);
 		}
 		this.quantidadeCreditos = quantidadeCreditos;
 	}
@@ -130,6 +125,41 @@ public class Disciplina {
 	public String toString() {
 		return "Disciplina [nome=" + nome + ", codigo=" + codigo + ", versaoCurso=" + versaoCurso + "]";
 	}
-	
+
+	public void comPreRequisito(Disciplina disciplina) {
+		this.preReqs.add(disciplina);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + ((versaoCurso == null) ? 0 : versaoCurso.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Disciplina other = (Disciplina) obj;
+		if (codigo == null) {
+			if (other.codigo != null)
+				return false;
+		} else if (!codigo.equals(other.codigo))
+			return false;
+		if (versaoCurso == null) {
+			if (other.versaoCurso != null)
+				return false;
+		} else if (!versaoCurso.equals(other.versaoCurso))
+			return false;
+		return true;
+	}
+
 	
 }

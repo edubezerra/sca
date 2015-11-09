@@ -39,8 +39,7 @@ public class DisciplinaDaoJpa implements DisciplinaDao {
 	@Override
 	public Disciplina getByNome(String nome) {
 		EntityManager entityManager = genericDAO.getEntityManager();
-		Query q = entityManager
-				.createQuery("from Disciplina d where d.nome = :nomeDisciplinaParam");
+		Query q = entityManager.createQuery("from Disciplina d where d.nome = :nomeDisciplinaParam");
 		q.setParameter("nomeDisciplinaParam", nome);
 		try {
 			Disciplina d = (Disciplina) q.getSingleResult();
@@ -58,9 +57,40 @@ public class DisciplinaDaoJpa implements DisciplinaDao {
 	@Override
 	public Disciplina getByCodigo(String codigoDisciplina) {
 		EntityManager entityManager = genericDAO.getEntityManager();
-		Query q = entityManager
-				.createQuery("from Disciplina d where d.codigo = :codigoDisciplinaParam");
+		Query q = entityManager.createQuery("from Disciplina d where d.codigo = :codigoDisciplinaParam");
 		q.setParameter("codigoDisciplinaParam", codigoDisciplina);
+		try {
+			Disciplina d = (Disciplina) q.getSingleResult();
+			return d;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public Disciplina getByCodigo(String codigoDisciplina, String siglaCurso, String versaoCurso) {
+		EntityManager entityManager = genericDAO.getEntityManager();
+		Query q = entityManager.createQuery("from Disciplina d where d.codigo = :codigoDisciplinaParam "
+				+ "and d.versaoGrade.numero = :versao " + "and d.versaoGrade.curso.sigla = :siglaCurso");
+		q.setParameter("codigoDisciplinaParam", codigoDisciplina);
+		q.setParameter("siglaCurso", siglaCurso);
+		q.setParameter("versaoCurso", versaoCurso);
+		try {
+			Disciplina d = (Disciplina) q.getSingleResult();
+			return d;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public Disciplina getByNome(String nomeDisciplina, String siglaCurso, String versaoCurso) {
+		EntityManager entityManager = genericDAO.getEntityManager();
+		Query q = entityManager.createQuery("from Disciplina d where d.nome = :nomeDisciplinaParam "
+				+ "and d.versaoGrade.numero = :versao " + "and d.versaoGrade.curso.sigla = :siglaCurso");
+		q.setParameter("nomeDisciplinaParam", nomeDisciplina);
+		q.setParameter("siglaCurso", siglaCurso);
+		q.setParameter("versaoCurso", versaoCurso);
 		try {
 			Disciplina d = (Disciplina) q.getSingleResult();
 			return d;

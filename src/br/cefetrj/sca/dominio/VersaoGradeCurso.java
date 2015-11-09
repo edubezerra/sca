@@ -3,6 +3,7 @@ package br.cefetrj.sca.dominio;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public final class VersaoGradeCurso {
@@ -12,26 +13,45 @@ public final class VersaoGradeCurso {
 
 	private final String numero;
 
+	@ManyToOne
+	private Curso curso;
+
+	@SuppressWarnings("unused")
 	private VersaoGradeCurso() {
 		numero = null;
 	}
 
-	public VersaoGradeCurso(String numero) {
+	public VersaoGradeCurso(String numero, Curso curso) {
 		this.numero = numero;
+		this.curso = curso;
 	}
 
 	public Long getId() {
 		return id;
 	}
-	
+
 	public String getNumero() {
 		return numero;
+	}
+
+	@Override
+	public String toString() {
+		return "VersaoGradeCurso [numero=" + numero + "]";
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((curso == null) ? 0 : curso.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		return result;
 	}
@@ -45,6 +65,11 @@ public final class VersaoGradeCurso {
 		if (getClass() != obj.getClass())
 			return false;
 		VersaoGradeCurso other = (VersaoGradeCurso) obj;
+		if (curso == null) {
+			if (other.curso != null)
+				return false;
+		} else if (!curso.equals(other.curso))
+			return false;
 		if (numero == null) {
 			if (other.numero != null)
 				return false;
@@ -53,8 +78,4 @@ public final class VersaoGradeCurso {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "VersaoGradeCurso [numero=" + numero + "]";
-	}
 }

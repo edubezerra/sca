@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.cefetrj.sca.dominio.Curso;
+import br.cefetrj.sca.dominio.VersaoGradeCurso;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
@@ -24,22 +25,30 @@ public class ImportadorCursos {
 	private static ApplicationContext context = new ClassPathXmlApplicationContext(
 			new String[] { "applicationContext.xml" });
 
-	String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF", "DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
-			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC", "ORDEM_MATR", "SITUACAO", "COD_TURMA",
-			"COD_CURSO", "MATR_ALUNO", "SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA", "ID_PROCESSAMENTO",
-			"HR_SOLICITACAO" };
+	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA",
+			"CH_TOTAL", "CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO", "COD_ESTRUTURADO", "NOME_UNIDADE",
+			"SIGLA_UNIDADE", "COD_CURSO", "NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
 
 	/**
-	 * Dicionário de pares (sigla, objeto da classe Curso) de cada curso.
+	 * Dicionário de pares (sigla, objeto da classe VersaoGradeCurso) de cada
+	 * curso.
 	 */
-	private HashMap<String, Curso> cursos_siglas = new HashMap<>();
+	private HashMap<String, VersaoGradeCurso> versoesCursos = new HashMap<>();
+
+	/**
+	 * Dicionário de pares (sigla, objeto da classe VersaoGradeCurso) de cada
+	 * curso.
+	 */
+	private HashMap<String, Curso> cursos = new HashMap<>();
 
 	public ImportadorCursos() {
 	}
 
 	public static void main(String[] args) {
-		String planilhaMatriculas = "./planilhas/MatriculasAceitas-2015.1.xls";
-		ImportadorCursos.run(planilhaMatriculas);
+		String planilhaCSTSI = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
+		String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
+		ImportadorCursos.run(planilhaCSTSI);
+		ImportadorCursos.run(planilhaBCC);
 	}
 
 	public static void run(String arquivoPlanilha) {
@@ -65,14 +74,25 @@ public class ImportadorCursos {
 		/**
 		 * Realiza a persistência dos objetos Curso.
 		 */
-		Set<String> alunosIt = cursos_siglas.keySet();
-		for (String siglaCurso : alunosIt) {
-			em.persist(cursos_siglas.get(siglaCurso));
+		Set<String> cursosIt = cursos.keySet();
+		for (String siglaCurso : cursosIt) {
+			System.out.println("Gravando " + cursos.get(siglaCurso));
+			em.persist(cursos.get(siglaCurso));
+		}
+
+		/**
+		 * Realiza a persistência dos objetos VersaoGradeCurso.
+		 */
+		Set<String> versoesIt = versoesCursos.keySet();
+		for (String numeroMaisSigla : versoesIt) {
+			System.out.println("Gravando " + versoesCursos.get(numeroMaisSigla));
+			em.persist(versoesCursos.get(numeroMaisSigla));
 		}
 
 		em.getTransaction().commit();
 
-		System.out.println("Foram importados " + cursos_siglas.keySet().size() + " cursos.");
+		System.out.println("Foram importados " + cursos.keySet().size() + " cursos.");
+		System.out.println("Foram importados " + versoesCursos.keySet().size() + " versões de cursos.");
 	}
 
 	public void importarPlanilha(String inputFile) throws BiffException, IOException {
@@ -92,12 +112,19 @@ public class ImportadorCursos {
 		Sheet sheet = w.getSheet(0);
 
 		for (int i = 1; i < sheet.getRows(); i++) {
-
 			String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
 			String nomeCurso = sheet.getCell(colunasList.indexOf("NOME_UNIDADE"), i).getContents();
 
-			if (cursos_siglas.get(siglaCurso) == null) {
-				cursos_siglas.put(nomeCurso, new Curso(siglaCurso, nomeCurso));
+			if (cursos.get(siglaCurso) == null) {
+				Curso curso = new Curso(siglaCurso, nomeCurso);
+				cursos.put(siglaCurso, curso);
+			}
+
+			if (versoesCursos.get(siglaCurso + numVersao) == null) {
+				Curso curso = cursos.get(siglaCurso);
+				VersaoGradeCurso versao = new VersaoGradeCurso(numVersao, curso);
+				versoesCursos.put(siglaCurso + numVersao, versao);
 			}
 		}
 	}
