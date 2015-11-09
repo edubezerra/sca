@@ -15,7 +15,7 @@ import br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidade;
 import br.cefetrj.sca.service.FornecerGradeDisponibilidadeService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(locations = { "file:src/applicationContext.xml" })
 @TransactionConfiguration
 @Transactional
 public class FornecerGradeDisponibilidadeServiceTest extends
