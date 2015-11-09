@@ -4,9 +4,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 	<persistence-unit name="SCAPU" transaction-type="RESOURCE_LOCAL">
 
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
 		<class>br.cefetrj.sca.dominio.HistoricoEscolar</class>
 		<class>br.cefetrj.sca.dominio.ItemHistoricoEscolar</class>
-		
+
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.Alternativa</class>
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma</class>
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.Quesito</class>
@@ -29,17 +31,26 @@
 		<class>br.cefetrj.sca.dominio.Turma</class>
 
 		<properties>
+
+			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false" />
+			<property name="javax.persistence.jdbc.user" value="sa" />
+			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
-
-			<property name="hibernate.connection.url" value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false" />
-
-			<property name="hibernate.connection.username" value="sa" />
-			<property name="hibernate.connection.password" value="" />
-			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
-			<property name="hibernate.show_sql" value="false" />
-			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />
+
+<!-- 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" /> -->
+
+<!-- 			<property name="hibernate.connection.url" -->
+<!-- 				value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false" /> -->
+
+<!-- 			<property name="hibernate.connection.username" value="sa" /> -->
+<!-- 			<property name="hibernate.connection.password" value="" /> -->
+<!-- 			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" /> -->
+<!-- 			<property name="hibernate.show_sql" value="false" /> -->
+<!-- 			<property name="hibernate.format_sql" value="true" /> -->
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="update" /> -->
+<!-- 			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" /> -->
 
 			<property name="hibernate.connection.charSet" value="UTF-8" />
 			<property name="hibernate.connection.characterEncoding"
