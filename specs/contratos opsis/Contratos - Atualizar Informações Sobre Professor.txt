@@ -1,0 +1,44 @@
+ESTUDO DE CASO: Atualizar Informações sobre Professor
+
+Criação dos contratos das operações:
+-	solicitarListaProfessores()
+-	obterListaProfessores()
+-	solicitarConfirmacao()
+
+===============================================================
+Nome: solicitarListaProfessores()      
+Responsabilidade: Solicitar a lista de professores.
+Tipo: Sistema
+Referências cruzadas: Funções do sistema: R7
+                                       Caso de Uso: CSU07
+Notas:
+Exceções: Se o Administrador não estiver identificado, indique o erro.
+Saída:
+Pré-condições: O Administrador está identificado pelo sistema.
+Pós-condições: Não há.
+
+
+===============================================================
+Nome: obterListaProfessores()      
+Responsabilidade: Obter a lista de professores.
+Tipo: Sistema
+Referências cruzadas: Funções do sistema: R7
+                                       Caso de Uso: CSU07
+Notas:
+Exceções: Se houver falha de comunicação com o SRH, reportar o fato e terminar caso de uso.
+Saída:
+Pré-condições: O sistema consegue obter os dados do SRH.
+Pós-condições: Não há.
+
+===============================================================
+Nome: solicitarConfirmacao()      
+Responsabilidade: Solicitar a confirmação de dados dos professores.
+Tipo: Sistema
+Referências cruzadas: Funções do sistema: R7
+                                       Caso de Uso: CSU07
+Notas:
+Exceções: Se houver desistência da atualização, terminar caso de uso.
+Saída:
+Pré-condições: O Administrador não desiste da atualização.
+Pós-condições:
+• um ou mais objetos da classe professor foram criados.

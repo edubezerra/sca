@@ -28,15 +28,15 @@ public class ImportadorAulas {
 	String colunas[] = { "COD_CURSO", "COD_DISCIPLINA", "COD_TURMA",
 			"PERIODO_IDEAL", "NOME_DISCIPLINA", "DIA_SEMANA", "HR_INICIO",
 			"HR_FIM", "TIPO_AULA", "NOME_UNIDADE", "ANO", "PERIODO", "NUM_SALA" };
-	
-	String siglas_dias[] = {"DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"};
+
+	String siglas_dias[] = { "DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB" };
 
 	private HashMap<String, Aula> turma_aulas = new HashMap<>();
 
 	public ImportadorAulas() {
 
 	}
-	
+
 	public static void main(String[] args) {
 		ImportadorAulas.run();
 	}
@@ -60,8 +60,8 @@ public class ImportadorAulas {
 		System.out.println("Feito!");
 	}
 
-private void gravarDadosImportados() {
-		
+	private void gravarDadosImportados() {
+
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("SCAPU");
 
@@ -70,9 +70,9 @@ private void gravarDadosImportados() {
 		em.getTransaction().begin();
 
 		Set<String> aulasIt = turma_aulas.keySet();
-		
+
 		for (String cod_turma : aulasIt) {
-			
+
 			Query query;
 			Turma turma = null;
 
@@ -85,25 +85,29 @@ private void gravarDadosImportados() {
 				turma = null;
 			}
 			if (turma != null) {
-			        
-				    Aula aula = turma_aulas.get(cod_turma);
-				
-				    turma.adicionarAula(aula.getDia().toString(), aula.getHoraInicio(), aula.getHoraTermino(), aula.getLocal());
-					em.merge(turma);
-				}
+
+				Aula aula = turma_aulas.get(cod_turma);
+
+				turma.adicionarAula(aula.getDia().toString(),
+						aula.getHoraInicio(), aula.getHoraTermino(),
+						aula.getLocal());
+				em.merge(turma);
 			}
-		
+		}
+
 		em.getTransaction().commit();
 	}
-	
-	public void importarPlanilha(String inputFile) throws BiffException,IOException {
+
+	public void importarPlanilha(String inputFile) throws BiffException,
+			IOException {
 
 		File inputWorkbook = new File(inputFile);
 		importarPlanilha(inputWorkbook);
 
 	}
-	
-	public void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
+
+	public void importarPlanilha(File inputWorkbook) throws BiffException,
+			IOException {
 
 		Workbook w;
 
@@ -116,46 +120,47 @@ private void gravarDadosImportados() {
 		Sheet sheet = w.getSheet(0);
 
 		for (int i = 1; i < sheet.getRows(); i++) {
-			
+
 			String cod_turma = sheet.getCell(colunasList.indexOf("COD_TURMA"),
 					i).getContents();
-			
-			String dia_semana = sheet.getCell(colunasList.indexOf("DIA_SEMANA"),
-					i).getContents();
-			
+
+			String dia_semana = sheet.getCell(
+					colunasList.indexOf("DIA_SEMANA"), i).getContents();
+
 			String str_inicio = sheet.getCell(colunasList.indexOf("HR_INICIO"),
 					i).getContents();
-			
-			String str_fim = sheet.getCell(colunasList.indexOf("HR_FIM"),
-					i).getContents();
 
-			String num_sala = sheet.getCell(colunasList.indexOf("NUM_SALA"),
-					i).getContents();
-			
+			String str_fim = sheet.getCell(colunasList.indexOf("HR_FIM"), i)
+					.getContents();
+
+			String num_sala = sheet.getCell(colunasList.indexOf("NUM_SALA"), i)
+					.getContents();
+
 			EnumDiaSemana dia = null;
-			
+
 			// Verificando se os horários não são Strings vazias.
-			if(str_inicio != "" && str_fim != ""){
-				
-				// comparando os dias da semana da planilha e atribuindo seu valor EnumDiaSemana correspondente.
-				for(int j = 0; j < dia.dias().size(); j++){
-					
-					if(dia_semana.equals(siglas_dias[j])){
-						
+			if (str_inicio != "" && str_fim != "") {
+
+				// comparando os dias da semana da planilha e atribuindo seu
+				// valor EnumDiaSemana correspondente.
+				for (int j = 0; j < dia.dias().size(); j++) {
+
+					if (dia_semana.equals(siglas_dias[j])) {
+
 						dia = EnumDiaSemana.findByText(dia.dias().get(j));
-						
+
 					}
-					
+
 				}
-				
+
 				LocalAula local = new LocalAula(num_sala);
-				
+
 				Aula aula = new Aula(dia, str_inicio, str_fim, local);
-	            
+
 				turma_aulas.put(cod_turma, aula);
-				
-			}		
-			
+
+			}
+
 		}
 	}
 

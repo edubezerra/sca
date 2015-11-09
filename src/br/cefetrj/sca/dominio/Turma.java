@@ -176,7 +176,7 @@ public class Turma {
 		return Collections.unmodifiableSet(this.inscricoes);
 	}
 
-	public void lancarAvaliacao(Aluno aluno, Aproveitamento avaliacao) {
+	public void lancarAvaliacao(Aluno aluno, NotaFinal avaliacao) {
 		Inscricao inscricao = getInscricao(aluno);
 		inscricao.registrarAvaliacao(avaliacao);
 	}

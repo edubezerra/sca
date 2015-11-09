@@ -1,0 +1,25 @@
+<mockup version="1.0" skin="sketch" measuredW="830" measuredH="371" mockupW="669" mockupH="342">
+  <controls>
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::ModalScreen" x="151" y="19" w="669" h="342" measuredW="320" measuredH="240" zOrder="0" locked="false" isInGroup="-1"/>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::Button" x="410" y="317" w="-1" h="-1" measuredW="152" measuredH="28" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Registrar%20Inscri%E7%F5es</text>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::List" x="309" y="124" w="363" h="178" measuredW="100" measuredH="231" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Empreendedorismo%20%28630010%29%0AFundamentos%20de%20Redes%20de%20Computadores%20%28620008%29%0AL%F3gica%20Matem%E1tica%20%28600001%29%0AEstruturas%20de%20Dados%20%28690020%29%0AIntrodu%E7%E3o%20%E0%20Administra%E7%E3o%20%28400007%29%0AMatem%E1tica%20Discreta%20%28600003%29%0AModelagem%20e%20Projeto%20de%20Sistemas%20%28620006%29%0APrograma%E7%E3o%20de%20Clientes%20Web%20%28600005%29%0APrograma%E7%E3o%20Orientada%20a%20Objetos%20%28620009%29%0AProjeto%20de%20Banco%20de%20Dados%20%28620005%29%0ASistemas%20Operacionais%20%28610002%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Label" x="342" y="45" w="-1" h="-1" measuredW="292" measuredH="25" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Aluno%3A%20Jos%E9%20da%20Silva%20%28matr%EDcula%200923454093%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::Label" x="309" y="94" w="-1" h="-1" measuredW="137" measuredH="25" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Disciplinas%20dispon%EDveis</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

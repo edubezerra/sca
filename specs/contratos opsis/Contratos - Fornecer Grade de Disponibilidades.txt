@@ -1,0 +1,54 @@
+Nome:                        iniciarGrade(id_professor: número)      
+Responsabilidade:    Iniciar o registro da grade de disponibilidades. 
+		          Exibir disciplinas disponíveis. 
+Tipo:                           Sistema
+Referências cruzadas: Funções do sistema: R3
+                                    Caso de Uso: CSU03
+Notas:                         Use acesso super-rápido ao banco de dados
+Exceções:                    Se o id_professor não for válido, indique o erro.
+Saída:
+Pré-condições:           O id_professor existe (é conhecido do sistema)
+Pós-condições:           Não há.
+
+
+Nome:                        fornecerDisciplina(id_disciplina: número)      
+Responsabilidade:     Preencher a grade com as disponibilidades.
+		          Exibir dias e horários disponíveis. 
+Tipo:                           Sistema
+Referências cruzadas: Funções do sistema: R3
+                                    Caso de Uso: CSU03
+Notas:                         Use acesso super-rápido ao banco de dados
+Exceções:                    Se não selecionada alguma disciplina, indique o erro
+Saída:
+Pré-condições:           Ter disciplina disponível
+Pós-condições:           
+• Se não existe GradeDisciplina  , uma nova GradeDisciplina   foi criada (ci)
+• A nova GradeDisciplina  foi associada a Disciplina (f.a)
+
+
+Nome:                        fornecerItemDisponibilidade(dia: texto, horario: hora)  
+Responsabilidade:   Preencher a grade de  disponibilidade com os dias da semana e horários.		         
+Tipo:                           Sistema
+Referências cruzadas: Funções do sistema: R3
+                                    Caso de Uso: CSU03
+Notas:                         Use acesso super-rápido ao banco de dados
+Exceções:                   Se não selecionada algum dia e horário, indique o erro
+Saída:
+Pré-condições:           Ter disciplina selecionada
+Pós-condições:           
+• Se não existe GradeDisciplina  , uma nova GradeDisciplina   foi criada (ci)
+• A nova GradeDisciplina  foi associada a Disciplina (f.a)
+• A nova GradeDisciplina  foi associada a ItemDisponibilidade (f.a)
+
+
+Nome:                        registrarGrade()  
+Responsabilidade:   Registrar a grade de disponibilidade.		         
+Tipo:                           Sistema
+Referências cruzadas: Funções do sistema: R3
+                                    Caso de Uso: CSU03
+Notas:                         Use acesso super-rápido ao banco de dados
+Exceções:                   Se não for selecionada disciplina, dia e horário, indique o erro
+Saída:
+Pré-condições:           Ter disciplina, dia e horário selecionados
+Pós-condições:           
+• Se não existe ItemDisponibilidade, um novo ItemDisponibilidade foi criado (ci)

@@ -27,7 +27,7 @@ public class Inscricao {
 	private Aluno aluno;
 
 	@OneToOne
-	private Aproveitamento avaliacao = null;
+	private NotaFinal avaliacao = null;
 
 	/**
 	 * Dependência injetada automaticamente.
@@ -75,7 +75,7 @@ public class Inscricao {
 		return this.estrategiaAvaliacao.getSituacaoFinal(this.avaliacao);
 	}
 
-	public void registrarAvaliacao(Aproveitamento avaliacao) {
+	public void registrarAvaliacao(NotaFinal avaliacao) {
 		this.avaliacao = avaliacao;
 	}
 

@@ -5,6 +5,7 @@
 	<persistence-unit name="SCAPU" transaction-type="RESOURCE_LOCAL">
 
 		<class>br.cefetrj.sca.dominio.HistoricoEscolar</class>
+		<class>br.cefetrj.sca.dominio.ItemHistoricoEscolar</class>
 		
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.Alternativa</class>
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma</class>
@@ -15,7 +16,6 @@
 		<class>br.cefetrj.sca.dominio.Pessoa</class>
 
 		<class>br.cefetrj.sca.dominio.Aluno</class>
-		<class>br.cefetrj.sca.dominio.Aproveitamento</class>
 		<class>br.cefetrj.sca.dominio.Aula</class>
 		<class>br.cefetrj.sca.dominio.Departamento</class>
 		<class>br.cefetrj.sca.dominio.Disciplina</class>

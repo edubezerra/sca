@@ -1,0 +1,18 @@
+class TurmaVO {
+	String nomeDisciplina;
+	String codigoTurma;
+	String periodo;
+}
+
+List<TurmaVO> obterTurmasCursadas(String matriculaAluno)
+
+class AvaliacaoVO {
+	String nomeDisciplina;
+	String codigoTurma;
+	String periodo;
+	List<Nota> notas;
+	String frequencia;
+}
+
+List<AvaliacaoVO> visualisarAvaliacoes(List<TurmaVO>)
+

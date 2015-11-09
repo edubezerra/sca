@@ -1,0 +1,65 @@
+alter table Aluno drop constraint FKhd33lesnacp3tp8sx85r6ygbu
+alter table Aluno drop constraint FKqf7pd9vdsyfs7m3p3y7fx7m47
+alter table Aula drop constraint FKf1ij85f1vdd98hxalv12b8g3x
+alter table Aula drop constraint FKa2q9opqd9vnoknur5ylyd3qpj
+alter table AvaliacaoEgresso drop constraint FKak3mqu86t4r69h8pv6jjsnrh1
+alter table AvaliacaoTurma drop constraint FKsqab16vp3s27b3fpfj7wjk6st
+alter table AvaliacaoTurma drop constraint FKmwes5emkw3assvoxno9slhdg6
+alter table Disciplina drop constraint FKrq33fqktam3o6c0pv01dn0arm
+alter table DISCIPLINA_PREREQS drop constraint FK3xfhcqnjmm3n5p4t7p3icyu8r
+alter table DISCIPLINA_PREREQS drop constraint FKbur1syi2tfkygsvvlq4e7iodb
+alter table GradeDisponibilidade drop constraint FKae34ayhd2v3xyaal8t3g177pd
+alter table GRADEDISPONIBILIDADE_DISCIPLINA drop constraint FKajtgsu6s7kpekrwhbgqcjqlys
+alter table GRADEDISPONIBILIDADE_DISCIPLINA drop constraint FKp5pu733wrosybsafu4kp7an5
+alter table HistoricoEscolar_ItemHistoricoEscolar drop constraint FKgrhdv9cgwje3pvxa5jgynsndf
+alter table HistoricoEscolar_ItemHistoricoEscolar drop constraint FKn5306iatrkp97xic01re1db5v
+alter table Inscricao drop constraint FKt48bstymoi0yfjv4ojapf99yl
+alter table Inscricao drop constraint FKevvoksc9f9ok93h6sxc77h7s7
+alter table Inscricao drop constraint FKet251hfwdo80odjr2wdsi18ut
+alter table ItemHistoricoEscolar drop constraint FKsl0c24298w89jnxdeq49jifsd
+alter table ItemHorario drop constraint FKserxiyutox38lfjy0f1bfq6r8
+alter table ListaEspera drop constraint FK3tjpnrsal5am5ucwfntumacp3
+alter table LISTAESPERA_ALUNO drop constraint FK827vwg1cnvwldd3slpkq8ove
+alter table LISTAESPERA_ALUNO drop constraint FKgsdumxaqr6612yperl8km1cxd
+alter table Professor drop constraint FKj98gljve5cwy75xrmh24kd5ia
+alter table PROFESSOR_DISCIPLINA drop constraint FKhd3veyetedyxhs9mn6nasxivu
+alter table PROFESSOR_DISCIPLINA drop constraint FKlbwfm410vn467dgp5h94n98d7
+alter table Professor_GradeDisponibilidade drop constraint FKlsr1aukvv6qp22r9ku4xi5kte
+alter table Professor_GradeDisponibilidade drop constraint FKqaalulrj53ua4wjelpdfnekev
+alter table QUESITO_ALTERNATIVA drop constraint FKn0ew6khxp4cqsvmw25mn2asi0
+alter table QUESITO_ALTERNATIVA drop constraint FKffl1d198jjjvp2cr755tqpex4
+alter table RESPOSTA drop constraint FK9hepanirl5p2k04idvc0hllvk
+alter table RESPOSTA drop constraint FKjsb0xnh3kw4uifxw1et4bi0j3
+alter table RESPOSTA drop constraint FKqvsqlaewe3vu9nglieguc0nxl
+alter table Turma drop constraint FK8046jn01khei22nwsvj86kmfr
+alter table Turma drop constraint FKq31csamjp0hsa4qnkqr0n4l3r
+alter table VersaoGradeCurso drop constraint FK14wwiqm535m2slvj8d9294wh0
+drop table Alternativa if exists
+drop table Aluno if exists
+drop table Aula if exists
+drop table AvaliacaoEgresso if exists
+drop table AvaliacaoTurma if exists
+drop table Curso if exists
+drop table Departamento if exists
+drop table Disciplina if exists
+drop table DISCIPLINA_PREREQS if exists
+drop table GradeDisponibilidade if exists
+drop table GRADEDISPONIBILIDADE_DISCIPLINA if exists
+drop table HistoricoEscolar if exists
+drop table HistoricoEscolar_ItemHistoricoEscolar if exists
+drop table Inscricao if exists
+drop table ItemHistoricoEscolar if exists
+drop table ItemHorario if exists
+drop table ListaEspera if exists
+drop table LISTAESPERA_ALUNO if exists
+drop table LocalAula if exists
+drop table NotaFinal if exists
+drop table Professor if exists
+drop table PROFESSOR_DISCIPLINA if exists
+drop table Professor_GradeDisponibilidade if exists
+drop table Quesito if exists
+drop table QUESITO_ALTERNATIVA if exists
+drop table RESPOSTA if exists
+drop table Turma if exists
+drop table VersaoGradeCurso if exists
+drop sequence hibernate_sequence

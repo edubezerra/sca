@@ -1,0 +1,33 @@
+Nome: registrarHabilicacoes()
+
+Objetivo: registrar de forma persistente as atualizações nas habilitções do professor.
+
+Refs. cruzadas: CSU09
+
+Pré-condições: N/A
+
+Pós-condições: N/A
+
+==============
+Nome: removerHabilitacao(nomeDisciplina)
+
+Objetivo: remover uma disciplina da lista de disciplinas às quais o professor está apto a lecionar.
+
+Refs. cruzadas: CSU09
+
+Pré-condições: N/A
+
+Pós-condições:
+- Uma ligação foi removida entre o professor e a disciplina cujo nome foi passado como parâmetro.
+
+=========
+Nome: adicionarHabilitacao(nomeDisciplina)
+
+Objetivo: adicionar uma nova disciplina à lista de disciplinas às quais o professor está apto a lecionar.
+
+Refs. cruzadas: CSU09
+
+Pré-condições: N/A
+
+Pós-condições:
+- Uma ligação foi criada entre o professor e a disciplina cujo nome foi passado como parâmetro.

@@ -1,0 +1,18 @@
+Visão de Classes Participantes
+
+String validarMatriculaProfessor(String matricula)
+
+class DisciplinaVO{
+	String nome;
+	String codigo;
+}
+
+List<DisciplinaVO> obterDisciplinasHabilitadas()
+
+boolean adicionarDisciplina(String codigoDisciplina)
+
+List<ItemGradeHorarios> obterItensHorario()
+
+boolean adicionarItemGradeHorarios(String diaSemana, String  horaInicio, String horaTermino)
+
+boolean confirmarGradeDisponibilidades()

@@ -26,17 +26,7 @@ import br.cefetrj.sca.dominio.Turma;
 
 /**
  * Essa classe faz a carga de dados de uma planilha para o banco de dados do
- * SCA.
- * 
- * Os dados importados são sobre:
- * 
- * (1) disciplinas,
- * 
- * (2) turmas,
- * 
- * (3) alunos e
- * 
- * (4) inscrições de alunos em turmas.
+ * SCA. Os dados importados são sobre inscrições de alunos em turmas.
  * 
  * @author Eduardo Bezerra
  *
@@ -222,5 +212,5 @@ public class ImportadorInscricoes {
 				.println("Foram importadas " + qtdInscricoes + " inscrições.");
 
 	}
-	
+
 }

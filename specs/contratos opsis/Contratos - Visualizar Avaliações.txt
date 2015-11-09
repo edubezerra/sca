@@ -1,0 +1,33 @@
+Nome:  solicitaVisualizaçãoAvaliações(matriculaAluno)
+Responsabilidades:
+Exibir os semestres letivos que possuem as avaliações do aluno nas disciplinas.
+Tipo: Sistema
+Refs cruzadas:
+Caso de Uso: (CSU02)
+Notas:
+Exceções:
+Se não houver nenhuma avaliação em semestres letivos o sistema deverá informar.
+Saída:
+Pré-condições:
+O aluno deverá estar matriculado.
+As avaliações deverão estar lançadas no sistema.
+Pós-condições:
+Não há.
+
+
+Nome:  selecionarSemestresLetivos
+Responsabilidades: 
+Exibir os semestres letivos para que o aluno selecione os que serão vizualizados.
+Tipo:
+Sistema
+Refs cruzadas:
+Caso de Uso: (CSU02)
+Notas:
+Exceções:
+Saída:
+Pré-condições:
+O aluno deverá estar matriculado.
+As avaliações deverão estar lançadas no sistema.
+Pós-condições:
+Não há.
+

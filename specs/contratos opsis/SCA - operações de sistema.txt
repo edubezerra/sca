@@ -1,0 +1,53 @@
+==================
+Fornecer Grade de Disponibilidades
+
+validarProfessor(matrícula) 
+adicionarDisciplina(nomeDisciplina)
+adicionarItemDisponibilidade(dia, horaInicial, horaFinal) 
+registrarGrade()
+
+
+==================
+Manter Disciplina
+
+excluirDisciplina(codigo)
+atualizarDisciplina(codigo, nome, qtdCreditos)
+DisciplinaDTO localizarDisciplina(codigo)
+	data transfer object
+incluirPrerequisito(codigoDisciplina, codigoPreReq)
+excluirPrerequisito(codigoDisciplina, codigoPreReq)
+
+incluirDisciplina(codigo, nome, qtdCreditos)
+incluirDisciplina(codigo, nome, qtdCreditos, List<String>)
+
+pós-condições
+- uma nova disciplina foi registrada.
+
+==================
+Realizar Inscrições
+
+List<TurmaDTO> solicitarInscricao(String matriculaAluno)
+
+DTO - Data Transfer Object
+class TurmaDTO {
+	String codigoTurma;
+	String nomeDisciplina;
+}
+
+escolherTurma(List<String>)
+ - 
+escolherTurma(codigoTurma)
+objetivo
+refs. cruzadas
+pré-condições
+pós-condições
+ - Um objeto da classe Inscrição foi criado.
+ - Uma associação foi criada entre Aluno e a inscrição recém-criada.
+ - Uma associação foi criada entre a inscrição recém-criada e a turma cujo código foi fornecido.
+
+inserirEmListaEspera(matriculaAluno, codigoTurma)
+
+confirmarInscricao()
+	pós-condições - N/A
+
+==================
