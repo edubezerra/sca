@@ -12,8 +12,8 @@ public class ImportadorTudo {
 			ImportadorDocentes.main(args);
 			ImportadorTurmas.main(args);
 			ImportadorAlocacoesProfessoresEmTurmas.main(args);
-			ImportadorAulas.main(args);
 			ImportadorLocais.main(args);
+			ImportadorAulas.main(args);
 			ImportadorHistoricosEscolares.main(args);
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SCA - Avaliação</title>
+<title>SCA - Grade de Disponibilidades</title>
 <link href="${pageContext.request.contextPath}/css/base.css"
 	rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/css/form.css"
@@ -15,7 +15,7 @@
 </head>
 <body class="basic-grey">
 
-	<h1>Avaliação de turmas cursadas em ${requestScope.periodoLetivo}</h1>
+	<h1>Grade de Disponibilidades (${requestScope.periodoLetivo})</h1>
 
 	<c:if test="${requestScope.error != null}">
 		<div>

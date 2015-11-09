@@ -9,7 +9,8 @@
 
 	<bean id="AvaliacaoTurmaServiceBean" class="br.cefetrj.sca.service.AvaliacaoTurmaService" />
 
-	<bean id="FornecerGradeServiceBean" class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService"/>
+	<bean id="FornecerGradeServiceBean"
+		class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService" />
 
 	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
@@ -30,7 +31,8 @@
 
 	<bean id="CursoRepositorioBean" class="br.cefetrj.sca.infra.jpa.CursoRepositorioJpa" />
 
-	<bean id="FichaDisponibilidadeFabricaBean" class=" br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidadeFabrica" />
+	<bean id="FichaDisponibilidadeFabricaBean"
+		class=" br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidadeFabrica" />
 
 	<bean id="ProfessorRepoBean" class="br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio" />
 	<bean id="QuesitoRepoBean" class="br.cefetrj.sca.dominio.repositorio.QuesitoRepositorio" />
@@ -41,4 +43,34 @@
 	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
 	<bean id="QuesitoDaoBean" class="br.cefetrj.sca.infra.jpa.QuesitoDaoJpa" />
 	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
+
+<!-- 	<bean id="dataSource" -->
+<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="org.postgresql.Driver" /> -->
+<!-- 		<property name="url" -->
+<!-- 			value="jdbc:postgresql://192.168.10.242/grad-padsoft" /> -->
+<!-- 		<property name="username" value="padsoft" /> -->
+<!-- 		<property name="password" value="padsoft" /> -->
+<!-- 	</bean> -->
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean>
+	
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
+<!-- 		destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" /> -->
+<!-- 		<property name="url" value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false" /> -->
+<!-- 		<property name="username" value="sa" /> -->
+<!-- 		<property name="password" value="" /> -->
+<!-- 	</bean> -->
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
