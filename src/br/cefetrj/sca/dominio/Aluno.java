@@ -3,6 +3,7 @@ package br.cefetrj.sca.dominio;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,8 +33,8 @@ public class Aluno {
 	@ManyToOne
 	private Curso curso;
 
-	@OneToOne
-	private HistoricoEscolar historico;
+	@OneToOne(cascade=CascadeType.ALL)
+	private HistoricoEscolar historico = new HistoricoEscolar();
 
 	public Long getId() {
 		return id;

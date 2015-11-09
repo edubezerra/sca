@@ -61,6 +61,8 @@ public class ImportadorDocentes {
 		}
 		em.getTransaction().commit();
 
+		em.close();
+
 		System.out.println("Foram importados " + profs_nomes.keySet().size() + " professores.");
 	}
 

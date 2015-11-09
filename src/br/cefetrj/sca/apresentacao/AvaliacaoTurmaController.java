@@ -33,8 +33,7 @@ import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 @RequestMapping("/avaliacaoTurma")
 public class AvaliacaoTurmaController {
 
-	protected Logger logger = Logger.getLogger(AvaliacaoTurmaController.class
-			.getName());
+	protected Logger logger = Logger.getLogger(AvaliacaoTurmaController.class.getName());
 
 	@Autowired
 	private AvaliacaoTurmaService service;
@@ -49,8 +48,8 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/importaQuestionario", method = RequestMethod.GET)
-	public String importarQuestionario(HttpServletRequest request,
-			HttpServletResponse response, Model model, HttpSession session) {
+	public String importarQuestionario(HttpServletRequest request, HttpServletResponse response, Model model,
+			HttpSession session) {
 		try {
 			String cpf = (String) session.getAttribute("cpf");
 			if (cpf == null || !cpf.equals("usuarioeic")) {
@@ -79,8 +78,8 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/importaInscricoes", method = RequestMethod.POST)
-	public String importarInscricoes(HttpServletRequest request,
-			HttpServletResponse response, Model model, HttpSession session) {
+	public String importarInscricoes(HttpServletRequest request, HttpServletResponse response, Model model,
+			HttpSession session) {
 		try {
 			String cpf = (String) session.getAttribute("cpf");
 			if (cpf == null || !cpf.equals("usuarioeic")) {
@@ -89,8 +88,8 @@ public class AvaliacaoTurmaController {
 				UploadFile uploader = new UploadFile();
 				File f = uploader.receberArquivo(request);
 				String codigosCursos[] = { "BCC", "WEB" };
-				ImportadorInscricoes importador = new ImportadorInscricoes(
-						codigosCursos);
+			
+				ImportadorInscricoes importador = new ImportadorInscricoes(codigosCursos);
 				importador.importarPlanilha(f);
 				importador.gravarDadosImportados();
 				model.addAttribute("info", "Importação finalizada com sucesso.");
@@ -109,10 +108,8 @@ public class AvaliacaoTurmaController {
 		try {
 			model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
 			model.addAttribute("cpf", cpf);
-			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-					.getInstance();
-			model.addAttribute("periodoLetivo",
-					periodoAvaliacao.getSemestreLetivo());
+			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
+			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
 			return "/avaliacaoTurma/apresentaListagemTurmasView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -121,14 +118,11 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/menuPrincipal")
-	public String solicitaNovamenteAvaliacaoMatricula(HttpSession session,
-			Model model) {
+	public String solicitaNovamenteAvaliacaoMatricula(HttpSession session, Model model) {
 		String cpf = (String) session.getAttribute("cpf");
 		if (cpf != null) {
-			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-					.getInstance();
-			model.addAttribute("periodoLetivo",
-					periodoAvaliacao.getSemestreLetivo());
+			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
+			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
 			return "/avaliacaoTurma/menuPrincipalView";
 		} else {
 			return "/homeView";
@@ -142,8 +136,7 @@ public class AvaliacaoTurmaController {
 			@RequestParam String codigoTurma, Model model) {
 
 		try {
-			SolicitaAvaliacaoTurmaResponse resp = service
-					.solicitaAvaliacaoTurma(cpf, codigoTurma);
+			SolicitaAvaliacaoTurmaResponse resp = service.solicitaAvaliacaoTurma(cpf, codigoTurma);
 			model.addAttribute("questoes", resp);
 			model.addAttribute("nomeDisciplina", resp.getNomeDisciplina());
 			model.addAttribute("codigoTurma", resp.getCodigoTurma());
@@ -157,12 +150,10 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/avaliaTurma", method = RequestMethod.POST)
-	public String avaliaTurma(
-			@ModelAttribute("cpf") String cpf, // get from session
-			@RequestParam String codigoTurma,
-			@RequestParam String aspectosPositivos,
-			@RequestParam String aspectosNegativos, HttpServletRequest request,
-			Model model) {
+	public String avaliaTurma(@ModelAttribute("cpf") String cpf, // get from
+																	// session
+			@RequestParam String codigoTurma, @RequestParam String aspectosPositivos,
+			@RequestParam String aspectosNegativos, HttpServletRequest request, Model model) {
 
 		Map<String, String[]> parameters = request.getParameterMap();
 		List<Integer> respostas = new ArrayList<Integer>();
@@ -172,21 +163,18 @@ public class AvaliacaoTurmaController {
 
 			// parameters must contain only sorted quesitoX parameters
 			while (parameters.containsKey("quesito" + i)) {
-				respostas
-						.add(Integer.parseInt(parameters.get("quesito" + i)[0]));
+				respostas.add(Integer.parseInt(parameters.get("quesito" + i)[0]));
 				++i;
 			}
 		} catch (Exception exc) {
-			model.addAttribute("error",
-					"Erro: Respostas com conteúdo inválido.");
+			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
 			model.addAttribute("codigoTurma", codigoTurma);
 
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
 		}
 
 		try {
-			service.avaliaTurma(cpf, codigoTurma, respostas, aspectosPositivos,
-					aspectosNegativos);
+			service.avaliaTurma(cpf, codigoTurma, respostas, aspectosPositivos, aspectosNegativos);
 			model.addAttribute("info", "Avaliação registrada.");
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -196,8 +184,7 @@ public class AvaliacaoTurmaController {
 
 			// parameters must contain only sorted quesitoX parameters
 			while (parameters.containsKey("quesito" + i)) {
-				model.addAttribute("oldQuesito" + i,
-						parameters.get("quesito" + i)[0]);
+				model.addAttribute("oldQuesito" + i, parameters.get("quesito" + i)[0]);
 				++i;
 			}
 
@@ -208,8 +195,9 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/solicitaNovamenteAvaliacaoMatricula")
-	public String solicitaNovamenteAvaliacaoMatricula(
-			@ModelAttribute("cpf") String cpf, // get from session
+	public String solicitaNovamenteAvaliacaoMatricula(@ModelAttribute("cpf") String cpf, // get
+																							// from
+																							// session
 			Model model) {
 
 		try {

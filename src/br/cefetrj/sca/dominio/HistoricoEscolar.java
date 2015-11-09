@@ -4,9 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -20,10 +23,11 @@ public class HistoricoEscolar {
 		return id;
 	}
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@JoinColumn(name = "HISTORICO_ESCOLAR_ID", referencedColumnName = "ID")
 	Set<ItemHistoricoEscolar> itens = new HashSet<>();
 
-	private HistoricoEscolar() {
+	public HistoricoEscolar() {
 
 	}
 

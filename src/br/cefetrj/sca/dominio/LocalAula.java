@@ -15,6 +15,9 @@ public class LocalAula {
 
 	private String descricao;
 
+	private LocalAula() {
+	}
+
 	public LocalAula(Integer capacidade) {
 		if (capacidade == null || capacidade <= 0) {
 			throw new IllegalArgumentException(

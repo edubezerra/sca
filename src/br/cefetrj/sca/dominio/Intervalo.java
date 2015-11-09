@@ -26,6 +26,9 @@ public class Intervalo implements Cloneable {
 	/** fim do intervalo. */
 	private Date fim;
 
+	private Intervalo() {
+	}
+
 	/**
 	 * 
 	 * @param strInicio

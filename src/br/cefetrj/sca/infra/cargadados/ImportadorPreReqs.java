@@ -102,6 +102,8 @@ public class ImportadorPreReqs {
 			em.merge(disciplina);
 		}
 
+		em.close();
+
 		em.getTransaction().commit();
 	}
 }

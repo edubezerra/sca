@@ -76,6 +76,8 @@ public class ImportadorDiscentes {
 
 		em.getTransaction().commit();
 
+		em.close();
+
 		System.out.println("Foram importados " + alunos_matriculas.keySet().size() + " alunos.");
 	}
 

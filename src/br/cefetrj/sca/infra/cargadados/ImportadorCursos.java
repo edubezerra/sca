@@ -91,6 +91,8 @@ public class ImportadorCursos {
 
 		em.getTransaction().commit();
 
+		em.close();
+
 		System.out.println("Foram importados " + cursos.keySet().size() + " cursos.");
 		System.out.println("Foram importados " + versoesCursos.keySet().size() + " versões de cursos.");
 	}

@@ -85,6 +85,8 @@ public class ImportadorDisciplinas {
 
 		em.getTransaction().commit();
 
+		em.close();
+
 		System.out.println("Foram importadas " + disciplinas.size() + " disciplinas.");
 	}
 

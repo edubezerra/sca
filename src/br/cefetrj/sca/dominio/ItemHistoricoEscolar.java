@@ -24,6 +24,9 @@ public class ItemHistoricoEscolar {
 	@Enumerated(EnumType.ORDINAL)
 	EnumSituacaoFinalAvaliacao situacao;
 
+	private ItemHistoricoEscolar() {
+	}
+
 	public ItemHistoricoEscolar(Disciplina disciplina, SemestreLetivo periodo,
 			EnumSituacaoFinalAvaliacao situacao) {
 		this.disciplina = disciplina;
@@ -34,5 +37,4 @@ public class ItemHistoricoEscolar {
 	public Long getId() {
 		return id;
 	}
-	
 }

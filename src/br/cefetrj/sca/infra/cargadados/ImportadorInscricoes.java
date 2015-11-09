@@ -14,19 +14,18 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.SemestreLetivo;
 import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 /**
- * Essa classe faz a carga de dados de uma planilha para o banco de dados do
- * SCA. Os dados importados são sobre inscrições de alunos em turmas.
+ * Essa classe faz a carga de objetos <code>Turma</code>.
  * 
  * @author Eduardo Bezerra
  *
@@ -52,20 +51,21 @@ public class ImportadorInscricoes {
 	 * Apenas os cursos cujas siglas (códigos) constam nesta lista são
 	 * importados.
 	 */
-	private List<String> codigosCursos = new ArrayList<String>();
+	private static List<String> codigosCursos = new ArrayList<String>();
 
-	public ImportadorInscricoes(String[] codigosCursos) {
-		this.codigosCursos = Arrays.asList(codigosCursos);
+	public ImportadorInscricoes(String[] codigos) {
+		for (String codigo : codigos) {
+			codigosCursos.add(codigo);
+		}
 		turmas = new HashMap<>();
 		turmas_disciplinas = new HashMap<>();
 		turmas_alunos = new HashMap<>();
 	}
 
 	public static void run(EntityManager em, String arquivoPlanilha) {
-		System.out.println("ImportadorInformacoesMatricula.main()");
 		try {
-			String codigosCursos[] = { "BCC", "WEB" };
-			ImportadorInscricoes iim = new ImportadorInscricoes(codigosCursos);
+			String codigos[] = { "BCC" };
+			ImportadorInscricoes iim = new ImportadorInscricoes(codigos);
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
@@ -75,27 +75,26 @@ public class ImportadorInscricoes {
 		System.out.println("Feito!");
 	}
 
-	String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
-			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
-			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC",
-			"ORDEM_MATR", "SITUACAO", "COD_TURMA", "COD_CURSO", "MATR_ALUNO",
-			"SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA",
-			"ID_PROCESSAMENTO", "HR_SOLICITACAO" };
+	String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF", "DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
+			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC", "ORDEM_MATR", "SITUACAO", "COD_TURMA",
+			"COD_CURSO", "MATR_ALUNO", "SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA", "ID_PROCESSAMENTO",
+			"HR_SOLICITACAO" };
 
-	public void importarPlanilha(String inputFile) throws BiffException,
-			IOException {
+	private static String numeroVersaoCurso = "2012";
+
+	private static String codCurso = "BCC";
+
+	public void importarPlanilha(String inputFile) throws BiffException, IOException {
 		File inputWorkbook = new File(inputFile);
 		importarPlanilha(inputWorkbook);
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException,
-			IOException {
+	public void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
-		System.out
-				.println("Iniciando importação de dados relativos ao seguintes cursos: "
-						+ codigosCursos.toString() + " ...");
+		System.out.println(
+				"Iniciando importação de dados relativos ao seguintes cursos: " + codigosCursos.toString() + " ...");
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
@@ -104,15 +103,13 @@ public class ImportadorInscricoes {
 
 		for (int i = 1; i < sheet.getRows(); i++) {
 
-			String codigoCurso = sheet.getCell(
-					colunasList.indexOf("COD_CURSO"), i).getContents();
+			String codigoCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 
 			if (!codigosCursos.contains(codigoCurso)) {
 				continue;
 			}
 
-			String aluno_matricula = sheet.getCell(
-					colunasList.indexOf("MATR_ALUNO"), i).getContents();
+			String aluno_matricula = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
 			/**
 			 * No Moodle, o CPF do aluno é armazenado sem os pontos separadores,
 			 * enquanto que os valores de CPFs provenientes do SIE possuem
@@ -120,17 +117,13 @@ public class ImportadorInscricoes {
 			 * representação.
 			 */
 
-			String disciplina_codigo = sheet.getCell(
-					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
+			String disciplina_codigo = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
 
-			String turma_codigo = sheet.getCell(
-					colunasList.indexOf("COD_TURMA"), i).getContents();
+			String turma_codigo = sheet.getCell(colunasList.indexOf("COD_TURMA"), i).getContents();
 
-			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i)
-					.getContents();
+			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i).getContents();
 
-			String semestre_periodo = sheet.getCell(
-					colunasList.indexOf("PERIODO"), i).getContents();
+			String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
 
 			int ano = Integer.parseInt(semestre_ano);
 			SemestreLetivo.EnumPeriodo periodo;
@@ -145,8 +138,7 @@ public class ImportadorInscricoes {
 			turmas.put(turma_codigo, semestre);
 			turmas_disciplinas.put(turma_codigo, disciplina_codigo);
 
-			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i)
-					.getContents();
+			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i).getContents();
 
 			if (situacao.equals("Aceita/Matriculada")) {
 				if (!turmas_alunos.containsKey(turma_codigo)) {
@@ -160,8 +152,7 @@ public class ImportadorInscricoes {
 	}
 
 	public void gravarDadosImportados() {
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("SCAPU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
 
 		EntityManager em = emf.createEntityManager();
 
@@ -181,19 +172,25 @@ public class ImportadorInscricoes {
 			String codigoDisciplina = turmas_disciplinas.get(codigoTurma);
 			Set<String> matriculas = turmas_alunos.get(codigoTurma);
 
-			query = em.createQuery("from Disciplina d where d.codigo = :code");
+			query = em.createQuery("from Disciplina d where d.codigo = :codigoDisciplina "
+					+ "and d.versaoCurso.numero = :numeroVersaoCurso and d.versaoCurso.curso.sigla = :codCurso");
+			query.setParameter("codigoDisciplina", codigoDisciplina);
+			query.setParameter("codCurso", codCurso);
+			query.setParameter("numeroVersaoCurso", numeroVersaoCurso);
+
+			// query = em.createQuery("from Disciplina d where d.codigo =
+			// :code");
 			query.setParameter("code", codigoDisciplina);
 			Disciplina disciplina = (Disciplina) query.getSingleResult();
 
-			// 40 vagas por turma não são suficientes
-			Turma turma = new Turma(disciplina, codigoTurma, 80, semestre);
+			int capacidadeMaxima = 80;
+			Turma turma = new Turma(disciplina, codigoTurma, capacidadeMaxima, semestre);
 
 			em.persist(turma);
 
 			if (matriculas != null) {
 				for (String matricula : matriculas) {
-					query = em
-							.createQuery("from Aluno a where a.matricula = :matricula");
+					query = em.createQuery("from Aluno a where a.matricula = :matricula");
 					query.setParameter("matricula", matricula);
 					Aluno aluno = (Aluno) query.getSingleResult();
 					turma.inscreverAluno(aluno);
@@ -205,11 +202,9 @@ public class ImportadorInscricoes {
 
 		em.getTransaction().commit();
 
-		System.out.println("Foram importadas " + turmas.keySet().size()
-				+ " turmas.");
+		System.out.println("Foram importadas " + turmas.keySet().size() + " turmas.");
 
-		System.out
-				.println("Foram importadas " + qtdInscricoes + " inscrições.");
+		System.out.println("Foram importadas " + qtdInscricoes + " inscrições.");
 
 	}
 
