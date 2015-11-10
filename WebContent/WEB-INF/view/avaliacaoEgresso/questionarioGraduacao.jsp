@@ -6,6 +6,7 @@
 <head>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/formulario.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/egresso.css" />
     <title>Form egresso</title>
@@ -22,26 +23,45 @@
                <c:if test="${requestScope.questoes == null}">
 					<h3>Não existem questões a serem respondidas.</h3>
 				</c:if>
+				
 				<c:if test="${requestScope.questoes != null}">
+				
 					<c:forEach items="${requestScope.questoes}" var="questao" varStatus="i">
-						<div class="question-box">
+						<c:if test="${i.index+1 == 2}">
+							<div id="divHideSlice">
+						</c:if>
+						<div class="question-box" id="box-${i.index+1}">
 						  <div class="question-wrapper">
-							<p class="question">${i.index + 1})&nbsp;${questao.quesito}</p>
-							<c:forEach items="${questao.alternativas}" var="alternativaDto" varStatus="j">
-								<div style="margin-left: 30px;">
-									<div class="radio">
-									  <label>
-									  		<input type="radio" name="question-${i.index+1}" value="${alternativaDto.id}"/>
-									  		${alternativaDto.alternativa};
-									  </label>
+							<c:choose>
+							  <c:when test="${i.index+1 == 7}">
+							  		<p class="question">${i.index + 1})&nbsp;${questao.quesito}</p>
+							  		<div style="margin-left: 30px;">
+										  <input type="text" name="" class="form-control" style="width:400px;" />
 									</div>
-								</div>
-							</c:forEach>
+							  </c:when>
+						  
+							  <c:when test="${i.index+1 != 7}">
+								<p class="question">${i.index + 1})&nbsp;${questao.quesito}</p>
+									<c:forEach items="${questao.alternativas}" var="alternativaDto" varStatus="j">
+										<div style="margin-left: 30px;">
+											<div class="radio">
+											  <label>
+											  		<input type="radio" name="question-${i.index+1}" value="${alternativaDto.id}"/>
+											  		${alternativaDto.alternativa};
+											  </label>
+											</div>
+										</div>
+									</c:forEach>
+								</c:when>
+						 	  </c:choose>
 							</div>
 						</div>
-					<br/><br/>
+													<br/><br/>
+						<c:if test="${i.index+1 == 12}">
+							</div>
+						</c:if>
+
 					</c:forEach>
-					
 				    
 				    <br /><br />
 				    
