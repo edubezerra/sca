@@ -12,11 +12,7 @@
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.Alternativa</class>
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma</class>
 		<class>br.cefetrj.sca.dominio.avaliacaoturma.Quesito</class>
-		
-		<class>br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacao</class>
-		<class>br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoInclusao</class>
-		<class>br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante</class>
-		
+
 		<class>br.cefetrj.sca.dominio.contas.Email</class>
 
 		<class>br.cefetrj.sca.dominio.Pessoa</class>

@@ -18,10 +18,14 @@ public class Departamento {
 	private String nome;
 
 	@OneToMany(mappedBy = "departamento")
-	private Set<Professor> professores;
+	private Set<Professor> professores = new HashSet<Professor>();
 
+	@SuppressWarnings("unused")
 	private Departamento() {
-		professores = new HashSet<Professor>();
+	}
+
+	public Departamento(String nome) {
+		this.nome = nome;
 	}
 
 	public Long getId() {
