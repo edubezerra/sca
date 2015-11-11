@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.service.InclusaoDisciplinaService;
+import br.cefetrj.sca.service.SolicitacaoMatriculaForaPrazoService;
 
 @RestController
 @RequestMapping("/rest")
 public class ScaRestController {
 	
-	protected Logger logger = Logger.getLogger(InclusaoDisciplinaController.class
+	protected Logger logger = Logger.getLogger(SolicitacaoMatriculaForaPrazoController.class
 			.getName());
 
 	@Autowired
-	private InclusaoDisciplinaService service;
+	private SolicitacaoMatriculaForaPrazoService service;
 	
 	@RequestMapping(value="/turma/{codigoTurma}", method = RequestMethod.GET, headers="Accept=application/json")
 	  public Map<String,String> changeTaskStatus(@PathVariable String codigoTurma) throws ParseException {

@@ -55,15 +55,6 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 			throw new IllegalArgumentException(error);
 		}
 
-		// if (response.getError() != null || response.getToken() == null
-		// || response.getToken().trim().isEmpty()) {
-		// String error = "Cannot authenticate user in remote auth service.";
-		// error += "\nError: ";
-		// error += ((response.getError() == null) ? ("Null") : (response
-		// .getError()));
-		// throw new IllegalArgumentException(error);
-		// }
-
 		Aluno aluno = alunoRepo.getByCPF(cpf);
 
 		// local user exists?
@@ -73,27 +64,26 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 			throw new IllegalArgumentException(error);
 		}
 	}
-	/*
-	 * public String logoutUser(String session_id) {
-	 * 
-	 * if (session_id == null || session_id.equals("")) { throw new
-	 * IllegalArgumentException("Undefined session identifier."); }
-	 * 
-	 * // session identify a logged user if
-	 * (!userRepository.existWithSessionId(session_id)) { throw new
-	 * IllegalArgumentException("Invalid session identifier"); }
-	 * 
-	 * // logout User user = userRepository.getBySessionId(session_id);
-	 * 
-	 * user.setSession_id(null); userRepository.save(user);
-	 * 
-	 * return "User deauthenticated successfully."; }
-	 */
 	
 	public static void main(String[] args) {
 		MoodleAutenticacaoService main = new MoodleAutenticacaoService();
 		main.authRepository = new AuthRepository();
 		main.autentica("usuarioeic", "usuario@EIC2010");
 		System.out.println("Done!");
+	}
+
+	@Override
+	public boolean autenticaUsuario(String login, String senha) {
+		return false;
+	}
+
+	@Override
+	public boolean isAluno(String login) {
+		return false;
+	}
+
+	@Override
+	public boolean isProfessor(String login) {
+		return false;
 	}
 }

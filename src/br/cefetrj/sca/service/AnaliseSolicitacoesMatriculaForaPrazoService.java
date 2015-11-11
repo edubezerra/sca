@@ -11,25 +11,14 @@ import br.cefetrj.sca.dominio.EnumStatusSolicitacao;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.SemestreLetivo;
 import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacao;
-import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoInclusao;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
-import br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio;
+import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
 import br.cefetrj.sca.dominio.repositorio.InclusaoDisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio;
-import br.cefetrj.sca.dominio.repositorio.TurmaRepositorio;
 
 @Component
-public class ProfessorService {
-	
-	@Autowired
-	private AlunoRepositorio alunoRepo;
-
-	@Autowired
-	private DepartamentoRepositorio departamentoRepo;
-	
-	@Autowired
-	private TurmaRepositorio turmaRepositorio;
+public class AnaliseSolicitacoesMatriculaForaPrazoService {
 	
 	@Autowired
 	private InclusaoDisciplinaRepositorio inclusaoRepo;
@@ -39,9 +28,9 @@ public class ProfessorService {
 	
 	public void homeInclusao(String matricula, Model model){
 		Professor professor = getProfessorByMatricula(matricula);
-		List<SolicitacaoInclusao> solicitacao = inclusaoRepo.getTodasSolicitacoes();
+		List<SolicitacaoMatriculaForaPrazo> solicitacao = inclusaoRepo.getTodasSolicitacoes();
 		if(solicitacao != null){
-			List<SemestreLetivo> listaSemestresLetivos = InclusaoDisciplinaService.removeSemestresDuplicados(solicitacao);
+			List<SemestreLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo.semestresCorrespondentes(solicitacao);
 			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
 		}
 		
@@ -51,11 +40,11 @@ public class ProfessorService {
 	public void listarSolicitacoes(String matricula, EnumPeriodo periodo, int ano, Model model){
 		Professor professor = getProfessorByMatricula(matricula);
 		Long departamentoId = professor.getDepartmento().getId();
-		List<SolicitacaoInclusao> solicitacoes = inclusaoRepo
+		List<SolicitacaoMatriculaForaPrazo> solicitacoes = inclusaoRepo
 				.getTodasSolicitacoesByDepartamentoSemestre(periodo, ano,departamentoId);
 		
-		for (SolicitacaoInclusao solicitacaoInclusao : solicitacoes) {
-			Iterator<ItemSolicitacao> it = solicitacaoInclusao.getItemSolicitacao().iterator();
+		for (SolicitacaoMatriculaForaPrazo solicitacaoInclusao : solicitacoes) {
+			Iterator<ItemSolicitacaoMatriculaForaPrazo> it = solicitacaoInclusao.getItemSolicitacao().iterator();
 			while (it.hasNext()) {
 			    if (!it.next().getDepartamento().getId().equals(departamentoId)) {
 			        it.remove();
@@ -72,7 +61,7 @@ public class ProfessorService {
 	}
 	
 	public void atualizaStatusAluno(Long idItemSolicitacao, String status, Model model){
-		ItemSolicitacao itemSolicitacao = inclusaoRepo.getItemSolicitacaoById(idItemSolicitacao);
+		ItemSolicitacaoMatriculaForaPrazo itemSolicitacao = inclusaoRepo.getItemSolicitacaoById(idItemSolicitacao);
 		if(status.equalsIgnoreCase("deferido")){
 			itemSolicitacao.setStatus(EnumStatusSolicitacao.DEFERIDO);
 		} else if(status.equalsIgnoreCase("indeferido")) { 
@@ -85,6 +74,10 @@ public class ProfessorService {
 			throw new IllegalArgumentException("Ocorreu um erro ao atualizar o status do Aluno");
 		}
 		
+	}
+
+	public Comprovante getComprovante(Long solicitacaoId) {
+		return inclusaoRepo.getComprovante(solicitacaoId);
 	}
 	
 }

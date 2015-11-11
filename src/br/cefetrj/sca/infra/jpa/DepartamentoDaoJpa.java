@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.infra.DepartamentoDAO;
+import br.cefetrj.sca.infra.DepartamentoDao;
 
 @Component
-public class DepartamentoDaoJpa implements DepartamentoDAO{
+public class DepartamentoDaoJpa implements DepartamentoDao {
 	private GenericDaoJpa<Departamento> genericDAO = new GenericDaoJpa<Departamento>();
 
 	@Override

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.infra.DepartamentoDAO;
+import br.cefetrj.sca.infra.DepartamentoDao;
 import br.cefetrj.sca.infra.TurmaDao;
 
 @Component
 public class DepartamentoRepositorio {
 	
 	@Autowired
-	private DepartamentoDAO departamentoDao;
+	private DepartamentoDao departamentoDao;
 	
 	@Autowired
 	private TurmaDao turmaDao;

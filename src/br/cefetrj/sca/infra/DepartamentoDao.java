@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.cefetrj.sca.dominio.Departamento;
 
-public interface DepartamentoDAO {
+public interface DepartamentoDao {
 	
 	List<Departamento> getTodos();
 	

@@ -5,20 +5,20 @@ import java.util.List;
 import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacao;
-import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoInclusao;
+import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
 
 public interface InclusaoDisciplinaDao {
 	
-	boolean adicionarSolicitacaoInclusao(SolicitacaoInclusao solicitacaoInclusao);
-	boolean adicionarItemSolicitacao(ItemSolicitacao itemSolicitacao);
-	List<SolicitacaoInclusao> getSolicitacaoAluno(Long idAluno);
-	SolicitacaoInclusao getSolicitacaoByAlunoSemestre(Long alunoId,int ano, EnumPeriodo periodo);
+	boolean adicionarSolicitacaoInclusao(SolicitacaoMatriculaForaPrazo solicitacaoInclusao);
+	boolean adicionarItemSolicitacao(ItemSolicitacaoMatriculaForaPrazo itemSolicitacao);
+	List<SolicitacaoMatriculaForaPrazo> getSolicitacaoAluno(Long idAluno);
+	SolicitacaoMatriculaForaPrazo getSolicitacaoByAlunoSemestre(Long alunoId,int ano, EnumPeriodo periodo);
 	Comprovante getComprovante(Long solicitacaoId);
 	Turma getTurmaSolicitada(Long idAluno, String codigoTurma,int ano, EnumPeriodo periodo);
-	List<SolicitacaoInclusao> getTodasSolicitacoesBySemestre(EnumPeriodo periodo, int ano);
-	List<SolicitacaoInclusao> getTodasSolicitacoes();
-	List<SolicitacaoInclusao> getTodasSolicitacoesByDepartamentoSemestre(EnumPeriodo periodo, int ano, Long departamentoId);
-	boolean alterarItemSolicitacao(ItemSolicitacao itemSolicitacao);
-	ItemSolicitacao getItemSolicitacaoById(Long id);
+	List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoesBySemestre(EnumPeriodo periodo, int ano);
+	List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoes();
+	List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoesByDepartamentoSemestre(EnumPeriodo periodo, int ano, Long departamentoId);
+	boolean alterarItemSolicitacao(ItemSolicitacaoMatriculaForaPrazo itemSolicitacao);
+	ItemSolicitacaoMatriculaForaPrazo getItemSolicitacaoById(Long id);
 }

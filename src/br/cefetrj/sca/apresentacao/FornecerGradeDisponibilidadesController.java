@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidade;
-import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.FornecerGradeDisponibilidadeService;
 
 @Controller
@@ -28,9 +27,6 @@ public class FornecerGradeDisponibilidadesController {
 
 	@Autowired
 	private FornecerGradeDisponibilidadeService service;
-
-	@Autowired
-	private AutenticacaoService authService;
 
 	@RequestMapping(value = "/{*}", method = RequestMethod.GET)
 	public String get(Model model) {

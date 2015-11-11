@@ -5,39 +5,39 @@ import java.util.List;
 import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacao;
-import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoInclusao;
+import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
 import br.cefetrj.sca.infra.InclusaoDisciplinaDao;
 
-public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoInclusao> implements InclusaoDisciplinaDao{
+public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoMatriculaForaPrazo> implements InclusaoDisciplinaDao{
 	
-	private GenericDaoJpa<ItemSolicitacao> genericDAO = new GenericDaoJpa<>();
+	private GenericDaoJpa<ItemSolicitacaoMatriculaForaPrazo> genericDAO = new GenericDaoJpa<>();
 	
 	private GenericDaoJpa<Comprovante> comprovanteGenericDAO = new GenericDaoJpa<>();
 	
 	private GenericDaoJpa<Turma> turmaGenericDAO = new GenericDaoJpa<>();
 	
 	@Override
-	public boolean adicionarSolicitacaoInclusao(SolicitacaoInclusao solicitacaoInclusao){
+	public boolean adicionarSolicitacaoInclusao(SolicitacaoMatriculaForaPrazo solicitacaoInclusao){
 		return	incluir(solicitacaoInclusao);
 	}
 	
 	@Override
-	public boolean adicionarItemSolicitacao(ItemSolicitacao itemSolicitacao){
+	public boolean adicionarItemSolicitacao(ItemSolicitacaoMatriculaForaPrazo itemSolicitacao){
 		return	genericDAO.incluir(itemSolicitacao);
 	}
 	
 	@Override
-	public List<SolicitacaoInclusao> getSolicitacaoAluno(Long idAluno) {
-		String consulta = "SELECT s FROM SolicitacaoInclusao s "
+	public List<SolicitacaoMatriculaForaPrazo> getSolicitacaoAluno(Long idAluno) {
+		String consulta = "SELECT s FROM SolicitacaoMatriculaForaPrazo s "
 						+ "WHERE s.aluno.id = ?";
 		Object array[] = { idAluno };
 		return super.obterEntidades(consulta, array);
 	}
 
 	@Override
-	public SolicitacaoInclusao getSolicitacaoByAlunoSemestre(Long alunoId, int ano, EnumPeriodo periodo) {
-		String consulta = "SELECT s FROM SolicitacaoInclusao s " +
+	public SolicitacaoMatriculaForaPrazo getSolicitacaoByAlunoSemestre(Long alunoId, int ano, EnumPeriodo periodo) {
+		String consulta = "SELECT s FROM SolicitacaoMatriculaForaPrazo s " +
 							"WHERE s.aluno.id = ? " +
 							"AND s.semestreLetivo.ano = ? " + 
 							"AND s.semestreLetivo.periodo = ?";
@@ -56,7 +56,7 @@ public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoInclusao>
 
 	@Override
 	public Turma getTurmaSolicitada(Long idAluno, String codigoTurma, int ano, EnumPeriodo periodo) {
-		String consulta = "SELECT t FROM ItemSolicitacao i, SolicitacaoInclusao s, Turma t "
+		String consulta = "SELECT t FROM ItemSolicitacao i, SolicitacaoMatriculaForaPrazo s, Turma t "
 						+ "WHERE s.aluno.id = ? "
 						+ "AND s.semestreLetivo.ano = ? " 
 						+ "AND s.semestreLetivo.periodo = ? "
@@ -67,9 +67,9 @@ public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoInclusao>
 	}
 
 	@Override
-	public List<SolicitacaoInclusao> getTodasSolicitacoesBySemestre(
+	public List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoesBySemestre(
 			EnumPeriodo periodo, int ano) {
-		String consulta = "SELECT s FROM SolicitacaoInclusao s "+
+		String consulta = "SELECT s FROM SolicitacaoMatriculaForaPrazo s "+
 						  "WHERE s.semestreLetivo.ano = ? "+
 						  "AND s.semestreLetivo.periodo = ?";
 		Object array[] = {ano, periodo};
@@ -77,8 +77,8 @@ public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoInclusao>
 	}
 	
 	@Override
-	public List<SolicitacaoInclusao> getTodasSolicitacoesByDepartamentoSemestre(EnumPeriodo periodo, int ano, Long departamentoId) {
-		String consulta = "SELECT DISTINCT s FROM SolicitacaoInclusao s "
+	public List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoesByDepartamentoSemestre(EnumPeriodo periodo, int ano, Long departamentoId) {
+		String consulta = "SELECT DISTINCT s FROM SolicitacaoMatriculaForaPrazo s "
 						+ "JOIN s.itemSolicitacao i "
 						+ "WHERE s.semestreLetivo.ano = ? "
 						+ "AND s.semestreLetivo.periodo = ? "
@@ -88,18 +88,18 @@ public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoInclusao>
 	}
 	
 	@Override
-	public List<SolicitacaoInclusao> getTodasSolicitacoes() {
-		return obterTodos(SolicitacaoInclusao.class);
+	public List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoes() {
+		return obterTodos(SolicitacaoMatriculaForaPrazo.class);
 	}
 
 	@Override
-	public boolean alterarItemSolicitacao(ItemSolicitacao itemSolicitacao) {
+	public boolean alterarItemSolicitacao(ItemSolicitacaoMatriculaForaPrazo itemSolicitacao) {
 		return genericDAO.alterar(itemSolicitacao);
 	}
 
 	@Override
-	public ItemSolicitacao getItemSolicitacaoById(Long id) {
-		return genericDAO.obterPorId(ItemSolicitacao.class, id);
+	public ItemSolicitacaoMatriculaForaPrazo getItemSolicitacaoById(Long id) {
+		return genericDAO.obterPorId(ItemSolicitacaoMatriculaForaPrazo.class, id);
 	}
 
 }

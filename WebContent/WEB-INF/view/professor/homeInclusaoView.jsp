@@ -1,24 +1,35 @@
-<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" pageEncoding="UTF-8"
+	contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>SCA - Inclusão de disciplina</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>SCA - Inclusão de disciplina</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/style.css">
 </head>
 
 <body class="home-inclusao text-center">
 	<div class="container">
 		<div class="row">
-			<h2>Inclusão de disciplina</h2>
-			<h4>Professor: <c:out value="${requestScope.professor.nome}"></c:out></h4>
-			<h4>Matricula: <c:out value="${requestScope.professor.matricula}"></c:out></h4>
+			<h2>Avaliação de Solicitações de Marícula Fora do Prazo</h2>
+			<h4>
+				Professor:
+				<c:out value="${requestScope.professor.nome}"></c:out>
+			</h4>
+			<h4>
+				Matricula:
+				<c:out value="${requestScope.professor.matricula}"></c:out>
+			</h4>
 		</div>
 		<c:if test="${requestScope.sucesso != null}">
 			<div class="row">
@@ -48,29 +59,34 @@
 								</tr>
 							</thead>
 							<tbody>
-							<c:forEach items="${listaSemestresLetivos}" var="semestreLetivo" >
-								<tr>
-						          <td>${semestreLetivo}</td>
-						          <td>
-						          	<form action="${pageContext.request.contextPath}/professor/listarSolicitacoes" method="POST">
-						          		<input type="hidden" name="ano" value="${semestreLetivo.ano}">
-						          		<input type="hidden" name="periodo" value="${semestreLetivo.periodo}">
-										<button type="submit" class="btn btn-link">Ver Solicitacoes</button>
-									</form>
-								</td>
-						        </tr>
-							</c:forEach>
+								<c:forEach items="${listaSemestresLetivos}" var="semestreLetivo">
+									<tr>
+										<td>${semestreLetivo}</td>
+										<td>
+											<form
+												action="${pageContext.request.contextPath}/professor/listarSolicitacoes"
+												method="POST">
+												<input type="hidden" name="ano"
+													value="${semestreLetivo.ano}"> <input type="hidden"
+													name="periodo" value="${semestreLetivo.periodo}">
+												<button type="submit" class="btn btn-link">Ver
+													Solicitações</button>
+											</form>
+										</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
 				</c:otherwise>
 			</c:choose>
 		</div>
-		<a class="btn btn-default" href="${pageContext.request.contextPath}/professor/menuPrincipal">
-			<i class="fa fa-arrow-left"> </i> Voltar
+		<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/autenticacao/menuPrincipal"> <i
+			class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>
-	
+
 </body>
 
 </html>

@@ -19,7 +19,7 @@ import br.cefetrj.sca.dominio.EnumStatusSolicitacao;
 import br.cefetrj.sca.dominio.Turma;
 
 @Entity
-public class ItemSolicitacao {
+public class ItemSolicitacaoMatriculaForaPrazo {
 	
 	@Id
 	@GeneratedValue
@@ -47,10 +47,10 @@ public class ItemSolicitacao {
 	private String observacao;
 	
 	@SuppressWarnings("unused")
-	private ItemSolicitacao(){
+	private ItemSolicitacaoMatriculaForaPrazo(){
 	}
 	
-	public ItemSolicitacao(Date dataSolicitacao, Turma turma, Departamento departamento,
+	public ItemSolicitacaoMatriculaForaPrazo(Date dataSolicitacao, Turma turma, Departamento departamento,
 			Comprovante comprovante, EnumStatusSolicitacao status, int opcao, String observacao) {
 		
 		if (turma == null || departamento == null || status == null || dataSolicitacao == null) {
@@ -67,7 +67,7 @@ public class ItemSolicitacao {
 		this.observacao = observacao;
 	}
 	
-	public ItemSolicitacao(Turma turma, Departamento departamento, int opcao, String observacao) {
+	public ItemSolicitacaoMatriculaForaPrazo(Turma turma, Departamento departamento, int opcao, String observacao) {
 		
 		if (turma == null || departamento == null) {
 			throw new IllegalArgumentException(

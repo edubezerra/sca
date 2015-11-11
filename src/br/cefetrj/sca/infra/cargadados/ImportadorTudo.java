@@ -10,6 +10,7 @@ public class ImportadorTudo {
 			ImportadorPreReqs.main(args);
 			ImportadorDiscentes.main(args);
 			ImportadorDocentes.main(args);
+			ImportadorDepartamentos.main(args);
 			ImportadorTurmas.main(args);
 			ImportadorAlocacoesProfessoresEmTurmas.main(args);
 			ImportadorLocais.main(args);

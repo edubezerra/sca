@@ -14,29 +14,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
-import br.cefetrj.sca.service.InclusaoDisciplinaService;
-import br.cefetrj.sca.service.MockAutenticacaoService;
-import br.cefetrj.sca.service.ProfessorService;
+import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService;
 
 @Controller
 @SessionAttributes("matricula")
 @RequestMapping("/professor")
-public class ProfessorController {
+public class AnaliseSolicitacoesMatriculaForaPrazoController {
 	
 	@Autowired
-	MockAutenticacaoService authService;
-	
-	@Autowired
-	ProfessorService professorService;
-	
-	@Autowired
-	InclusaoDisciplinaService inclusaoService;
+	AnaliseSolicitacoesMatriculaForaPrazoService service;
 	
 	@RequestMapping(value = "/homeInclusao", method = RequestMethod.GET)
 	public String paginaInicialInclusao(HttpServletRequest request, HttpSession session, Model model){
 		try {
-			String matricula = (String) session.getAttribute("matricula");
-			professorService.homeInclusao(matricula, model);		
+			String login = (String) session.getAttribute("login");
+			service.homeInclusao(login, model);		
 			return "/professor/homeInclusaoView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -51,7 +44,7 @@ public class ProfessorController {
 			Model model) {
 		
 		try {
-			professorService.listarSolicitacoes(matricula, periodo, ano, model);
+			service.listarSolicitacoes(matricula, periodo, ano, model);
 			return "/professor/listaSolicitacoesView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -61,7 +54,7 @@ public class ProfessorController {
 	
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session, Model model) {
-		String matricula = (String) session.getAttribute("matricula");
+		String matricula = (String) session.getAttribute("login");
 		if (matricula != null) {
 			return "/professor/menuPrincipalProfessorView";
 		} else {
@@ -76,9 +69,9 @@ public class ProfessorController {
 			@RequestParam int ano,
 			@RequestParam EnumPeriodo periodo) {
 		try {
-			String matricula = (String) session.getAttribute("matricula");
-			professorService.atualizaStatusAluno(idItemSolicitacao, status, model);
-			professorService.listarSolicitacoes(matricula, periodo,	ano, model);
+			String matricula = (String) session.getAttribute("login");
+			service.atualizaStatusAluno(idItemSolicitacao, status, model);
+			service.listarSolicitacoes(matricula, periodo,	ano, model);
 			return "/professor/listaSolicitacoesView";		
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -87,11 +80,12 @@ public class ProfessorController {
 	}
 	
 	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
-	public void downloadFile(@ModelAttribute("matricula") String cpf,
+	public void downloadFile(@ModelAttribute("login") String cpf,
 							 @RequestParam Long solicitacaoId, 
 							 HttpServletRequest request, HttpServletResponse response) {
 		try {
-			inclusaoService.downloadFile(cpf, solicitacaoId, request, response);
+			Comprovante comprovante = service.getComprovante(solicitacaoId);
+			GerenteArquivos.downloadFile(cpf, solicitacaoId, request, response, comprovante);
         } catch (Exception e) {
             e.printStackTrace();
         }

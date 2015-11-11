@@ -51,7 +51,7 @@ public class AvaliacaoTurmaController {
 	public String importarQuestionario(HttpServletRequest request, HttpServletResponse response, Model model,
 			HttpSession session) {
 		try {
-			String cpf = (String) session.getAttribute("cpf");
+			String cpf = (String) session.getAttribute("login");
 			if (cpf == null || !cpf.equals("usuarioeic")) {
 				session.invalidate();
 				return "/homeView";
@@ -69,7 +69,7 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/selecionaPlanilhaInscricoes", method = RequestMethod.GET)
 	public String selecionarPlanilhaInscricoes(HttpSession session, Model model) {
-		String cpf = (String) session.getAttribute("cpf");
+		String cpf = (String) session.getAttribute("login");
 		if (cpf == null || !cpf.equals("usuarioeic")) {
 			return "/homeView";
 		} else {
@@ -81,7 +81,7 @@ public class AvaliacaoTurmaController {
 	public String importarInscricoes(HttpServletRequest request, HttpServletResponse response, Model model,
 			HttpSession session) {
 		try {
-			String cpf = (String) session.getAttribute("cpf");
+			String cpf = (String) session.getAttribute("login");
 			if (cpf == null || !cpf.equals("usuarioeic")) {
 				return "/homeView";
 			} else {
@@ -103,7 +103,7 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/avaliacaoTurmas", method = RequestMethod.GET)
 	public String solicitaAvaliacao(HttpSession session, Model model) {
-		String cpf = (String) session.getAttribute("cpf");
+		String cpf = (String) session.getAttribute("login");
 
 		try {
 			model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
@@ -119,11 +119,11 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/menuPrincipal")
 	public String solicitaNovamenteAvaliacaoMatricula(HttpSession session, Model model) {
-		String cpf = (String) session.getAttribute("cpf");
+		String cpf = (String) session.getAttribute("login");
 		if (cpf != null) {
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
 			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
-			return "/avaliacaoTurma/menuPrincipalView";
+			return "/menuPrincipalView";
 		} else {
 			return "/homeView";
 		}

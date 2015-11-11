@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacao;
-import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoInclusao;
+import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
 import br.cefetrj.sca.infra.InclusaoDisciplinaDao;
 
 @Component
@@ -18,19 +18,19 @@ public class InclusaoDisciplinaRepositorio {
 	@Autowired
 	private InclusaoDisciplinaDao inclusaoDao;
 	
-	public void adicionarSolicitacaoInclusao(SolicitacaoInclusao solicitacaoInclusao){
+	public void adicionarSolicitacaoInclusao(SolicitacaoMatriculaForaPrazo solicitacaoInclusao){
 		inclusaoDao.adicionarSolicitacaoInclusao(solicitacaoInclusao);
 	}
 	
-	public void adicionarItemSolicitacao(ItemSolicitacao itemSolicitacao){
+	public void adicionarItemSolicitacao(ItemSolicitacaoMatriculaForaPrazo itemSolicitacao){
 		inclusaoDao.adicionarItemSolicitacao(itemSolicitacao);
 	}
 	
-	public List<SolicitacaoInclusao> getSolicitacoesAluno(Long idAluno) {
+	public List<SolicitacaoMatriculaForaPrazo> getSolicitacoesAluno(Long idAluno) {
 		return inclusaoDao.getSolicitacaoAluno(idAluno);
 	}
 
-	public SolicitacaoInclusao getSolicitacaoByAlunoSemestre(Long alunoId,
+	public SolicitacaoMatriculaForaPrazo getSolicitacaoByAlunoSemestre(Long alunoId,
 			int ano, EnumPeriodo periodo) {
 		return inclusaoDao.getSolicitacaoByAlunoSemestre(alunoId, ano, periodo);
 	}
@@ -43,23 +43,23 @@ public class InclusaoDisciplinaRepositorio {
 		return inclusaoDao.getTurmaSolicitada(idAluno, codigoTurma, ano, periodo);
 	}
 	
-	public List<SolicitacaoInclusao> getTodasSolicitacoesBySemestre(EnumPeriodo periodo, int ano){
+	public List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoesBySemestre(EnumPeriodo periodo, int ano){
 		return inclusaoDao.getTodasSolicitacoesBySemestre(periodo, ano);
 	}
 	
-	public List<SolicitacaoInclusao> getTodasSolicitacoesByDepartamentoSemestre(EnumPeriodo periodo, int ano, Long departamentoId){
+	public List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoesByDepartamentoSemestre(EnumPeriodo periodo, int ano, Long departamentoId){
 		return inclusaoDao.getTodasSolicitacoesByDepartamentoSemestre(periodo, ano, departamentoId);
 	}
 	
-	public List<SolicitacaoInclusao> getTodasSolicitacoes(){
+	public List<SolicitacaoMatriculaForaPrazo> getTodasSolicitacoes(){
 		return inclusaoDao.getTodasSolicitacoes();
 	}
 	
-	public ItemSolicitacao getItemSolicitacaoById(Long id){
+	public ItemSolicitacaoMatriculaForaPrazo getItemSolicitacaoById(Long id){
 		return inclusaoDao.getItemSolicitacaoById(id);
 	}
 	
-	public boolean alterarItemSolcitacao(ItemSolicitacao itemSolicitacao){
+	public boolean alterarItemSolcitacao(ItemSolicitacaoMatriculaForaPrazo itemSolicitacao){
 		return inclusaoDao.alterarItemSolicitacao(itemSolicitacao);
 	}
 

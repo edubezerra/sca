@@ -7,86 +7,62 @@
 
 	<context:annotation-config />
 
-	<bean id="AlunoFabricaBean" class="br.cefetrj.sca.dominio.AlunoFabrica" />
-
+	<!-- Serviços -->
+	<bean id="AutenticacaoServiceBean" class="br.cefetrj.sca.service.MockAutenticacaoService" />
 	<bean id="AvaliacaoTurmaServiceBean" class="br.cefetrj.sca.service.AvaliacaoTurmaService" />
-
 	<bean id="FornecerGradeDisponibilidadeServiceBean"
 		class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService" />
-
-	<bean id="FornecerGradeServiceBean" class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService" />
-
-	<bean id="InclusaoDisciplinaBean" class="br.cefetrj.sca.service.InclusaoDisciplinaService" />
-
+	<bean id="SolicitacaoMatriculaForaPrazoServiceBean"
+		class="br.cefetrj.sca.service.SolicitacaoMatriculaForaPrazoService" />
+	<bean id="AnaliseSolicitacoesMatriculaForaPrazoServiceBean"
+		class="br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService" />
 	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
-	<bean id="AutenticacaoServiceBean" class="br.cefetrj.sca.service.MockAutenticacaoService" />
-	<bean id="AuthDAOMoodleBean" class="br.cefetrj.sca.infra.moodle.AuthDAOMoodle" />
 
-	<bean id="AuthRepositoryBean" class="br.cefetrj.sca.dominio.repositorio.AuthRepository" />
-
-	<bean id="AlunoRepoBean" class="br.cefetrj.sca.dominio.repositorio.AlunoRepositorio" />
-
-	<bean id="AvaliacaoTurmaRepoBean"
-		class="br.cefetrj.sca.dominio.repositorio.AvaliacaoTurmaRepositorio" />
-
-	<bean id="DisciplinaRepoBean"
-		class="br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio" />
-
-	<bean id="CursoRepositorioBean" class="br.cefetrj.sca.infra.jpa.CursoRepositorioJpa" />
-
+	<!-- Fábricas -->
+	<bean id="AlunoFabricaBean" class="br.cefetrj.sca.dominio.AlunoFabrica" />
 	<bean id="FichaDisponibilidadeFabricaBean"
 		class=" br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidadeFabrica" />
 
+	<!-- Repositorios -->
+	<bean id="AlunoRepoBean" class="br.cefetrj.sca.dominio.repositorio.AlunoRepositorio" />
+	<bean id="AuthRepositoryBean" class="br.cefetrj.sca.dominio.repositorio.AuthRepository" />
+	<bean id="AvaliacaoTurmaRepoBean"
+		class="br.cefetrj.sca.dominio.repositorio.AvaliacaoTurmaRepositorio" />
+	<bean id="CursoRepositorioBean" class="br.cefetrj.sca.infra.jpa.CursoRepositorioJpa" />
+	<bean id="DepartamentoRepoBean"
+		class="br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio" />
+	<bean id="DisciplinaRepoBean"
+		class="br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio" />
+	<bean id="InclusaoDisciplinaRepoBean"
+		class="br.cefetrj.sca.dominio.repositorio.InclusaoDisciplinaRepositorio" />
 	<bean id="ProfessorRepoBean" class="br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio" />
 	<bean id="QuesitoRepoBean" class="br.cefetrj.sca.dominio.repositorio.QuesitoRepositorio" />
 	<bean id="TurmaRepoBean" class="br.cefetrj.sca.dominio.repositorio.TurmaRepositorio" />
+
+	<!-- DAOs -->
 	<bean id="AlunoDaoBean" class="br.cefetrj.sca.infra.jpa.AlunoDaoJpa" />
+	<bean id="AuthDAOMoodleBean" class="br.cefetrj.sca.infra.moodle.AuthDAOMoodle" />
 	<bean id="AvaliacaoTurmaDaoBean" class="br.cefetrj.sca.infra.jpa.AvaliacaoTurmaDaoJpa" />
+	<bean id="DepartamentoDaoBean" class="br.cefetrj.sca.infra.jpa.DepartamentoDaoJpa" />
 	<bean id="DisciplinaDaoBean" class="br.cefetrj.sca.infra.jpa.DisciplinaDaoJpa" />
+	<bean id="InclusaoDisciplinaDaoBean" class="br.cefetrj.sca.infra.jpa.InclusaoDisciplinaDaoJpa" />
 	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
 	<bean id="QuesitoDaoBean" class="br.cefetrj.sca.infra.jpa.QuesitoDaoJpa" />
 	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
-
-	<!-- <bean id="dataSource" -->
-	<!-- class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
-	<!-- <property name="driverClassName" value="org.postgresql.Driver" /> -->
-	<!-- <property name="url" -->
-	<!-- value="jdbc:postgresql://192.168.10.242/grad-padsoft" /> -->
-	<!-- <property name="username" value="padsoft" /> -->
-	<!-- <property name="password" value="padsoft" /> -->
-	<!-- </bean> -->
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
 		<property name="url"
-			value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false" />
+			value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false;locked=false;shutdown=true" />
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 	</bean>
-
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
-	<!-- destroy-method="close"> -->
-	<!-- <property name="driverClassName" value="org.hsqldb.jdbcDriver" /> -->
-	<!-- <property name="url" value="jdbc:hsqldb:file:/tmp/db/grad-padsoft-sca;hsqldb.write_delay=false" 
-		/> -->
-	<!-- <property name="username" value="sa" /> -->
-	<!-- <property name="password" value="" /> -->
-	<!-- </bean> -->
 
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-
-	<!-- Autenticacao -->
-	<bean id="MockAutenticacaoServiceBean" class="br.cefetrj.sca.service.MockAutenticacaoService" />
-
-	<!-- Repositorios -->
-	<bean id="DepartamentoRepoBean"
-		class="br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio" />
-	<bean id="InclusaoDisciplinaRepoBean"
-		class="br.cefetrj.sca.dominio.repositorio.InclusaoDisciplinaRepositorio" />
 
 </beans>
