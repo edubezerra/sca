@@ -88,9 +88,9 @@ public class ImportadorAulas {
 				try {
 					query = em.createQuery("from LocalAula la where la.descricao = :descricaoTurma");
 					query.setParameter("descricaoTurma", aula.getLocal().getDescricao());
-					turma = (Turma) query.getSingleResult();
+					LocalAula local = (LocalAula) query.getSingleResult();
 					turma.adicionarAula(aula.getDia().toString(), aula.getHoraInicio(), aula.getHoraTermino(),
-							aula.getLocal());
+							local);
 				} catch (NoResultException e) {
 					System.out.println("Local não encontrado: " + aula.getLocal().getDescricao());
 					turma.adicionarAula(aula.getDia().toString(), aula.getHoraInicio(), aula.getHoraTermino(),
