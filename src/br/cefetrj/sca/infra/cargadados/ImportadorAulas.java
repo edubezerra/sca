@@ -144,11 +144,11 @@ public class ImportadorAulas {
 
 				// comparando os dias da semana da planilha e atribuindo seu
 				// valor EnumDiaSemana correspondente.
-				for (int j = 0; j < dia.dias().size(); j++) {
+				for (int j = 0; j < EnumDiaSemana.dias().size(); j++) {
 
 					if (dia_semana.equals(siglas_dias[j])) {
 
-						dia = EnumDiaSemana.findByText(dia.dias().get(j));
+						dia = EnumDiaSemana.findByText(EnumDiaSemana.dias().get(j));
 
 					}
 

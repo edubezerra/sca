@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.dominio.SemestreLetivo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;

@@ -1,7 +1,5 @@
 package br.cefetrj.sca.apresentacao;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidade;
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.FornecerGradeDisponibilidadeService;

@@ -52,4 +52,9 @@ public class RegistrarHabilitacoesService {
 	public void registrarHabilitacoes() {
 		repo.atualizar(professor);
 	}
+
+	public Professor selecionarProfessor(String mariculaProfessor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

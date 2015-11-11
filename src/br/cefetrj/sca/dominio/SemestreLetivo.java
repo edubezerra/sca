@@ -111,7 +111,7 @@ public final class SemestreLetivo {
 			outroPeriodo = EnumPeriodo.PRIMEIRO;
 			outroAno = this.ano + 1;
 		}
-		return new SemestreLetivo(ano, outroPeriodo);
+		return new SemestreLetivo(outroAno, outroPeriodo);
 	}
 
 }
