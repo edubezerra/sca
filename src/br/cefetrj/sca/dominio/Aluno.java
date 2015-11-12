@@ -26,15 +26,14 @@ public class Aluno {
 	 */
 	private String matricula;
 
-
 	@Embedded
 	Pessoa pessoa;
 
-	@ManyToOne
-	private Curso curso;
+	@OneToOne(cascade = CascadeType.ALL)
+	private HistoricoEscolar historico;
 
-	@OneToOne(cascade=CascadeType.ALL)
-	private HistoricoEscolar historico = new HistoricoEscolar();
+	@ManyToOne
+	private VersaoCurso versaoCurso;
 
 	public Long getId() {
 		return id;
@@ -44,7 +43,8 @@ public class Aluno {
 	private Aluno() {
 	}
 
-	public Aluno(String nome, String cpf, String matricula) {
+	public Aluno(String nome, String cpf, String matricula,
+			VersaoCurso versaoCurso) {
 		if (cpf == null || cpf.equals("")) {
 			throw new IllegalArgumentException("CPF deve ser fornecido.");
 		}
@@ -62,11 +62,14 @@ public class Aluno {
 		}
 		this.pessoa = new Pessoa(nome, cpf);
 		this.matricula = matricula;
+		this.versaoCurso = versaoCurso;
+		this.historico = new HistoricoEscolar(this.versaoCurso);
 	}
 
-	public Aluno(String nome, String cpf, String matricula, Date dataNascimento,
+	public Aluno(String nome, String cpf, String matricula,
+			VersaoCurso versaoCurso, Date dataNascimento,
 			String enderecoEmail) {
-		this(nome, cpf, matricula);
+		this(nome, cpf, matricula, versaoCurso);
 		this.pessoa = new Pessoa(nome, dataNascimento, enderecoEmail);
 	}
 
@@ -90,11 +93,15 @@ public class Aluno {
 		return this.pessoa.getCpf();
 	}
 
-	public void setCurso(Curso curso) {
-		if (curso == null) {
+	public void setVersaoCurso(VersaoCurso versaoCurso) {
+		if (versaoCurso == null) {
 			throw new IllegalArgumentException("Curso deve ser definido!");
 		}
-		this.curso = curso;
+		this.versaoCurso = versaoCurso;
+	}
+
+	public VersaoCurso getVersaoCurso() {
+		return versaoCurso;
 	}
 
 	public List<Disciplina> getDisciplinasPossiveis() {

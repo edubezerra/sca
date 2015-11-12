@@ -33,7 +33,7 @@
 	<bean id="DepartamentoRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio" />
 	<bean id="DisciplinaRepoBean"
-		class="br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio" />
+		class="br.cefetrj.sca.infra.jpa.DisciplinaRepositorioJpa" />
 	<bean id="InclusaoDisciplinaRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.InclusaoDisciplinaRepositorio" />
 	<bean id="ProfessorRepoBean" class="br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio" />
@@ -45,7 +45,6 @@
 	<bean id="AuthDAOMoodleBean" class="br.cefetrj.sca.infra.moodle.AuthDAOMoodle" />
 	<bean id="AvaliacaoTurmaDaoBean" class="br.cefetrj.sca.infra.jpa.AvaliacaoTurmaDaoJpa" />
 	<bean id="DepartamentoDaoBean" class="br.cefetrj.sca.infra.jpa.DepartamentoDaoJpa" />
-	<bean id="DisciplinaDaoBean" class="br.cefetrj.sca.infra.jpa.DisciplinaDaoJpa" />
 	<bean id="InclusaoDisciplinaDaoBean" class="br.cefetrj.sca.infra.jpa.InclusaoDisciplinaDaoJpa" />
 	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
 	<bean id="QuesitoDaoBean" class="br.cefetrj.sca.infra.jpa.QuesitoDaoJpa" />

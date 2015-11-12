@@ -9,10 +9,17 @@ public class AlunoFabrica {
 	public AlunoFabrica() {
 	}
 
-	public Aluno criar(String aluno_nome, String aluno_matricula, String aluno_cpf, String codigoSigla) {
-		Aluno aluno = new Aluno(aluno_nome, aluno_cpf, aluno_matricula);
-		Curso curso = crep.getPorSigla(codigoSigla);
-		aluno.setCurso(curso);
+	public Aluno criar(String nomeAluno, String matriculaAluno,
+			String cpfAluno, String siglaCurso, String numeroVersaoCurso) {
+		VersaoCurso versaoCurso = crep.getVersaoCurso(siglaCurso,
+				numeroVersaoCurso);
+		if (versaoCurso == null) {
+			throw new IllegalArgumentException(
+					"Versão do curso não encontrada. Sigla: " + siglaCurso
+							+ "; Versão: " + numeroVersaoCurso);
+		}
+		Aluno aluno = new Aluno(nomeAluno, cpfAluno, matriculaAluno,
+				versaoCurso);
 		return aluno;
 	}
 
