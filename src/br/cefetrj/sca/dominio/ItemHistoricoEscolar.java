@@ -37,4 +37,12 @@ public class ItemHistoricoEscolar {
 	public Long getId() {
 		return id;
 	}
+
+	public EnumSituacaoFinalAvaliacao getSituacao() {
+		return situacao;
+	}
+
+	public Disciplina getDisciplina() {
+		return this.disciplina;
+	}
 }

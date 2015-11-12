@@ -1,6 +1,8 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +12,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 @Entity
 public class HistoricoEscolar {
@@ -23,34 +31,62 @@ public class HistoricoEscolar {
 		return id;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "HISTORICO_ESCOLAR_ID", referencedColumnName = "ID")
 	Set<ItemHistoricoEscolar> itens = new HashSet<>();
 
-	public HistoricoEscolar() {
+	@ManyToOne
+	private VersaoCurso versaoCurso;
 
+	@SuppressWarnings("unused")
+	private HistoricoEscolar() {
 	}
+
+	public HistoricoEscolar(VersaoCurso versaoCurso) {
+		this.versaoCurso = versaoCurso;
+	}
+
+	@Transient
+	@Autowired
+	DisciplinaRepositorio dr;
 
 	public List<Disciplina> getDisciplinasPossiveis() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public void lancarAprovacao(Disciplina d, NotaFinal nf, SemestreLetivo sl) {
-		ItemHistoricoEscolar item = new ItemHistoricoEscolar(d, sl,
-				nf.getSituacaoFinal());
-		this.itens.add(item);
-	}
+		List<Disciplina> disciplinas = dr.getDisciplinasPorVersaoCurso(this.versaoCurso);
 
-	public void lancarReprovacaoPorMedia(Disciplina d, NotaFinal nf,
-			SemestreLetivo sl) {
+		List<Disciplina> disciplinasCursadas = new ArrayList<Disciplina>();
 
+		Iterator<ItemHistoricoEscolar> it = itens.iterator();
+		EnumSituacaoFinalAvaliacao aprovado = EnumSituacaoFinalAvaliacao.APROVADO;
+		EnumSituacaoFinalAvaliacao isento = EnumSituacaoFinalAvaliacao.ISENTO;
+		EnumSituacaoFinalAvaliacao isentoTransf = EnumSituacaoFinalAvaliacao.ISENTO_POR_TRANSFERENCIA;
+		EnumSituacaoFinalAvaliacao creditos = EnumSituacaoFinalAvaliacao.APROVEITAMENTO_CREDITOS;
+		EnumSituacaoFinalAvaliacao estudos = EnumSituacaoFinalAvaliacao.APROVEITAMENTO_POR_ESTUDOS;
+
+		while (it.hasNext()) {
+			ItemHistoricoEscolar item = it.next();
+			if (item.getSituacao() == aprovado || item.getSituacao() == isento
+					|| item.getSituacao() == isentoTransf
+					|| item.getSituacao() == creditos
+					|| item.getSituacao() == estudos) {
+
+				disciplinasCursadas.add(item.getDisciplina());
+				disciplinas.remove(item.getDisciplina());
+			}
+		}
+
+		for (Disciplina disciplina : disciplinas) {
+			if (!disciplinasCursadas.containsAll(disciplina.getPreRequisitos())) {
+				disciplinas.remove(disciplina);
+			}
+		}
+		return disciplinas;
 	}
 
 	public void lancar(Disciplina disciplina,
 			EnumSituacaoFinalAvaliacao situacao, SemestreLetivo periodo) {
-		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina, periodo,
-				situacao);
+		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina,
+				periodo, situacao);
 		this.itens.add(item);
 	}
 }
