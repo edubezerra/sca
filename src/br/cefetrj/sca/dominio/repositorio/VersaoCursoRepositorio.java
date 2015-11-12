@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 @Component
 public class VersaoCursoRepositorio {

@@ -1,4 +1,4 @@
-package br.cefetrj.sca.infra;
+package br.cefetrj.sca.dominio.repositorio;
 
 import java.util.List;
 import java.util.Set;

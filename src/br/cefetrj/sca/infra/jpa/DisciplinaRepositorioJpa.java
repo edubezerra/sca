@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.VersaoCurso;
+import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 import br.cefetrj.sca.infra.DAOException;
-import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 @Component
 public class DisciplinaRepositorioJpa implements DisciplinaRepositorio {

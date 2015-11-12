@@ -2,7 +2,7 @@ package br.cefetrj.sca.dominio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.cefetrj.sca.infra.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 
 public class DisciplinaService {
 	@Autowired

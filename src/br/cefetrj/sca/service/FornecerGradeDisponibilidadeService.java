@@ -12,8 +12,8 @@ import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidade;
 import br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidadeFabrica;
 import br.cefetrj.sca.dominio.gradesdisponibilidade.GradeDisponibilidade;
+import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio;
-import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 @Service
 @Scope("session")
