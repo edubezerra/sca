@@ -26,7 +26,7 @@ public class ImportadorDiscentes {
 
 	String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF", "DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
 			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC", "ORDEM_MATR", "SITUACAO", "COD_TURMA",
-			"COD_CURSO", "MATR_ALUNO", "SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA", "ID_PROCESSAMENTO",
+			"COD_CURSO", "NUM_VERSAO", "MATR_ALUNO", "SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA", "ID_PROCESSAMENTO",
 			"HR_SOLICITACAO" };
 
 	/**
@@ -100,12 +100,13 @@ public class ImportadorDiscentes {
 		for (int i = 1; i < sheet.getRows(); i++) {
 
 			String codigoCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+			String numeroVersaoCurso = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
 
 			String aluno_matricula = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
 			String aluno_nome = sheet.getCell(colunasList.indexOf("NOME_PESSOA"), i).getContents();
 			String aluno_cpf = sheet.getCell(colunasList.indexOf("CPF"), i).getContents();
 
-			Aluno aluno = alunoFab.criar(aluno_nome, aluno_matricula, aluno_cpf, codigoCurso);
+			Aluno aluno = alunoFab.criar(aluno_nome, aluno_matricula, aluno_cpf, codigoCurso, numeroVersaoCurso);
 
 			alunos_matriculas.put(aluno_matricula, aluno);
 		}

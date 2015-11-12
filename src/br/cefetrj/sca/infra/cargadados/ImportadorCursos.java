@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.cefetrj.sca.dominio.Curso;
-import br.cefetrj.sca.dominio.VersaoGradeCurso;
+import br.cefetrj.sca.dominio.VersaoCurso;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
@@ -30,13 +30,13 @@ public class ImportadorCursos {
 			"SIGLA_UNIDADE", "COD_CURSO", "NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
 
 	/**
-	 * Dicionário de pares (sigla, objeto da classe VersaoGradeCurso) de cada
+	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada
 	 * curso.
 	 */
-	private HashMap<String, VersaoGradeCurso> versoesCursos = new HashMap<>();
+	private HashMap<String, VersaoCurso> versoesCursos = new HashMap<>();
 
 	/**
-	 * Dicionário de pares (sigla, objeto da classe VersaoGradeCurso) de cada
+	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada
 	 * curso.
 	 */
 	private HashMap<String, Curso> cursos = new HashMap<>();
@@ -81,7 +81,7 @@ public class ImportadorCursos {
 		}
 
 		/**
-		 * Realiza a persistência dos objetos VersaoGradeCurso.
+		 * Realiza a persistência dos objetos <code>VersaoCurso</code>.
 		 */
 		Set<String> versoesIt = versoesCursos.keySet();
 		for (String numeroMaisSigla : versoesIt) {
@@ -125,7 +125,7 @@ public class ImportadorCursos {
 
 			if (versoesCursos.get(siglaCurso + numVersao) == null) {
 				Curso curso = cursos.get(siglaCurso);
-				VersaoGradeCurso versao = new VersaoGradeCurso(numVersao, curso);
+				VersaoCurso versao = new VersaoCurso(numVersao, curso);
 				versoesCursos.put(siglaCurso + numVersao, versao);
 			}
 		}
