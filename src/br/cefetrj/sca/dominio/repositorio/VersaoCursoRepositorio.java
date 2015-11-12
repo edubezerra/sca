@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.infra.DisciplinaDao;
+import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 @Component
-public class VersaoGradeRepositorio {
+public class VersaoCursoRepositorio {
 
 	@Autowired
-	private DisciplinaDao dao;
+	private DisciplinaRepositorio dao;
 
 	public void adicionar(Disciplina d) {
-		dao.gravar(d);
+		dao.adicionar(d);
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class VersaoGradeRepositorio {
 	 *         null em caso contrário.
 	 */
 	public Disciplina getDisciplinaPorNome(String nome) {
-		return dao.getByNome(nome);
+		return dao.getDisciplinaPorNome(nome);
 	}
 
 	public List<Disciplina> getDisciplinas() {
@@ -40,6 +40,6 @@ public class VersaoGradeRepositorio {
 	}
 
 	public Disciplina getDisciplinaPorCodigo(String codigoDisciplina) {
-		return dao.getByCodigo(codigoDisciplina);
+		return dao.getDisciplinaPorCodigo(codigoDisciplina);
 	}
 }

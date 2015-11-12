@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public final class VersaoGradeCurso {
+public final class VersaoCurso {
 	@Id
 	@GeneratedValue
 	Long id;
@@ -17,11 +17,11 @@ public final class VersaoGradeCurso {
 	private Curso curso;
 
 	@SuppressWarnings("unused")
-	private VersaoGradeCurso() {
+	private VersaoCurso() {
 		numero = null;
 	}
 
-	public VersaoGradeCurso(String numero, Curso curso) {
+	public VersaoCurso(String numero, Curso curso) {
 		this.numero = numero;
 		this.curso = curso;
 	}
@@ -36,7 +36,7 @@ public final class VersaoGradeCurso {
 
 	@Override
 	public String toString() {
-		return "VersaoGradeCurso [numero=" + numero + "]";
+		return "VersaoCurso [numero=" + numero + "]";
 	}
 
 	public Curso getCurso() {
@@ -64,7 +64,7 @@ public final class VersaoGradeCurso {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VersaoGradeCurso other = (VersaoGradeCurso) obj;
+		VersaoCurso other = (VersaoCurso) obj;
 		if (curso == null) {
 			if (other.curso != null)
 				return false;
