@@ -55,7 +55,7 @@ public class Disciplina {
 	 * A versão da grade curricular a que esta disciplna pertence.
 	 */
 	@ManyToOne
-	VersaoGradeCurso versaoCurso;
+	VersaoCurso versaoCurso;
 
 	@SuppressWarnings("unused")
 	private Disciplina() {
@@ -117,7 +117,7 @@ public class Disciplina {
 		return id;
 	}
 
-	public void alocarEmVersao(VersaoGradeCurso versaoCurso) {
+	public void alocarEmVersao(VersaoCurso versaoCurso) {
 		this.versaoCurso = versaoCurso;
 	}
 

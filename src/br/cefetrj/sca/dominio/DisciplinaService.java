@@ -2,11 +2,11 @@ package br.cefetrj.sca.dominio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.cefetrj.sca.infra.DisciplinaDao;
+import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 public class DisciplinaService {
 	@Autowired
-	private DisciplinaDao dao;
+	private DisciplinaRepositorio dao;
 
 	public Disciplina getDisciplinaPorCodigo(String codigoDisciplina, String siglaCurso, String versaoCurso) {
 		return dao.getByCodigo(codigoDisciplina, siglaCurso, versaoCurso);

@@ -5,8 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio;
+import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 public class IncluirHabilitacaoParaProfessor {
 	private static ApplicationContext context;

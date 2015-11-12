@@ -14,8 +14,8 @@ import br.cefetrj.sca.dominio.Inscricao;
 import br.cefetrj.sca.dominio.SemestreLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
-import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositorio.TurmaRepositorio;
+import br.cefetrj.sca.infra.DisciplinaRepositorio;
 
 @Component
 public class TurmasCursadasService {
