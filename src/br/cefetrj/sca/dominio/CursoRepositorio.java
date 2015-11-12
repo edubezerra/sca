@@ -1,5 +1,6 @@
 package br.cefetrj.sca.dominio;
 
 public interface CursoRepositorio {
-	Curso getPorSigla(String codigoSigla);
+	Curso getCursoPorSigla(String codigoSigla);
+	VersaoCurso getVersaoCurso(String codigoSigla, String numeroVersao);
 }
