@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>SCA - Inclusão de disciplina</title>
+    <title>SCA</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
@@ -17,8 +17,7 @@
 	<div class="container">
 		<div class="row">
 			<h2>Solicitação de Matrícula Fora do Prazo</h2>
-			<h4>Aluno: <c:out value="${requestScope.aluno.nome}"></c:out></h4>
-			<h4>Matrícula: <c:out value="${requestScope.aluno.matricula}"></c:out></h4>
+			<h4>Aluno: <c:out value="${requestScope.aluno.nome}"></c:out> (Matrícula: <c:out value="${requestScope.aluno.matricula}">)</c:out></h4>
 		</div>
 		<c:if test="${requestScope.sucesso != null}">
 			<div class="row">
@@ -66,7 +65,18 @@
 				</c:otherwise>
 			</c:choose>
 			<div class="row">
-\			</div>
+				<c:choose>
+					<c:when test="${numeroSolicitacoes lt 3}">
+						<form action="${pageContext.request.contextPath}/inclusaoDisciplina/solicitaInclusaoDisciplinas" method="POST">
+							<input type="hidden" name="numeroSolicitacoes" value="${numeroSolicitacoes}">
+							<button type="submit" class="btn btn-primary">Fazer Solicitação</button>
+						</form>
+					</c:when>
+					<c:otherwise>
+						<span class="label label-warning">Você já fez o numero máximo de solicitações para o período atual.</span>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 		<a class="btn btn-default" href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
 			<i class="fa fa-arrow-left"> </i> Voltar

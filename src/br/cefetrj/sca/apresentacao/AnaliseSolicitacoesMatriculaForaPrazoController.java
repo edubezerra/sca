@@ -18,7 +18,7 @@ import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService;
 
 @Controller
-@SessionAttributes("matricula")
+@SessionAttributes("login")
 @RequestMapping("/professor")
 public class AnaliseSolicitacoesMatriculaForaPrazoController {
 	
@@ -38,7 +38,7 @@ public class AnaliseSolicitacoesMatriculaForaPrazoController {
 	}
 	
 	@RequestMapping(value = "/listarSolicitacoes", method = RequestMethod.POST)
-	public String listarSolicitacoes(@ModelAttribute("matricula") String matricula,
+	public String listarSolicitacoes(@ModelAttribute("login") String matricula,
 			@RequestParam int ano,
 			@RequestParam EnumPeriodo periodo,
 			Model model) {

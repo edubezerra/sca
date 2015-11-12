@@ -47,7 +47,7 @@ public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoMatricula
 
 	@Override
 	public Comprovante getComprovante(Long solicitacaoId) {
-		String consulta = "SELECT c FROM Comprovante c, ItemSolicitacao s "
+		String consulta = "SELECT c FROM Comprovante c, ItemSolicitacaoMatriculaForaPrazo s "
 						+ "WHERE s.id = ? "
 						+ "AND c.id = s.comprovante.id";
 		Object array[] = {solicitacaoId};
@@ -56,7 +56,7 @@ public class InclusaoDisciplinaDaoJpa extends GenericDaoJpa<SolicitacaoMatricula
 
 	@Override
 	public Turma getTurmaSolicitada(Long idAluno, String codigoTurma, int ano, EnumPeriodo periodo) {
-		String consulta = "SELECT t FROM ItemSolicitacao i, SolicitacaoMatriculaForaPrazo s, Turma t "
+		String consulta = "SELECT t FROM ItemSolicitacaoMatriculaForaPrazo i, SolicitacaoMatriculaForaPrazo s, Turma t "
 						+ "WHERE s.aluno.id = ? "
 						+ "AND s.semestreLetivo.ano = ? " 
 						+ "AND s.semestreLetivo.periodo = ? "
