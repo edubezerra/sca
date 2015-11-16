@@ -9,4 +9,13 @@ $(document).ready(function(){
         	$("#divHideSlice").show("slow");
         }
     });
+	
+	$('#btnSend').on("click", function(e){
+		var checkBox = $('#chkAllow')[0];
+		if(!checkBox.checked){
+			alert("Para enviar as respostas, é necessário marcar a opção 'Autorizo a divulgação dos meus contatos pessoais junto às empresas.'");
+			e.preventDefault();
+		}
+	});
+	
 });

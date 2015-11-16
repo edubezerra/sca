@@ -6,7 +6,7 @@
 <head>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/formulario.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/formulario.js" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/egresso.css" />
     <title>Form egresso</title>
@@ -36,7 +36,7 @@
 							  <c:when test="${i.index+1 == 7}">
 							  		<p class="question">${i.index + 1})&nbsp;${questao.quesito}</p>
 							  		<div style="margin-left: 30px;">
-										  <input type="text" name="" class="form-control" style="width:400px;" />
+										  <input type="text" name="resp-especialidade" class="form-control" style="width:400px;" />
 									</div>
 							  </c:when>
 						  
@@ -47,7 +47,16 @@
 											<div class="radio">
 											  <label>
 											  		<input type="radio" name="question-${i.index+1}" value="${alternativaDto.id}"/>
-											  		${alternativaDto.alternativa};
+											  		${alternativaDto.alternativa}
+											  		<c:if test="${alternativaDto.id == 37}">
+											  			<input type="text" name="resp-10" class="form-control" style="width:260px;" />
+											  		</c:if>
+											  		
+											  		<c:if test="${alternativaDto.id == 55}">
+											  			<input type="text" name="resp-area" class="form-control" style="width:260px;" />
+											  		</c:if>
+
+											  		
 											  </label>
 											</div>
 										</div>
@@ -67,14 +76,14 @@
 				    
 				    <div class="checkbox" style="margin-left:200px">
 					    <label>
-					      <input type="checkbox"> Autorizo a divulgação dos meus contatos pessoais junto às empresas.
+					      <input type="checkbox" id="chkAllow"> Autorizo a divulgação dos meus contatos pessoais junto às empresas.
 					    </label>
 					 </div>
 				
 	            <br/><br/>
 	             <div style="margin-left:250px;">
              <div style="float:left; margin-right:30px;">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" id="btnSend">
                     <span class="glyphicon glyphicon-ok"></span>  Confirmar envio    
                 </button>
              </div>

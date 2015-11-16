@@ -37,7 +37,7 @@ public class AlunoDaoJpa extends GenericDaoJpa<Aluno> implements AlunoDao {
 
 	@Override
 	public Aluno getAlunoPorCPF(String cpf) {
-		String consulta = "SELECT a from Aluno a WHERE a.cpf = ?";
+		String consulta = "SELECT a from Aluno a WHERE a.pessoa.cpf = ?";
 		Object array[] = { cpf };
 		try {
 			return super.obterEntidade(consulta, array);

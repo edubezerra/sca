@@ -14,14 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoEgressoService;
-import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
 @Controller
 @SessionAttributes("cpf")
@@ -89,6 +86,16 @@ public class AvaliacaoEgressoController {
 			return "/homeView";
 		}
 	}
+	
+	@RequestMapping(value = "/confirmacaoEnvio", method = RequestMethod.POST)
+	public String confirmacaoEnvio(HttpSession session, Model model) {
+		try {
+			return "/avaliacaoEgresso/confirmacaoEnvio";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
 
 	@RequestMapping(value = "/menuPrincipal")
 	public String solicitaNovamenteAvaliacaoMatricula(HttpSession session,
@@ -110,33 +117,49 @@ public class AvaliacaoEgressoController {
 			@ModelAttribute("cpf") String cpf, // get from session
 			HttpServletRequest request,
 			Model model) {
-
+		
+		int numeroDeQuestoes = 16;
 		Map<String, String[]> parameters = request.getParameterMap();
 		List<Integer> respostas = new ArrayList<Integer>();
-
+		String questao10Outro = "";
+		String questao15Area = "";
+		String especialidade = "";
+		
+		if(parameters.containsKey("resp-especialidade")) {
+			especialidade = parameters.get("resp-especialidade")[0];
+		}
+		
 		try {
-			int i = 1;
-			// parameters must contain only sorted quesitoX parameters
-			while (parameters.containsKey("question-" + i)) {
-				String resposta = parameters.get("question-" + i)[0];
-				respostas.add(Integer.parseInt(resposta));
-				++i;
-			}
+				for(int i=1; i <= numeroDeQuestoes; i++)
+				{
+					String nomeQuestao = "question-" + i;
+					if(!parameters.containsKey(nomeQuestao)) continue;
+					String resposta = parameters.get(nomeQuestao)[0];
+					if(resposta.equals("37")){
+						questao10Outro = parameters.get("resp-10")[0];
+					}
+					
+					if(resposta.equals("55")){
+						questao15Area = parameters.get("resp-area")[0];
+					}
+					respostas.add(Integer.parseInt(resposta));
+				}
+				
 		} catch (Exception exc) {
 			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
 		}
 
 		try {
-			service.avaliaEgresso(cpf, respostas);
-			model.addAttribute("info", "Avaliação registrada.");
+			service.avaliaEgresso(cpf, respostas, especialidade, questao10Outro, questao15Area);
+			model.addAttribute("info", "Seu formulário foi enviado com sucesso! Obrigado por responder o questionário.");
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
 		}
 
-		return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula";
+		return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 	}
 
 }

@@ -33,6 +33,7 @@
 
 	<bean id="FichaDisponibilidadeFabricaBean" class=" br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidadeFabrica" />
 
+	<bean id="AlternativaRepoBean" class="br.cefetrj.sca.dominio.repositorio.AlternativaRepositorio" />
 	<bean id="ProfessorRepoBean" class="br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio" />
 	<bean id="TurmaRepoBean" class="br.cefetrj.sca.dominio.repositorio.TurmaRepositorio" />
 	<bean id="AlunoDaoBean" class="br.cefetrj.sca.infra.jpa.AlunoDaoJpa" />
@@ -41,4 +42,7 @@
 	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
 	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
 	<bean id="FormularioAvaliacaoDaoBean" class="br.cefetrj.sca.infra.jpa.FormularioAvaliacaoDaoJpa" />
+	<bean id="AvaliacaoEgressoRepositorioBean" class="br.cefetrj.sca.dominio.repositorio.AvaliacaoEgressoRepositorio" />
+	<bean id="AvaliacaoEgressoDaoBean" class="br.cefetrj.sca.infra.jpa.AvaliacaoEgressoDaoJpa" />
+	<bean id="AlternativaDaoBean" class="br.cefetrj.sca.infra.jpa.AlternativaDaoJpa" />
 </beans>

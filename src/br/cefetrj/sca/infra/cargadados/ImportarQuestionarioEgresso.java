@@ -87,7 +87,7 @@ public class ImportarQuestionarioEgresso {
 		q11.adicionarAlternativa(new Alternativa("Em município com distância entre 100 e 400 Km"));
 		q11.adicionarAlternativa(new Alternativa("Em município com distância superior a 400 Km"));
 			
-		Quesito q12 = new Quesito("Onde está LOCALIZADO o seu trabalho atual?");
+		Quesito q12 = new Quesito("Considerando o salário mínimo federal de R$ 678,00, qual a sua renda mensal em salários mínimos?");
 		q12.adicionarAlternativa(new Alternativa("Entre 1 e 5 salários mínimos (até R$ 3.390,00)"));
 		q12.adicionarAlternativa(new Alternativa("Entre 5 e 10 salários mínimos (até R$ 6.780,00)"));
 		q12.adicionarAlternativa(new Alternativa("Maior que 10 salários mínimos (> R$ 6.780,00)"));
@@ -106,8 +106,8 @@ public class ImportarQuestionarioEgresso {
 
 		
 		Quesito q15 = new Quesito("Na mesma área ?");
-		q15.adicionarAlternativa(new Alternativa("Sim (vá para 15)"));
-		q15.adicionarAlternativa(new Alternativa("Não")); //qual?
+		q15.adicionarAlternativa(new Alternativa("Sim"));
+		q15.adicionarAlternativa(new Alternativa("Não. Qual?")); 
 		
 		Quesito q16 = new Quesito("Em que modalidade?");
 		q16.adicionarAlternativa(new Alternativa("Lato Sensu (especialização, MBA)"));
