@@ -64,4 +64,9 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 
+
+	<bean id="EstrategiaAvaliacaoAlunoBean" class="br.cefetrj.dominio.EstrategiaAvaliacaoAlunoImpl2009" />
+
+
+
 </beans>

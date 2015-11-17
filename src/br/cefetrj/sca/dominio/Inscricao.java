@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Representa a inscrição de um aluno em um turma em um determinado semestre
  * letivo.
@@ -33,6 +35,7 @@ public class Inscricao {
 	 * Dependência injetada automaticamente.
 	 */
 	@Transient
+	@Autowired
 	private EstrategiaAvaliacaoAluno estrategiaAvaliacao;
 
 	@SuppressWarnings("unused")
