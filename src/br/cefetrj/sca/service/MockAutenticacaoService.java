@@ -1,13 +1,9 @@
 package br.cefetrj.sca.service;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio;

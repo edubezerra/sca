@@ -1,12 +1,9 @@
 package br.cefetrj.sca.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.mysql.fabric.Response;
 
 import br.cefetrj.sca.apresentacao.SolicitaAvaliacaoEgressoResponse;
 import br.cefetrj.sca.apresentacao.SolicitaAvaliacaoEgressoResponse.AlternativaDto;
