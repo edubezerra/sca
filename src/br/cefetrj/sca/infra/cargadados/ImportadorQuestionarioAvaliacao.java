@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import br.cefetrj.sca.dominio.FormularioAvaliacaoTurma;
+import br.cefetrj.sca.dominio.FormularioAvaliacao;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
@@ -79,7 +79,7 @@ public class ImportadorQuestionarioAvaliacao {
 		Quesito[] questoes = new Quesito[] { quest1, quest2, quest3, quest4,
 				quest5, quest6, quest7, quest8 };
 
-		FormularioAvaliacaoTurma form = new FormularioAvaliacaoTurma(); 
+		FormularioAvaliacao form = new FormularioAvaliacao("Turma", "Avaliação de Turmas"); 
 		for (Quesito quesito : questoes) {
 			form.adicionarQuesito(quesito);
 		}

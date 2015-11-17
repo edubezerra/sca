@@ -36,6 +36,9 @@
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
 							Inclusão de Disciplina</a></li>
+					<li><a
+			href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
+				Avaliar Egresso (${requestScope.periodoLetivo})</a></li>
 				</ul>
 				<h1>Professor</h1>
 				<ul class="nav nav-pills nav-stacked text-center">
@@ -48,6 +51,7 @@
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/professor/homeInclusao/">
 							Avaliar Solicitações de Matrícula Fora do Prazo</a></li>
+
 				</ul>
 
 				<h1>Comum</h1>
