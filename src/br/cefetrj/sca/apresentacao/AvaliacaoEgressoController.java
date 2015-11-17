@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoEgressoService;
 
 @Controller
-@SessionAttributes("cpf")
+@SessionAttributes("login")
 @RequestMapping("/avaliacaoEgresso")
 public class AvaliacaoEgressoController {
 
@@ -30,9 +29,6 @@ public class AvaliacaoEgressoController {
 
 	@Autowired
 	private AvaliacaoEgressoService service;
-
-	@Autowired
-	private AutenticacaoService authService;
 
 	@RequestMapping(value = "/{*}", method = RequestMethod.GET)
 	public String get(Model model) {
@@ -43,12 +39,11 @@ public class AvaliacaoEgressoController {
 
 	@RequestMapping(value = "/questionarioGraduacao", method = RequestMethod.GET)
 	public String solicitaAvaliacaoGraduacao(HttpSession session, Model model) {
-		String cpf = (String) session.getAttribute("cpf");
-
+		String cpf = (String) session.getAttribute("login");
 		try {
 			SolicitaAvaliacaoEgressoResponse resp = service.retornaQuestoes();		
 			model.addAttribute("questoes", resp);
-			model.addAttribute("cpf", cpf);
+			model.addAttribute("login", cpf);
 			return "/avaliacaoEgresso/questionarioGraduacao";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -59,13 +54,13 @@ public class AvaliacaoEgressoController {
 	
 	@RequestMapping(value = "/questionarioMedio", method = RequestMethod.GET)
 	public String solicitaAvaliacaoMedio(HttpSession session, Model model) {
-		String cpf = (String) session.getAttribute("cpf");
+		String cpf = (String) session.getAttribute("login");
 
 		try {
 			SolicitaAvaliacaoEgressoResponse quesitos = service.retornaQuestoes();	
 			quesitos.remove(quesitos.size() - 1);
 			model.addAttribute("questoes", quesitos);
-			model.addAttribute("cpf", cpf);
+			model.addAttribute("login", cpf);
 			return "/avaliacaoEgresso/questionarioMedio";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -76,10 +71,10 @@ public class AvaliacaoEgressoController {
 	
 	@RequestMapping(value = "/escolherAvaliacao", method = RequestMethod.GET)
 	public String escolherAvaliacao(HttpSession session, Model model) {
-		String cpf = (String) session.getAttribute("cpf");
+		String cpf = (String) session.getAttribute("login");
 
 		try {
-			model.addAttribute("cpf", cpf);
+			model.addAttribute("login", cpf);
 			return "/avaliacaoEgresso/escolherAvaliacao";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -100,7 +95,7 @@ public class AvaliacaoEgressoController {
 	@RequestMapping(value = "/menuPrincipal")
 	public String solicitaNovamenteAvaliacaoMatricula(HttpSession session,
 			Model model) {
-		String cpf = (String) session.getAttribute("cpf");
+		String cpf = (String) session.getAttribute("login");
 		if (cpf != null) {
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 					.getInstance();
@@ -114,7 +109,7 @@ public class AvaliacaoEgressoController {
 
 	@RequestMapping(value = "/avaliaEgresso", method = RequestMethod.POST)
 	public String avaliaTurma(
-			@ModelAttribute("cpf") String cpf, // get from session
+			@ModelAttribute("login") String cpf, // get from session
 			HttpServletRequest request,
 			Model model) {
 		

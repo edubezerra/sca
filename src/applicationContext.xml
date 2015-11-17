@@ -33,16 +33,17 @@
 	<bean id="CursoRepositorioBean" class="br.cefetrj.sca.infra.jpa.CursoRepositorioJpa" />
 	<bean id="DepartamentoRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio" />
-	<bean id="DisciplinaRepoBean"
-		class="br.cefetrj.sca.infra.jpa.DisciplinaRepositorioJpa" />
+	<bean id="DisciplinaRepoBean" class="br.cefetrj.sca.infra.jpa.DisciplinaRepositorioJpa" />
 	<bean id="InclusaoDisciplinaRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.InclusaoDisciplinaRepositorio" />
 	<bean id="ProfessorRepoBean" class="br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio" />
-	<bean id="QuesitoRepoBean" class="br.cefetrj.sca.dominio.repositorio.QuesitoRepositorio" />
 	<bean id="TurmaRepoBean" class="br.cefetrj.sca.dominio.repositorio.TurmaRepositorio" />
-	<bean id="AvaliacaoEgressoRepositorioBean" class="br.cefetrj.sca.dominio.repositorio.AvaliacaoEgressoRepositorio" />
-	<bean id="AlternativaRepoBean" class="br.cefetrj.sca.dominio.repositorio.AlternativaRepositorio" />
-	<bean id="FormularioRepoBean" class="br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio" />
+	<bean id="AvaliacaoEgressoRepositorioBean"
+		class="br.cefetrj.sca.dominio.repositorio.AvaliacaoEgressoRepositorio" />
+	<bean id="AlternativaRepoBean"
+		class="br.cefetrj.sca.dominio.repositorio.AlternativaRepositorio" />
+	<bean id="FormularioRepoBean"
+		class="br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio" />
 
 	<!-- DAOs -->
 	<bean id="AlunoDaoBean" class="br.cefetrj.sca.infra.jpa.AlunoDaoJpa" />
@@ -51,12 +52,10 @@
 	<bean id="DepartamentoDaoBean" class="br.cefetrj.sca.infra.jpa.DepartamentoDaoJpa" />
 	<bean id="InclusaoDisciplinaDaoBean" class="br.cefetrj.sca.infra.jpa.InclusaoDisciplinaDaoJpa" />
 	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
-	<bean id="QuesitoDaoBean" class="br.cefetrj.sca.infra.jpa.QuesitoDaoJpa" />
 	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
 	<bean id="AvaliacaoEgressoDaoBean" class="br.cefetrj.sca.infra.jpa.AvaliacaoEgressoDaoJpa" />
 	<bean id="AlternativaDaoBean" class="br.cefetrj.sca.infra.jpa.AlternativaDaoJpa" />
 	<bean id="FormularioAvaliacaoDaoBean" class="br.cefetrj.sca.infra.jpa.FormularioAvaliacaoDaoJpa" />
-	
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">

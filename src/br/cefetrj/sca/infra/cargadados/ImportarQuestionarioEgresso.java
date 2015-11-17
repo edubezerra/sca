@@ -153,6 +153,8 @@ public class ImportarQuestionarioEgresso {
 		em.persist(formGrad);
 
 		em.getTransaction().commit();
+		
+		em.close();
 
 		System.out.println("Feito!");
 	}
