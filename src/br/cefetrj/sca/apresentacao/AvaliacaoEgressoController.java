@@ -63,7 +63,7 @@ public class AvaliacaoEgressoController {
 
 		try {
 			SolicitaAvaliacaoEgressoResponse quesitos = service.retornaQuestoes();	
-			
+			quesitos.remove(quesitos.size() - 1);
 			model.addAttribute("questoes", quesitos);
 			model.addAttribute("cpf", cpf);
 			return "/avaliacaoEgresso/questionarioMedio";

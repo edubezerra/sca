@@ -19,6 +19,7 @@
                 <h3 style="margin-left:100px; font-weight:bold;">
                     PROGRAMA DE ACOMPANHAMENTO DE EGRESSOS
                 </h3>
+                <h4 style="margin-left:350px; font-weight:bold;">Graduação</h4>
                 <hr />
                <c:if test="${requestScope.questoes == null}">
 					<h3>Não existem questões a serem respondidas.</h3>
