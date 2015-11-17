@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
-import br.cefetrj.sca.infra.AvaliacaoDao;
+import br.cefetrj.sca.infra.AvaliacaoTurmaDao;
 
 @Component
 public class AvaliacaoTurmaRepositorio {
 
 	@Autowired
-	private AvaliacaoDao avaliacaoDAO;
+	private AvaliacaoTurmaDao avaliacaoDAO;
 
 	private AvaliacaoTurmaRepositorio() {
 	}

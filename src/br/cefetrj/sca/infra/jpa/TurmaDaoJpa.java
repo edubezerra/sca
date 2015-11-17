@@ -42,7 +42,7 @@ public class TurmaDaoJpa implements TurmaDao {
 	public List<Turma> getTurmasCursadas(String cpf,
 			SemestreLetivo semestreLetivo) {
 		String consulta = "SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a "
-				+ "WHERE t.semestreLetivo.ano = ? AND t.semestreLetivo.periodo = ? AND a.cpf = ?";
+				+ "WHERE t.semestreLetivo.ano = ? AND t.semestreLetivo.periodo = ? AND a.pessoa.cpf = ?";
 		Object array[] = { semestreLetivo.getAno(),
 				semestreLetivo.getPeriodo(), cpf };
 
