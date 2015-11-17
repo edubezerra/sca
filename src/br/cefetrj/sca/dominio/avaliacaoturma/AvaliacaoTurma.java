@@ -54,7 +54,7 @@ public class AvaliacaoTurma {
 	 */
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "RESPOSTA", joinColumns = {
-			@JoinColumn(name = "AVALIACAOTURMA_ID", referencedColumnName = "ID", nullable = false) }, inverseJoinColumns = {
+			@JoinColumn(name = "AVALIACAOTURMA_ID", referencedColumnName = "ID", nullable = true) }, inverseJoinColumns = {
 					@JoinColumn(name = "ALTERNATIVA_ID", referencedColumnName = "ID", nullable = false) })
 	private List<Alternativa> respostas = new ArrayList<Alternativa>();
 

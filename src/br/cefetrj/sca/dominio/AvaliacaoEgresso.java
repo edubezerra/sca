@@ -1,102 +1,93 @@
 package br.cefetrj.sca.dominio;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 
-/**
- * Representa a avaliação de uma turma por um aluno que a cursou. Uma avaliação
- * é composta por diversos quesitos. Para cada um deles, o aluno seleciona uma
- * resposta objetiva correspondente.
- * 
- * @see br.cefetrj.sca.dominio.avaliacaoturma.Quesito
- * @see br.cefetrj.sca.dominio.avaliacaoturma.Alternativa
- * 
- * @author Eduardo Bezerra
- * 
- */
 @Entity
 public class AvaliacaoEgresso {
 	@Id
 	@GeneratedValue
 	private Long id;
-
-	/**
-	 * Aspectos positivos informados pelo aluno.
-	 */
-	@Lob
-	@Column(length = 8192)
-	private String aspectosPositivos;
-
-	/**
-	 * Aspectos negativos informados pelo aluno.
-	 */
-	@Lob
-	@Column(length = 8192)
-	private String aspectosNegativos;
-
-	/**
-	 * Alternativas selecionadas pelo aluno para cada um dos quesitos de
-	 * avaliação.
-	 */
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "RESPOSTA", joinColumns = { @JoinColumn(name = "AVALIACAOTURMA_ID", referencedColumnName = "ID", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "ALTERNATIVA_ID", referencedColumnName = "ID", nullable = false) })
-	private List<Alternativa> respostas = new ArrayList<Alternativa>();
-
-	/**
-	 * A aluno avaliador.
-	 */
+	
+	private String especialidade;
+	private String questao10_Outro;
+	private String questao15_Area;
+	
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Aluno alunoAvaliador;
-
+	
+	@ManyToOne
+	@JoinColumn(nullable = false)
+	private FormularioAvaliacao formAvaliacao;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "RESPOSTA_Egresso", joinColumns = {
+			@JoinColumn(name = "AVALIACAOEGRESSO_ID", referencedColumnName = "ID", nullable = true) }, inverseJoinColumns = {
+					@JoinColumn(name = "ALTERNATIVA_ID", referencedColumnName = "ID", nullable = false) })
+	private List<Alternativa> alternativas = new ArrayList<Alternativa>();
+	
 	@SuppressWarnings("unused")
 	private AvaliacaoEgresso() {
 	}
 
-	public AvaliacaoEgresso(Aluno aluno, Turma turma, List<Alternativa> respostas) {
-		if (aluno == null || turma == null || respostas == null) {
+	public AvaliacaoEgresso(Aluno aluno, List<Alternativa> alternativas, FormularioAvaliacao form) {
+		if (aluno == null || alternativas == null || form == null) {
 			throw new IllegalArgumentException(
-					"Erro: argumentos inválidos para AvaliacaoTurma().");
+					"Erro: argumentos inválidos para AvaliacaoEgresso().");
 		}
-
+		
+		this.formAvaliacao = form;
+		this.alternativas = alternativas;
 		this.alunoAvaliador = aluno;
-		this.respostas.addAll(respostas);
 	}
 
 	public Long getId() {
 		return id;
 	}
-
-	public List<Alternativa> getRespostas() {
-		return respostas;
+	
+	public Aluno getAluno() {
+		return alunoAvaliador;
+	}
+	
+	public void setEspecialidade(String especialidade){
+		this.especialidade = especialidade;
+	}
+	
+	public String getEspecialidade(){
+		return this.especialidade;
+	}
+	
+	public List<Alternativa> getAlternativas() {
+		return alternativas;
 	}
 
-	public String getAspectosPositivos() {
-		return this.aspectosPositivos;
+	public String getQuestao10_Outro() {
+		return questao10_Outro;
 	}
 
-	public void setAspectosPositivos(String texto) {
-		this.aspectosPositivos = texto;
+	public void setQuestao10_Outro(String questao10_Outro) {
+		this.questao10_Outro = questao10_Outro;
 	}
 
-	public String getAspectosNegativos() {
-		return this.aspectosNegativos;
+	public String getQuestao15_Area() {
+		return questao15_Area;
 	}
 
-	public void setAspectosNegativos(String texto) {
-		this.aspectosNegativos = texto;
+	public void setQuestao15_Area(String questao15_Area) {
+		this.questao15_Area = questao15_Area;
 	}
+
 }
