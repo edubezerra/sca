@@ -18,7 +18,7 @@ public class GenericDaoJpa<T> {
 
 	private static EntityManagerFactory emf = Persistence
 			.createEntityManagerFactory("SCAPU");
-	private static EntityManager entityManager = null;
+	protected static EntityManager entityManager = null;
 
 	public GenericDaoJpa() {
 		if (entityManager == null)

@@ -26,4 +26,6 @@ public interface DisciplinaRepositorio {
 	List<Disciplina> getDisciplinasPorVersaoCurso(VersaoCurso versaoCurso);
 
 	boolean estaContidaEm(Set<Disciplina> preReqs, Set<Disciplina> cursadas);
+
+	Disciplina getDisciplinaPorId(long disciplinaId);
 }

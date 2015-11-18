@@ -19,6 +19,7 @@
 	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
 	<bean id="AvaliacaoEgressoServiceBean" class="br.cefetrj.sca.service.AvaliacaoEgressoService" />
+	<bean id="IsencaoDisciplinasServiceBean" class="br.cefetrj.sca.service.IsencaoDisciplinasService" />
 
 	<!-- Fábricas -->
 	<bean id="AlunoFabricaBean" class="br.cefetrj.sca.dominio.AlunoFabrica" />
@@ -72,7 +73,8 @@
 	</bean>
 
 
-<!-- 	<bean id="EstrategiaAvaliacaoAlunoBean" class="br.cefetrj.dominio.EstrategiaAvaliacaoAlunoImpl2009" /> -->
+	<!-- <bean id="EstrategiaAvaliacaoAlunoBean" class="br.cefetrj.dominio.EstrategiaAvaliacaoAlunoImpl2009" 
+		/> -->
 
 
 
