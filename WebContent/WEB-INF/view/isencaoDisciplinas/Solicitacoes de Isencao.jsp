@@ -1,4 +1,4 @@
-<%@page import="br.cefetrj.sca.dominio.isencoes.ItemSolicitacao"%>
+<%@page import="br.cefetrj.sca.dominio.isencoes.ItemSolicitacaoIsencaoDisciplinas"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -12,7 +12,7 @@
 </head>
 <body>
 	<%
-		List<ItemSolicitacao> itensSolicitacao = (ArrayList) session.getAttribute("itensSolicitacao");
+		List<ItemSolicitacaoIsencaoDisciplinas> itensSolicitacao = (ArrayList) session.getAttribute("itensSolicitacao");
 	%>
 	<div class="caixa">
 		<div>

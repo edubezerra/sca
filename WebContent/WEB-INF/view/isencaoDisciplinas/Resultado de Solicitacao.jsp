@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@page import="br.cefetrj.sca.dominio.Disciplina"%>
-<%@page import="br.cefetrj.sca.dominio.isencoes.Solicitacao"%>
-<%@page import="br.cefetrj.sca.dominio.isencoes.ItemSolicitacao"%>
+<%@page import="br.cefetrj.sca.dominio.isencoes.SolicitacaoIsencaoDisciplinas"%>
+<%@page import="br.cefetrj.sca.dominio.isencoes.ItemSolicitacaoIsencaoDisciplinas"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -12,7 +12,7 @@
 </head>
 <body>
 	<%
-		Solicitacao solicitacao = (Solicitacao) request.getAttribute("solicitacao");
+	SolicitacaoIsencaoDisciplinas solicitacao = (SolicitacaoIsencaoDisciplinas) request.getAttribute("solicitacao");
 	%>
 	<div class="caixa">
 		<div>
@@ -37,7 +37,7 @@
 						<%
 							if (solicitacao != null && !solicitacao.getItensSolicitacao().isEmpty()) {
 								for (int i = 0; i < solicitacao.getItensSolicitacao().size(); i++) {
-									ItemSolicitacao itemAtual = solicitacao.getItensSolicitacao().get(i);
+									ItemSolicitacaoIsencaoDisciplinas itemAtual = solicitacao.getItensSolicitacao().get(i);
 									out.write("<tr>");
 									out.write("<td>" + itemAtual.getDisciplina().getNome() + "</td>");
 									out.write("<td>" + itemAtual.getDisciplina().getCodigo() + "</td>");
