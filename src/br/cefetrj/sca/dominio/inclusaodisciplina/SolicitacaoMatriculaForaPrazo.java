@@ -24,7 +24,7 @@ public class SolicitacaoMatriculaForaPrazo {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "SOLICITACAO_INCLUSAO_ID", referencedColumnName = "ID")
-	private List<ItemSolicitacaoMatriculaForaPrazo> itemSolicitacao;
+	private List<ItemSolicitacaoMatriculaForaPrazo> itensSolicitacao;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -40,8 +40,8 @@ public class SolicitacaoMatriculaForaPrazo {
 		if (itemSolicitacao == null || aluno == null || semestreLetivo == null) {
 			throw new IllegalArgumentException("Erro: argumentos inválidos para SolicitacaoInclusao().");
 		}
-		this.itemSolicitacao = new ArrayList<>();
-		this.itemSolicitacao.addAll(itemSolicitacao);
+		this.itensSolicitacao = new ArrayList<>();
+		this.itensSolicitacao.addAll(itemSolicitacao);
 		this.aluno = aluno;
 		this.semestreLetivo = semestreLetivo;
 	}
@@ -50,8 +50,8 @@ public class SolicitacaoMatriculaForaPrazo {
 		return id;
 	}
 
-	public List<ItemSolicitacaoMatriculaForaPrazo> getItemSolicitacao() {
-		return itemSolicitacao;
+	public List<ItemSolicitacaoMatriculaForaPrazo> getItensSolicitacao() {
+		return itensSolicitacao;
 	}
 
 	public Aluno getAluno() {
@@ -63,7 +63,7 @@ public class SolicitacaoMatriculaForaPrazo {
 	}
 
 	public void addItemSolicitacao(List<ItemSolicitacaoMatriculaForaPrazo> itens) {
-		this.itemSolicitacao.addAll(itens);
+		this.itensSolicitacao.addAll(itens);
 	}
 
 	/**

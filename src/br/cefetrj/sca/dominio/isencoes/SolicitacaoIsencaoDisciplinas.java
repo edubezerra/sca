@@ -51,6 +51,13 @@ public class SolicitacaoIsencaoDisciplinas {
 	@OneToMany(targetEntity = ItemSolicitacaoIsencaoDisciplinas.class)
 	private List<ItemSolicitacaoIsencaoDisciplinas> itensSolicitacao;
 
+	public SolicitacaoIsencaoDisciplinas(
+			List<ItemSolicitacaoIsencaoDisciplinas> listaItemSolicitacao,
+			Aluno aluno) {
+		this.aluno = aluno;
+		this.itensSolicitacao = listaItemSolicitacao;
+	}
+
 	public long getSolicitacaoId() {
 		return solicitacaoId;
 	}
@@ -79,7 +86,8 @@ public class SolicitacaoIsencaoDisciplinas {
 		return itensSolicitacao;
 	}
 
-	public void setItensSolicitacao(List<ItemSolicitacaoIsencaoDisciplinas> itensSolicitacao) {
+	public void setItensSolicitacao(
+			List<ItemSolicitacaoIsencaoDisciplinas> itensSolicitacao) {
 		this.itensSolicitacao = itensSolicitacao;
 	}
 
@@ -91,7 +99,8 @@ public class SolicitacaoIsencaoDisciplinas {
 		this.situacao = situacao;
 	}
 
-	public void adicionarItens(List<ItemSolicitacaoIsencaoDisciplinas> itensSolicitacao) {
+	public void adicionarItens(
+			List<ItemSolicitacaoIsencaoDisciplinas> itensSolicitacao) {
 		this.itensSolicitacao.addAll(itensSolicitacao);
 	}
 }

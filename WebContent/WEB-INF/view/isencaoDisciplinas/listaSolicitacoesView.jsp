@@ -13,9 +13,9 @@
 <body class="lista-solicitacoes">
 	<div class="container">
 		<div class="row text-center">
-			<h2>Solicitações de inclusão de disciplina - <c:out value="${solicitacaoAtual.semestreLetivo}"></c:out></h2>
+			<h2>Solicitações de isenção de disciplinas</h2>
 			<h4>Aluno: <c:out value="${aluno.nome}"></c:out></h4>
-			<h4>Matricula: <c:out value="${aluno.matricula}"></c:out></h4>
+			<h4>Matrícula: <c:out value="${aluno.matricula}"></c:out></h4>
 		</div>
 		<div class="row">
 			<c:forEach items="${solicitacaoAtual.itensSolicitacao}" var="itemSolicitacao">
@@ -23,30 +23,29 @@
 					<div class="dados-aluno">
 						<p><b>Departamento:</b> ${itemSolicitacao.departamento.nome}</p>
 						<p><b>Discipilna solicitada:</b>
-						${itemSolicitacao.turma.disciplina.codigo} - ${itemSolicitacao.turma.disciplina.nome}</p>
-						<p><b>Turma:</b> ${itemSolicitacao.turma.codigo}</p>
-						<p><b>Data da solicitação:</b> ${itemSolicitacao.dataSolicitacao}</p>
+						${itemSolicitacao.disciplina.codigo} - ${itemSolicitacao.disciplina.nome}</p>
+						<p><b>Disciplina externa:</b> ${itemSolicitacao.disciplina.codigo}</p>
 						<p><b>Observações:</b> ${itemSolicitacao.observacao}</p>
 					</div>
 					<div class="status text-center">
 						<h4>Status</h4>
 						<c:set var="classeStatus" scope="page">
 							<c:choose>
-								<c:when test="${itemSolicitacao.status eq 'INDEFERIDO'}">
+								<c:when test="${itemSolicitacao.situacao eq 'INDEFERIDO'}">
 									text-danger
 								</c:when>
-								<c:when test="${itemSolicitacao.status eq 'DEFERIDO'}">
+								<c:when test="${itemSolicitacao.situacao eq 'DEFERIDO'}">
 									text-success
 								</c:when>
-								<c:when test="${itemSolicitacao.status eq 'AGUARDANDO'}">
+								<c:when test="${itemSolicitacao.situacao eq 'INDEFINIDO'}">
 									text-primary
 								</c:when>
 							</c:choose>
 						</c:set>
-						<p class="${classeStatus}"><b>${itemSolicitacao.status}</b></p>
+						<p class="${classeStatus}"><b>${itemSolicitacao.situacao}</b></p>
 						
 						<c:if test="${itemSolicitacao.comprovante != null}">
-							<form action="${pageContext.request.contextPath}/inclusaoDisciplina/downloadFile" method="POST" target="_blank">
+							<form action="${pageContext.request.contextPath}/isencaoDisciplinas/downloadFile" method="POST" target="_blank">
 				          		<input type="hidden" name="solicitacaoId" value="${itemSolicitacao.id}">
 								<button type="submit" class="btn btn-link">
 									<i class="fa fa-download fa-2x"></i><h4 class="comprovante">Comprovante</h4>
@@ -57,7 +56,7 @@
 				</div>
 			</c:forEach>
 		</div>
-		<a class="btn btn-default" href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
+		<a class="btn btn-default" href="${pageContext.request.contextPath}/isencaoDisciplinas/homeInclusao">
 			<i class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>

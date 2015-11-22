@@ -13,7 +13,7 @@ import br.cefetrj.sca.dominio.Disciplina;
 @Entity
 public class ItemSolicitacaoIsencaoDisciplinas {
 	public enum SituacaoItem {
-		INDEFINIDO("Indefinido"), DEFERIDO("Deferido"), INDEFERIDO("Indeferido");
+		INDEFINIDO("INDEFINIDO"), DEFERIDO("DEFERIDO"), INDEFERIDO("INDEFERIDO");
 
 		private String value;
 
@@ -32,7 +32,7 @@ public class ItemSolicitacaoIsencaoDisciplinas {
 
 	@Id
 	@GeneratedValue
-	private long itemSolicitacaoId;
+	private long id;
 
 	@ManyToOne
 	@JoinColumn(name = "solicitacaoId", nullable = false)
@@ -42,19 +42,24 @@ public class ItemSolicitacaoIsencaoDisciplinas {
 	@JoinColumn(name = "disciplinaId", nullable = false)
 	private Disciplina disciplina;
 
-	private String nomeDisExterna;
+	private String nomeDisciplinaExterna;
 
-	private String codDisExterna;
+	private String codigoDisciplinaExterna;
 
 	@Enumerated(EnumType.STRING)
-	private SituacaoItem situacaoItem;
+	private SituacaoItem situacao;
 
-	public long getItemSolicitacaoId() {
-		return itemSolicitacaoId;
+	public ItemSolicitacaoIsencaoDisciplinas(Disciplina disciplina) {
+		this.disciplina  = disciplina;
+		this.situacao = SituacaoItem.INDEFINIDO;
 	}
 
-	public void setItemSolicitacaoId(long itemSolicitacaoId) {
-		this.itemSolicitacaoId = itemSolicitacaoId;
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public SolicitacaoIsencaoDisciplinas getSolicitacao() {
@@ -73,27 +78,27 @@ public class ItemSolicitacaoIsencaoDisciplinas {
 		this.disciplina = disciplina;
 	}
 
-	public String getNomeDisExterna() {
-		return nomeDisExterna;
+	public String getNomeDisciplinaExterna() {
+		return nomeDisciplinaExterna;
 	}
 
-	public void setNomeDisExterna(String nomeDisExterna) {
-		this.nomeDisExterna = nomeDisExterna;
+	public void setNomeDisciplinaExterna(String nome) {
+		this.nomeDisciplinaExterna = nome;
 	}
 
-	public String getCodDisExterna() {
-		return codDisExterna;
+	public String getCodDisciplinaExterna() {
+		return codigoDisciplinaExterna;
 	}
 
-	public void setCodDisExterna(String codDisExterna) {
-		this.codDisExterna = codDisExterna;
+	public void setCodDisciplinaExterna(String codigo) {
+		this.codigoDisciplinaExterna = codigo;
 	}
 
-	public SituacaoItem getSituacaoItem() {
-		return situacaoItem;
+	public SituacaoItem getSituacao() {
+		return situacao;
 	}
 
-	public void setSituacaoItem(SituacaoItem situacaoItem) {
-		this.situacaoItem = situacaoItem;
+	public void setSituacao(SituacaoItem situacaoItem) {
+		this.situacao = situacaoItem;
 	}
 }

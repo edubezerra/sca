@@ -70,7 +70,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 			model.addAttribute("aluno", service.getAlunoByCpf(cpf));
 
 			if (solicitacaoAtual != null) {
-				model.addAttribute("numeroSolicitacoes", solicitacaoAtual.getItemSolicitacao().size());
+				model.addAttribute("numeroSolicitacoes", solicitacaoAtual.getItensSolicitacao().size());
 			} else {
 				model.addAttribute("numeroSolicitacoes", 0);
 			}

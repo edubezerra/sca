@@ -13,7 +13,7 @@
 	<script src="${pageContext.request.contextPath}/js/vendor/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/vendor/angular.min.js"></script>
     <script>
-    	var url = "${pageContext.request.contextPath}/rest/turma";
+    	var urlInclusao = "${pageContext.request.contextPath}/rest/turma";
     	var numeroSolicitacoes = ${requestScope.numeroSolicitacoes};
     	var solicitacoesRestantes = 3 - numeroSolicitacoes;
     </script>

@@ -8,18 +8,18 @@
 	<context:annotation-config />
 
 	<!-- Serviços -->
+	<bean id="AnaliseSolicitacoesMatriculaForaPrazoServiceBean"
+		class="br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService" />
 	<bean id="AutenticacaoServiceBean" class="br.cefetrj.sca.service.MockAutenticacaoService" />
+	<bean id="AvaliacaoEgressoServiceBean" class="br.cefetrj.sca.service.AvaliacaoEgressoService" />
 	<bean id="AvaliacaoTurmaServiceBean" class="br.cefetrj.sca.service.AvaliacaoTurmaService" />
 	<bean id="FornecerGradeDisponibilidadeServiceBean"
 		class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService" />
+	<bean id="SolicitacaoIsencaoDisciplinasServiceBean" class="br.cefetrj.sca.service.SolicitacaoIsencaoDisciplinasService" />
+	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="SolicitacaoMatriculaForaPrazoServiceBean"
 		class="br.cefetrj.sca.service.SolicitacaoMatriculaForaPrazoService" />
-	<bean id="AnaliseSolicitacoesMatriculaForaPrazoServiceBean"
-		class="br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService" />
-	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
-	<bean id="AvaliacaoEgressoServiceBean" class="br.cefetrj.sca.service.AvaliacaoEgressoService" />
-	<bean id="IsencaoDisciplinasServiceBean" class="br.cefetrj.sca.service.IsencaoDisciplinasService" />
 
 	<!-- Fábricas -->
 	<bean id="AlunoFabricaBean" class="br.cefetrj.sca.dominio.AlunoFabrica" />
@@ -45,6 +45,8 @@
 		class="br.cefetrj.sca.dominio.repositorio.AlternativaRepositorio" />
 	<bean id="FormularioRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio" />
+	<bean id="SolicitacaoIsencaoDisciplinasRepositorioBean"
+		class="br.cefetrj.sca.dominio.isencoes.SolicitacaoIsencaoDisciplinasRepositorio" />
 
 	<!-- DAOs -->
 	<bean id="AlunoDaoBean" class="br.cefetrj.sca.infra.jpa.AlunoDaoJpa" />
@@ -52,11 +54,13 @@
 	<bean id="AvaliacaoTurmaDaoBean" class="br.cefetrj.sca.infra.jpa.AvaliacaoTurmaDaoJpa" />
 	<bean id="DepartamentoDaoBean" class="br.cefetrj.sca.infra.jpa.DepartamentoDaoJpa" />
 	<bean id="InclusaoDisciplinaDaoBean" class="br.cefetrj.sca.infra.jpa.InclusaoDisciplinaDaoJpa" />
-	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
-	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
 	<bean id="AvaliacaoEgressoDaoBean" class="br.cefetrj.sca.infra.jpa.AvaliacaoEgressoDaoJpa" />
 	<bean id="AlternativaDaoBean" class="br.cefetrj.sca.infra.jpa.AlternativaDaoJpa" />
 	<bean id="FormularioAvaliacaoDaoBean" class="br.cefetrj.sca.infra.jpa.FormularioAvaliacaoDaoJpa" />
+	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
+	<bean id="SolicitacaoIsencaoDisciplinasDaoBean"
+		class="br.cefetrj.sca.infra.jpa.SolicitacaoIsencaoDisciplinasDaoJpa" />
+	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
