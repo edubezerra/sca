@@ -31,10 +31,4 @@ public class FornecerGradeDisponibilidadeServiceTest extends
 		FichaDisponibilidade ficha = servico.validarProfessor("1506449");
 		assertEquals(ficha.getMatriculaProfessor(), "1506449");
 	}
-	
-	@Test
-	public void testAdicionarDisciplina() {
-		servico.adicionarDisciplina();	
-	}
-	
 }

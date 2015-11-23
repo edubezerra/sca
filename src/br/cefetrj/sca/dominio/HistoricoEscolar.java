@@ -14,11 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 
 @Entity
 public class HistoricoEscolar {
@@ -26,10 +21,6 @@ public class HistoricoEscolar {
 	@Id
 	@GeneratedValue
 	Long id;
-
-	public Long getId() {
-		return id;
-	}
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "HISTORICO_ESCOLAR_ID", referencedColumnName = "ID")
@@ -46,13 +37,13 @@ public class HistoricoEscolar {
 		this.versaoCurso = versaoCurso;
 	}
 
-	@Transient
-	@Autowired
-	DisciplinaRepositorio dr;
+	public Long getId() {
+		return id;
+	}
 
 	public List<Disciplina> getDisciplinasPossiveis() {
 
-		List<Disciplina> disciplinas = dr.getDisciplinasPorVersaoCurso(this.versaoCurso);
+		List<Disciplina> disciplinas = this.versaoCurso.getDisciplinas();
 
 		List<Disciplina> disciplinasCursadas = new ArrayList<Disciplina>();
 
@@ -75,11 +66,15 @@ public class HistoricoEscolar {
 			}
 		}
 
+		Set<Disciplina> disciplinasParaRemover = new HashSet<>();
 		for (Disciplina disciplina : disciplinas) {
 			if (!disciplinasCursadas.containsAll(disciplina.getPreRequisitos())) {
-				disciplinas.remove(disciplina);
+				disciplinasParaRemover.add(disciplina);
 			}
 		}
+		
+		disciplinas.removeAll(disciplinasParaRemover);
+		
 		return disciplinas;
 	}
 

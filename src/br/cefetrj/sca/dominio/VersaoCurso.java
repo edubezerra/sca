@@ -1,9 +1,13 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public final class VersaoCurso {
@@ -15,6 +19,9 @@ public final class VersaoCurso {
 
 	@ManyToOne
 	private Curso curso;
+
+	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER)
+	List<Disciplina> disciplinas;
 
 	@SuppressWarnings("unused")
 	private VersaoCurso() {
@@ -78,4 +85,13 @@ public final class VersaoCurso {
 		return true;
 	}
 
+	public void adicionarDisciplina(Disciplina disciplina) {
+		if (!disciplinas.contains(disciplina)) {
+			this.disciplinas.add(disciplina);
+		}
+	}
+	
+	public List<Disciplina> getDisciplinas() {
+		return disciplinas;
+	}
 }
