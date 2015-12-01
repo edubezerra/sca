@@ -12,7 +12,7 @@
     <title>Form egresso</title>
 </head>
 <body>
-    <form method="POST" action="${pageContext.request.contextPath}/avaliacaoEgresso/avaliaEgresso">
+    <form method="POST" action="${pageContext.request.contextPath}/avaliacaoEgresso/avaliaEgressoMedio">
         <div class="row">
             <div class="col-md-8 form">
               <img src="${pageContext.request.contextPath}/images/logo-cefet.jpg">
