@@ -75,15 +75,15 @@ public class DisciplinaRepositorioJpa implements DisciplinaRepositorio {
 
 	@Override
 	public Disciplina getByCodigo(String codigoDisciplina, String siglaCurso,
-			String versaoCurso) {
+			String numeroVersaoCurso) {
 		EntityManager entityManager = genericDAO.getEntityManager();
 		Query q = entityManager
-				.createQuery("from Disciplina d where d.codigo = :codigoDisciplinaParam "
-						+ "and d.versaoCurso.numero = :versao "
+				.createQuery("from Disciplina d where d.codigo = :codigoDisciplina "
+						+ "and d.versaoCurso.numero = :numeroVersaoCurso "
 						+ "and d.versaoCurso.curso.sigla = :siglaCurso");
-		q.setParameter("codigoDisciplinaParam", codigoDisciplina);
+		q.setParameter("codigoDisciplina", codigoDisciplina);
 		q.setParameter("siglaCurso", siglaCurso);
-		q.setParameter("versaoCurso", versaoCurso);
+		q.setParameter("numeroVersaoCurso", numeroVersaoCurso);
 		try {
 			Disciplina d = (Disciplina) q.getSingleResult();
 			return d;
@@ -130,5 +130,10 @@ public class DisciplinaRepositorioJpa implements DisciplinaRepositorio {
 	public boolean estaContidaEm(Set<Disciplina> preReqs,
 			Set<Disciplina> cursadas) {
 		return cursadas.containsAll(preReqs);
+	}
+
+	@Override
+	public Disciplina getDisciplinaPorId(long disciplinaId) {
+		return genericDAO.obterPorId(Disciplina.class, disciplinaId);
 	}
 }

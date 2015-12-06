@@ -18,7 +18,7 @@
 			<h4>Matricula: <c:out value="${aluno.matricula}"></c:out></h4>
 		</div>
 		<div class="row">
-			<c:forEach items="${solicitacaoAtual.itemSolicitacao}" var="itemSolicitacao">
+			<c:forEach items="${solicitacaoAtual.itensSolicitacao}" var="itemSolicitacao">
 				<div class="well">
 					<div class="dados-aluno">
 						<p><b>Departamento:</b> ${itemSolicitacao.departamento.nome}</p>

@@ -1,15 +1,12 @@
 package br.cefetrj.sca.service;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +32,7 @@ import br.cefetrj.sca.service.util.SolicitaInclusaoDisciplinaResponse;
 
 @Component
 public class SolicitacaoMatriculaForaPrazoService {
-	
+
 	private static final int TAMANHO_MAXIMO_COMPROVANTE = 10000000;
 
 	@Autowired
@@ -43,29 +40,29 @@ public class SolicitacaoMatriculaForaPrazoService {
 
 	@Autowired
 	private DepartamentoRepositorio departamentoRepo;
-	
+
 	@Autowired
 	private TurmaRepositorio turmaRepositorio;
-	
+
 	@Autowired
 	private InclusaoDisciplinaRepositorio inclusaoRepo;
-	
+
 	public SolicitaInclusaoDisciplinaResponse iniciarSolicitacoes() {
 		List<Departamento> departamentos = departamentoRepo.getTodos();
 		SolicitaInclusaoDisciplinaResponse response = new SolicitaInclusaoDisciplinaResponse();
-		for (Departamento depto: departamentos) {
+		for (Departamento depto : departamentos) {
 			response.add(response.new Item(depto.getNome(), depto.getId().toString()));
 		}
 		return response;
 	}
-	
+
 	public Aluno getAlunoByCpf(String cpf) {
 		return alunoRepo.getByCPF(cpf);
 	}
-	
+
 	public Turma getTurmaPorCodigo(String codigoTurma) {
 		if (codigoTurma == null || codigoTurma.trim().equals("")) {
-			throw new IllegalArgumentException("Turma "+codigoTurma+" inválido");
+			throw new IllegalArgumentException("Turma " + codigoTurma + " inválido");
 		}
 
 		Turma turma;
@@ -82,120 +79,116 @@ public class SolicitacaoMatriculaForaPrazoService {
 	public Departamento getDepartamentoById(String idDepartamento) {
 		return departamentoRepo.getById(Long.valueOf(idDepartamento));
 	}
-	
+
 	public SolicitacaoMatriculaForaPrazo getSolicitacaoByAlunoSemestre(Long alunoId, int ano, EnumPeriodo periodo) {
 		return inclusaoRepo.getSolicitacaoByAlunoSemestre(alunoId, ano, periodo);
 	}
-	
+
 	public List<SolicitacaoMatriculaForaPrazo> getSolicitacoesAluno(Long idAluno) {
 		return inclusaoRepo.getSolicitacoesAluno(idAluno);
 	}
-	
-	public void incluiSolicitacao(List<ItemSolicitacaoMatriculaForaPrazo> listaItemSolicitacao,
-								  Aluno aluno, SemestreLetivo semestreLetivo) {
-		
-		SolicitacaoMatriculaForaPrazo solicitacao = getSolicitacaoByAlunoSemestre(aluno.getId(), 
-																		semestreLetivo.getAno(), 
-																		semestreLetivo.getPeriodo());
-		if(solicitacao != null){
+
+	public void incluiSolicitacao(List<ItemSolicitacaoMatriculaForaPrazo> listaItemSolicitacao, Aluno aluno,
+			SemestreLetivo semestreLetivo) {
+
+		SolicitacaoMatriculaForaPrazo solicitacao = getSolicitacaoByAlunoSemestre(aluno.getId(),
+				semestreLetivo.getAno(), semestreLetivo.getPeriodo());
+		if (solicitacao != null) {
 			solicitacao.addItemSolicitacao(listaItemSolicitacao);
 		} else {
 			solicitacao = new SolicitacaoMatriculaForaPrazo(listaItemSolicitacao, aluno, semestreLetivo);
 		}
-		
+
 		inclusaoRepo.adicionarSolicitacaoInclusao(solicitacao);
 	}
-	
+
 	public SolicitacaoMatriculaForaPrazo getSolicitacaoAtual(String cpf) {
 		Aluno aluno = getAlunoByCpf(cpf);
 		Long idAluno = aluno.getId();
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
 		SemestreLetivo semestreLetivo = periodoAvaliacao.getSemestreLetivo();
-		SolicitacaoMatriculaForaPrazo solicitacaoAtual = getSolicitacaoByAlunoSemestre(idAluno, semestreLetivo.getAno(), 
-																					 semestreLetivo.getPeriodo());
+		SolicitacaoMatriculaForaPrazo solicitacaoAtual = getSolicitacaoByAlunoSemestre(idAluno, semestreLetivo.getAno(),
+				semestreLetivo.getPeriodo());
 		return solicitacaoAtual;
 	}
-	
+
 	public void solicitaInclusao(String cpf, int numeroSolicitacoes, Model model) {
-		
+
 		Aluno aluno = getAlunoByCpf(cpf);
-		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-				.getInstance();
+		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
 
 		model.addAttribute("departamentos", iniciarSolicitacoes());
 		model.addAttribute("cpf", cpf);
 		model.addAttribute("aluno", aluno);
-		model.addAttribute("periodoLetivo",	periodoAvaliacao.getSemestreLetivo());
-		model.addAttribute("numeroSolicitacoes",numeroSolicitacoes);
+		model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+		model.addAttribute("numeroSolicitacoes", numeroSolicitacoes);
 	}
-	
-	public void validaturma(HttpServletRequest request, Aluno aluno, SemestreLetivo semestreLetivo, 
-							Departamento depto, Comprovante comprovante, int opcao, String observacao) {
+
+	public void validaturma(HttpServletRequest request, Aluno aluno, SemestreLetivo semestreLetivo, Departamento depto,
+			Comprovante comprovante, int opcao, String observacao) {
 		int i = 0;
 		Map<String, String[]> parameters = request.getParameterMap();
 		List<ItemSolicitacaoMatriculaForaPrazo> listaItemSolicitacao = new ArrayList<>();
 		// parameters must contain only sorted quesitoX parameters
 		while (parameters.containsKey("codigoTurma" + i)) {
 			Turma turma = getTurmaPorCodigo(parameters.get("codigoTurma" + i)[0]);
-			if(turma == null) {
-				throw new IllegalArgumentException("Turma "+parameters.get("codigoTurma" + i)[0]+" inexistente");
+			if (turma == null) {
+				throw new IllegalArgumentException("Turma " + parameters.get("codigoTurma" + i)[0] + " inexistente");
 			}
-			
-			boolean isSolicitacaoRepetida = isSolicitacaoRepetida(aluno.getId(), turma.getCodigo(),	semestreLetivo);
-			
-			if(isSolicitacaoRepetida){
+
+			boolean isSolicitacaoRepetida = isSolicitacaoRepetida(aluno.getId(), turma.getCodigo(), semestreLetivo);
+
+			if (isSolicitacaoRepetida) {
 				throw new IllegalArgumentException(
-						"Erro: Já foi feita uma solicitação para a turma "+ turma.getCodigo());
+						"Erro: Já foi feita uma solicitação para a turma " + turma.getCodigo());
 			}
-			
+
 			Date dataSolicitacao = new Date();
-			listaItemSolicitacao.add(new ItemSolicitacaoMatriculaForaPrazo(dataSolicitacao,turma,depto,comprovante,EnumStatusSolicitacao.AGUARDANDO, opcao, observacao));
+			listaItemSolicitacao.add(new ItemSolicitacaoMatriculaForaPrazo(dataSolicitacao, turma, depto, comprovante,
+					EnumStatusSolicitacao.AGUARDANDO, opcao, observacao));
 			++i;
 		}
-		
+
 		incluiSolicitacao(listaItemSolicitacao, aluno, semestreLetivo);
-		
+
 	}
-	
-	public void validaSolicitacao(HttpServletRequest request, String cpf, MultipartFile file, 
-									String departamento, int opcao, String observacao) throws IOException {
-		
+
+	public void validaSolicitacao(HttpServletRequest request, String cpf, MultipartFile file, String departamento,
+			int opcao, String observacao) throws IOException {
+
 		Departamento depto = getDepartamentoById(departamento);
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
 		SemestreLetivo semestreLetivo = periodoAvaliacao.getSemestreLetivo();
 		Aluno aluno = getAlunoByCpf(cpf);
-		
+
 		validaComprovante(file);
 		Comprovante comprovante = new Comprovante(file.getContentType(), file.getBytes(), file.getOriginalFilename());
-		
-		validaturma(request,aluno,semestreLetivo, depto, comprovante, opcao, observacao);
+
+		validaturma(request, aluno, semestreLetivo, depto, comprovante, opcao, observacao);
 	}
-	
-	public void validaComprovante(MultipartFile file){
-		if(file.getSize() > TAMANHO_MAXIMO_COMPROVANTE){
+
+	public void validaComprovante(MultipartFile file) {
+		if (file.getSize() > TAMANHO_MAXIMO_COMPROVANTE) {
 			throw new IllegalArgumentException("O arquivo de comprovante deve ter 10mb no máximo");
 		}
-		String[] tiposAceitos = {"application/pdf", "image/jpeg", "image/png"};
-		if (ArrayUtils.indexOf(tiposAceitos, file.getContentType()) < 0){
+		String[] tiposAceitos = { "application/pdf", "image/jpeg", "image/png" };
+		if (ArrayUtils.indexOf(tiposAceitos, file.getContentType()) < 0) {
 			throw new IllegalArgumentException("O arquivo de comprovante deve ser no formato PDF, JPEG ou PNG");
 		}
 	}
-	
+
 	public boolean isSolicitacaoRepetida(Long idAluno, String codigoTurma, SemestreLetivo semestreLetivo) {
-		Turma turma = inclusaoRepo.getTurmaSolicitada(idAluno,codigoTurma,semestreLetivo.getAno(),semestreLetivo.getPeriodo());
-		
-		if(turma == null){
+		Turma turma = inclusaoRepo.getTurmaSolicitada(idAluno, codigoTurma, semestreLetivo.getAno(),
+				semestreLetivo.getPeriodo());
+
+		if (turma == null) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 
-	public Comprovante getComprovante(Long solicitacaoId){
+	public Comprovante getComprovante(Long solicitacaoId) {
 		return inclusaoRepo.getComprovante(solicitacaoId);
 	}
 }
-
-
-
-	

@@ -32,4 +32,8 @@ public class AlunoRepositorio {
 	public Aluno getByCPF(String cpf) {
 		return dao.getAlunoPorCPF(cpf);
 	}
+
+	public Aluno getById(String idAluno) {
+		return dao.getAlunoPorId(idAluno);
+	}
 }

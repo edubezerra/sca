@@ -18,4 +18,6 @@ public interface AlunoDao {
 
 	public abstract Aluno getAlunoPorCPF(String cpf);
 
+	public abstract Aluno getAlunoPorId(String idAluno);
+
 }

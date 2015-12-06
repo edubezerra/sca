@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.infra.DAOException;
 
 public class GenericDaoJpa<T> {
@@ -17,7 +18,7 @@ public class GenericDaoJpa<T> {
 
 	private static EntityManagerFactory emf = Persistence
 			.createEntityManagerFactory("SCAPU");
-	private static EntityManager entityManager = null;
+	protected static EntityManager entityManager = null;
 
 	public GenericDaoJpa() {
 		if (entityManager == null)
@@ -144,4 +145,5 @@ public class GenericDaoJpa<T> {
 		
 		return entityManager;
 	}
+
 }

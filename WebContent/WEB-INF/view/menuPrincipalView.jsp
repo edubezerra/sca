@@ -32,25 +32,42 @@
 				<ul class="nav nav-pills nav-stacked text-center">
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
-							Avaliar Turmas (${requestScope.periodoLetivo}) </a></li>
+							Avaliação de Turmas por Discentes (${requestScope.periodoLetivo})
+					</a></li>
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
-							Inclusão de Disciplina</a></li>
+							Inclusão de Disciplina Fora de Prazo</a></li>
+
+					<li><a class="btn-default"
+						href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
+							Avaliação de Curso por Egresso</a></li>
+
+<!-- 					<li><a class="btn-default" -->
+<%-- 						href="${pageContext.request.contextPath}/isencaoDisciplinas/visualizarResultados">Visualização --%>
+<!-- 							de Resultados de Solicitações de Isenção de Disciplinas</a></li> -->
+
+<!-- 					<li><a class="btn-default" -->
+<%-- 						href="${pageContext.request.contextPath}/isencaoDisciplinas/homeInclusao">Solicitações de --%>
+<!-- 							Isenção de Disciplinas</a></li> -->
+
+
+
 				</ul>
 				<h1>Professor</h1>
 				<ul class="nav nav-pills nav-stacked text-center">
 
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
-							Fornecer Grade de Disponibilidades
+							Fornecimento de Grade de Disponibilidades
 							(${requestScope.periodoLetivo})</a></li>
 
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/professor/homeInclusao/">
-							Avaliar Solicitações de Matrícula Fora do Prazo</a></li>
+							Análise de Solicitações de Matrícula Fora do Prazo</a></li>
+
 				</ul>
 
-				<h1>Comum</h1>
+				<h1>Geral</h1>
 				<ul class="nav nav-pills nav-stacked text-center">
 					<li class="active"><a
 						href="${pageContext.request.contextPath}/logout"> Sair do

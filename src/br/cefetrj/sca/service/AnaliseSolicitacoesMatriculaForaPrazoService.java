@@ -44,7 +44,7 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 				.getTodasSolicitacoesByDepartamentoSemestre(periodo, ano,departamentoId);
 		
 		for (SolicitacaoMatriculaForaPrazo solicitacaoInclusao : solicitacoes) {
-			Iterator<ItemSolicitacaoMatriculaForaPrazo> it = solicitacaoInclusao.getItemSolicitacao().iterator();
+			Iterator<ItemSolicitacaoMatriculaForaPrazo> it = solicitacaoInclusao.getItensSolicitacao().iterator();
 			while (it.hasNext()) {
 			    if (!it.next().getDepartamento().getId().equals(departamentoId)) {
 			        it.remove();

@@ -46,4 +46,9 @@ public class AlunoDaoJpa extends GenericDaoJpa<Aluno> implements AlunoDao {
 			return null;
 		}
 	}
+
+	@Override
+	public Aluno getAlunoPorId(String idAluno) {
+		return super.obterPorId(Aluno.class, Long.parseLong(idAluno));
+	}
 }

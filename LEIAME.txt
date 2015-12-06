@@ -14,3 +14,12 @@ as seguintes classes:
 
 Para carregar os dados no BD:
   1) 
+  
+  Para testar o perfil de aluno, use qq matricula como teste, e.g., 
+010.326.952-50
+
+Turmas
+  930004 --> GCC1311 - PROGRAMAÇÃO ORIENTADA A OBJETOS
+  920004 --> GCC1206 - ARQUITETURAS AVANÇADAS DE COMPUTADORES
+  
+ 

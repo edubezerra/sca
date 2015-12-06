@@ -1,8 +1,10 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,21 +13,50 @@ import javax.persistence.OneToMany;
 
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
-public class FormularioAvaliacaoTurma {
+@Entity
+public class FormularioAvaliacao {
 
 	@Id
 	@GeneratedValue
 	Long id;
 
+	String sigla;
+
+	String nome;
+
 	public Long getId() {
 		return id;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FORMULARIO_ID", referencedColumnName = "ID")
 	List<Quesito> quesitos;
+	
+	public FormularioAvaliacao(){
+	
+	}
+	
+	public FormularioAvaliacao(String sigla, String nome) {
+		this.sigla = sigla;
+		this.nome = nome;
+	}
 
 	public void adicionarQuesito(Quesito quesito) {
+		if(quesitos == null){
+			quesitos = new ArrayList<Quesito>();
+		}
 		this.quesitos.add(quesito);
+	}
+
+	public String getNome() {
+		return nome;
+	}
+	
+	public String getSigla() {
+		return sigla;
+	}
+	
+	public List<Quesito> getQuesitos(){
+		return quesitos;
 	}
 }
