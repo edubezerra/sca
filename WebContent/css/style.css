@@ -32,6 +32,7 @@ i {margin-top: 10px; cursor: pointer;}
 .inclusao-disciplina .add, .remove {display:none;}
 .inclusao-disciplina .add h4 {color: green; margin-top: 30px; margin-left:10px; position:absolute; cursor:pointer; display: inline-block;}
 .inclusao-disciplina .form-group textarea {width:50%;}
+.inclusao-disciplina #tamanhoGrande {margin-top:20px; margin-bottom:0!important;}
 
 /* lista de solicitações */
 .lista-solicitacoes .dados-aluno {position: relative; float:left; width:50%;}

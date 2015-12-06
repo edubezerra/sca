@@ -187,6 +187,24 @@ public class SolicitacaoMatriculaForaPrazoService {
 			return true;
 		}
 	}
+	
+	public void carregaHomeView(Model model, String cpf) {
+		SolicitacaoMatriculaForaPrazo solicitacaoAtual = getSolicitacaoAtual(cpf);
+		if (solicitacaoAtual != null) {
+			List<SolicitacaoMatriculaForaPrazo> solicitacoes = getSolicitacoesAluno(solicitacaoAtual.getAluno().getId());
+			List<SemestreLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo
+					.semestresCorrespondentes(solicitacoes);
+			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
+		}
+
+		model.addAttribute("aluno", getAlunoByCpf(cpf));
+
+		if (solicitacaoAtual != null) {
+			model.addAttribute("numeroSolicitacoes", solicitacaoAtual.getItensSolicitacao().size());
+		} else {
+			model.addAttribute("numeroSolicitacoes", 0);
+		}
+	}
 
 	public Comprovante getComprovante(Long solicitacaoId) {
 		return inclusaoRepo.getComprovante(solicitacaoId);

@@ -3,10 +3,8 @@ package br.cefetrj.sca.infra.cargadados;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.dominio.Professor;
 
 public class ImportadorDepartamentos {
 
@@ -43,12 +41,6 @@ public class ImportadorDepartamentos {
 			em.persist(departamento);
 		}
 
-		Query query = em.createQuery("from Professor p where p.matricula = :matriculaProfessor");
-		query.setParameter("matriculaProfessor", "1506449");
-		Professor professor = (Professor) query.getSingleResult();
-		dep7.addProfessor(professor);
-		em.merge(dep7);
-		
 		em.getTransaction().commit();
 
 		em.close();

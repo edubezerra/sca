@@ -43,7 +43,7 @@
 		</c:if>
         <div class="row">
             <form action="${pageContext.request.contextPath}/inclusaoDisciplina/incluiSolicitacao" 
-            	  method="post" enctype="multipart/form-data">
+            	  method="post" enctype="multipart/form-data" id="formularioSolicitacao">
                 <div class="departamento-select">
 					<p><b>Departamento:</b></p>
 	                <select class="form-control" name="departamento" required>
@@ -116,6 +116,10 @@
                 (Formatos aceitos: PDF, JPEG ou PNG. Tamanho Máximo: 10mb)</label>
                 <input type="file" name="file" id="inputFile" required>
                 
+                <span class="label label-danger" id="tamanhoGrande" style="display:none;">
+                	
+                </span>
+                
                 <hr/>
                 <div class="row checkbox">
                     <label>
@@ -128,7 +132,7 @@
                 
                 <hr/>
 				<div class=text-center>
-					<input type="hidden" name="numeroSolicitacoes" value="${requestScope.numeroSolicitacoes}">
+					<input type="hidden"  name="numeroSolicitacoes" value="${requestScope.numeroSolicitacoes}">
 					<button type="submit" class="btn btn-primary btn-lg text-center">Confirmar</button>
 				</div>
                 
