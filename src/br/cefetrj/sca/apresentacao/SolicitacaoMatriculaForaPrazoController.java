@@ -1,7 +1,6 @@
 package br.cefetrj.sca.apresentacao;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.dominio.SemestreLetivo;
 import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
@@ -58,23 +56,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 	@RequestMapping(value = "/homeInclusao", method = RequestMethod.GET)
 	public String paginaInicialInclusao(@ModelAttribute("login") String cpf, HttpServletRequest request, Model model) {
 		try {
-			SolicitacaoMatriculaForaPrazo solicitacaoAtual = service.getSolicitacaoAtual(cpf);
-			if (solicitacaoAtual != null) {
-				List<SolicitacaoMatriculaForaPrazo> solicitacoes = service
-						.getSolicitacoesAluno(solicitacaoAtual.getAluno().getId());
-				List<SemestreLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo
-						.semestresCorrespondentes(solicitacoes);
-				model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
-			}
-
-			model.addAttribute("aluno", service.getAlunoByCpf(cpf));
-
-			if (solicitacaoAtual != null) {
-				model.addAttribute("numeroSolicitacoes", solicitacaoAtual.getItensSolicitacao().size());
-			} else {
-				model.addAttribute("numeroSolicitacoes", 0);
-			}
-
+			service.carregaHomeView(model, cpf);
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
 			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
 
@@ -94,14 +76,15 @@ public class SolicitacaoMatriculaForaPrazoController {
 		try {
 			service.validaSolicitacao(request, cpf, file, departamento, opcao, observacao);
 			model.addAttribute("sucesso", "Solicitação registrada.");
+			service.carregaHomeView(model, cpf);
+			
+			return "/inclusaoDisciplina/homeInclusaoView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			service.solicitaInclusao(cpf, numeroSolicitacoes, model);
 			return "/inclusaoDisciplina/inclusaoDisciplinaView";
 		}
 
-//		service.getSolicitacaoAtual(cpf, model);
-		return "/inclusaoDisciplina/homeInclusaoView";
 	}
 
 	@RequestMapping(value = "/listarSolicitacoes", method = RequestMethod.POST)
@@ -115,11 +98,11 @@ public class SolicitacaoMatriculaForaPrazoController {
 
 			model.addAttribute("solicitacaoAtual", solicitacaoAtual);
 			model.addAttribute("aluno", aluno);
-
+			
 			return "/inclusaoDisciplina/listaSolicitacoesView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-//			service.getSolicitacaoAtual(cpf, model);
+			service.carregaHomeView(model, cpf);
 			return "/inclusaoDisciplina/homeInclusaoView";
 		}
 	}
