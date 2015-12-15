@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.infra.autoavaliacao.UploadFile;
 import br.cefetrj.sca.infra.cargadados.ImportadorInscricoes;
-import br.cefetrj.sca.infra.cargadados.ImportadorQuestionarioAvaliacao;
+import br.cefetrj.sca.infra.cargadados.ImportadorQuestionarioAvaliacaoTurmas;
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoTurmaService;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
@@ -56,7 +56,7 @@ public class AvaliacaoTurmaController {
 				session.invalidate();
 				return "/homeView";
 			} else {
-				ImportadorQuestionarioAvaliacao.run();
+				ImportadorQuestionarioAvaliacaoTurmas.run();
 				model.addAttribute("info", "Importação finalizada com sucesso.");
 				return "/avaliacaoTurma/uploadView";
 			}
