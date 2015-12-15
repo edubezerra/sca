@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.service.AvaliacaoEgressoService;
+import br.cefetrj.sca.service.util.ValidacaoHelper;
+import br.cefetrj.sca.service.util.ValidacaoResponse;
 
 @Controller
 @SessionAttributes("login")
@@ -108,11 +110,10 @@ public class AvaliacaoEgressoController {
 	}
 
 	@RequestMapping(value = "/avaliaEgresso", method = RequestMethod.POST)
-	public String avaliaTurma(
+	public String avaliaEgresso(
 			@ModelAttribute("login") String cpf, // get from session
 			HttpServletRequest request,
 			Model model) {
-		
 		int numeroDeQuestoes = 16;
 		Map<String, String[]> parameters = request.getParameterMap();
 		List<Integer> respostas = new ArrayList<Integer>();
@@ -140,23 +141,114 @@ public class AvaliacaoEgressoController {
 					respostas.add(Integer.parseInt(resposta));
 				}
 				
+				if(respostas.size() == 0){
+					model.addAttribute("error", "Erro: o formulário deve ser preenchido.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
+				
+				if(cpf == null || cpf == ""){
+					model.addAttribute("error", "Erro: O login (CPF) não está ativo na sessão.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
+				
+				if(respostas.size() > 5 && (especialidade == null || especialidade == "")){
+					model.addAttribute("error", "Erro: A pergunta 7 sobre sua especialidade deve ser respondida.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
+				
+				ValidacaoHelper helper = new ValidacaoHelper();
+				ValidacaoResponse validacao = helper.validaRespostasEgresso(respostas, "Graduacao");
+				if(!validacao.isValid()){
+					model.addAttribute("error", "Erro: Houveram um ou mais erros de validação das respostas: " + validacao.message() + " Leia atentamente as questões e responda corretamente.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
 		} catch (Exception exc) {
 			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
-			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
+			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		}
 
 		try {
 			service.avaliaEgresso(cpf, respostas, especialidade, questao10Outro, questao15Area);
 			model.addAttribute("info", "Seu formulário foi enviado com sucesso! Obrigado por responder o questionário.");
+			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 
-			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
+			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+		}
+	}
+	
+	
+	@RequestMapping(value = "/avaliaEgressoMedio", method = RequestMethod.POST)
+	public String avaliaEgressoMedio(
+			@ModelAttribute("login") String cpf, // get from session
+			HttpServletRequest request,
+			Model model) {
+		int numeroDeQuestoes = 16;
+		Map<String, String[]> parameters = request.getParameterMap();
+		List<Integer> respostas = new ArrayList<Integer>();
+		String questao10Outro = "";
+		String questao15Area = "";
+		String especialidade = "";
+		
+		if(parameters.containsKey("resp-especialidade")) {
+			especialidade = parameters.get("resp-especialidade")[0];
+		}
+		
+		try {
+				for(int i=1; i <= numeroDeQuestoes; i++)
+				{
+					String nomeQuestao = "question-" + i;
+					if(!parameters.containsKey(nomeQuestao)) continue;
+					String resposta = parameters.get(nomeQuestao)[0];
+					if(resposta.equals("37")){
+						questao10Outro = parameters.get("resp-10")[0];
+					}
+					
+					if(resposta.equals("55")){
+						questao15Area = parameters.get("resp-area")[0];
+					}
+					respostas.add(Integer.parseInt(resposta));
+				}
+				
+				if(respostas.size() == 0){
+					model.addAttribute("error", "Erro: o formulário deve ser preenchido.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
+				
+				if(cpf == null || cpf == ""){
+					model.addAttribute("error", "Erro: O login (CPF) não está ativo na sessão.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
+				
+				if(respostas.size() > 5 && (especialidade == null || especialidade == "")){
+					model.addAttribute("error", "Erro: A pergunta 7 sobre sua especialidade deve ser respondida.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
+				
+				ValidacaoHelper helper = new ValidacaoHelper();
+				ValidacaoResponse validacao = helper.validaRespostasEgresso(respostas, "Medio");
+				if(!validacao.isValid()){
+					model.addAttribute("error", "Erro: Houveram um ou mais erros de validação das respostas: " + validacao.message() + " Leia atentamente as questões e responda corretamente.");
+					return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+				}
+		} catch (Exception exc) {
+			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
+			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		}
 
-		return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+		try {
+			service.avaliaEgresso(cpf, respostas, especialidade, questao10Outro, questao15Area);
+			model.addAttribute("info", "Seu formulário foi enviado com sucesso! Obrigado por responder o questionário.");
+			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+
+			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+		}
 	}
 
+	
 }
 
 
