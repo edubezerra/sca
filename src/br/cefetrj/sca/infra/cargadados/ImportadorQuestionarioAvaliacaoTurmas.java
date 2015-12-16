@@ -15,7 +15,7 @@ import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
  * @author Eduardo Bezerra
  *
  */
-public class ImportadorQuestionarioAvaliacao {
+public class ImportadorQuestionarioAvaliacaoTurmas {
 
 	public static void run() {
 		System.out.println("ImportadorQuestionarioAvaliacao.main()");

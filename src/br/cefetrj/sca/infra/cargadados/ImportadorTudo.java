@@ -4,7 +4,7 @@ public class ImportadorTudo {
 	public static void main(String[] args) {
 
 		try {
-//			ImportadorQuestionarioAvaliacao.run();
+			ImportadorQuestionarioAvaliacaoTurmas.run();
 			ImportadorCursos.main(args);
 			ImportadorDisciplinas.main(args);
 			ImportadorPreReqs.main(args);
