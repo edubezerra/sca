@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 
 @Embeddable
-public final class SemestreLetivo {
+public final class PeriodoLetivo {
 	public enum EnumPeriodo {
 		PRIMEIRO, SEGUNDO
 	};
@@ -20,7 +20,7 @@ public final class SemestreLetivo {
 	final private EnumPeriodo periodo;
 
 	@Transient
-	public static final SemestreLetivo SEMESTRE_LETIVO_CORRENTE;
+	public static final PeriodoLetivo SEMESTRE_LETIVO_CORRENTE;
 
 	/**
 	 * Lógica para obtenção do valor do semestre letivo corrente (atual).
@@ -33,7 +33,7 @@ public final class SemestreLetivo {
 			periodo = EnumPeriodo.PRIMEIRO;
 		else
 			periodo = EnumPeriodo.SEGUNDO;
-		SEMESTRE_LETIVO_CORRENTE = new SemestreLetivo(calendar.get(Calendar.YEAR), periodo);
+		SEMESTRE_LETIVO_CORRENTE = new PeriodoLetivo(calendar.get(Calendar.YEAR), periodo);
 	}
 
 	public Integer getAno() {
@@ -45,12 +45,12 @@ public final class SemestreLetivo {
 	}
 
 	@SuppressWarnings("unused")
-	private SemestreLetivo() {
+	private PeriodoLetivo() {
 		this.ano = null;
 		this.periodo = null;
 	}
 
-	public SemestreLetivo(Integer ano, EnumPeriodo periodo) {
+	public PeriodoLetivo(Integer ano, EnumPeriodo periodo) {
 		super();
 		if(ano == null) {
 			throw new IllegalArgumentException("Ano deve ser fornecido.");
@@ -80,7 +80,7 @@ public final class SemestreLetivo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SemestreLetivo other = (SemestreLetivo) obj;
+		PeriodoLetivo other = (PeriodoLetivo) obj;
 		if (ano == null) {
 			if (other.ano != null)
 				return false;
@@ -93,7 +93,7 @@ public final class SemestreLetivo {
 
 	@Override
 	protected Object clone() {
-		return new SemestreLetivo(ano, periodo);
+		return new PeriodoLetivo(ano, periodo);
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public final class SemestreLetivo {
 		return "" + ano + "/" + (periodo.ordinal() + 1);
 	}
 
-	public SemestreLetivo proximo() {
+	public PeriodoLetivo proximo() {
 		EnumPeriodo outroPeriodo;
 		Integer outroAno;
 		if (this.periodo == EnumPeriodo.PRIMEIRO) {
@@ -111,7 +111,7 @@ public final class SemestreLetivo {
 			outroPeriodo = EnumPeriodo.PRIMEIRO;
 			outroAno = this.ano + 1;
 		}
-		return new SemestreLetivo(outroAno, outroPeriodo);
+		return new PeriodoLetivo(outroAno, outroPeriodo);
 	}
 
 }

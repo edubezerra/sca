@@ -9,7 +9,7 @@ import java.util.Date;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 
 /**
  * Representa o período (intervalo de tempo) em que a avaliação de turmas está
@@ -33,11 +33,11 @@ public class PeriodoAvaliacoesTurmas {
 	/**
 	 * Avaliação referente às turmas deste semestre letivo.
 	 */
-	SemestreLetivo semestreLetivo;
+	PeriodoLetivo semestreLetivo;
 
 	Boolean interrompido;
 
-	public PeriodoAvaliacoesTurmas(SemestreLetivo semestreLetivo,
+	public PeriodoAvaliacoesTurmas(PeriodoLetivo semestreLetivo,
 			Date dataInicio, Date dataTermino) {
 		this.semestreLetivo = semestreLetivo;
 		this.dataInicio = dataInicio;
@@ -83,7 +83,7 @@ public class PeriodoAvaliacoesTurmas {
 		return dataTermino;
 	}
 
-	public SemestreLetivo getSemestreLetivo() {
+	public PeriodoLetivo getSemestreLetivo() {
 		return semestreLetivo;
 	}
 
@@ -103,12 +103,12 @@ public class PeriodoAvaliacoesTurmas {
 			String dataInicio = (String) jsonObject.get("DataInicio");
 			String dataTermino = (String) jsonObject.get("DataTermino");
 
-			SemestreLetivo semestreLetivoReferencia = null;
+			PeriodoLetivo semestreLetivoReferencia = null;
 			if (periodo.equals("1")) {
-				semestreLetivoReferencia = new SemestreLetivo(
+				semestreLetivoReferencia = new PeriodoLetivo(
 						Integer.parseInt(ano), EnumPeriodo.PRIMEIRO);
 			} else if (periodo.equals("2")) {
-				semestreLetivoReferencia = new SemestreLetivo(
+				semestreLetivoReferencia = new PeriodoLetivo(
 						Integer.parseInt(ano), EnumPeriodo.SEGUNDO);
 			}
 

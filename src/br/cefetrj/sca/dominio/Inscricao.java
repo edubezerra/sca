@@ -71,7 +71,7 @@ public class Inscricao {
 		this.estrategiaAvaliacao = strategia;
 	}
 
-	public EnumSituacaoFinalAvaliacao getAvaliacao() {
+	public EnumSituacaoAvaliacao getAvaliacao() {
 		if (avaliacao == null)
 			throw new IllegalStateException(
 					"Avaliação ainda não foi registrada.");

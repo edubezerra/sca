@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.SemestreLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 
 @Entity
 public class SolicitacaoMatriculaForaPrazo {
@@ -30,13 +30,13 @@ public class SolicitacaoMatriculaForaPrazo {
 	@JoinColumn(nullable = false)
 	private Aluno aluno;
 
-	private SemestreLetivo semestreLetivo;
+	private PeriodoLetivo semestreLetivo;
 
 	@SuppressWarnings("unused")
 	private SolicitacaoMatriculaForaPrazo() {
 	}
 
-	public SolicitacaoMatriculaForaPrazo(List<ItemSolicitacaoMatriculaForaPrazo> itemSolicitacao, Aluno aluno, SemestreLetivo semestreLetivo) {
+	public SolicitacaoMatriculaForaPrazo(List<ItemSolicitacaoMatriculaForaPrazo> itemSolicitacao, Aluno aluno, PeriodoLetivo semestreLetivo) {
 		if (itemSolicitacao == null || aluno == null || semestreLetivo == null) {
 			throw new IllegalArgumentException("Erro: argumentos inválidos para SolicitacaoInclusao().");
 		}
@@ -58,7 +58,7 @@ public class SolicitacaoMatriculaForaPrazo {
 		return aluno;
 	}
 
-	public SemestreLetivo getSemestreLetivo() {
+	public PeriodoLetivo getSemestreLetivo() {
 		return semestreLetivo;
 	}
 
@@ -74,11 +74,11 @@ public class SolicitacaoMatriculaForaPrazo {
 	 * 
 	 * @return conjunto de objetos <code>SemestreLetivo</code>.
 	 */
-	public static List<SemestreLetivo> semestresCorrespondentes(List<SolicitacaoMatriculaForaPrazo> solicitacoes) {
-		List<SemestreLetivo> result = new ArrayList<>();
-		HashSet<SemestreLetivo> set = new HashSet<>();
+	public static List<PeriodoLetivo> semestresCorrespondentes(List<SolicitacaoMatriculaForaPrazo> solicitacoes) {
+		List<PeriodoLetivo> result = new ArrayList<>();
+		HashSet<PeriodoLetivo> set = new HashSet<>();
 		for (SolicitacaoMatriculaForaPrazo item : solicitacoes) {
-			SemestreLetivo semestre = item.getSemestreLetivo();
+			PeriodoLetivo semestre = item.getSemestreLetivo();
 			if (!set.contains(semestre)) {
 				result.add(semestre);
 				set.add(semestre);

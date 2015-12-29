@@ -49,16 +49,16 @@ public class EstrategiaAvaliacaoAlunoImpl2009 implements
 	 * (aprovado) ou RM (reprovado por média).
 	 */
 	@Override
-	public EnumSituacaoFinalAvaliacao getSituacaoFinal(NotaFinal avaliacao) {
+	public EnumSituacaoAvaliacao getSituacaoFinal(NotaFinal avaliacao) {
 		String grau = this.getConceito(avaliacao);
 		if (avaliacao == null) {
-			return EnumSituacaoFinalAvaliacao.INDEFINIDA;
+			return EnumSituacaoAvaliacao.INDEFINIDA;
 		} else if (avaliacao.getFrequencia().doubleValue() < 0.75) {
-			return EnumSituacaoFinalAvaliacao.REPROVADO_POR_FALTAS;
+			return EnumSituacaoAvaliacao.REPROVADO_POR_FALTAS;
 		} else if (grau.equals("A") || grau.equals("B") || grau.equals("C")) {
-			return EnumSituacaoFinalAvaliacao.APROVADO;
+			return EnumSituacaoAvaliacao.APROVADO;
 		} else {
-			return EnumSituacaoFinalAvaliacao.REPROVADO_POR_MEDIA;
+			return EnumSituacaoAvaliacao.REPROVADO_POR_MEDIA;
 		}
 	}
 }

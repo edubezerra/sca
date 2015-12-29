@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService;
 

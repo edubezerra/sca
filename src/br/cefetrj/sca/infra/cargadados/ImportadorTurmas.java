@@ -15,8 +15,8 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.SemestreLetivo;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -34,7 +34,7 @@ public class ImportadorTurmas {
 	/**
 	 * código, semestre letivo { ano, período }
 	 */
-	private HashMap<String, SemestreLetivo> turmas;
+	private HashMap<String, PeriodoLetivo> turmas;
 
 	/**
 	 * Dicionário de pares (código da turma, código da disciplina).
@@ -65,7 +65,7 @@ public class ImportadorTurmas {
 
 	public static void run() {
 		try {
-			String arquivoPlanilha = "./planilhas/MatriculasAceitas-2015.1.xls";
+			String arquivoPlanilha = "./planilhas/matriculas/Matrícula-DEPIN-2015-2.xls";
 			ImportadorTurmas iim = new ImportadorTurmas(codigosCursos);
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
@@ -119,7 +119,7 @@ public class ImportadorTurmas {
 			String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
 
 			int ano = Integer.parseInt(semestre_ano);
-			SemestreLetivo.EnumPeriodo periodo;
+			PeriodoLetivo.EnumPeriodo periodo;
 
 			if (semestre_periodo.equals("1º Semestre")) {
 				periodo = EnumPeriodo.PRIMEIRO;
@@ -127,7 +127,7 @@ public class ImportadorTurmas {
 				periodo = EnumPeriodo.SEGUNDO;
 			}
 
-			SemestreLetivo semestre = new SemestreLetivo(ano, periodo);
+			PeriodoLetivo semestre = new PeriodoLetivo(ano, periodo);
 			turmas.put(turma_codigo, semestre);
 			turmas_disciplinas.put(turma_codigo, disciplina_codigo);
 		}
@@ -148,7 +148,7 @@ public class ImportadorTurmas {
 		Query query;
 
 		for (String codigoTurma : turmasIt) {
-			SemestreLetivo semestre = turmas.get(codigoTurma);
+			PeriodoLetivo semestre = turmas.get(codigoTurma);
 			String codigoDisciplina = turmas_disciplinas.get(codigoTurma);
 
 			query = em.createQuery("from Disciplina d where d.codigo = :codigoDisciplina "

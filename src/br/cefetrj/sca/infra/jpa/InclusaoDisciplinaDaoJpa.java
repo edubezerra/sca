@@ -2,7 +2,7 @@ package br.cefetrj.sca.infra.jpa;
 
 import java.util.List;
 
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;

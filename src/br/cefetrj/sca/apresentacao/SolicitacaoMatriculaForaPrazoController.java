@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
 import br.cefetrj.sca.service.SolicitacaoMatriculaForaPrazoService;

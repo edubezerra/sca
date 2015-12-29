@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.cefetrj.sca.dominio.SemestreLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.infra.TurmaDao;
 
@@ -26,12 +26,12 @@ public class TurmaRepositorio {
 		turmaDAO.gravar(turma);
 	}
 
-	public List<Turma> getTurmasAbertas(SemestreLetivo semestreLetivoCorrente) {
+	public List<Turma> getTurmasAbertas(PeriodoLetivo semestreLetivoCorrente) {
 		return turmaDAO.getTurmasAbertas(semestreLetivoCorrente);
 	}
 
 	public List<Turma> getTurmasCursadas(String matricula,
-			SemestreLetivo semestreLetivoCorrente) {
+			PeriodoLetivo semestreLetivoCorrente) {
 		return turmaDAO.getTurmasCursadas(matricula, semestreLetivoCorrente);
 	}
 

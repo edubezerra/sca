@@ -67,8 +67,7 @@ public class Aluno {
 	}
 
 	public Aluno(String nome, String cpf, String matricula,
-			VersaoCurso versaoCurso, Date dataNascimento,
-			String enderecoEmail) {
+			VersaoCurso versaoCurso, Date dataNascimento, String enderecoEmail) {
 		this(nome, cpf, matricula, versaoCurso);
 		this.pessoa = new Pessoa(nome, dataNascimento, enderecoEmail);
 	}
@@ -110,5 +109,10 @@ public class Aluno {
 
 	public HistoricoEscolar getHistorico() {
 		return historico;
+	}
+
+	public void registrarMatricula(Turma turma) {
+		this.historico.lancar(turma.getDisciplina(),
+				EnumSituacaoAvaliacao.MATRICULA, turma.getPeriodo());
 	}
 }

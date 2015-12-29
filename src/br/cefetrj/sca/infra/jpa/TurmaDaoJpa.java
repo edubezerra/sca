@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import br.cefetrj.sca.dominio.SemestreLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.infra.TurmaDao;
 
@@ -31,7 +31,7 @@ public class TurmaDaoJpa implements TurmaDao {
 	}
 
 	@Override
-	public List<Turma> getTurmasAbertas(SemestreLetivo semestreLetivo) {
+	public List<Turma> getTurmasAbertas(PeriodoLetivo semestreLetivo) {
 		String consulta = "SELECT t from Turma t WHERE t.ano = ? AND t.periodo = ?";
 		Object array[] = { semestreLetivo.getAno(), semestreLetivo.getPeriodo() };
 
@@ -40,7 +40,7 @@ public class TurmaDaoJpa implements TurmaDao {
 
 	@Override
 	public List<Turma> getTurmasCursadas(String cpf,
-			SemestreLetivo semestreLetivo) {
+			PeriodoLetivo semestreLetivo) {
 		String consulta = "SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a "
 				+ "WHERE t.semestreLetivo.ano = ? AND t.semestreLetivo.periodo = ? AND a.pessoa.cpf = ?";
 		Object array[] = { semestreLetivo.getAno(),

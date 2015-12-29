@@ -74,7 +74,7 @@ public class NotaFinal {
 		this.frequencia = frequencia;
 	}
 
-	public EnumSituacaoFinalAvaliacao getSituacaoFinal() {
+	public EnumSituacaoAvaliacao getSituacaoFinal() {
 		return estrategia.getSituacaoFinal(this);
 	}
 

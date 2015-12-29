@@ -22,7 +22,7 @@ import br.cefetrj.sca.dominio.EnumDiaSemana;
 import br.cefetrj.sca.dominio.ItemHorario;
 import br.cefetrj.sca.dominio.ItensHorario;
 import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.SemestreLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 
 @Entity
 public class GradeDisponibilidade implements Cloneable {
@@ -43,7 +43,7 @@ public class GradeDisponibilidade implements Cloneable {
 	private Set<ItemHorario> horarios = new HashSet<ItemHorario>();
 
 	@Embedded
-	private SemestreLetivo semestre;
+	private PeriodoLetivo semestre;
 
 	@Transient
 	@Autowired
@@ -53,7 +53,7 @@ public class GradeDisponibilidade implements Cloneable {
 	private GradeDisponibilidade() {
 	}
 
-	public GradeDisponibilidade(Professor professor, SemestreLetivo semestre) {
+	public GradeDisponibilidade(Professor professor, PeriodoLetivo semestre) {
 		if (professor == null) {
 			throw new IllegalArgumentException("Professor deve ser fornecido.");
 		}
@@ -63,7 +63,7 @@ public class GradeDisponibilidade implements Cloneable {
 
 	public GradeDisponibilidade(Professor professor) {
 		this.professor = professor;
-		this.semestre = (SemestreLetivo) SemestreLetivo.SEMESTRE_LETIVO_CORRENTE;
+		this.semestre = (PeriodoLetivo) PeriodoLetivo.SEMESTRE_LETIVO_CORRENTE;
 	}
 
 	public Long getId() {
@@ -78,7 +78,7 @@ public class GradeDisponibilidade implements Cloneable {
 		return horarios;
 	}
 
-	public SemestreLetivo getSemestre() {
+	public PeriodoLetivo getSemestre() {
 		return semestre;
 	}
 
@@ -106,7 +106,7 @@ public class GradeDisponibilidade implements Cloneable {
 	@Override
 	public GradeDisponibilidade clone() {
 		GradeDisponibilidade copia = new GradeDisponibilidade(this.professor,
-				(SemestreLetivo) this.semestre);
+				(PeriodoLetivo) this.semestre);
 		copia.setDisciplinas(this.disciplinas);
 		for (ItemHorario item : horarios) {
 			copia.horarios.add((ItemHorario) item);

@@ -18,8 +18,8 @@ import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.EnumStatusSolicitacao;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
-import br.cefetrj.sca.dominio.SemestreLetivo;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
@@ -89,7 +89,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 	}
 
 	public void incluiSolicitacao(List<ItemSolicitacaoMatriculaForaPrazo> listaItemSolicitacao, Aluno aluno,
-			SemestreLetivo semestreLetivo) {
+			PeriodoLetivo semestreLetivo) {
 
 		SolicitacaoMatriculaForaPrazo solicitacao = getSolicitacaoByAlunoSemestre(aluno.getId(),
 				semestreLetivo.getAno(), semestreLetivo.getPeriodo());
@@ -106,7 +106,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 		Aluno aluno = getAlunoByCpf(cpf);
 		Long idAluno = aluno.getId();
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
-		SemestreLetivo semestreLetivo = periodoAvaliacao.getSemestreLetivo();
+		PeriodoLetivo semestreLetivo = periodoAvaliacao.getSemestreLetivo();
 		SolicitacaoMatriculaForaPrazo solicitacaoAtual = getSolicitacaoByAlunoSemestre(idAluno, semestreLetivo.getAno(),
 				semestreLetivo.getPeriodo());
 		return solicitacaoAtual;
@@ -124,7 +124,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 		model.addAttribute("numeroSolicitacoes", numeroSolicitacoes);
 	}
 
-	public void validaturma(HttpServletRequest request, Aluno aluno, SemestreLetivo semestreLetivo, Departamento depto,
+	public void validaturma(HttpServletRequest request, Aluno aluno, PeriodoLetivo semestreLetivo, Departamento depto,
 			Comprovante comprovante, int opcao, String observacao) {
 		int i = 0;
 		Map<String, String[]> parameters = request.getParameterMap();
@@ -158,7 +158,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 
 		Departamento depto = getDepartamentoById(departamento);
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
-		SemestreLetivo semestreLetivo = periodoAvaliacao.getSemestreLetivo();
+		PeriodoLetivo semestreLetivo = periodoAvaliacao.getSemestreLetivo();
 		Aluno aluno = getAlunoByCpf(cpf);
 
 		validaComprovante(file);
@@ -177,7 +177,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 		}
 	}
 
-	public boolean isSolicitacaoRepetida(Long idAluno, String codigoTurma, SemestreLetivo semestreLetivo) {
+	public boolean isSolicitacaoRepetida(Long idAluno, String codigoTurma, PeriodoLetivo semestreLetivo) {
 		Turma turma = inclusaoRepo.getTurmaSolicitada(idAluno, codigoTurma, semestreLetivo.getAno(),
 				semestreLetivo.getPeriodo());
 
@@ -192,7 +192,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 		SolicitacaoMatriculaForaPrazo solicitacaoAtual = getSolicitacaoAtual(cpf);
 		if (solicitacaoAtual != null) {
 			List<SolicitacaoMatriculaForaPrazo> solicitacoes = getSolicitacoesAluno(solicitacaoAtual.getAluno().getId());
-			List<SemestreLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo
+			List<PeriodoLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo
 					.semestresCorrespondentes(solicitacoes);
 			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
 		}

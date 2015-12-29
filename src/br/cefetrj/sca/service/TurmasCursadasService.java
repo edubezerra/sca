@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.EnumSituacaoFinalAvaliacao;
+import br.cefetrj.sca.dominio.EnumSituacaoAvaliacao;
 import br.cefetrj.sca.dominio.Inscricao;
-import br.cefetrj.sca.dominio.SemestreLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
@@ -46,7 +46,7 @@ public class TurmasCursadasService {
 		Set<Disciplina> indisponiveis = getDisciplinasIndisponiveis(aluno);
 
 		List<Turma> abertas = rt
-				.getTurmasAbertas(SemestreLetivo.SEMESTRE_LETIVO_CORRENTE);
+				.getTurmasAbertas(PeriodoLetivo.SEMESTRE_LETIVO_CORRENTE);
 		for (Turma turma : abertas) {
 			Disciplina disciplina = turma.getDisciplina();
 			if (!cursadas.contains(turma.getDisciplina())
@@ -99,9 +99,9 @@ public class TurmasCursadasService {
 			for (Inscricao inscricao : inscricoes) {
 				if (aluno.getMatricula().equals(
 						inscricao.getAluno().getMatricula())) {
-					EnumSituacaoFinalAvaliacao avaliacao = inscricao
+					EnumSituacaoAvaliacao avaliacao = inscricao
 							.getAvaliacao();
-					if (avaliacao != EnumSituacaoFinalAvaliacao.APROVADO) {
+					if (avaliacao != EnumSituacaoAvaliacao.APROVADO) {
 						break;
 					}
 					turmas.add(turma);

@@ -2,7 +2,7 @@ package br.cefetrj.sca.infra;
 
 import java.util.List;
 
-import br.cefetrj.sca.dominio.SemestreLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 
 public interface TurmaDao {
@@ -13,8 +13,8 @@ public interface TurmaDao {
 
 	Turma getByCodigo(String codigo);
 
-	List<Turma> getTurmasAbertas(SemestreLetivo semestreLetivoCorrente);
+	List<Turma> getTurmasAbertas(PeriodoLetivo semestreLetivoCorrente);
 
 	List<Turma> getTurmasCursadas(String matricula,
-			SemestreLetivo semestreLetivoCorrente);
+			PeriodoLetivo semestreLetivoCorrente);
 }

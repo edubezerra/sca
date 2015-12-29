@@ -11,8 +11,8 @@ import javax.persistence.Query;
 
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.SemestreLetivo;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
@@ -109,15 +109,15 @@ public class CreationDB {
 				disc31, disc32, disc33, disc34, disc35, disc36, disc37, disc38,
 				disc39 };
 
-		SemestreLetivo semestreLetivo = new SemestreLetivo(2013,
+		PeriodoLetivo semestreLetivo = new PeriodoLetivo(2013,
 				EnumPeriodo.SEGUNDO);
-		SemestreLetivo semestreLetivo01 = new SemestreLetivo(2013,
+		PeriodoLetivo semestreLetivo01 = new PeriodoLetivo(2013,
 				EnumPeriodo.PRIMEIRO);
-		SemestreLetivo semestreLetivo02 = new SemestreLetivo(2012,
+		PeriodoLetivo semestreLetivo02 = new PeriodoLetivo(2012,
 				EnumPeriodo.SEGUNDO);
-		SemestreLetivo semestreLetivo03 = new SemestreLetivo(2012,
+		PeriodoLetivo semestreLetivo03 = new PeriodoLetivo(2012,
 				EnumPeriodo.PRIMEIRO);
-		SemestreLetivo semestreLetivo04 = new SemestreLetivo(2011,
+		PeriodoLetivo semestreLetivo04 = new PeriodoLetivo(2011,
 				EnumPeriodo.SEGUNDO);
 
 		Turma turma1 = new Turma(disc1, "600006");
@@ -172,7 +172,7 @@ public class CreationDB {
 	}
 
 	public static List<Turma> getTurmasPreenchimento(EntityManager em,
-			String matricula, SemestreLetivo semestreLetivo) {
+			String matricula, PeriodoLetivo semestreLetivo) {
 
 		String jpql = "SELECT T FROM Aluno A inner join A.turmas T where "
 				+ " A.matricula =:matricula and T.semestreLetivo.ano =:semestreLetivo.ano and T.semestreLetivo.semestre =:semestreLetivo.semestre ";
@@ -216,7 +216,7 @@ public class CreationDB {
 	}
 
 	public static int[] getDadosQuestao(EntityManager em, Turma turma,
-			SemestreLetivo semestreLetivo, Quesito questao,
+			PeriodoLetivo semestreLetivo, Quesito questao,
 			Alternativa[] alternativas) {
 
 		int[] resp = new int[alternativas.length];

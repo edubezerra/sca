@@ -71,7 +71,7 @@ public class Turma {
 	 * Semestre letivo em que esta turma é ofertada.
 	 */
 	@Embedded
-	private SemestreLetivo semestreLetivo;
+	private PeriodoLetivo semestreLetivo;
 
 	@SuppressWarnings("unused")
 	private Turma() {
@@ -108,7 +108,7 @@ public class Turma {
 		// }
 		this.codigo = codigo;
 
-		this.semestreLetivo = SemestreLetivo.SEMESTRE_LETIVO_CORRENTE;
+		this.semestreLetivo = PeriodoLetivo.SEMESTRE_LETIVO_CORRENTE;
 		this.capacidadeMaxima = CAPACIDADE_PRESUMIDA;
 	}
 
@@ -129,7 +129,7 @@ public class Turma {
 	 *            período letivo em que a turma é ofertada
 	 */
 	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas,
-			SemestreLetivo periodo) {
+			PeriodoLetivo periodo) {
 
 		this(disciplina, codigo);
 
@@ -152,7 +152,7 @@ public class Turma {
 		return id;
 	}
 
-	public SemestreLetivo getPeriodo() {
+	public PeriodoLetivo getPeriodo() {
 		return this.semestreLetivo;
 	}
 

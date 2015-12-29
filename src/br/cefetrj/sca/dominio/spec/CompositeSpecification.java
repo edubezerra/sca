@@ -7,7 +7,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import br.cefetrj.sca.dominio.LocalAula;
-import br.cefetrj.sca.dominio.SemestreLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 
 abstract public class CompositeSpecification<T> implements Specification<T> {
 
@@ -32,7 +32,7 @@ abstract public class CompositeSpecification<T> implements Specification<T> {
 		return (Class<T>)type.getActualTypeArguments()[0];
 	}
 
-	public boolean isSatisfiedBy(LocalAula local, SemestreLetivo periodo) {
+	public boolean isSatisfiedBy(LocalAula local, PeriodoLetivo periodo) {
 		// TODO Auto-generated method stub
 		return false;
 	}

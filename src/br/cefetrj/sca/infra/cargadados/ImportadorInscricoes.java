@@ -16,8 +16,8 @@ import javax.persistence.Query;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.SemestreLetivo;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -35,7 +35,7 @@ public class ImportadorInscricoes {
 	/**
 	 * código, semestre letivo { ano, período }
 	 */
-	private HashMap<String, SemestreLetivo> turmas;
+	private HashMap<String, PeriodoLetivo> turmas;
 
 	/**
 	 * Dicionário de pares (código da turma, código da disciplina).
@@ -64,7 +64,7 @@ public class ImportadorInscricoes {
 
 	public static void run(EntityManager em, String arquivoPlanilha) {
 		try {
-			String codigos[] = { "BCC" };
+			String codigos[] = { "BCC", "WEB" };
 			ImportadorInscricoes iim = new ImportadorInscricoes(codigos);
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
@@ -126,7 +126,7 @@ public class ImportadorInscricoes {
 			String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
 
 			int ano = Integer.parseInt(semestre_ano);
-			SemestreLetivo.EnumPeriodo periodo;
+			PeriodoLetivo.EnumPeriodo periodo;
 
 			if (semestre_periodo.equals("1º Semestre")) {
 				periodo = EnumPeriodo.PRIMEIRO;
@@ -134,7 +134,7 @@ public class ImportadorInscricoes {
 				periodo = EnumPeriodo.SEGUNDO;
 			}
 
-			SemestreLetivo semestre = new SemestreLetivo(ano, periodo);
+			PeriodoLetivo semestre = new PeriodoLetivo(ano, periodo);
 			turmas.put(turma_codigo, semestre);
 			turmas_disciplinas.put(turma_codigo, disciplina_codigo);
 
@@ -168,7 +168,7 @@ public class ImportadorInscricoes {
 		int qtdInscricoes = 0;
 
 		for (String codigoTurma : turmasIt) {
-			SemestreLetivo semestre = turmas.get(codigoTurma);
+			PeriodoLetivo semestre = turmas.get(codigoTurma);
 			String codigoDisciplina = turmas_disciplinas.get(codigoTurma);
 			Set<String> matriculas = turmas_alunos.get(codigoTurma);
 
@@ -194,6 +194,8 @@ public class ImportadorInscricoes {
 					query.setParameter("matricula", matricula);
 					Aluno aluno = (Aluno) query.getSingleResult();
 					turma.inscreverAluno(aluno);
+//					aluno.registrarMatricula(turma);
+//					em.merge(aluno);
 				}
 				qtdInscricoes += turma.getQtdInscritos();
 			}

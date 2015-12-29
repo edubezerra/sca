@@ -1,6 +1,5 @@
 package br.cefetrj.sca.dominio;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,31 +17,30 @@ public class ItemHistoricoEscolar {
 	@OneToOne
 	Disciplina disciplina;
 
-	@Embedded
-	SemestreLetivo periodo;
-
 	@Enumerated(EnumType.ORDINAL)
-	EnumSituacaoFinalAvaliacao situacao;
+	EnumSituacaoAvaliacao situacao;
+
+	private PeriodoLetivo periodo;
 
 	private ItemHistoricoEscolar() {
 	}
 
-	public ItemHistoricoEscolar(Disciplina disciplina, SemestreLetivo periodo,
-			EnumSituacaoFinalAvaliacao situacao) {
+	public ItemHistoricoEscolar(Disciplina disciplina,
+			EnumSituacaoAvaliacao situacao, PeriodoLetivo periodo) {
 		this.disciplina = disciplina;
-		this.periodo = periodo;
 		this.situacao = situacao;
+		this.periodo = periodo;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public EnumSituacaoFinalAvaliacao getSituacao() {
+	public EnumSituacaoAvaliacao getSituacao() {
 		return situacao;
 	}
 
 	public Disciplina getDisciplina() {
-		return this.disciplina;
+		return disciplina;
 	}
 }

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public interface EstrategiaAvaliacaoAluno {
 	public String getConceito(NotaFinal aproveitamento);
 
-	public EnumSituacaoFinalAvaliacao getSituacaoFinal(
+	public EnumSituacaoAvaliacao getSituacaoFinal(
 			NotaFinal aproveitamento);
 
 	public BigDecimal getNotaFinal(NotaFinal aproveitamento);

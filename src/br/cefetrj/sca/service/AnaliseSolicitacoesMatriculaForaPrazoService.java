@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 
 import br.cefetrj.sca.dominio.EnumStatusSolicitacao;
 import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.SemestreLetivo;
-import br.cefetrj.sca.dominio.SemestreLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
@@ -30,7 +30,7 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 		Professor professor = getProfessorByMatricula(matricula);
 		List<SolicitacaoMatriculaForaPrazo> solicitacao = inclusaoRepo.getTodasSolicitacoes();
 		if(solicitacao != null){
-			List<SemestreLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo.semestresCorrespondentes(solicitacao);
+			List<PeriodoLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo.semestresCorrespondentes(solicitacao);
 			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
 		}
 		

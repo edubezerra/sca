@@ -48,11 +48,11 @@ public class HistoricoEscolar {
 		List<Disciplina> disciplinasCursadas = new ArrayList<Disciplina>();
 
 		Iterator<ItemHistoricoEscolar> it = itens.iterator();
-		EnumSituacaoFinalAvaliacao aprovado = EnumSituacaoFinalAvaliacao.APROVADO;
-		EnumSituacaoFinalAvaliacao isento = EnumSituacaoFinalAvaliacao.ISENTO;
-		EnumSituacaoFinalAvaliacao isentoTransf = EnumSituacaoFinalAvaliacao.ISENTO_POR_TRANSFERENCIA;
-		EnumSituacaoFinalAvaliacao creditos = EnumSituacaoFinalAvaliacao.APROVEITAMENTO_CREDITOS;
-		EnumSituacaoFinalAvaliacao estudos = EnumSituacaoFinalAvaliacao.APROVEITAMENTO_POR_ESTUDOS;
+		EnumSituacaoAvaliacao aprovado = EnumSituacaoAvaliacao.APROVADO;
+		EnumSituacaoAvaliacao isento = EnumSituacaoAvaliacao.ISENTO;
+		EnumSituacaoAvaliacao isentoTransf = EnumSituacaoAvaliacao.ISENTO_POR_TRANSFERENCIA;
+		EnumSituacaoAvaliacao creditos = EnumSituacaoAvaliacao.APROVEITAMENTO_CREDITOS;
+		EnumSituacaoAvaliacao estudos = EnumSituacaoAvaliacao.APROVEITAMENTO_POR_ESTUDOS;
 
 		while (it.hasNext()) {
 			ItemHistoricoEscolar item = it.next();
@@ -72,16 +72,14 @@ public class HistoricoEscolar {
 				disciplinasParaRemover.add(disciplina);
 			}
 		}
-		
+
 		disciplinas.removeAll(disciplinasParaRemover);
-		
+
 		return disciplinas;
 	}
 
-	public void lancar(Disciplina disciplina,
-			EnumSituacaoFinalAvaliacao situacao, SemestreLetivo periodo) {
-		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina,
-				periodo, situacao);
+	public void lancar(Disciplina disciplina, EnumSituacaoAvaliacao situacao, PeriodoLetivo periodo) {
+		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina, situacao, periodo);
 		this.itens.add(item);
 	}
 }
