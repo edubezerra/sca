@@ -26,12 +26,16 @@ import jxl.read.biff.BiffException;
 public class ImportadorDiscentes {
 	private ApplicationContext context;
 
-	String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
-			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
-			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC",
-			"ORDEM_MATR", "SITUACAO", "COD_TURMA", "COD_CURSO", "NUM_VERSAO",
-			"MATR_ALUNO", "SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA",
-			"ID_PROCESSAMENTO", "HR_SOLICITACAO" };
+	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "MATR_ALUNO",
+			"NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA", "COD_DISCIPLINA",
+			"NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO", "CH_TOTAL",
+			"CREDITOS", "MEDIA_FINAL", "NUM_FALTAS", "CPF" };
+
+	// "NOME_UNIDADE", "NOME_PESSOA", "CPF", "DT_SOLICITACAO",
+	// "DT_PROCESS", "COD_DISCIPLINA", "NOME_DISCIPLINA", "PERIODO_IDEAL",
+	// "PRIOR_TURMA", "PRIOR_DISC", "ORDEM_MATR", "SITUACAO", "COD_TURMA",
+	// "COD_CURSO", "NUM_VERSAO", "MATR_ALUNO", "SITUACAO_ITEM", "ANO",
+	// "PERIODO", "IND_GERADA", "ID_PROCESSAMENTO", "HR_SOLICITACAO" };
 
 	/**
 	 * Dicionário de pares (matrícula, objeto da classe aluno) de cada aluno.
@@ -47,7 +51,7 @@ public class ImportadorDiscentes {
 	}
 
 	public static void main(String[] args) {
-		String planilhaMatriculas = "./planilhas/matriculas/Matrícula-DEPIN-2015-2.xls";
+		String planilhaMatriculas = "./planilhas/matriculas/11.02.05.99.60.xls";
 		ImportadorDiscentes.run(planilhaMatriculas);
 	}
 
@@ -127,7 +131,7 @@ public class ImportadorDiscentes {
 			String codigoCurso = sheet.getCell(
 					colunasList.indexOf("COD_CURSO"), i).getContents();
 			String numeroVersaoCurso = sheet.getCell(
-					colunasList.indexOf("NUM_VERSAO"), i).getContents();
+					colunasList.indexOf("VERSAO_CURSO"), i).getContents();
 
 			String aluno_matricula = sheet.getCell(
 					colunasList.indexOf("MATR_ALUNO"), i).getContents();
