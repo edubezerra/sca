@@ -26,10 +26,9 @@ import jxl.read.biff.BiffException;
 public class ImportadorDiscentes {
 	private ApplicationContext context;
 
-	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "MATR_ALUNO",
-			"NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA", "COD_DISCIPLINA",
-			"NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO", "CH_TOTAL",
-			"CREDITOS", "MEDIA_FINAL", "NUM_FALTAS", "CPF" };
+	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF", "MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO",
+			"COD_TURMA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO", "CH_TOTAL", "CREDITOS",
+			"MEDIA_FINAL", "NUM_FALTAS" };
 
 	// "NOME_UNIDADE", "NOME_PESSOA", "CPF", "DT_SOLICITACAO",
 	// "DT_PROCESS", "COD_DISCIPLINA", "NOME_DISCIPLINA", "PERIODO_IDEAL",
@@ -45,8 +44,7 @@ public class ImportadorDiscentes {
 	private AlunoFabrica alunoFab;
 
 	public ImportadorDiscentes() {
-		context = new ClassPathXmlApplicationContext(
-				new String[] { "applicationContext.xml" });
+		context = new ClassPathXmlApplicationContext(new String[] { "applicationContext.xml" });
 		alunoFab = (AlunoFabrica) context.getBean("AlunoFabricaBean");
 	}
 
@@ -71,8 +69,7 @@ public class ImportadorDiscentes {
 	public void gravarDadosImportados() {
 		System.out.println("Realizando a persitência de objetos Aluno...");
 
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("SCAPU");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
 
 		EntityManager em = emf.createEntityManager();
 
@@ -87,8 +84,7 @@ public class ImportadorDiscentes {
 			Aluno aluno;
 			try {
 				Query queryAluno;
-				queryAluno = em
-						.createQuery("from Aluno a where a.matricula = :matricula");
+				queryAluno = em.createQuery("from Aluno a where a.matricula = :matricula");
 				queryAluno.setParameter("matricula", matricula);
 				aluno = (Aluno) queryAluno.getSingleResult();
 			} catch (NoResultException e) {
@@ -108,14 +104,12 @@ public class ImportadorDiscentes {
 		System.out.println("Foram adicionados " + adicionados + " alunos.");
 	}
 
-	public void importarPlanilha(String inputFile) throws BiffException,
-			IOException {
+	public void importarPlanilha(String inputFile) throws BiffException, IOException {
 		File inputWorkbook = new File(inputFile);
 		importarPlanilha(inputWorkbook);
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException,
-			IOException {
+	public void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
@@ -128,22 +122,20 @@ public class ImportadorDiscentes {
 
 		for (int i = 1; i < sheet.getRows(); i++) {
 
-			String codigoCurso = sheet.getCell(
-					colunasList.indexOf("COD_CURSO"), i).getContents();
-			String numeroVersaoCurso = sheet.getCell(
-					colunasList.indexOf("VERSAO_CURSO"), i).getContents();
+			String codigoCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+			String numeroVersaoCurso = sheet.getCell(colunasList.indexOf("VERSAO_CURSO"), i).getContents();
 
-			String aluno_matricula = sheet.getCell(
-					colunasList.indexOf("MATR_ALUNO"), i).getContents();
-			String aluno_nome = sheet.getCell(
-					colunasList.indexOf("NOME_PESSOA"), i).getContents();
-			String aluno_cpf = sheet.getCell(colunasList.indexOf("CPF"), i)
-					.getContents();
+			String aluno_matricula = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
+			String aluno_nome = sheet.getCell(colunasList.indexOf("NOME_PESSOA"), i).getContents();
+			String aluno_cpf = sheet.getCell(colunasList.indexOf("CPF"), i).getContents();
 
-			Aluno aluno = alunoFab.criar(aluno_nome, aluno_matricula,
-					aluno_cpf, codigoCurso, numeroVersaoCurso);
+			if (aluno_cpf == null || aluno_cpf.isEmpty()) {
+				System.out.println("CPF não fornecido para aluno " + aluno_nome);
+			} else {
+				Aluno aluno = alunoFab.criar(aluno_nome, aluno_matricula, aluno_cpf, codigoCurso, numeroVersaoCurso);
+				alunos_matriculas.put(aluno_matricula, aluno);
+			}
 
-			alunos_matriculas.put(aluno_matricula, aluno);
 		}
 		System.out.println("Dados lidos com sucesso!");
 	}
