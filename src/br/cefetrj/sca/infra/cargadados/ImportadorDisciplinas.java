@@ -164,14 +164,14 @@ public class ImportadorDisciplinas {
 			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"),
 					i).getContents();
 
-			boolean entradaJaExiste = false;
+			boolean disciplinaJaExiste = false;
 			for (Disciplina disciplina : disciplinas) {
 				if (disciplina.equals(codigoDisciplina)) {
-					entradaJaExiste = true;
+					disciplinaJaExiste = true;
 					break;
 				}
 			}
-			if (!entradaJaExiste) {
+			if (!disciplinaJaExiste) {
 				Disciplina disciplina = new Disciplina(codigoDisciplina,
 						nomeDisciplina, creditos, numHoras);
 				VersaoCurso versaoCurso = versoesCursos.get(codCurso

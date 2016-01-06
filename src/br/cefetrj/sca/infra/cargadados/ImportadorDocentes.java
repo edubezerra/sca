@@ -9,12 +9,15 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Professor;
 
 /**
@@ -47,37 +50,60 @@ public class ImportadorDocentes {
 	}
 
 	private void gravarDadosImportados() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("SCAPU");
 
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();
 
 		Set<String> profsIt = profs_nomes.keySet();
+		int adicionados = 0;
 		for (String matrProfessor : profsIt) {
-			em.persist(new Professor(matrProfessor, profs_nomes.get(matrProfessor)));
+			Professor professor;
+			try {
+				Query queryProfessor;
+				queryProfessor = em
+						.createQuery("from Professor a where a.matricula = :matricula");
+				queryProfessor.setParameter("matricula", matrProfessor);
+				professor = (Professor) queryProfessor.getSingleResult();
+			} catch (NoResultException e) {
+				professor = null;
+			}
+
+			if (professor == null) {
+				em.persist(new Professor(matrProfessor, profs_nomes
+						.get(matrProfessor)));
+				adicionados++;
+			}
 		}
 		em.getTransaction().commit();
 
 		em.close();
 
-		System.out.println("Foram importados " + profs_nomes.keySet().size() + " professores.");
+		System.out.println(">>>Foram importados " + adicionados
+				+ " professores.");
 	}
 
-	private void importarPlanilha(String arquivoPlanilha) throws BiffException, IOException {
+	private void importarPlanilha(String arquivoPlanilha) throws BiffException,
+			IOException {
 		File inputWorkbook = new File(arquivoPlanilha);
 		importarPlanilha(inputWorkbook);
 	}
 
-	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA",
-			"HR_INICIO", "HR_FIM", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "ITEM_TABELA", "PERIODO_ITEM", "ANO",
-			"DIA_SEMANA_ITEM", "PERIODO", "DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA", "NOME_DISCIPLINA_SUB",
-			"MATR_EXTERNA", "NOME_DOCENTE", "ID" };
+	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
+			"VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO", "HR_FIM",
+			"TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "ITEM_TABELA",
+			"PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
+			"DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
+			"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
 
-//	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE",
-//			"ANO", "PERIODO", "NOME_DOCENTE", "MATR_DOCENTE" };
+	// String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
+	// "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE",
+	// "ANO", "PERIODO", "NOME_DOCENTE", "MATR_DOCENTE" };
 
-	private void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
+	private void importarPlanilha(File inputWorkbook) throws BiffException,
+			IOException {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
@@ -93,10 +119,18 @@ public class ImportadorDocentes {
 			/**
 			 * Dados relativos aos docentes.
 			 */
-			String prof_matricula = sheet.getCell(colunasList.indexOf("MATR_EXTERNA"), i).getContents();
-			String prof_nome = sheet.getCell(colunasList.indexOf("NOME_DOCENTE"), i).getContents();
+			String prof_matricula = sheet.getCell(
+					colunasList.indexOf("MATR_EXTERNA"), i).getContents();
+			String prof_nome = sheet.getCell(
+					colunasList.indexOf("NOME_DOCENTE"), i).getContents();
 
-			profs_nomes.put(prof_matricula, prof_nome);
+			if (prof_nome.isEmpty()) {
+				String nome_disciplina = sheet.getCell(
+						colunasList.indexOf("NOME_DISCIPLINA"), i).getContents();
+				System.err.println("Turma sem professor para disciplina " + nome_disciplina);
+			} else {
+				profs_nomes.put(prof_matricula, prof_nome);
+			}
 		}
 	}
 }
