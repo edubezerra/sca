@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -32,8 +33,26 @@ public class ImportadorHistoricosEscolares {
 	}
 
 	public static void main(String[] args) {
-		String planilha = "./planilhas/BCC E WEB (HE 2012-).xls";
-		ImportadorHistoricosEscolares.run(planilha);
+		File folder = new File("./planilhas/historicos-escolares");
+		File[] listOfFiles = folder.listFiles();
+
+		Scanner in = new Scanner(System.in);
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile()) {
+				System.out.println("Importar dados da planilha \""
+						+ listOfFiles[i].getName()
+						+ "\"? Sim = 1; Não: qq outro dígito.");
+				int resposta = in.nextInt();
+				if (resposta == 1) {
+					String arquivoPlanilha = "./planilhas/historicos-escolares/"
+							+ listOfFiles[i].getName();
+					ImportadorHistoricosEscolares.run(arquivoPlanilha);
+				}
+			} else if (listOfFiles[i].isDirectory()) {
+				System.out.println("Diretório: " + listOfFiles[i].getName());
+			}
+		}
+		in.close();
 	}
 
 	public static void run(String planilha) {
@@ -50,7 +69,7 @@ public class ImportadorHistoricosEscolares {
 		System.out.println("Feito!");
 	}
 
-	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO",
+	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
 			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
 			"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
 			"CH_TOTAL", "CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
@@ -113,6 +132,7 @@ public class ImportadorHistoricosEscolares {
 
 			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i)
 					.getContents();
+
 			EnumSituacaoAvaliacao situacaoFinal = null;
 			if (situacao.equals("Aprovado")) {
 				situacaoFinal = EnumSituacaoAvaliacao.APROVADO;
@@ -120,6 +140,8 @@ public class ImportadorHistoricosEscolares {
 				situacaoFinal = EnumSituacaoAvaliacao.REPROVADO_POR_MEDIA;
 			} else if (situacao.equals("Reprovado por Frequência")) {
 				situacaoFinal = EnumSituacaoAvaliacao.REPROVADO_POR_FALTAS;
+			} else if (situacao.equals("Reprovado sem nota")) {
+				situacaoFinal = EnumSituacaoAvaliacao.REPROVADO_SEM_NOTA;
 			} else if (situacao.equals("Trancamento de Disciplinas")) {
 				situacaoFinal = EnumSituacaoAvaliacao.TRANCAMENTO_DISCIPLINA;
 			} else if (situacao.equals("Matrícula")) {
@@ -144,6 +166,9 @@ public class ImportadorHistoricosEscolares {
 			if (cod_disciplina.equals("TRT001")) {
 				/**
 				 * Esse código representa trancamento do período.
+				 * 
+				 * TODO: implementar o registro dessa situação no histórico
+				 * escolar do aluno.
 				 */
 				continue;
 			}
@@ -162,39 +187,40 @@ public class ImportadorHistoricosEscolares {
 			try {
 				disciplina = (Disciplina) queryDisciplina.getSingleResult();
 			} catch (NoResultException e) {
-				System.err.println("Disciplina não encontrada. Código: "
+				System.err.println("Disciplina não encontrada (código): "
 						+ cod_disciplina);
-				System.exit(1);
 			}
 
-			Aluno aluno = null;
-			try {
-				Query queryAluno;
-				queryAluno = em
-						.createQuery("from Aluno a where a.matricula = :matricula");
-				queryAluno.setParameter("matricula", aluno_matricula);
-				aluno = (Aluno) queryAluno.getSingleResult();
-			} catch (NoResultException e) {
-				System.err.println("Aluno não encontrado. Matrícula: "
-						+ aluno_matricula);
-				System.exit(1);
+			if (disciplina!= null) {
+				Aluno aluno = null;
+				try {
+					Query queryAluno;
+					queryAluno = em
+							.createQuery("from Aluno a where a.matricula = :matricula");
+					queryAluno.setParameter("matricula", aluno_matricula);
+					aluno = (Aluno) queryAluno.getSingleResult();
+				} catch (NoResultException e) {
+					System.err.println("Aluno não encontrado. Matrícula: "
+							+ aluno_matricula);
+				}
+
+				if (aluno != null) {
+					aluno.registrarNoHistoricoEscolar(disciplina, situacaoFinal,
+							semestre);
+					em.merge(aluno);
+					System.out.println("Lançada disciplina " + disciplina.toString()
+							+ " no histórico escolar do aluno de matrícula "
+							+ aluno.getMatricula());
+				}
+
 			}
-
-			/**
-			 * Cria objeto <code> HistoricoEscolar</code>.
-			 */
-			HistoricoEscolar he = aluno.getHistorico();
-			he.lancar(disciplina, situacaoFinal, semestre);
-			em.merge(he);
-			System.out.println("Lançada disciplina " + disciplina.getNome()
-					+ " para aluno " + aluno.getMatricula());
-
-			em.getTransaction().commit();
-
-			em.close();
-
-			System.out.println("Importação de históricos finalizada.");
 		}
+
+		em.getTransaction().commit();
+
+		em.close();
+
+		System.out.println("Importação de históricos finalizada.");
 	}
 
 }

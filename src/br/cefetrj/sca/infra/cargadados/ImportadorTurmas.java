@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -99,10 +100,28 @@ public class ImportadorTurmas {
 
 	public static void run() {
 		try {
-			String arquivoPlanilha = "./planilhas/matriculas/11.02.05.99.60.xls";
-			ImportadorTurmas iim = new ImportadorTurmas(codigosCursos);
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+
+			File folder = new File("./planilhas/matriculas");
+			File[] listOfFiles = folder.listFiles();
+
+			for (int i = 0; i < listOfFiles.length; i++) {
+				if (listOfFiles[i].isFile()) {
+					System.out.println("Importar dados da planlha \""
+							+ listOfFiles[i].getName() + "\"? Não = 0; Sim = 1.");
+					Scanner in = new Scanner(System.in);
+					int resposta = in.nextInt();
+					if (resposta == 0) {
+						// faz nada
+					} else if (resposta == 1) {
+						String arquivoPlanilha = "./planilhas/matriculas/" + listOfFiles[i].getName();
+						ImportadorTurmas iim = new ImportadorTurmas(codigosCursos);
+						iim.importarPlanilha(arquivoPlanilha);
+						iim.gravarDadosImportados();
+					}
+				} else if (listOfFiles[i].isDirectory()) {
+					System.out.println("Diretório: " + listOfFiles[i].getName());
+				}
+			}
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -125,6 +144,9 @@ public class ImportadorTurmas {
 
 	public void importarPlanilha(File inputWorkbook) throws BiffException,
 			IOException {
+
+		System.out.println("ImportadorTurmas.importarPlanilha()");
+
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
@@ -189,6 +211,8 @@ public class ImportadorTurmas {
 	}
 
 	public void gravarDadosImportados() {
+		System.out.println("ImportadorTurmas.gravarDadosImportados()");
+
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("SCAPU");
 

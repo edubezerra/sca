@@ -49,7 +49,7 @@ public class ImportadorDiscentes {
 	}
 
 	public static void main(String[] args) {
-		String planilhaMatriculas = "./planilhas/matriculas/11.02.05.99.60.xls";
+		String planilhaMatriculas = "./planilhas/historicos-escolares/11.02.05.99.60.xls";
 		ImportadorDiscentes.run(planilhaMatriculas);
 	}
 

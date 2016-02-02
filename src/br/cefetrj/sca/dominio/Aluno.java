@@ -115,4 +115,10 @@ public class Aluno {
 		this.historico.lancar(turma.getDisciplina(),
 				EnumSituacaoAvaliacao.MATRICULA, turma.getPeriodo());
 	}
+
+	public void registrarNoHistoricoEscolar(Disciplina disciplina,
+			EnumSituacaoAvaliacao situacaoFinal, PeriodoLetivo semestre) {
+		HistoricoEscolar he = this.getHistorico();
+		he.lancar(disciplina, situacaoFinal, semestre);
+	}
 }

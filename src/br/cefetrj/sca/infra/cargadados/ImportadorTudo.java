@@ -11,11 +11,12 @@ public class ImportadorTudo {
 			ImportadorDiscentes.main(args);
 			ImportadorDocentes.main(args);
 			ImportadorDepartamentos.main(args);
-			ImportadorTurmas.main(args);
+			ImportadorHistoricosEscolares.main(args);
+//			ImportadorTurmas.main(args);
+			ImportadorInscricoes.main(args);
 			ImportadorAlocacoesProfessoresEmTurmas.main(args);
 			ImportadorLocais.main(args);
 			ImportadorAulas.main(args);
-			ImportadorHistoricosEscolares.main(args);
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());
 			System.exit(1);
