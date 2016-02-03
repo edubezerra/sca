@@ -20,7 +20,12 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.AlunoFabrica;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
@@ -33,6 +38,20 @@ import br.cefetrj.sca.dominio.Turma;
  *
  */
 public class ImportadorInscricoes {
+
+	String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
+			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
+			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC",
+			"ORDEM_MATR", "SITUACAO", "COD_TURMA", "COD_CURSO", "VERSAO_CURSO",
+			"MATR_ALUNO", "SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA",
+			"ID_PROCESSAMENTO", "HR_SOLICITACAO" };
+
+	private HashMap<String, String> turmas_versoesCurso = new HashMap<>();
+
+	private HashMap<String, String> turmas_cursos = new HashMap<>();
+
+	private HashMap<String, String> alunos_matriculas_nomes = new HashMap<>();
+	private HashMap<String, String> alunos_matriculas_cpfs = new HashMap<>();
 
 	/**
 	 * código, semestre letivo { ano, período }
@@ -54,6 +73,9 @@ public class ImportadorInscricoes {
 	 * importados.
 	 */
 	private static List<String> codigosCursos = new ArrayList<String>();
+
+	private ApplicationContext context = new ClassPathXmlApplicationContext(
+			new String[] { "applicationContext.xml" });
 
 	public ImportadorInscricoes(String[] codigos) {
 		if (codigos != null) {
@@ -128,17 +150,6 @@ public class ImportadorInscricoes {
 	// System.out.println("Feito!");
 	// }
 
-	String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
-			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
-			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC",
-			"ORDEM_MATR", "SITUACAO", "COD_TURMA", "COD_CURSO", "VERSAO_CURSO",
-			"MATR_ALUNO", "SITUACAO_ITEM", "ANO", "PERIODO", "IND_GERADA",
-			"ID_PROCESSAMENTO", "HR_SOLICITACAO" };
-
-	private HashMap<String, String> turmas_versoesCurso = new HashMap<>();
-
-	private HashMap<String, String> turmas_cursos = new HashMap<>();
-
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
 		File inputWorkbook = new File(inputFile);
@@ -158,6 +169,11 @@ public class ImportadorInscricoes {
 		ws.setEncoding("Cp1252");
 		w = Workbook.getWorkbook(inputWorkbook, ws);
 		Sheet sheet = w.getSheet(0);
+
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("SCAPU");
+
+		EntityManager em = emf.createEntityManager();
 
 		for (int i = 1; i < sheet.getRows(); i++) {
 
@@ -219,7 +235,22 @@ public class ImportadorInscricoes {
 
 				turmas_alunos.get(turma_codigo).add(aluno_matricula);
 			}
+
+			String matricula_aluno = sheet.getCell(
+					colunasList.indexOf("MATR_ALUNO"), i).getContents();
+			if (obterAlunoPorMatricula(em, matricula_aluno) == null) {
+				String nome_aluno = sheet.getCell(
+						colunasList.indexOf("NOME_PESSOA"), i).getContents();
+				alunos_matriculas_nomes.put(matricula_aluno, nome_aluno);
+
+				String cpf_aluno = sheet.getCell(colunasList.indexOf("CPF"), i)
+						.getContents();
+				alunos_matriculas_cpfs.put(matricula_aluno, cpf_aluno);
+			}
+
 		}
+
+		em.close();
 	}
 
 	public void gravarDadosImportados() {
@@ -260,11 +291,26 @@ public class ImportadorInscricoes {
 
 				if (matriculas != null) {
 					for (String matricula : matriculas) {
-						query = em
-								.createQuery("from Aluno a where a.matricula = :matricula");
-						query.setParameter("matricula", matricula);
-						Aluno aluno = (Aluno) query.getSingleResult();
-						turma.inscreverAluno(aluno);
+						Aluno aluno = obterAlunoPorMatricula(em, matricula);
+						if (aluno != null) {
+							turma.inscreverAluno(aluno);
+						} else {
+							System.err
+									.println("Aluno não encontrado (matrícula): "
+											+ matricula
+											+ ". Inserindo aluno...");
+							AlunoFabrica alunoFab;
+							alunoFab = (AlunoFabrica) context
+									.getBean("AlunoFabricaBean");
+							String aluno_cpf = alunos_matriculas_cpfs
+									.get(matricula);
+							String aluno_nome = alunos_matriculas_nomes
+									.get(matricula);
+							aluno = alunoFab.criar(aluno_nome, matricula,
+									aluno_cpf, codCurso, numeroVersaoCurso);
+							em.persist(aluno);
+							System.err.println("Aluno inserido com sucesso: " + aluno.toString());
+						}
 					}
 				}
 
@@ -282,6 +328,18 @@ public class ImportadorInscricoes {
 		System.out
 				.println("Foram importadas " + qtdInscricoes + " inscrições.");
 
+	}
+
+	private Aluno obterAlunoPorMatricula(EntityManager em, String matricula) {
+		Query query = em
+				.createQuery("from Aluno a where a.matricula = :matricula");
+		query.setParameter("matricula", matricula);
+
+		try {
+			return (Aluno) query.getSingleResult();
+		} catch (NoResultException ex) {
+			return null;
+		}
 	}
 
 	private Disciplina obterDisciplina(EntityManager em,

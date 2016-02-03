@@ -121,4 +121,11 @@ public class Aluno {
 		HistoricoEscolar he = this.getHistorico();
 		he.lancar(disciplina, situacaoFinal, semestre);
 	}
+
+	@Override
+	public String toString() {
+		return "Aluno [matricula=" + matricula + ", pessoa=" + pessoa + "]";
+	}
+	
+	
 }

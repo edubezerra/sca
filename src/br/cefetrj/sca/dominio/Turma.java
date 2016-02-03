@@ -29,8 +29,8 @@ public class Turma {
 	private Long id;
 
 	/**
-	 * O código da turma. Deve necessariamente possuir sete caracteres (e.g.,
-	 * 6100009)
+	 * O código da turma. Deve necessariamente ser composto de sete caracteres
+	 * (e.g., 6100009)
 	 */
 	private String codigo;
 
@@ -63,7 +63,6 @@ public class Turma {
 	 * Inscrições realizadas nesta turma.
 	 */
 	@OneToMany(cascade = CascadeType.ALL)
-	// CascadeType.ALL necessário para persistir turmas que fizeram inscrições
 	@JoinColumn(name = "TURMA_ID", referencedColumnName = "ID")
 	private Set<Inscricao> inscricoes = new HashSet<>();
 
@@ -211,7 +210,7 @@ public class Turma {
 							"Aluno já inscrito na turma.");
 				}
 			}
-			inscricoes.add(inscricao);
+			this.inscricoes.add(inscricao);
 		}
 	}
 

@@ -23,18 +23,12 @@ import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
-public class ImportadorDiscentes {
+public class ImportadorAlunos {
 	private ApplicationContext context;
 
 	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF", "MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO",
 			"COD_TURMA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO", "CH_TOTAL", "CREDITOS",
 			"MEDIA_FINAL", "NUM_FALTAS" };
-
-	// "NOME_UNIDADE", "NOME_PESSOA", "CPF", "DT_SOLICITACAO",
-	// "DT_PROCESS", "COD_DISCIPLINA", "NOME_DISCIPLINA", "PERIODO_IDEAL",
-	// "PRIOR_TURMA", "PRIOR_DISC", "ORDEM_MATR", "SITUACAO", "COD_TURMA",
-	// "COD_CURSO", "NUM_VERSAO", "MATR_ALUNO", "SITUACAO_ITEM", "ANO",
-	// "PERIODO", "IND_GERADA", "ID_PROCESSAMENTO", "HR_SOLICITACAO" };
 
 	/**
 	 * Dicionário de pares (matrícula, objeto da classe aluno) de cada aluno.
@@ -43,20 +37,20 @@ public class ImportadorDiscentes {
 
 	private AlunoFabrica alunoFab;
 
-	public ImportadorDiscentes() {
+	public ImportadorAlunos() {
 		context = new ClassPathXmlApplicationContext(new String[] { "applicationContext.xml" });
 		alunoFab = (AlunoFabrica) context.getBean("AlunoFabricaBean");
 	}
 
 	public static void main(String[] args) {
 		String planilhaMatriculas = "./planilhas/historicos-escolares/11.02.05.99.60.xls";
-		ImportadorDiscentes.run(planilhaMatriculas);
+		ImportadorAlunos.run(planilhaMatriculas);
 	}
 
 	public static void run(String arquivoPlanilha) {
 		System.out.println("ImportadorDiscentes.run()");
 		try {
-			ImportadorDiscentes iim = new ImportadorDiscentes();
+			ImportadorAlunos iim = new ImportadorAlunos();
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
