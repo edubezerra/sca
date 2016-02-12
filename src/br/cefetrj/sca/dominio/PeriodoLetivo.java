@@ -20,7 +20,7 @@ public final class PeriodoLetivo {
 	final private EnumPeriodo periodo;
 
 	@Transient
-	public static final PeriodoLetivo SEMESTRE_LETIVO_CORRENTE;
+	public static final PeriodoLetivo PERIODO_CORRENTE;
 
 	/**
 	 * Lógica para obtenção do valor do semestre letivo corrente (atual).
@@ -33,7 +33,7 @@ public final class PeriodoLetivo {
 			periodo = EnumPeriodo.PRIMEIRO;
 		else
 			periodo = EnumPeriodo.SEGUNDO;
-		SEMESTRE_LETIVO_CORRENTE = new PeriodoLetivo(calendar.get(Calendar.YEAR), periodo);
+		PERIODO_CORRENTE = new PeriodoLetivo(calendar.get(Calendar.YEAR), periodo);
 	}
 
 	public Integer getAno() {

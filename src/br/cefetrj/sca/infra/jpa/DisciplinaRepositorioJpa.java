@@ -98,7 +98,7 @@ public class DisciplinaRepositorioJpa implements DisciplinaRepositorio {
 		EntityManager entityManager = genericDAO.getEntityManager();
 		Query q = entityManager
 				.createQuery("from Disciplina d where d.nome = :nomeDisciplinaParam "
-						+ "and d.versaoCurso.numero = :versao "
+						+ "and d.versaoCurso.numero = :versaoCurso "
 						+ "and d.versaoCurso.curso.sigla = :siglaCurso");
 		q.setParameter("nomeDisciplinaParam", nomeDisciplina);
 		q.setParameter("siglaCurso", siglaCurso);

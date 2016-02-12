@@ -8,7 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.infra.jpa.TurmaDaoJpa;
+import br.cefetrj.sca.infra.jpa.TurmaRepositorioJpa;
 
 public class GetTurmasCursadasPorAluno {
 	private static ApplicationContext context;
@@ -17,7 +17,7 @@ public class GetTurmasCursadasPorAluno {
 		context = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
 
-		TurmaDaoJpa dao = new TurmaDaoJpa();
+		TurmaRepositorioJpa dao = new TurmaRepositorioJpa();
 
 		String cpf = "usuarioeic";
 		System.out.println("Listando turmas do usuário " + cpf + "...");

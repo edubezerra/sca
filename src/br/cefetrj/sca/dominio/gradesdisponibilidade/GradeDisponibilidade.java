@@ -63,7 +63,7 @@ public class GradeDisponibilidade implements Cloneable {
 
 	public GradeDisponibilidade(Professor professor) {
 		this.professor = professor;
-		this.semestre = (PeriodoLetivo) PeriodoLetivo.SEMESTRE_LETIVO_CORRENTE;
+		this.semestre = (PeriodoLetivo) PeriodoLetivo.PERIODO_CORRENTE;
 	}
 
 	public Long getId() {

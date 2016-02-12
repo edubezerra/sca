@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.TurmaRepositorio;
 import br.cefetrj.sca.dominio.inscricoes.TurmasPossiveisServico;
-import br.cefetrj.sca.dominio.repositorio.TurmaRepositorio;
 
 public class RealizarInscricaoService {
 
@@ -25,7 +26,8 @@ public class RealizarInscricaoService {
 	}
 
 	public Turma registrarInscricao(String codigoTurma) {
-		Turma t = turmaRepositorio.getTurmaPotCodigo(codigoTurma);
+		Turma t = turmaRepositorio.getByCodigoNoPeriodoLetivo(codigoTurma,
+				PeriodoLetivo.PERIODO_CORRENTE.proximo());
 		t.inscreverAluno(aluno);
 		turmaSelecionadas.add(t);
 		return t;

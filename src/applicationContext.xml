@@ -15,7 +15,8 @@
 	<bean id="AvaliacaoTurmaServiceBean" class="br.cefetrj.sca.service.AvaliacaoTurmaService" />
 	<bean id="FornecerGradeDisponibilidadeServiceBean"
 		class="br.cefetrj.sca.service.FornecerGradeDisponibilidadeService" />
-	<bean id="SolicitacaoIsencaoDisciplinasServiceBean" class="br.cefetrj.sca.service.SolicitacaoIsencaoDisciplinasService" />
+	<bean id="SolicitacaoIsencaoDisciplinasServiceBean"
+		class="br.cefetrj.sca.service.SolicitacaoIsencaoDisciplinasService" />
 	<bean id="RegistrarHabilitacoesServiceBean" class="br.cefetrj.sca.service.RegistrarHabilitacoesService" />
 	<bean id="SolicitacaoMatriculaForaPrazoServiceBean"
 		class="br.cefetrj.sca.service.SolicitacaoMatriculaForaPrazoService" />
@@ -28,23 +29,34 @@
 
 	<!-- Repositorios -->
 	<bean id="AlunoRepoBean" class="br.cefetrj.sca.dominio.repositorio.AlunoRepositorio" />
+
 	<bean id="AuthRepositoryBean" class="br.cefetrj.sca.dominio.repositorio.AuthRepository" />
+
 	<bean id="AvaliacaoTurmaRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.AvaliacaoTurmaRepositorio" />
+
 	<bean id="CursoRepositorioBean" class="br.cefetrj.sca.infra.jpa.CursoRepositorioJpa" />
+
 	<bean id="DepartamentoRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio" />
+
 	<bean id="DisciplinaRepoBean" class="br.cefetrj.sca.infra.jpa.DisciplinaRepositorioJpa" />
+
+	<bean id="TurmaRepoBean" class="br.cefetrj.sca.infra.jpa.TurmaRepositorioJpa" />
+
 	<bean id="InclusaoDisciplinaRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.InclusaoDisciplinaRepositorio" />
 	<bean id="ProfessorRepoBean" class="br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio" />
-	<bean id="TurmaRepoBean" class="br.cefetrj.sca.dominio.repositorio.TurmaRepositorio" />
+
 	<bean id="AvaliacaoEgressoRepositorioBean"
 		class="br.cefetrj.sca.dominio.repositorio.AvaliacaoEgressoRepositorio" />
+
 	<bean id="AlternativaRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.AlternativaRepositorio" />
+
 	<bean id="FormularioRepoBean"
 		class="br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio" />
+
 	<bean id="SolicitacaoIsencaoDisciplinasRepositorioBean"
 		class="br.cefetrj.sca.dominio.isencoes.SolicitacaoIsencaoDisciplinasRepositorio" />
 
@@ -60,7 +72,6 @@
 	<bean id="ProfessorDaoBean" class="br.cefetrj.sca.infra.jpa.ProfessorDaoJpa" />
 	<bean id="SolicitacaoIsencaoDisciplinasDaoBean"
 		class="br.cefetrj.sca.infra.jpa.SolicitacaoIsencaoDisciplinasDaoJpa" />
-	<bean id="TurmaDaoBean" class="br.cefetrj.sca.infra.jpa.TurmaDaoJpa" />
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">

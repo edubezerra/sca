@@ -61,7 +61,7 @@ public class Disciplina {
 	private Disciplina() {
 	}
 
-	public Disciplina(String nome, String codigo, String quantidadeCreditos) {
+	private Disciplina(String nome, String codigo, String quantidadeCreditos) {
 		super();
 		if (StringUtils.isBlank(nome)) {
 			throw new IllegalArgumentException("Valor inválido para nome.");

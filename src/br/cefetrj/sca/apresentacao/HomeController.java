@@ -53,7 +53,7 @@ public class HomeController {
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 					.getInstance();
 			model.addAttribute("periodoLetivo",
-					periodoAvaliacao.getSemestreLetivo());
+					periodoAvaliacao.getPeriodoLetivo());
 			return "/menuPrincipalView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());

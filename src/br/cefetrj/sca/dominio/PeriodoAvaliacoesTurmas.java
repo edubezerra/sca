@@ -83,7 +83,7 @@ public class PeriodoAvaliacoesTurmas {
 		return dataTermino;
 	}
 
-	public PeriodoLetivo getSemestreLetivo() {
+	public PeriodoLetivo getPeriodoLetivo() {
 		return semestreLetivo;
 	}
 
@@ -125,6 +125,6 @@ public class PeriodoAvaliacoesTurmas {
 
 	public static void main(String[] args) {
 		System.out.println(PeriodoAvaliacoesTurmas.getInstance()
-				.getSemestreLetivo());
+				.getPeriodoLetivo());
 	}
 }

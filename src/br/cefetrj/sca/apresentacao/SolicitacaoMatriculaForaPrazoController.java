@@ -58,7 +58,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 		try {
 			service.carregaHomeView(model, cpf);
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
-			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+			model.addAttribute("periodoLetivo", periodoAvaliacao.getPeriodoLetivo());
 
 			return "/inclusaoDisciplina/homeInclusaoView";
 		} catch (Exception exc) {

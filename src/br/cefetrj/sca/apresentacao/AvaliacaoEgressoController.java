@@ -102,7 +102,7 @@ public class AvaliacaoEgressoController {
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 					.getInstance();
 			model.addAttribute("periodoLetivo",
-					periodoAvaliacao.getSemestreLetivo());
+					periodoAvaliacao.getPeriodoLetivo());
 			return "/avaliacaoTurma/menuPrincipalView";
 		} else {
 			return "/homeView";

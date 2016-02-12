@@ -41,6 +41,16 @@ public class HistoricoEscolar {
 		return id;
 	}
 
+	/*
+	 * Retorna a lista de disciplinas do curso da aluno em que ele pode se
+	 * matricular. Um aluno pode se matrícular em uma disciplina D se as duas
+	 * condições a seguir forem verdadeiras:
+	 * 
+	 * 1) o aluno já possuir os créditos em todas as disciplinas que são
+	 * pré-requisitos de D (se essas existirem).
+	 * 
+	 * 2) o aluno não possuir os créditos de D.
+	 */
 	public List<Disciplina> getDisciplinasPossiveis() {
 
 		List<Disciplina> disciplinas = this.versaoCurso.getDisciplinas();
@@ -66,20 +76,25 @@ public class HistoricoEscolar {
 			}
 		}
 
+		/**
+		 * Se o aluno não cursou todos os pré-requisitos de uma disciplina,
+		 * então não pode se matricular nesta disciplina.
+		 */
 		Set<Disciplina> disciplinasParaRemover = new HashSet<>();
 		for (Disciplina disciplina : disciplinas) {
 			if (!disciplinasCursadas.containsAll(disciplina.getPreRequisitos())) {
 				disciplinasParaRemover.add(disciplina);
 			}
 		}
-
 		disciplinas.removeAll(disciplinasParaRemover);
 
 		return disciplinas;
 	}
 
-	public void lancar(Disciplina disciplina, EnumSituacaoAvaliacao situacao, PeriodoLetivo periodo) {
-		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina, situacao, periodo);
+	public void lancar(Disciplina disciplina, EnumSituacaoAvaliacao situacao,
+			PeriodoLetivo periodo) {
+		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina,
+				situacao, periodo);
 		this.itens.add(item);
 	}
 }

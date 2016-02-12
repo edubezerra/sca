@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.TurmaRepositorio;
 import br.cefetrj.sca.infra.DepartamentoDao;
-import br.cefetrj.sca.infra.TurmaDao;
 
 @Component
 public class DepartamentoRepositorio {
@@ -17,7 +16,7 @@ public class DepartamentoRepositorio {
 	private DepartamentoDao departamentoDao;
 	
 	@Autowired
-	private TurmaDao turmaDao;
+	private TurmaRepositorio turmaDao;
 	
 	private DepartamentoRepositorio(){
 		
@@ -30,9 +29,4 @@ public class DepartamentoRepositorio {
 	public Departamento getById(Long id){
 		return departamentoDao.getById(id);
 	}
-
-	public Turma getByCodigo(String codigo) {
-		return turmaDao.getByCodigo(codigo);
-	}
-	
 }

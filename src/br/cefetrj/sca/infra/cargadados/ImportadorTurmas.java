@@ -26,6 +26,7 @@ import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 
+@Deprecated
 /**
  * Essa classe faz a carga de objetos <code>Turma</code>.
  * 
@@ -83,6 +84,13 @@ public class ImportadorTurmas {
 	 */
 	private static List<String> codigosCursos = new ArrayList<String>();
 
+	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
+			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
+			"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
+			"CH_TOTAL", "CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
+
+	Disciplinas disciplinas = new Disciplinas();
+
 	static {
 		String codigos[] = { "BCC", "WEB" };
 		for (String codigo : codigos) {
@@ -128,13 +136,6 @@ public class ImportadorTurmas {
 		}
 		System.out.println("Feito!");
 	}
-
-	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
-			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
-			"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
-			"CH_TOTAL", "CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
-
-	Disciplinas disciplinas = new Disciplinas();
 
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {

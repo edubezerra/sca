@@ -15,13 +15,16 @@ public class ProfessorDaoFake implements ProfessorDao {
 
 		p = new Professor("Eduardo Bezerra", "1234");
 		p.habilitarPara(new Disciplina("Engenharia de Requisitos", "GSTI7270",
-				"4"));
-		p.habilitarPara(new Disciplina("Matemática Discreta", "GSTI7201", "4"));
-		p.habilitarPara(new Disciplina("Padrões de Software", "GSTI5203", "4"));
+				"4", "72"));
+		p.habilitarPara(new Disciplina("Matemática Discreta", "GSTI7201", "4",
+				"72"));
+		p.habilitarPara(new Disciplina("Padrões de Software", "GSTI5203", "4",
+				"72"));
 		professores.add(p);
 
 		p = new Professor("Rafael Castaneda", "1235");
-		p.habilitarPara(new Disciplina("Programação de Jogos", "GSTI5202", "4"));
+		p.habilitarPara(new Disciplina("Programação de Jogos", "GSTI5202", "4",
+				"72"));
 		professores.add(p);
 
 		p = new Professor("Renato Mauro", "1236");

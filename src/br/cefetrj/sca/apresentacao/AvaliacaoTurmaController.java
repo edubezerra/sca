@@ -109,7 +109,7 @@ public class AvaliacaoTurmaController {
 			model.addAttribute("turmas", service.iniciarAvaliacoes(cpf));
 			model.addAttribute("cpf", cpf);
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
-			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+			model.addAttribute("periodoLetivo", periodoAvaliacao.getPeriodoLetivo());
 			return "/avaliacaoTurma/apresentaListagemTurmasView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -122,7 +122,7 @@ public class AvaliacaoTurmaController {
 		String cpf = (String) session.getAttribute("login");
 		if (cpf != null) {
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
-			model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+			model.addAttribute("periodoLetivo", periodoAvaliacao.getPeriodoLetivo());
 			return "/menuPrincipalView";
 		} else {
 			return "/homeView";

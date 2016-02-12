@@ -107,7 +107,7 @@ public class Turma {
 		// }
 		this.codigo = codigo;
 
-		this.semestreLetivo = PeriodoLetivo.SEMESTRE_LETIVO_CORRENTE;
+		this.semestreLetivo = PeriodoLetivo.PERIODO_CORRENTE;
 		this.capacidadeMaxima = CAPACIDADE_PRESUMIDA;
 	}
 

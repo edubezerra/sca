@@ -2,15 +2,13 @@ package br.cefetrj.sca.dominio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.cefetrj.sca.dominio.repositorio.TurmaRepositorio;
-
 public class FichaLancamentoAvaliacaoFabrica {
 	
 	@Autowired
-	private static TurmaRepositorio tr;
+	private static TurmaRepositorio turmaRepositorio;
 
 	public static FichaLancamentoAvaliacao criar(String codTurma) {
-		Turma turma = tr.getByCodigo(codTurma);
+		Turma turma = turmaRepositorio.getByCodigoNoPeriodoLetivo(codTurma, PeriodoLetivo.PERIODO_CORRENTE);
 		FichaLancamentoAvaliacao ficha = new FichaLancamentoAvaliacao(turma);
 		return ficha;
 	}

@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.infra.TurmaDao;
+import br.cefetrj.sca.dominio.TurmaRepositorio;
 
 @Component
-public class TurmaDaoJpa implements TurmaDao {
+public class TurmaRepositorioJpa implements TurmaRepositorio {
 	private GenericDaoJpa<Turma> genericDAO = new GenericDaoJpa<Turma>();
 
 	@Override
@@ -23,10 +23,9 @@ public class TurmaDaoJpa implements TurmaDao {
 	}
 
 	@Override
-	public Turma getByCodigo(String codigo) {
-		String consulta = "SELECT a from Turma a WHERE a.codigo = ?";
-		Object array[] = { codigo };
-
+	public Turma getByCodigoNoPeriodoLetivo(String codigo, PeriodoLetivo periodo) {
+		String consulta = "SELECT a from Turma a WHERE a.codigo = ? and a.periodo = ?";
+		Object array[] = { codigo, periodo };
 		return genericDAO.obterEntidade(consulta, array);
 	}
 

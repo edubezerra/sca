@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.TurmaRepositorio;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.AvaliacaoTurmaRepositorio;
 import br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio;
-import br.cefetrj.sca.dominio.repositorio.TurmaRepositorio;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoResponse;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
@@ -26,7 +26,7 @@ public class AvaliacaoTurmaService {
 	private AlunoRepositorio alunoRepo;
 
 	@Autowired
-	private TurmaRepositorio turmaRepo;
+	private TurmaRepositorio turmaRepositorio;
 
 	@Autowired
 	private AvaliacaoTurmaRepositorio avaliacaoRepo;
@@ -49,8 +49,8 @@ public class AvaliacaoTurmaService {
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
 
-		List<Turma> turmas = turmaRepo.getTurmasCursadas(cpf,
-				periodoAvaliacao.getSemestreLetivo());
+		List<Turma> turmas = turmaRepositorio.getTurmasCursadas(cpf,
+				periodoAvaliacao.getPeriodoLetivo());
 
 		SolicitaAvaliacaoResponse response = new SolicitaAvaliacaoResponse();
 		AvaliacaoTurma turmaAvaliada;
@@ -182,7 +182,11 @@ public class AvaliacaoTurmaService {
 		Turma turma;
 
 		try {
-			turma = turmaRepo.getByCodigo(codigoTurma);
+			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+					.getInstance();
+
+			turma = turmaRepositorio.getByCodigoNoPeriodoLetivo(codigoTurma,
+					periodoAvaliacao.getPeriodoLetivo());
 		} catch (Exception exc) {
 			turma = null;
 		}

@@ -9,9 +9,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.infra.DAOException;
 
+//public class GenericDaoJpa<T> implements Repository<T, Long> {
 public class GenericDaoJpa<T> {
 
 	protected Logger logger = Logger.getLogger(GenericDaoJpa.class.getName());
@@ -142,7 +142,7 @@ public class GenericDaoJpa<T> {
 	}
 
 	public EntityManager getEntityManager() {
-		
+
 		return entityManager;
 	}
 

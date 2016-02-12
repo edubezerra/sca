@@ -25,7 +25,7 @@ public class AutenticacaoController {
 		try {
 			if (authService.autenticaUsuario(login, senha)) {
 				PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
-				model.addAttribute("periodoLetivo", periodoAvaliacao.getSemestreLetivo());
+				model.addAttribute("periodoLetivo", periodoAvaliacao.getPeriodoLetivo());
 				if (authService.isAluno(login)) {
 					session.setAttribute("login", login);
 					return "/menuPrincipalView";

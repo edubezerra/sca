@@ -51,10 +51,11 @@ public class FornecerGradeDisponibilidadeService {
 				"Eduardo Bezerra");
 		Set<Disciplina> habilitacoes = new HashSet<>();
 		habilitacoes.add(new Disciplina("ESTATÍSTICA E PROBABILIDADE",
-				"GCC1518", "4"));
+				"GCC1518", "4", "72"));
 		habilitacoes.add(new Disciplina("ARQUITETURA E PADRÕES DE SOFTWARE",
-				"GCC1520", "4"));
-		habilitacoes.add(new Disciplina("MATEMÁTICA DISCRETA", "GCC1208", "4"));
+				"GCC1520", "4", "72"));
+		habilitacoes.add(new Disciplina("MATEMÁTICA DISCRETA", "GCC1208", "4",
+				"72"));
 
 		ficha.definirHabilitacoes(habilitacoes);
 		return ficha;
