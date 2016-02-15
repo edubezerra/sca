@@ -28,7 +28,7 @@
 		class=" br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidadeFabrica" />
 
 	<!-- Repositorios -->
-	<bean id="AlunoRepoBean" class="br.cefetrj.sca.dominio.repositorio.AlunoRepositorio" />
+	<bean id="AlunoRepositorioBean" class="br.cefetrj.sca.infra.jpa.AlunoRepositorioJpa" />
 
 	<bean id="AuthRepositoryBean" class="br.cefetrj.sca.dominio.repositorio.AuthRepository" />
 
@@ -61,7 +61,6 @@
 		class="br.cefetrj.sca.dominio.isencoes.SolicitacaoIsencaoDisciplinasRepositorio" />
 
 	<!-- DAOs -->
-	<bean id="AlunoDaoBean" class="br.cefetrj.sca.infra.jpa.AlunoDaoJpa" />
 	<bean id="AuthDAOMoodleBean" class="br.cefetrj.sca.infra.moodle.AuthDAOMoodle" />
 	<bean id="AvaliacaoTurmaDaoBean" class="br.cefetrj.sca.infra.jpa.AvaliacaoTurmaDaoJpa" />
 	<bean id="DepartamentoDaoBean" class="br.cefetrj.sca.infra.jpa.DepartamentoDaoJpa" />

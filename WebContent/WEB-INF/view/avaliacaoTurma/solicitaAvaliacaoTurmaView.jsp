@@ -15,8 +15,6 @@
 </head>
 <body class="basic-grey">
 
-	<h1>Responder às questões de avaliação da turma:</h1>
-
 	<c:if test="${requestScope.error != null}">
 		<div>
 			<p class="error">${requestScope.error}</p>
@@ -36,15 +34,14 @@
 	<c:if test="${requestScope.questoes != null}">
 
 		<div>
-			<p class="discipline">${requestScope.nomeDisciplina}
-				(${requestScope.codigoTurma})</p>
+			<p class="discipline">Avaliação da turma
+				${requestScope.codigoTurma} (${requestScope.nomeDisciplina})</p>
 		</div>
 
 		<form
 			action="${pageContext.request.contextPath}/avaliacaoTurma/avaliaTurma"
 			method="post">
-			<input type="hidden" name="codigoTurma"
-				value="${requestScope.codigoTurma}" />
+			<input type="hidden" name="idTurma" value="${requestScope.idTurma}" />
 			<c:forEach items="${requestScope.questoes}" var="quesito"
 				varStatus="i">
 				<h3>${i.index + 1})&nbsp;${quesito.quesito}</h3>
@@ -60,7 +57,8 @@
 			</c:forEach>
 
 			<div>
-				<h4>Descreva aspectos que você considerou positivos, se existirem:</h4>
+				<h4>Descreva aspectos que você considerou positivos, se
+					existirem:</h4>
 				<textarea name="aspectosPositivos" maxlength="8192"
 					placeholder="(opcional, max 8192 caracteres)"></textarea>
 			</div>
@@ -68,7 +66,8 @@
 			<br />
 
 			<div>
-				<h4>Descreva aspectos que você considerou negativos, se existirem:</h4>
+				<h4>Descreva aspectos que você considerou negativos, se
+					existirem:</h4>
 				<textarea name="aspectosNegativos" maxlength="8192"
 					placeholder="(opcional, max 8192 caracteres)"></textarea>
 			</div>
@@ -76,8 +75,7 @@
 			<br />
 
 			<div>
-				<input type="submit" value="Submeter" /> 
-				<a class="button_embedded"
+				<input type="submit" value="Submeter" /> <a class="button_embedded"
 					href="${pageContext.request.contextPath}/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula">
 					<input type="button" value="Voltar" />
 				</a>

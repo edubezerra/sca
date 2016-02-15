@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>SCA - Inclusão de disciplina</title>
+	<title>SCA - Matrícula Fora do Prazo</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
@@ -13,7 +13,7 @@
 <body class="lista-solicitacoes">
 	<div class="container">
 		<div class="row text-center">
-			<h2>Solicitações de inclusão de disciplina - <c:out value="${solicitacaoAtual.semestreLetivo}"></c:out></h2>
+			<h2>Solicitações de matrícula fora do parazo - <c:out value="${solicitacaoAtual.semestreLetivo}"></c:out></h2>
 			<h4>Aluno: <c:out value="${aluno.nome}"></c:out></h4>
 			<h4>Matricula: <c:out value="${aluno.matricula}"></c:out></h4>
 		</div>

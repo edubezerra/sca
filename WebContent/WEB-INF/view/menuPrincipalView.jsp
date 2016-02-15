@@ -32,8 +32,7 @@
 				<ul class="nav nav-pills nav-stacked text-center">
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
-							Avaliação de Turmas por Discentes (${requestScope.periodoLetivo})
-					</a></li>
+							Avaliação de Turmas por Discentes </a></li>
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
 							Inclusão de Disciplina Fora de Prazo</a></li>
@@ -42,13 +41,13 @@
 						href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
 							Avaliação de Curso por Egresso</a></li>
 
-<!-- 					<li><a class="btn-default" -->
-<%-- 						href="${pageContext.request.contextPath}/isencaoDisciplinas/visualizarResultados">Visualização --%>
-<!-- 							de Resultados de Solicitações de Isenção de Disciplinas</a></li> -->
+					<!-- 					<li><a class="btn-default" -->
+					<%-- 						href="${pageContext.request.contextPath}/isencaoDisciplinas/visualizarResultados">Visualização --%>
+					<!-- 							de Resultados de Solicitações de Isenção de Disciplinas</a></li> -->
 
-<!-- 					<li><a class="btn-default" -->
-<%-- 						href="${pageContext.request.contextPath}/isencaoDisciplinas/homeInclusao">Solicitações de --%>
-<!-- 							Isenção de Disciplinas</a></li> -->
+					<!-- 					<li><a class="btn-default" -->
+					<%-- 						href="${pageContext.request.contextPath}/isencaoDisciplinas/homeInclusao">Solicitações de --%>
+					<!-- 							Isenção de Disciplinas</a></li> -->
 
 
 

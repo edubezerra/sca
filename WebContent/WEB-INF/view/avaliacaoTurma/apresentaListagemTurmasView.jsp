@@ -15,7 +15,7 @@
 </head>
 <body class="basic-grey">
 
-	<h1>Avaliação de turmas cursadas em ${requestScope.periodoLetivo}</h1>
+	<h1>Avaliação de turmas cursadas</h1>
 
 	<p>A avaliação de Turmas por Discentes ocorre em dois momentos: no
 		primeiro e no segundo semestre letivo de cada ano por meio de
@@ -28,9 +28,12 @@
 		seus atuais professores.</p>
 
 
-	Para acesso ao formulário de avaliação, utilize os campos abaixo. Entre
-	com as mesmas credenciais que você utiliza para acesso ao
-	<a href="http://eic.cefet-rj.br/moodle/">Moodle da EIC</a>
+	<p>
+		Para acesso ao formulário de avaliação, utilize os campos abaixo.
+		Entre com as mesmas credenciais que você utiliza para acesso ao <b>Portal
+			do Aluno</b>.
+	</p>
+
 	<br>
 	<br>
 
@@ -46,13 +49,18 @@
 		</div>
 	</c:if>
 
-	<c:if test="${requestScope.turmas == null}">
+	<c:if test="${requestScope.turmasCursadas == null}">
 		<h3>Você não está inscrito em nenhuma turma.</h3>
 	</c:if>
 
-	<c:if test="${requestScope.turmas != null}">
+	<c:if test="${requestScope.turmasCursadas != null}">
 		<div class="table">
 			<div class="row">
+				<div class="field">
+					<div>
+						<b>Período Letivo</b>
+					</div>
+				</div>
 				<div class="field">
 					<div>
 						<b>Código da Turma</b>
@@ -65,8 +73,11 @@
 				</div>
 				<div class="field"></div>
 			</div>
-			<c:forEach items="${requestScope.turmas}" var="turma">
+			<c:forEach items="${requestScope.turmasCursadas}" var="turma">
 				<div class="row">
+					<div class="field">
+						<div>${turma.periodoLetivo}</div>
+					</div>
 					<div class="field">
 						<div>${turma.codigoTurma}</div>
 					</div>
@@ -82,8 +93,8 @@
 							<form
 								action="${pageContext.request.contextPath}/avaliacaoTurma/solicitaAvaliacaoTurma"
 								method="post">
-								<input type="hidden" name="codigoTurma"
-									value="${turma.codigoTurma}" /> <input class="lastfield"
+								<input type="hidden" name="idTurma"
+									value="${turma.idTurma}" /> <input class="lastfield"
 									type="submit" value="Avaliar" />
 							</form>
 						</c:if>
