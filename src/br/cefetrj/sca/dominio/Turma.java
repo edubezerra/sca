@@ -70,7 +70,7 @@ public class Turma {
 	 * Semestre letivo em que esta turma é ofertada.
 	 */
 	@Embedded
-	private PeriodoLetivo semestreLetivo;
+	private PeriodoLetivo periodo;
 
 	@SuppressWarnings("unused")
 	private Turma() {
@@ -107,7 +107,7 @@ public class Turma {
 		// }
 		this.codigo = codigo;
 
-		this.semestreLetivo = PeriodoLetivo.PERIODO_CORRENTE;
+		this.periodo = PeriodoLetivo.PERIODO_CORRENTE;
 		this.capacidadeMaxima = CAPACIDADE_PRESUMIDA;
 	}
 
@@ -144,7 +144,7 @@ public class Turma {
 		if (periodo == null) {
 			throw new IllegalArgumentException("Período é obrigatório.");
 		}
-		this.semestreLetivo = periodo;
+		this.periodo = periodo;
 	}
 
 	public Long getId() {
@@ -152,7 +152,7 @@ public class Turma {
 	}
 
 	public PeriodoLetivo getPeriodo() {
-		return this.semestreLetivo;
+		return this.periodo;
 	}
 
 	public int getCapacidadeMaxima() {
@@ -273,5 +273,9 @@ public class Turma {
 		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
 				horarioTermino, local);
 		this.aulas.add(a);
+	}
+
+	public String getNomeDisciplina() {
+		return getDisciplina().getNome();
 	}
 }

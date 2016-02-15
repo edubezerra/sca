@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.AuthRepository;
 
 @Component
@@ -55,7 +55,7 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Aluno aluno = alunoRepo.getByCPF(cpf);
+		Aluno aluno = alunoRepo.getAlunoPorCPF(cpf);
 
 		// local user exists?
 		if (aluno == null) {

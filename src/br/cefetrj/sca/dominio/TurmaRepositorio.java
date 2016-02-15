@@ -14,4 +14,8 @@ public interface TurmaRepositorio {
 
 	List<Turma> getTurmasCursadas(String matricula,
 			PeriodoLetivo semestreLetivoCorrente);
+
+	List<Turma> getTurmasCursadas(String matricula);
+
+	Turma getById(Long idTurma);
 }

@@ -3,6 +3,8 @@ package br.cefetrj.sca.dominio;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,16 @@ import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 @WebAppConfiguration("file:sca/WebContent")
 @ContextConfiguration(locations = { "file:src/applicationContext.xml" })
 @Transactional
-public class TurmaTest {
+public class TurmaRepositorioTest {
 
 	@Autowired
 	TurmaRepositorio turmaRepositorio;
 
 	@Autowired
 	DisciplinaRepositorio disciplinaRepo;
+
+	@Autowired
+	AlunoRepositorio alunoRepo;
 
 	@Test
 	public void testGravarTurmaNoPeriodoCorrente() {
@@ -66,20 +71,20 @@ public class TurmaTest {
 
 	@Test
 	public void testObterTurmaPorCodigoNoPeriodoLetivo() {
-		
-		System.err.println(this.getClass().getResource(".").getPath());
-		
+
 		assertNotNull("Repositório não definido.", turmaRepositorio);
 
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
 
 		String codigoTurma = "400002";
-		PeriodoLetivo periodo = new PeriodoLetivo(2016, EnumPeriodo.PRIMEIRO);
+		PeriodoLetivo periodo = new PeriodoLetivo(2015, EnumPeriodo.SEGUNDO);
 
 		assertEquals(periodo, periodoAvaliacao.getPeriodoLetivo());
 		Turma turma = turmaRepositorio.getByCodigoNoPeriodoLetivo(codigoTurma,
 				periodo);
+
+		assertNotNull(turma);
 
 		System.out.println(turma.getPeriodo());
 
@@ -87,4 +92,42 @@ public class TurmaTest {
 
 		assertNotNull(turma.getId());
 	}
+
+	@Test
+	public void testObterTurmasCursadas() {
+		String cpf = "148.323.947-03";
+		Aluno aluno = alunoRepo.getAlunoPorCPF(cpf);
+
+		assertEquals("REBECCA PONTES SALLES", aluno.getNome());
+
+		List<Turma> lista = turmaRepositorio.getTurmasCursadas(
+				aluno.getMatricula(), new PeriodoLetivo(2015, 2));
+
+		assertEquals(6, lista.size());
+
+		assertEquals(true, listaContemDisciplina(lista, "COMPILADORES"));
+		assertEquals(true, listaContemDisciplina(lista, "ALGORITMOS EM GRAFOS"));
+		assertEquals(
+				true,
+				listaContemDisciplina(lista,
+						"CONCEPÇÃO E ELABORAÇÃO DE PROJETO FINAL"));
+		assertEquals(true,
+				listaContemDisciplina(lista, "INFORMÁTICA E SOCIEDADE"));
+		assertEquals(true,
+				listaContemDisciplina(lista, "LEGISLAÇÃO EM INFORMÁTICA"));
+		assertEquals(
+				true,
+				listaContemDisciplina(lista, "PROJETO E CONSTRUÇÃO DE SISTEMAS"));
+	}
+
+	private boolean listaContemDisciplina(List<Turma> lista,
+			String nomeDisciplina) {
+		for (Turma turma : lista) {
+			if (turma.getDisciplina().getNome().equals(nomeDisciplina)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

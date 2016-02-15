@@ -24,27 +24,39 @@ public class TurmaRepositorioJpa implements TurmaRepositorio {
 
 	@Override
 	public Turma getByCodigoNoPeriodoLetivo(String codigo, PeriodoLetivo periodo) {
-		String consulta = "SELECT a from Turma a WHERE a.codigo = ? and a.periodo = ?";
-		Object array[] = { codigo, periodo };
+		String consulta = "SELECT t from Turma t WHERE t.codigo = ? and t.periodo.ano = ? AND t.periodo.periodo = ?";
+		Object array[] = { codigo, periodo.getAno(), periodo.getPeriodo() };
 		return genericDAO.obterEntidade(consulta, array);
 	}
 
 	@Override
-	public List<Turma> getTurmasAbertas(PeriodoLetivo semestreLetivo) {
-		String consulta = "SELECT t from Turma t WHERE t.ano = ? AND t.periodo = ?";
-		Object array[] = { semestreLetivo.getAno(), semestreLetivo.getPeriodo() };
+	public List<Turma> getTurmasAbertas(PeriodoLetivo periodo) {
+		String consulta = "SELECT t from Turma t WHERE t.periodo.ano = ? AND t.periodo.periodo = ?";
+		Object array[] = { periodo.getAno(), periodo.getPeriodo() };
 
 		return genericDAO.obterEntidades(consulta, array);
 	}
 
 	@Override
-	public List<Turma> getTurmasCursadas(String cpf,
-			PeriodoLetivo semestreLetivo) {
+	public List<Turma> getTurmasCursadas(String matricula, PeriodoLetivo periodo) {
 		String consulta = "SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a "
-				+ "WHERE t.semestreLetivo.ano = ? AND t.semestreLetivo.periodo = ? AND a.pessoa.cpf = ?";
-		Object array[] = { semestreLetivo.getAno(),
-				semestreLetivo.getPeriodo(), cpf };
+				+ "WHERE t.periodo.ano = ? AND t.periodo.periodo = ? AND a.matricula = ?";
+		Object array[] = { periodo.getAno(), periodo.getPeriodo(), matricula };
 
 		return genericDAO.obterEntidades(consulta, array);
+	}
+
+	@Override
+	public List<Turma> getTurmasCursadas(String matricula) {
+		String consulta = "SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a "
+				+ "WHERE a.matricula = ?";
+		Object array[] = { matricula };
+
+		return genericDAO.obterEntidades(consulta, array);
+	}
+
+	@Override
+	public Turma getById(Long idTurma) {
+		return genericDAO.obterPorId(Turma.class, idTurma);
 	}
 }

@@ -1,20 +1,9 @@
 package br.cefetrj.sca.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.EnumSituacaoAvaliacao;
-import br.cefetrj.sca.dominio.Inscricao;
-import br.cefetrj.sca.dominio.PeriodoLetivo;
-import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.TurmaRepositorio;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 
 @Deprecated

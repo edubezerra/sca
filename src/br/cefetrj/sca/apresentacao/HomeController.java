@@ -44,12 +44,13 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/menuPrincipal", method = RequestMethod.POST)
-	public String menuPrincipal(HttpSession session, @RequestParam String cpf,
+	public String menuPrincipal(HttpSession session, @RequestParam String matricula,
 			@RequestParam String senha, Model model) {
 
 		try {
-			authService.autentica(cpf, senha);
-			session.setAttribute("cpf", cpf);
+			authService.autentica(matricula, senha);
+			session.setAttribute("matricula", matricula);
+			session.setAttribute("login", matricula);
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 					.getInstance();
 			model.addAttribute("periodoLetivo",

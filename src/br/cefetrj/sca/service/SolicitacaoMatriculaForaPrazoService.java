@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.EnumStatusSolicitacao;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
@@ -25,7 +26,6 @@ import br.cefetrj.sca.dominio.TurmaRepositorio;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.InclusaoDisciplinaRepositorio;
 import br.cefetrj.sca.service.util.SolicitaInclusaoDisciplinaResponse;
@@ -58,7 +58,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 	}
 
 	public Aluno getAlunoByCpf(String cpf) {
-		return alunoRepo.getByCPF(cpf);
+		return alunoRepo.getAlunoPorCPF(cpf);
 	}
 
 	public Turma getTurmaPorCodigo(String codigoTurma) {

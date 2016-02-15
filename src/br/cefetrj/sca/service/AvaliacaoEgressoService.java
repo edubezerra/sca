@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.cefetrj.sca.apresentacao.SolicitaAvaliacaoEgressoResponse;
 import br.cefetrj.sca.apresentacao.SolicitaAvaliacaoEgressoResponse.AlternativaDto;
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.AvaliacaoEgresso;
 import br.cefetrj.sca.dominio.FormularioAvaliacao;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.dominio.repositorio.AlternativaRepositorio;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.AvaliacaoEgressoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio;
 
@@ -39,7 +39,7 @@ public class AvaliacaoEgressoService {
 		Aluno aluno = null;
 
 		try {
-			aluno = alunoRepo.getByCPF(cpf);
+			aluno = alunoRepo.getAlunoPorCPF(cpf);
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Aluno não encontrado (" + cpf
 					+ ")", e);

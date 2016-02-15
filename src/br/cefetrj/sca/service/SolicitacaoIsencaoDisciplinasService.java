@@ -14,13 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.isencoes.ItemSolicitacaoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.isencoes.SolicitacaoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.isencoes.SolicitacaoIsencaoDisciplinasRepositorio;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.DisciplinaRepositorio;
 import br.cefetrj.sca.service.util.SolicitaInclusaoDisciplinaResponse;
@@ -53,7 +53,7 @@ public class SolicitacaoIsencaoDisciplinasService {
 	}
 
 	public Aluno getAlunoByCpf(String cpf) {
-		return alunoRepo.getByCPF(cpf);
+		return alunoRepo.getAlunoPorCPF(cpf);
 	}
 
 	public Disciplina getDisciplinaPorCodigo(String codigoDisciplina,
@@ -65,7 +65,7 @@ public class SolicitacaoIsencaoDisciplinasService {
 
 		Disciplina disciplina;
 
-		Aluno aluno = alunoRepo.getById(idAluno);
+		Aluno aluno = alunoRepo.getAlunoPorId(idAluno);
 
 		try {
 			String versaoCurso = aluno.getVersaoCurso().getNumero();

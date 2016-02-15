@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.ProfessorRepositorio;
 
 @Component
@@ -21,11 +21,15 @@ public class MockAutenticacaoService implements AutenticacaoService {
 	public void autentica(String login, String senha) {
 
 		Professor professor = professorRepo.getProfessor(login);
-		Aluno aluno = alunoRepo.getByCPF(login);
+		Aluno aluno = alunoRepo.getAlunoPorMatricula(login);
 
-		// local user exists?
-		if (aluno == null || professor == null) {
-			String error = "Seu usuário não está registrado. " + "Entre em contato com o administrador do sistema.";
+		if (aluno == null && professor == null) {
+			String error = "Seu usuário não está registrado. "
+					+ "Entre em contato com o administrador do sistema.";
+			throw new IllegalArgumentException(error);
+		} else if (aluno != null && professor != null) {
+			String error = "Seu usuário não pode ser unicamente identificado. "
+					+ "Entre em contato com o administrador do sistema.";
 			throw new IllegalArgumentException(error);
 		}
 	}
@@ -44,7 +48,7 @@ public class MockAutenticacaoService implements AutenticacaoService {
 	}
 
 	public boolean isAluno(String login) {
-		Aluno aluno = alunoRepo.getByCPF(login);
+		Aluno aluno = alunoRepo.getAlunoPorMatricula(login);
 		if (aluno != null) {
 			return true;
 		}

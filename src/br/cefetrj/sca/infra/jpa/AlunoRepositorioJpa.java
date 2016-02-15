@@ -8,31 +8,33 @@ import javax.persistence.NoResultException;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.infra.AlunoDao;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 
 @Component
-public class AlunoDaoJpa extends GenericDaoJpa<Aluno> implements AlunoDao {
+public class AlunoRepositorioJpa implements AlunoRepositorio {
 
+	GenericDaoJpa<Aluno> genericDao = new GenericDaoJpa<>();
+	
 	@Override
 	public Aluno getAlunoPorMatricula(String matricula) {
 		String consulta = "SELECT a from Aluno a WHERE a.matricula = ?";
 		Object array[] = { matricula };
 		try {
-			return super.obterEntidade(consulta, array);
+			return genericDao.obterEntidade(consulta, array);
 		} catch (NoResultException ex) {
-			logger.info(ex.getMessage());
+			genericDao.logger.info(ex.getMessage());
 			return null;
 		}
 	}
 
 	@Override
 	public boolean excluir(Aluno p) {
-		return super.excluir(Aluno.class, p.getId());
+		return genericDao.excluir(Aluno.class, p.getId());
 	}
 
 	@Override
 	public List<Aluno> obterTodos() {
-		return super.obterTodos(Aluno.class);
+		return genericDao.obterTodos(Aluno.class);
 	}
 
 	@Override
@@ -40,15 +42,26 @@ public class AlunoDaoJpa extends GenericDaoJpa<Aluno> implements AlunoDao {
 		String consulta = "SELECT a from Aluno a WHERE a.pessoa.cpf = ?";
 		Object array[] = { cpf };
 		try {
-			return super.obterEntidade(consulta, array);
+			return genericDao.obterEntidade(consulta, array);
 		} catch (NoResultException ex) {
-			logger.log(Level.SEVERE, ex.getMessage() + ": " + cpf);
+			genericDao.logger.log(Level.SEVERE, ex.getMessage() + ": " + cpf);
 			return null;
 		}
 	}
 
 	@Override
 	public Aluno getAlunoPorId(String idAluno) {
-		return super.obterPorId(Aluno.class, Long.parseLong(idAluno));
+		return genericDao.obterPorId(Aluno.class, Long.parseLong(idAluno));
 	}
+
+	@Override
+	public boolean incluir(Aluno p) {
+		return genericDao.incluir(p);
+	}
+
+	@Override
+	public boolean alterar(Aluno p) {
+		return genericDao.alterar(p);
+	}
+
 }

@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
+import br.cefetrj.sca.dominio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.TurmaRepositorio;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositorio.AvaliacaoTurmaRepositorio;
 import br.cefetrj.sca.dominio.repositorio.FormularioAvaliacaoRepositorio;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoResponse;
@@ -37,47 +36,42 @@ public class AvaliacaoTurmaService {
 	/**
 	 * Essa opsis é invocada quando um aluno solicita a avaliação de turmas.
 	 * 
-	 * @param cpf
+	 * @param matriculaAluno
 	 *            CPF do aluno solicitante.
 	 * 
 	 * @return objeto com informações para construir formulário de avaliações.
 	 * 
 	 */
-	public SolicitaAvaliacaoResponse iniciarAvaliacoes(String cpf) {
-		getAlunoPorCPF(cpf);
+	public SolicitaAvaliacaoResponse obterTurmasCursadas(String matriculaAluno) {
+		getAlunoPorMatricula(matriculaAluno);
 
-		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-				.getInstance();
-
-		List<Turma> turmas = turmaRepositorio.getTurmasCursadas(cpf,
-				periodoAvaliacao.getPeriodoLetivo());
+		List<Turma> turmas = turmaRepositorio.getTurmasCursadas(matriculaAluno);
 
 		SolicitaAvaliacaoResponse response = new SolicitaAvaliacaoResponse();
 		AvaliacaoTurma turmaAvaliada;
 
 		for (Turma turma : turmas) {
 
-			turmaAvaliada = avaliacaoRepo.getAvaliacaoTurma(turma.getCodigo(),
-					cpf);
+			turmaAvaliada = avaliacaoRepo.getAvaliacaoTurma(turma.getId(),
+					matriculaAluno);
 
-			response.add(response.new Item(turma.getCodigo(), turma
-					.getDisciplina().getNome(), turmaAvaliada != null));
+			response.add(turma, turmaAvaliada != null);
 		}
 
 		return response;
 	}
 
-	public SolicitaAvaliacaoTurmaResponse solicitaAvaliacaoTurma(String cpf,
-			String codigoTurma) {
-		Aluno aluno = getAlunoPorCPF(cpf);
-		Turma turma = getTurmaPorCodigo(codigoTurma);
+	public SolicitaAvaliacaoTurmaResponse solicitaAvaliacaoTurma(
+			String matriculaAluno, Long idTurma) {
+		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
+		Turma turma = getTurmaPorId(idTurma);
 
 		if (!turma.isAlunoInscrito(aluno)) {
 			throw new IllegalArgumentException(
 					"Erro: aluno não inscrito na turma informada.");
 		}
 
-		if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, cpf) != null) {
+		if (avaliacaoRepo.getAvaliacaoTurma(idTurma, matriculaAluno) != null) {
 			throw new IllegalArgumentException(
 					"Erro: turma já avaliada pelo aluno.");
 		}
@@ -85,7 +79,7 @@ public class AvaliacaoTurmaService {
 		List<Quesito> quesitos = formRepo.obterQuesitos("Turma");
 
 		SolicitaAvaliacaoTurmaResponse response = new SolicitaAvaliacaoTurmaResponse(
-				codigoTurma, turma.getDisciplina().getNome());
+				turma.getCodigo(), turma.getNomeDisciplina());
 		List<String> alternativas;
 
 		for (Quesito quesito : quesitos) {
@@ -101,15 +95,15 @@ public class AvaliacaoTurmaService {
 		return response;
 	}
 
-	public void avaliaTurma(String cpf, String codigoTurma,
+	public void avaliaTurma(String matriculaAluno, Long idTurma,
 			List<Integer> respostas, String aspectosPositivos,
 			String aspectosNegativos) {
 
-		Aluno aluno = getAlunoPorCPF(cpf);
-		Turma turma = getTurmaPorCodigo(codigoTurma);
+		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
+		Turma turma = getTurmaPorId(idTurma);
 
 		if (aluno != null && turma != null) {
-			if (avaliacaoRepo.getAvaliacaoTurma(codigoTurma, cpf) != null) {
+			if (avaliacaoRepo.getAvaliacaoTurma(idTurma, matriculaAluno) != null) {
 				throw new IllegalArgumentException(
 						"Erro: turma já avaliada pelo aluno.");
 			}
@@ -157,36 +151,32 @@ public class AvaliacaoTurmaService {
 		}
 	}
 
-	private Aluno getAlunoPorCPF(String cpf) {
-		if (cpf == null || cpf.trim().equals("")) {
-			throw new IllegalArgumentException("CPF deve ser fornecido!");
+	private Aluno getAlunoPorMatricula(String matriculaAluno) {
+		if (matriculaAluno == null || matriculaAluno.trim().equals("")) {
+			throw new IllegalArgumentException("Matrícula deve ser fornecida!");
 		}
 
 		Aluno aluno = null;
 
 		try {
-			aluno = alunoRepo.getByCPF(cpf);
+			aluno = alunoRepo.getAlunoPorMatricula(matriculaAluno);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Aluno não encontrado (" + cpf
-					+ ")", e);
+			throw new IllegalArgumentException("Aluno não encontrado ("
+					+ matriculaAluno + ")", e);
 		}
 
 		return aluno;
 	}
 
-	private Turma getTurmaPorCodigo(String codigoTurma) {
-		if (codigoTurma == null || codigoTurma.trim().equals("")) {
-			throw new IllegalArgumentException("Código da turma é inválido.");
+	private Turma getTurmaPorId(Long idTurma) {
+		if (idTurma == null) {
+			throw new IllegalArgumentException("Código da turma não fornecido.");
 		}
 
 		Turma turma;
 
 		try {
-			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-					.getInstance();
-
-			turma = turmaRepositorio.getByCodigoNoPeriodoLetivo(codigoTurma,
-					periodoAvaliacao.getPeriodoLetivo());
+			turma = turmaRepositorio.getById(idTurma);
 		} catch (Exception exc) {
 			turma = null;
 		}

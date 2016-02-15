@@ -33,7 +33,8 @@ public final class PeriodoLetivo {
 			periodo = EnumPeriodo.PRIMEIRO;
 		else
 			periodo = EnumPeriodo.SEGUNDO;
-		PERIODO_CORRENTE = new PeriodoLetivo(calendar.get(Calendar.YEAR), periodo);
+		PERIODO_CORRENTE = new PeriodoLetivo(calendar.get(Calendar.YEAR),
+				periodo);
 	}
 
 	public Integer getAno() {
@@ -52,16 +53,26 @@ public final class PeriodoLetivo {
 
 	public PeriodoLetivo(Integer ano, EnumPeriodo periodo) {
 		super();
-		if(ano == null) {
+		if (ano == null) {
 			throw new IllegalArgumentException("Ano deve ser fornecido.");
 		}
-		if(periodo == null) {
+		if (periodo == null) {
 			throw new IllegalArgumentException("Período deve ser fornecido.");
 		}
 		this.ano = ano;
 		this.periodo = periodo;
 	}
 
+	public PeriodoLetivo(int ano, int periodo) {
+		this.ano = ano;
+		if (periodo == 1) {
+			this.periodo = EnumPeriodo.PRIMEIRO;
+		} else if (periodo == 2) {
+			this.periodo = EnumPeriodo.SEGUNDO;
+		} else {
+			throw new IllegalArgumentException("Valor inválido para o período!");
+		}
+	}
 
 	@Override
 	public int hashCode() {

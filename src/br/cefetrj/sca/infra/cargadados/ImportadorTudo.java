@@ -9,13 +9,13 @@ public class ImportadorTudo {
 			ImportadorDisciplinas.main(args);
 			ImportadorPreReqs.main(args);
 			ImportadorAlunos.main(args);
+			ImportadorInscricoes.main(args);
 			ImportadorDocentes.main(args);
 			ImportadorDepartamentos.main(args);
 			ImportadorHistoricosEscolares.main(args);
-			ImportadorInscricoes.main(args);
-			ImportadorAlocacoesProfessoresEmTurmas.main(args);
-			ImportadorLocais.main(args);
-			ImportadorAulas.main(args);
+//			ImportadorAlocacoesProfessoresEmTurmas.main(args);
+//			ImportadorLocais.main(args);
+//			ImportadorAulas.main(args);
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());
 			System.exit(1);

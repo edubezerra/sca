@@ -39,10 +39,11 @@ public class ImportadorHistoricosEscolares {
 		Scanner in = new Scanner(System.in);
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
-				System.out.println("Importar dados da planilha \""
-						+ listOfFiles[i].getName()
-						+ "\"? Sim = 1; Não: qq outro dígito.");
-				int resposta = in.nextInt();
+				// System.out.println("Importar dados da planilha \""
+				// + listOfFiles[i].getName()
+				// + "\"? Sim = 1; Não: qq outro dígito.");
+				// int resposta = in.nextInt();
+				int resposta = 1;
 				if (resposta == 1) {
 					String arquivoPlanilha = "./planilhas/historicos-escolares/"
 							+ listOfFiles[i].getName();
@@ -191,7 +192,7 @@ public class ImportadorHistoricosEscolares {
 						+ cod_disciplina);
 			}
 
-			if (disciplina!= null) {
+			if (disciplina != null) {
 				Aluno aluno = null;
 				try {
 					Query queryAluno;
@@ -205,10 +206,11 @@ public class ImportadorHistoricosEscolares {
 				}
 
 				if (aluno != null) {
-					aluno.registrarNoHistoricoEscolar(disciplina, situacaoFinal,
-							semestre);
+					aluno.registrarNoHistoricoEscolar(disciplina,
+							situacaoFinal, semestre);
 					em.merge(aluno);
-					System.out.println("Lançada disciplina " + disciplina.toString()
+					System.out.println("Lançada disciplina "
+							+ disciplina.toString()
 							+ " no histórico escolar do aluno de matrícula "
 							+ aluno.getMatricula());
 				}

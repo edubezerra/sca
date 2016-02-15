@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -113,10 +114,14 @@ public class GenericDaoJpa<T> {
 		for (Object p : positionalParams) {
 			query.setParameter(++i, p);
 		}
-		@SuppressWarnings("unchecked")
-		T entidade = (T) query.getSingleResult();
 
-		return entidade;
+		try {
+			@SuppressWarnings("unchecked")
+			T entidade = (T) query.getSingleResult();
+			return entidade;
+		} catch (NoResultException ex) {
+			return null;
+		}
 	}
 
 	public T tentaObterEntidade(String queryString,
@@ -142,7 +147,6 @@ public class GenericDaoJpa<T> {
 	}
 
 	public EntityManager getEntityManager() {
-
 		return entityManager;
 	}
 

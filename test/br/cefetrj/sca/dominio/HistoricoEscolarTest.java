@@ -9,15 +9,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
-import br.cefetrj.sca.dominio.repositorio.AlunoRepositorio;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/applicationContext.xml" })
-@TransactionConfiguration
 @Transactional
 public class HistoricoEscolarTest {
 
@@ -27,7 +23,7 @@ public class HistoricoEscolarTest {
 	@Test
 	public void testObterDisciplinasPossiveis() {
 		assertNotNull("Repositório não definido.", alunoRepo);
-		Aluno aluno = alunoRepo.getByMatricula("1311030BCC");
+		Aluno aluno = alunoRepo.getAlunoPorMatricula("1311030BCC");
 		assertNotNull("Aluno não encontrado.", aluno);
 		HistoricoEscolar historico = aluno.getHistorico();
 		List<Disciplina> disciplinas = historico.getDisciplinasPossiveis();

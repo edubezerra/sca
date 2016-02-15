@@ -1,11 +1,13 @@
 package br.cefetrj.sca.dominio;
 
-import java.io.InputStream;
+import java.io.File;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -19,6 +21,46 @@ import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
  *
  */
 public class PeriodoAvaliacoesTurmas {
+
+	private static PeriodoAvaliacoesTurmas INSTANCE;
+
+	static {
+		try {
+			JSONParser parser = new JSONParser();
+
+			URL url = Thread.currentThread().getContextClassLoader()
+					.getResource("periodo-avaliacoes-turmas.txt");
+			File file = new File(url.getPath());
+
+			Object obj = parser.parse(new InputStreamReader(FileUtils
+					.openInputStream(file)));
+
+			JSONObject jsonObject = (JSONObject) obj;
+
+			String ano = (String) jsonObject.get("Ano");
+			String periodo = (String) jsonObject.get("Periodo");
+			String dataInicio = (String) jsonObject.get("DataInicio");
+			String dataTermino = (String) jsonObject.get("DataTermino");
+
+			PeriodoLetivo semestreLetivoReferencia = null;
+			if (periodo.equals("1")) {
+				semestreLetivoReferencia = new PeriodoLetivo(
+						Integer.parseInt(ano), EnumPeriodo.PRIMEIRO);
+			} else if (periodo.equals("2")) {
+				semestreLetivoReferencia = new PeriodoLetivo(
+						Integer.parseInt(ano), EnumPeriodo.SEGUNDO);
+			}
+
+			DateFormat formato = new SimpleDateFormat("dd/mm/yyyy");
+
+			INSTANCE = new PeriodoAvaliacoesTurmas(semestreLetivoReferencia,
+					formato.parse(dataInicio), formato.parse(dataTermino));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(
+					"Prazo para avaliações não pode ser obtido.");
+		}
+	}
 
 	/**
 	 * Início da avaliação.
@@ -88,39 +130,7 @@ public class PeriodoAvaliacoesTurmas {
 	}
 
 	public static PeriodoAvaliacoesTurmas getInstance() {
-		try {
-			JSONParser parser = new JSONParser();
-
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			InputStream tmp = classLoader.getResourceAsStream("/periodo-avaliacoes-turmas.txt");
-			
-			Object obj = parser.parse(new InputStreamReader(tmp));
-
-			JSONObject jsonObject = (JSONObject) obj;
-
-			String ano = (String) jsonObject.get("Ano");
-			String periodo = (String) jsonObject.get("Periodo");
-			String dataInicio = (String) jsonObject.get("DataInicio");
-			String dataTermino = (String) jsonObject.get("DataTermino");
-
-			PeriodoLetivo semestreLetivoReferencia = null;
-			if (periodo.equals("1")) {
-				semestreLetivoReferencia = new PeriodoLetivo(
-						Integer.parseInt(ano), EnumPeriodo.PRIMEIRO);
-			} else if (periodo.equals("2")) {
-				semestreLetivoReferencia = new PeriodoLetivo(
-						Integer.parseInt(ano), EnumPeriodo.SEGUNDO);
-			}
-
-			DateFormat formato = new SimpleDateFormat("dd/mm/yyyy");
-
-			return new PeriodoAvaliacoesTurmas(semestreLetivoReferencia,
-					formato.parse(dataInicio), formato.parse(dataTermino));
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(
-					"Prazo para avaliações não pode ser obtido.");
-		}
+		return INSTANCE;
 	}
 
 	public static void main(String[] args) {

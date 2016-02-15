@@ -1,10 +1,8 @@
-package br.cefetrj.sca.infra;
+package br.cefetrj.sca.dominio;
 
 import java.util.List;
 
-import br.cefetrj.sca.dominio.Aluno;
-
-public interface AlunoDao {
+public interface AlunoRepositorio {
 
 	public abstract boolean incluir(Aluno p);
 
@@ -19,5 +17,4 @@ public interface AlunoDao {
 	public abstract Aluno getAlunoPorCPF(String cpf);
 
 	public abstract Aluno getAlunoPorId(String idAluno);
-
 }
