@@ -1,0 +1,19 @@
+
+
+delete from roles;
+delete from users;
+
+INSERT INTO users (id,dob,email,name,password) VALUES 
+ (1,NULL,'admin','Administrador','admin'),
+ (2,NULL,'1506449','EDUARDO BEZERRA','1506449'),
+ (3,NULL,'1311038BCC','CHRISTOFER MARINHO RAQUEL DANTAS','1311038BCC'),
+ (4,NULL,'1223216BCC','REBECCA PONTES SALLES','1223216BCC'),
+ (5,NULL,'1024600WEB','EDUARDO AUGUSTO NOVO MACHADO','1024600WEB');
+ 
+INSERT INTO roles (role_id,role_name,user_id) VALUES 
+ (1,'ROLE_ADMIN',1),
+ (2,'ROLE_USER',1),
+ (3,'ROLE_PROFESSOR',2),
+ (4,'ROLE_ALUNO',3),
+ (5,'ROLE_ALUNO',4),
+ (6,'ROLE_ALUNO',5);
