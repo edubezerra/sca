@@ -1,25 +1,6 @@
 Este projeto é um implementação de algumas funcionalidades do Sistema de Controle Acadêmico (SCA).
 
-Atualmente, o único caso de uso implementado é o denominado "Registrar Avaliações de Turmas". 
-Neste caso de uso, o ator é o Aluno. Este caso de uso permite que o aluno responda a diversas 
-perguntas relativas ao andamento das atividades de alguma turma em que esteve matriculado 
-durante um determinado período letivo.
+Esse projeto está configurado para fazer acesso a um banco de dados em HyperSQL (http://hsqldb.org/). Para testar a aplicação, dados 
+devem inicialmente ser carregados. Para fazer essa carga de dados, execute a classe br.cefetrj.sca.infra.cargadados.ImportadorTudo.
 
-Esse projeto está configurado para fazer acesso a um banco de dados em HSQLDB 
-(veja o arquivo src/META-INF/persistence.xml). Para testar a aplicação, dados 
-devem inicialmente ser carregados. Para fazer essa carga de dados, execute, nesta ordem,
-as seguintes classes:
- - CarregarInformacoesMatricula
- - CarregarInformacoesQuestionarioAvaliacao
-
-Para carregar os dados no BD:
-  1) 
-  
-  Para testar o perfil de aluno, use qq matricula como teste, e.g., 
-010.326.952-50
-
-Turmas
-  930004 --> GCC1311 - PROGRAMAÇÃO ORIENTADA A OBJETOS
-  920004 --> GCC1206 - ARQUITETURAS AVANÇADAS DE COMPUTADORES
-  
- 
+Para testar os diferentes perfis de usuário, veja o arquivo src/main/resources/db.sql.
