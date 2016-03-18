@@ -1,6 +1,0 @@
-Este projeto é um implementação de algumas funcionalidades do Sistema de Controle Acadêmico (SCA).
-
-Esse projeto está configurado para fazer acesso a um banco de dados em HyperSQL (http://hsqldb.org/). Para testar a aplicação, dados 
-devem inicialmente ser carregados. Para fazer essa carga de dados, execute a classe br.cefetrj.sca.infra.cargadados.ImportadorTudo.
-
-Para testar os diferentes perfis de usuário, veja o arquivo src/main/resources/db.sql.
