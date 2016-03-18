@@ -1,8 +1,8 @@
 # SCA - Sistema de Controle Acadêmico
 
-Este projeto é um implementação de algumas funcionalidades do Sistema de Controle Acadêmico (SCA). Seu objetivo é consolidar os principais conceitos teóricos descritos no livro *Princípios de Análise e Projeto de Sistemas orientados a Objetos com UML* (http://eic.cefet-rj.br/papsuml3ed/) e oferecer uma visão prática sobre como os modelos apresentados neste livro são desenvolvidos.
+Este projeto corresponde à implementação de algumas funcionalidades do Sistema de Controle Acadêmico (SCA), estudo de caso apresentado no livro *Princípios de Análise e Projeto de Sistemas orientados a Objetos com UML* (http://eic.cefet-rj.br/papsuml3ed/). O objetivo desse projeto é consolidar os principais conceitos teóricos descritos no livro e oferecer uma visão prática sobre como os modelos apresentados são desenvolvidos.
 
-O estudo de caso utilizado no livro, o *Sistema de Controle Acadêmico* (SCA), é um sistema para uma instituição de ensino fictícia que precisa controlar alguns processos acadêmicos, como inscrições de discentes, lançamentos de notas, alocação de recursos para turmas etc. 
+O SCA é um sistema para uma instituição de ensino fictícia que precisa controlar alguns processos acadêmicos, como inscrições de discentes, lançamentos de notas, alocação de recursos para turmas etc. 
 
  A linguagem de programação escolhida para esse desenvolvimento foi Java. Essa implementação faz uso intenso do framework Spring (Spring Secutry, Spring DataJPA, etc).
 
