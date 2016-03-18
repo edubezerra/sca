@@ -1,5 +1,4 @@
-# SCA
-Sistema de Controle Acadêmico
+# SCA - Sistema de Controle Acadêmico
 
 Este projeto é um implementação de algumas funcionalidades do Sistema de Controle Acadêmico (SCA). Seu objetivo é consolidar os principais conceitos teóricos descritos no livro *Princípios de Análise e Projeto de Sistemas orientados a Objetos com UML* (http://eic.cefet-rj.br/papsuml3ed/) e oferecer uma visão prática sobre como os modelos apresentados neste livro são desenvolvidos.
 
