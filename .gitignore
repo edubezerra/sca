@@ -3,6 +3,7 @@ target
 db
 log
 .metadata
-.settings
+.settings/*
 .project
 .classpath
+app.txt
