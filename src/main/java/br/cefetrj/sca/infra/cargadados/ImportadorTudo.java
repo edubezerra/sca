@@ -27,6 +27,7 @@ public class ImportadorTudo {
 			new ImportadorCursos().run();
 			new ImportadorDisciplinas().run();
 			new ImportadorPreReqs().run();
+			new ImportadorAtividadesComp().run();
 			new ImportadorAlunos().run();
 			new ImportadorDocentes().run();
 			new ImportadorDepartamentos().run();

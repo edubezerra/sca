@@ -1,59 +1,165 @@
 package br.cefetrj.sca.dominio;
 
+import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import br.cefetrj.sca.dominio.atividadecomplementar.AtividadeComplementar;
+import br.cefetrj.sca.dominio.atividadecomplementar.TabelaAtividadesComplementares;
+
+/**
+ * Representa uma versão de grade curricular de um curso.
+ * 
+ * @author Rebecca Salles
+ * 
+ */
 @Entity
 public final class VersaoCurso {
+
 	@Id
 	@GeneratedValue
 	Long id;
-
+	
 	private final String numero;
-
+	
 	@ManyToOne
 	private Curso curso;
 
 	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER)
 	List<Disciplina> disciplinas;
+	
+	/**
+	 * Carga horária mínima de disciplinas optativas.
+	 */
+	private Duration cargaHorariaMinOptativas = Duration.ofHours(0);
+	
+	/**
+	 * Carga horária mínima de atividades complementares.
+	 */
+	private Duration cargaHorariaMinAitvComp = Duration.ofHours(0);
 
+	/**
+	 * Tabela de Atividades Complementares exigidas nesta grade.
+	 */
+	@OneToOne(cascade = CascadeType.ALL)
+	private TabelaAtividadesComplementares atividades = null;
+	
+	
 	@SuppressWarnings("unused")
 	private VersaoCurso() {
 		numero = null;
 	}
 
 	public VersaoCurso(String numero, Curso curso) {
-		this.numero = numero;
+		
+		if (curso == null) {
+			throw new IllegalArgumentException("Curso não fornecido!");
+		}
+		if (numero == null || numero.isEmpty()) {
+			throw new IllegalArgumentException("Início de vigência não fornecida!");
+		}
 		this.curso = curso;
+		this.numero = numero;
+	}
+	
+	public VersaoCurso(String numero, Curso curso,Duration chMinOpt,Duration chaMinAitv) {
+
+		this(numero,curso);
+		if (chMinOpt == null || chMinOpt.isNegative()) {
+			throw new IllegalArgumentException("Carga horária mínima de disciplinas optativas não pode ser nula e deve ser maior ou igual a zero.");
+		}
+		if (chaMinAitv == null || chaMinAitv.isNegative()) {
+			throw new IllegalArgumentException("Carga horária mínima de atividades complementares não pode ser nula e deve ser maior ou igual a zero.");
+		}
+	
+		this.cargaHorariaMinOptativas = chMinOpt;
+		this.cargaHorariaMinAitvComp = chaMinAitv;
 	}
 
 	public Long getId() {
 		return id;
 	}
+	
+	public TabelaAtividadesComplementares getTabelaAtividades() {
+		return this.atividades;
+	}
+	
+	public List<Disciplina> getDisciplinas() {
+		return Collections.unmodifiableList(this.disciplinas);
+	}
 
+	/**
+	 * Adiciona uma tabela de atividades complementares nesta grade.
+	 */
+	public void setTabelaAtividades(TabelaAtividadesComplementares tabelaAtiv) {
+		this.atividades = tabelaAtiv;
+	}
+	
+	/**
+	 * Adiciona uma atividade complementar à tabela de atividades complementares desta grade.
+	 * Caso a tabela de atividades complementares desta grade for nula, uma nova instância de
+	 * TabelaAtividadesComplementares é criada contendo a atividade complementar passada como
+	 * parâmetro. 
+	 */
+	public void adicionaAtividade(AtividadeComplementar ativ) {
+		if(this.atividades == null)
+			setTabelaAtividades(new TabelaAtividadesComplementares());
+		this.atividades.adicionarAtividade(ativ);
+	}
+		
+	/**
+	 * Adiciona uma disciplina nesta grade.
+	 */
+	public void adicionarDisciplina(Disciplina d) {
+		if (disciplinas.contains(d)) {
+			throw new IllegalArgumentException(
+					"Esta disciplina já está associada a esta grade.");
+		}
+		this.disciplinas.add(d);
+	}
+		
 	public String getNumero() {
 		return numero;
 	}
 
-	@Override
-	public String toString() {
-		return "VersaoCurso [numero=" + numero + "]";
+	public Duration getCargaHorariaMinOptativas() {
+		return cargaHorariaMinOptativas;
+	}
+
+	public Duration getCargaHorariaMinAitvComp() {
+		return cargaHorariaMinAitvComp;
+	}
+	
+	public void setCargaHorariaMinOptativas(Duration cargaHorariaMinOptativas) {
+		this.cargaHorariaMinOptativas = cargaHorariaMinOptativas;
+	}
+
+	public void setCargaHorariaMinAitvComp(Duration cargaHorariaMinAitvComp) {
+		this.cargaHorariaMinAitvComp = cargaHorariaMinAitvComp;
 	}
 
 	public Curso getCurso() {
 		return curso;
 	}
-
+	
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "VersaoCurso [numero=" + numero + "]";
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,15 +189,5 @@ public final class VersaoCurso {
 		} else if (!numero.equals(other.numero))
 			return false;
 		return true;
-	}
-
-	public void adicionarDisciplina(Disciplina disciplina) {
-		if (!disciplinas.contains(disciplina)) {
-			this.disciplinas.add(disciplina);
-		}
-	}
-	
-	public List<Disciplina> getDisciplinas() {
-		return disciplinas;
 	}
 }
