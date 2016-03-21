@@ -17,11 +17,9 @@ public interface TurmaRepositorio extends JpaRepository<Turma, Serializable> {
 	@Query("SELECT t from Turma t WHERE t.periodo.ano = ?1")
 	List<Turma> getTurmasAbertasNoPeriodo(PeriodoLetivo periodo);
 
-	@Query("SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a "
-			+ "WHERE t.periodo.ano = ? AND t.periodo.periodo = ? AND a.matricula = ?1")
+	@Query("SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a " + "WHERE a.matricula = ?1 AND  t.periodo = ?2")
 	List<Turma> getTurmasCursadasPorAlunoNoPeriodo(String matricula, PeriodoLetivo periodo);
 
-	@Query("SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a "
-			+ "WHERE a.matricula = ?1")
+	@Query("SELECT t from Turma t JOIN t.inscricoes i JOIN i.aluno a " + "WHERE a.matricula = ?1")
 	List<Turma> getTurmasCursadasPorAluno(String matricula);
 }
