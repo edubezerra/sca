@@ -19,9 +19,8 @@ public class FichaDisponibilidadeFabrica {
 	 * informações necessárias para que um professor monte sua grade de
 	 * disponibilidades para determinado período letivo.
 	 * 
-	 * @param matriculaProfessor
-	 *            matrícula do professor para o qual criar a ficha de
-	 *            disponibilidade.
+	 * @param professor
+	 *            professor para o qual criar a ficha de disponibilidade.
 	 * 
 	 * @return ficha de disponibilidades recém construída.
 	 */
