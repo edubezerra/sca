@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ImportadorTudo {
 
-	static ImportadorAlunos importadorAlunos;
-
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 			StandalonePersistenceConfig.class);
 
@@ -32,6 +30,7 @@ public class ImportadorTudo {
 			new ImportadorDepartamentos().run();
 			new ImportadorHistoricosEscolares().run();
 			new ImportadorInscricoes().run();
+			new ImportadorAtividadesComp().run();
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());
 			System.exit(1);
