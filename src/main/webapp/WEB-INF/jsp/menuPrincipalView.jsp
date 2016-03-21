@@ -70,7 +70,7 @@
 		</ul>
 		</sec:authorize>
 
-		<h3><a href="logout">Logout</a></h3>
+		<h3><a href="${pageContext.request.contextPath}/logout">Logout</a></h3>
 	</div>
 </body>
 </html>

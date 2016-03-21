@@ -57,8 +57,8 @@ public class SolicitacaoMatriculaForaPrazoService {
 		return response;
 	}
 
-	public Aluno getAlunoByCpf(String cpf) {
-		return alunoRepo.findAlunoByCpf(cpf);
+	public Aluno getAlunoByMatricula(String matriculaAluno) {
+		return alunoRepo.findAlunoByMatricula(matriculaAluno);
 	}
 
 	public Turma getTurmaPorCodigo(String codigoTurma) {
@@ -110,8 +110,8 @@ public class SolicitacaoMatriculaForaPrazoService {
 		inclusaoRepo.save(solicitacao);
 	}
 
-	public SolicitacaoMatriculaForaPrazo getSolicitacaoAtual(String cpf) {
-		Aluno aluno = getAlunoByCpf(cpf);
+	public SolicitacaoMatriculaForaPrazo getSolicitacaoAtual(String matriculaAluno) {
+		Aluno aluno = getAlunoByMatricula(matriculaAluno);
 		Long idAluno = aluno.getId();
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
@@ -123,7 +123,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 
 	public void solicitaInclusao(String cpf, int numeroSolicitacoes, Model model) {
 
-		Aluno aluno = getAlunoByCpf(cpf);
+		Aluno aluno = getAlunoByMatricula(cpf);
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
 
@@ -169,7 +169,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 
 	}
 
-	public void validaSolicitacao(HttpServletRequest request, String cpf,
+	public void validaSolicitacao(HttpServletRequest request, String matriculaAluno,
 			MultipartFile file, String departamento, int opcao,
 			String observacao) throws IOException {
 
@@ -177,7 +177,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 		PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
 				.getInstance();
 		PeriodoLetivo semestreLetivo = periodoAvaliacao.getPeriodoLetivo();
-		Aluno aluno = getAlunoByCpf(cpf);
+		Aluno aluno = getAlunoByMatricula(matriculaAluno);
 
 		validaComprovante(file);
 		Comprovante comprovante = new Comprovante(file.getContentType(),
@@ -221,7 +221,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
 		}
 
-		model.addAttribute("aluno", getAlunoByCpf(cpf));
+		model.addAttribute("aluno", getAlunoByMatricula(cpf));
 
 		if (solicitacaoAtual != null) {
 			model.addAttribute("numeroSolicitacoes", solicitacaoAtual

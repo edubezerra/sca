@@ -11,13 +11,13 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>SCA</title>
 
-<link href="${rootURL}resources/bootstrap/css/bootstrap.css"
+<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript"
-	src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
+	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
 <script type="text/javascript"
-	src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="${rootURL}resources/js/app.js"></script>
+	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 
 </head>
 
@@ -29,7 +29,7 @@
 				Aluno:
 				<c:out value="${requestScope.aluno.nome}"></c:out>
 				(Matrícula:
-				<c:out value="${requestScope.aluno.matricula}">)</c:out>
+				<c:out value="${requestScope.aluno.matricula}"></c:out>)
 			</h4>
 		</div>
 		<c:if test="${requestScope.sucesso != null}">
@@ -55,7 +55,7 @@
 						<table class="table table-bordered text-center">
 							<thead>
 								<tr>
-									<th class="text-center">Semestre Letivo</th>
+									<th class="text-center">Período Letivo</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -65,7 +65,7 @@
 										<td>${semestreLetivo}</td>
 										<td>
 											<form
-												action="${rootUrl}inclusaoDisciplina/listarSolicitacoes"
+												action="${pageContext.request.contextPath}/inclusaoDisciplina/listarSolicitacoes"
 												method="POST">
 												<input type="hidden" name="ano"
 													value="${semestreLetivo.ano}"> <input type="hidden"
@@ -84,7 +84,7 @@
 				<c:choose>
 					<c:when test="${numeroSolicitacoes lt 3}">
 						<form
-							action="${rootUrl}inclusaoDisciplina/solicitaInclusaoDisciplinas"
+							action="${pageContext.request.contextPath}/inclusaoDisciplina/solicitaInclusaoDisciplinas"
 							method="POST">
 							<input type="hidden" name="numeroSolicitacoes"
 								value="${numeroSolicitacoes}">
@@ -100,7 +100,7 @@
 			</div>
 		</div>
 		<a class="btn btn-default"
-			href="${rootUrl}avaliacaoTurma/menuPrincipal"> <i
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
 			class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>

@@ -14,36 +14,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 import br.cefetrj.sca.dominio.Role;
 import br.cefetrj.sca.dominio.User;
 
-/**
- * @author Siva
- *
- */
-public class SecurityUser extends User implements UserDetails
-{
+public class SecurityUser extends User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
+
 	public SecurityUser(User user) {
-		if(user != null)
-		{
+		if (user != null) {
 			this.setId(user.getId());
 			this.setName(user.getName());
-			this.setEmail(user.getEmail());
+			this.setLogin(user.getLogin());
 			this.setPassword(user.getPassword());
 			this.setDob(user.getDob());
 			this.setRoles(user.getRoles());
-		}		
+		}
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		Set<Role> userRoles = this.getRoles();
-		
-		if(userRoles != null)
-		{
+
+		if (userRoles != null) {
 			for (Role role : userRoles) {
-				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getRoleName());
+				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
+						role.getRoleName());
 				authorities.add(authority);
 			}
 		}
@@ -57,7 +52,7 @@ public class SecurityUser extends User implements UserDetails
 
 	@Override
 	public String getUsername() {
-		return super.getEmail();
+		return super.getLogin();
 	}
 
 	@Override
@@ -79,6 +74,5 @@ public class SecurityUser extends User implements UserDetails
 	public boolean isEnabled() {
 		return true;
 	}
-	
-}
 
+}

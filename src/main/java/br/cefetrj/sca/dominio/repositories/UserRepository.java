@@ -9,12 +9,12 @@ import br.cefetrj.sca.dominio.User;
 
 public interface UserRepository extends JpaRepository<User, Serializable> {
 
-	@Query("select u from User u where u.email=?1 and u.password=?2")
-	User login(String email, String password);
+	@Query("select u from User u where u.login=?1 and u.password=?2")
+	User login(String login, String password);
 
-	User findByEmailAndPassword(String email, String password);
+	User findByLoginAndPassword(String login, String password);
 
-	User findUserByEmail(String email);
+	User findUserByLogin(String login);
 
 	User findUserByName(String name);
 
