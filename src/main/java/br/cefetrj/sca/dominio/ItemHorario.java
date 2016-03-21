@@ -47,7 +47,7 @@ public class ItemHorario {
 		return this.tempoAula.colide(item.tempoAula);
 	}
 
-	public static List<Intervalo> itens() {
+	public static List<Intervalo> temposAula() {
 		List<Intervalo> intervalosList = new ArrayList<Intervalo>();
 
 		intervalosList.add(new Intervalo("07:00", "07:50"));

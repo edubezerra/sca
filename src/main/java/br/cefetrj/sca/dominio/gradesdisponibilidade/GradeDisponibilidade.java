@@ -13,16 +13,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.EnumDiaSemana;
 import br.cefetrj.sca.dominio.ItemHorario;
-import br.cefetrj.sca.dominio.ItensHorario;
-import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.Professor;
 
 @Entity
 public class GradeDisponibilidade implements Cloneable {
@@ -40,14 +36,10 @@ public class GradeDisponibilidade implements Cloneable {
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "GRADEDISPONIBILIDADE_ID", referencedColumnName = "ID")
-	private Set<ItemHorario> horarios = new HashSet<ItemHorario>();
+	private Set<ItemHorario> itensDisponibilidade = new HashSet<ItemHorario>();
 
 	@Embedded
 	private PeriodoLetivo semestre;
-
-	@Transient
-	@Autowired
-	private ItensHorario itensHorario;
 
 	@SuppressWarnings("unused")
 	private GradeDisponibilidade() {
@@ -75,7 +67,7 @@ public class GradeDisponibilidade implements Cloneable {
 	}
 
 	public Set<ItemHorario> getItensDisponibilidade() {
-		return horarios;
+		return itensDisponibilidade;
 	}
 
 	public PeriodoLetivo getSemestre() {
@@ -108,8 +100,8 @@ public class GradeDisponibilidade implements Cloneable {
 		GradeDisponibilidade copia = new GradeDisponibilidade(this.professor,
 				(PeriodoLetivo) this.semestre);
 		copia.setDisciplinas(this.disciplinas);
-		for (ItemHorario item : horarios) {
-			copia.horarios.add((ItemHorario) item);
+		for (ItemHorario item : itensDisponibilidade) {
+			copia.itensDisponibilidade.add((ItemHorario) item);
 		}
 		return copia;
 	}
@@ -120,15 +112,25 @@ public class GradeDisponibilidade implements Cloneable {
 
 	public void adicionarItemHorario(String diaStr, String fim, String inicio) {
 		EnumDiaSemana dia = EnumDiaSemana.findByText(diaStr);
-		ItemHorario itemFornecido = itensHorario.getItem(dia, inicio, fim);
-		for (ItemHorario item : horarios) {
+		ItemHorario itemFornecido = getItemHorario(dia, inicio, fim);
+		for (ItemHorario item : itensDisponibilidade) {
 			if (itemFornecido.equals(item)) {
 				throw new IllegalArgumentException("Item já inserido.");
 			} else if (itemFornecido.colide(item)) {
 				throw new IllegalArgumentException("Colisão de horários");
 			}
 		}
-		horarios.add(itemFornecido);
+		itensDisponibilidade.add(itemFornecido);
+	}
+
+	private ItemHorario getItemHorario(EnumDiaSemana dia, String inicio, String fim) {
+		ItemHorario item = new ItemHorario(dia, fim, inicio);
+		for (ItemHorario itemHorario : itensDisponibilidade) {
+			if (itemHorario.equals(item)) {
+				return itemHorario;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -142,7 +144,7 @@ public class GradeDisponibilidade implements Cloneable {
 		}
 
 		buffer.append("Hor�rios:\n");
-		for (ItemHorario item : this.horarios) {
+		for (ItemHorario item : this.itensDisponibilidade) {
 			buffer.append(item.getInicio() + " �s " + item.getFim() + "\n");
 		}
 		return buffer.toString();
@@ -152,7 +154,7 @@ public class GradeDisponibilidade implements Cloneable {
 			String horaFinal) {
 		ItemHorario item;
 		item = new ItemHorario(dia, horaInicial, horaFinal);
-		this.horarios.add(item);
+		this.itensDisponibilidade.add(item);
 	}
 
 	public int getQuantidadeDisciplinas() {
@@ -160,6 +162,6 @@ public class GradeDisponibilidade implements Cloneable {
 	}
 
 	public int getQuantidadeDisponibilidades() {
-		return horarios.size();
+		return itensDisponibilidade.size();
 	}
 }
