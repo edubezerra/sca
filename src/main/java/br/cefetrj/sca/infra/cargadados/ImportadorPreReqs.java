@@ -17,6 +17,8 @@ import br.cefetrj.sca.dominio.Disciplina;
 
 public class ImportadorPreReqs {
 
+	EntityManager em = ImportadorTudo.entityManager;
+
 	static String colunas[] = { "COD_CURSO", "NOME_UNIDADE", "NUM_VERSAO", "DESCR_ESTRUTURA", "COD_DISCIPLINA",
 			"NOME_DISCIPLINA", "COD_PRE_REQ", "NOME_PRE_REQ", "TIPO_REQUISITO", "NUM_REFERENCIA", "ITEM_TABELA",
 			"ID_ESTRUTURA_CUR", "PERIODO_IDEAL" };
@@ -59,7 +61,6 @@ public class ImportadorPreReqs {
 
 	private void importarPreReqs(List<String> colunasList, Sheet sheet) {
 		System.out.println("Iniciando importação de pré-requisitos de disciplinas...");
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
 
 		Query query = em.createQuery("from Disciplina d where d.codigo = :codigoDisciplina "
 				+ "and d.versaoCurso.numero = :numeroVersaoCurso and d.versaoCurso.curso.sigla = :codCurso");
@@ -93,8 +94,6 @@ public class ImportadorPreReqs {
 
 			em.merge(disciplina);
 		}
-
-		em.close();
 
 		em.getTransaction().commit();
 	}

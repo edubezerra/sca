@@ -55,7 +55,7 @@ public class ImportadorAtividadesComp {
 	}
 
 	private void gravarDadosImportados() {
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
+		EntityManager em = ImportadorTudo.entityManager;
 
 		em.getTransaction().begin();
 
@@ -82,8 +82,6 @@ public class ImportadorAtividadesComp {
 		}
 
 		em.getTransaction().commit();
-
-		em.close();
 
 		for (String numeroMaisSigla : versoesIt) {
 			VersaoCurso versaoCurso = versoesCursos.get(numeroMaisSigla);
@@ -116,7 +114,7 @@ public class ImportadorAtividadesComp {
 	}
 
 	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
+		EntityManager em = ImportadorTudo.entityManager;
 		Query query = em
 				.createQuery("from VersaoCurso versao "
 						+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");
