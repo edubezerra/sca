@@ -53,8 +53,7 @@ public class RegistrarHabilitacoesService {
 		professorRepo.save(professor);
 	}
 
-	public Professor selecionarProfessor(String mariculaProfessor) {
-		// TODO Auto-generated method stub
-		return null;
+	public Professor selecionarProfessor(String matricula) {
+		return professorRepo.findProfessorByMatricula(matricula);
 	}
 }

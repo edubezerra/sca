@@ -37,6 +37,7 @@ public class ImportadorTudo {
 			new ImportadorHistoricosEscolares().run();
 			new ImportadorInscricoes().run();
 			new ImportadorAtividadesComp().run();
+			new ImportadorHabilitacoesParaProfessor().run();
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());
 			System.exit(1);
