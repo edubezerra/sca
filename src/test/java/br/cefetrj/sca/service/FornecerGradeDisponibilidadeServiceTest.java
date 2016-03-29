@@ -1,7 +1,6 @@
 package br.cefetrj.sca.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +27,14 @@ public class FornecerGradeDisponibilidadeServiceTest {
 	protected FornecerGradeDisponibilidadeService servico;
 
 	@Test
-	public void testValidarProfessor() {
+	public void testValidarProfessorMatriculaInvalida() {
+		assertNotNull("Serviço não iniciado.", servico);
+		FichaDisponibilidade ficha = servico.validarProfessor("121212");
+		assertNull(ficha);
+	}
+
+	@Test
+	public void testValidarProfessorMatriculaValida() {
 		assertNotNull("Serviço não iniciado.", servico);
 		FichaDisponibilidade ficha = servico.validarProfessor("1506449");
 		assertEquals(ficha.getMatriculaProfessor(), "1506449");
@@ -40,16 +46,5 @@ public class FornecerGradeDisponibilidadeServiceTest {
 		Disciplina disciplina = ficha.getHabilitacoes().get(0);
 		servico.adicionarDisciplina(disciplina.getCodigo());
 		servico.adicionarDisciplina(disciplina.getCodigo());
-	}
-
-	private FichaDisponibilidade getFichaFake() {
-		FichaDisponibilidade ficha = new FichaDisponibilidade("1506449", "Eduardo Bezerra");
-		Set<Disciplina> habilitacoes = new HashSet<>();
-		habilitacoes.add(new Disciplina("GCC1518", "ESTATÍSTICA E PROBABILIDADE", "4", "72"));
-		habilitacoes.add(new Disciplina("GCC1520", "ARQUITETURA E PADRÕES DE SOFTWARE", "4", "72"));
-		habilitacoes.add(new Disciplina("GCC1208", "MATEMÁTICA DISCRETA", "4", "72"));
-
-		ficha.definirHabilitacoes(habilitacoes);
-		return ficha;
 	}
 }
