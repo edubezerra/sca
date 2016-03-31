@@ -1,10 +1,10 @@
 package br.cefetrj.sca.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +23,32 @@ import br.cefetrj.sca.dominio.gradesdisponibilidade.FichaDisponibilidade;
 @Transactional
 public class FornecerGradeDisponibilidadeServiceTest {
 
+	String matriculaProfessorValida = "1506449";
+	String matriculaProfessorInvalida = "121212";
+	
 	@Autowired
 	protected FornecerGradeDisponibilidadeService servico;
 
+	@Before
+	public void init() {
+		assertNotNull("Serviço não iniciado.", servico);
+	}
+
 	@Test
 	public void testValidarProfessorMatriculaInvalida() {
-		assertNotNull("Serviço não iniciado.", servico);
-		FichaDisponibilidade ficha = servico.validarProfessor("121212");
+		FichaDisponibilidade ficha = servico.validarProfessor(matriculaProfessorInvalida);
 		assertNull(ficha);
 	}
 
 	@Test
 	public void testValidarProfessorMatriculaValida() {
-		assertNotNull("Serviço não iniciado.", servico);
-		FichaDisponibilidade ficha = servico.validarProfessor("1506449");
-		assertEquals(ficha.getMatriculaProfessor(), "1506449");
+		FichaDisponibilidade ficha = servico.validarProfessor(matriculaProfessorValida);
+		assertEquals(ficha.getMatriculaProfessor(), matriculaProfessorValida);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAdicionarMesmaDisciplina() {
-		FichaDisponibilidade ficha = servico.validarProfessor("1506449");
+		FichaDisponibilidade ficha = servico.validarProfessor(matriculaProfessorValida);
 		Disciplina disciplina = ficha.getHabilitacoes().get(0);
 		servico.adicionarDisciplina(disciplina.getCodigo());
 		servico.adicionarDisciplina(disciplina.getCodigo());
