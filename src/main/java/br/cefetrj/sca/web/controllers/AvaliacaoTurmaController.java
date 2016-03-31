@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.service.AutenticacaoService;
 import br.cefetrj.sca.service.AvaliacaoTurmaService;
+import br.cefetrj.sca.service.util.SolicitaAvaliacaoResponse;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
 @Controller
@@ -102,11 +103,12 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/avaliacaoTurmas", method = RequestMethod.GET)
 	public String solicitaAvaliacao(HttpSession session, Model model) {
-		String matricula = UserController.getCurrentUser().getEmail();
+		String matricula = UserController.getCurrentUser().getLogin();
 		session.setAttribute("login", matricula);
 		try {
-			model.addAttribute("turmasCursadas",
-					service.obterTurmasCursadas(matricula));
+			SolicitaAvaliacaoResponse turmasCursadas = service
+					.obterTurmasCursadas(matricula);
+			model.addAttribute("turmasCursadas", turmasCursadas);
 			model.addAttribute("matricula", matricula);
 			return "/avaliacaoTurma/apresentaListagemTurmasView";
 		} catch (Exception exc) {
@@ -122,7 +124,7 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/solicitaAvaliacaoTurma", method = RequestMethod.POST)
 	public String solicitaAvaliacaoTurma(
-			@ModelAttribute("matricula") String matricula, // from session
+			@ModelAttribute("matricula") String matricula,
 			@RequestParam String idTurma, Model model) {
 
 		try {
@@ -143,9 +145,7 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/avaliaTurma", method = RequestMethod.POST)
-	public String avaliaTurma(
-			@ModelAttribute("matricula") String matricula, // get from
-			// session
+	public String avaliaTurma(@ModelAttribute("matricula") String matricula,
 			@RequestParam String idTurma,
 			@RequestParam String aspectosPositivos,
 			@RequestParam String aspectosNegativos, HttpServletRequest request,
@@ -197,8 +197,7 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/solicitaNovamenteAvaliacaoMatricula")
 	public String solicitaNovamenteAvaliacaoMatricula(
-			@ModelAttribute("matricula") String matricula, // from session
-			Model model) {
+			@ModelAttribute("matricula") String matricula, Model model) {
 
 		try {
 			model.addAttribute("turmasCursadas",

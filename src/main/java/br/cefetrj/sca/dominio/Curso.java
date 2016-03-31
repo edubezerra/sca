@@ -15,6 +15,7 @@ public class Curso {
 
 	String nome;
 
+	@SuppressWarnings("unused")
 	private Curso() {
 	}
 
@@ -60,5 +61,4 @@ public class Curso {
 	public String toString() {
 		return "Curso [sigla=" + sigla + ", nome=" + nome + "]";
 	}
-
 }

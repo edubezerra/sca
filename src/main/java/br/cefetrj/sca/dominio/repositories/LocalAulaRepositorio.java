@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import br.cefetrj.sca.dominio.Intervalo;
+import br.cefetrj.sca.dominio.IntervaloTemporal;
 import br.cefetrj.sca.dominio.LocalAula;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 
@@ -15,11 +15,11 @@ public interface LocalAulaRepositorio extends
 
 	public List<LocalAula> findByCapacidadeGreaterThan(Integer capacidade);
 
-	// TODO: completar a especificação dessa consulta. Tem que retornar apenas
-	// os locais de aulas que não estão sendo usados no período letivo e
-	// intervalos fornecidos. Aliás, deve ser considerado o dia da semana
-	// também!
+	// TODO: completar a especificaï¿½ï¿½o dessa consulta. Tem que retornar apenas
+	// os locais de aulas que nï¿½o estï¿½o sendo usados no perï¿½odo letivo e
+	// intervalos fornecidos. Aliï¿½s, deve ser considerado o dia da semana
+	// tambï¿½m!
 	@Query("select u from LocalAula u")
 	public List<LocalAula> findDesalocadas(PeriodoLetivo periodo,
-			Intervalo intervalo);
+			IntervaloTemporal intervalo);
 }

@@ -62,7 +62,7 @@ public class ImportadorAlunos {
 	public void gravarDadosImportados() {
 		System.out.println("Realizando a persitência de objetos Aluno...");
 
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
+		EntityManager em = ImportadorTudo.entityManager;
 
 		em.getTransaction().begin();
 
@@ -90,8 +90,6 @@ public class ImportadorAlunos {
 		}
 
 		em.getTransaction().commit();
-
-		em.close();
 
 		System.out.println("Foram adicionados " + adicionados + " alunos.");
 	}

@@ -23,6 +23,10 @@ import br.cefetrj.sca.dominio.Professor;
  */
 
 public class ImportadorDocentes {
+
+	EntityManager em = ImportadorTudo.entityManager;
+
+
 	/**
 	 * Dicionário de pares (matrícula, nome) de cada aluno.
 	 */
@@ -43,8 +47,6 @@ public class ImportadorDocentes {
 	}
 
 	private void gravarDadosImportados() {
-
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
 
 		em.getTransaction().begin();
 
@@ -69,8 +71,6 @@ public class ImportadorDocentes {
 			}
 		}
 		em.getTransaction().commit();
-
-		em.close();
 
 		System.out.println(">>>Foram importados " + adicionados
 				+ " professores.");

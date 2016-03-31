@@ -21,6 +21,8 @@ import br.cefetrj.sca.dominio.VersaoCurso;
 
 public class ImportadorDisciplinas {
 
+	EntityManager em = ImportadorTudo.entityManager;
+
 	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA",
 			"NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA", "CH_TOTAL",
 			"CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO",
@@ -53,8 +55,6 @@ public class ImportadorDisciplinas {
 
 	private void gravarDadosImportados() {
 
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
-
 		em.getTransaction().begin();
 
 		/**
@@ -79,8 +79,6 @@ public class ImportadorDisciplinas {
 		}
 
 		em.getTransaction().commit();
-
-		em.close();
 
 		System.out.println("Foram importadas " + disciplinas.size()
 				+ " disciplinas.");
@@ -109,7 +107,6 @@ public class ImportadorDisciplinas {
 	}
 
 	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
 		Query query = em
 				.createQuery("from VersaoCurso versao "
 						+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");

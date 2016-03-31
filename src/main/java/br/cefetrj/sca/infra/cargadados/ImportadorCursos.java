@@ -59,7 +59,7 @@ public class ImportadorCursos {
 
 	public void gravarDadosImportados() {
 
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
+		EntityManager em = ImportadorTudo.entityManager;
 
 		em.getTransaction().begin();
 
@@ -82,8 +82,6 @@ public class ImportadorCursos {
 		}
 
 		em.getTransaction().commit();
-
-		em.close();
 
 		System.out.println("Foram importados " + cursos.keySet().size() + " cursos.");
 		System.out.println("Foram importados " + versoesCursos.keySet().size() + " versões de cursos.");

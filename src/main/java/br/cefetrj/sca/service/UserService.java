@@ -31,7 +31,7 @@ public class UserService {
 	}
 
 	public User login(String email, String password) {
-		return userRepository.findByEmailAndPassword(email, password);
+		return userRepository.findByLoginAndPassword(email, password);
 	}
 
 	public User update(User user) {
@@ -43,7 +43,7 @@ public class UserService {
 	}
 
 	public User findUserByEmail(String email) {
-		return userRepository.findUserByEmail(email);
+		return userRepository.findUserByLogin(email);
 	}
 
 }

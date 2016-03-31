@@ -8,7 +8,7 @@ public class ImportadorDepartamentos {
 
 	public void run() {
 
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
+		EntityManager em = ImportadorTudo.entityManager;
 
 		em.getTransaction().begin();
 
@@ -38,8 +38,6 @@ public class ImportadorDepartamentos {
 		}
 
 		em.getTransaction().commit();
-
-		em.close();
 
 		System.out.println("Departamentos Importados com sucesso");
 	}

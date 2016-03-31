@@ -13,12 +13,12 @@ import javax.persistence.Embeddable;
  * @author <a href="mailto:edubezerra@gmail.com">Eduardo Bezerra</a>
  */
 @Embeddable
-public class Intervalo implements Cloneable {
+public class IntervaloTemporal implements Cloneable {
 	/**
 	 * Formatador usado para trasformar as strings passadas na construção do
 	 * objeto em objeto da classe {@link Date} .
 	 */
-	private static DateFormat formatador = new SimpleDateFormat("HH:mm");
+	private static DateFormat formatador;
 
 	/** inicio do intervalo. */
 	private Date inicio;
@@ -26,7 +26,9 @@ public class Intervalo implements Cloneable {
 	/** fim do intervalo. */
 	private Date fim;
 
-	private Intervalo() {
+	private IntervaloTemporal() {
+		formatador = new SimpleDateFormat("HH:mm");
+		formatador.setLenient(false);
 	}
 
 	/**
@@ -38,7 +40,8 @@ public class Intervalo implements Cloneable {
 	 * @throws IllegalArgumentException
 	 *             se o início não for anterior ao fim.
 	 */
-	public Intervalo(final String strInicio, final String strFim) {
+	public IntervaloTemporal(final String strInicio, final String strFim) {
+		this();
 		try {
 			this.inicio = (Date) formatador.parse(strInicio);
 			this.fim = (Date) formatador.parse(strFim);
@@ -59,7 +62,7 @@ public class Intervalo implements Cloneable {
 	 * @param dtFim
 	 *            fim do intervalo (e.g., "12:00")
 	 */
-	private Intervalo(final Date dtInicio, final Date dtFim) {
+	private IntervaloTemporal(final Date dtInicio, final Date dtFim) {
 		if (dtInicio.after(dtFim)) {
 			throw new IllegalArgumentException(
 					"Início deve ser anterior ao fim.");
@@ -70,7 +73,7 @@ public class Intervalo implements Cloneable {
 
 	@Override
 	public Object clone() {
-		Intervalo copia = new Intervalo((Date) inicio.clone(),
+		IntervaloTemporal copia = new IntervaloTemporal((Date) inicio.clone(),
 				(Date) fim.clone());
 		return copia;
 	}
@@ -94,15 +97,14 @@ public class Intervalo implements Cloneable {
 	}
 
 	/**
-	 * Verifica se h� colis�o entre dois intervalos.
+	 * Verifica se há colisão entre dois intervalos.
 	 * 
-	 * @param outroIntervalo
+	 * @param outro
 	 *            o intervalo com o qual a comparação é feita.
-	 * @return true se há colisão entre os intervalos; false em caso contr�rio.
+	 * @return true se há colisão entre os intervalos; false em caso contrário.
 	 */
-	public Boolean colide(final Intervalo outroIntervalo) {
-		return !outroIntervalo.inicio.before(this.inicio)
-				&& !outroIntervalo.fim.after(this.fim);
+	public Boolean colide(final IntervaloTemporal outro) {
+		return (outro.inicio.before(this.inicio) && outro.fim.after(this.inicio)) || (outro.inicio.before(this.fim) && outro.fim.after(this.fim));
 	}
 
 	/*
@@ -120,8 +122,8 @@ public class Intervalo implements Cloneable {
 	}
 
 	/**
-	 * Verifica se h� colis�o dois intervalos s�o iguais. Dois intervalos s�o
-	 * iguais se eles possuem os mesmos in�cio e fim.
+	 * Verifica se há colisão dois intervalos são iguais. Dois intervalos são
+	 * iguais se eles possuem mesmos início e fim.
 	 * 
 	 * @param outroIntervalo
 	 *            o intervalo com o qual a comparação é feita.
@@ -139,7 +141,7 @@ public class Intervalo implements Cloneable {
 			return false;
 		}
 
-		Intervalo other = (Intervalo) outroIntervalo;
+		IntervaloTemporal other = (IntervaloTemporal) outroIntervalo;
 		String inicioA = formatador.format(this.inicio);
 		String inicioB = formatador.format(other.inicio);
 		String fimA = formatador.format(this.fim);
@@ -162,8 +164,8 @@ public class Intervalo implements Cloneable {
 		return true;
 	}
 
-	public Intervalo unir(Intervalo outro) {
-		Intervalo primeiro, segundo;
+	public IntervaloTemporal unir(IntervaloTemporal outro) {
+		IntervaloTemporal primeiro, segundo;
 		if (this.inicio.equals(outro.fim)) {
 			primeiro = outro;
 			segundo = this;
@@ -174,7 +176,8 @@ public class Intervalo implements Cloneable {
 			throw new IllegalArgumentException(
 					"Intervalos não são compatíveis para união.");
 		}
-		Intervalo unido = new Intervalo(primeiro.getInicio(), segundo.getFim());
+		IntervaloTemporal unido = new IntervaloTemporal(primeiro.getInicio(),
+				segundo.getFim());
 		return unido;
 	}
 

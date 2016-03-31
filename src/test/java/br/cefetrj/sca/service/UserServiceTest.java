@@ -44,7 +44,7 @@ public class UserServiceTest {
 		User savedUser = userService.create(user);
 		User newUser = userService.findUserById(savedUser.getId());
 		assertEquals("Eduardo", newUser.getName());
-		assertEquals("edubezerra@gmail.com", newUser.getEmail());
+		assertEquals("edubezerra@gmail.com", newUser.getLogin());
 	}
 
 }

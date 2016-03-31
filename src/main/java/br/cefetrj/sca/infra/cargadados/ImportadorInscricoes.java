@@ -31,6 +31,8 @@ import br.cefetrj.sca.dominio.VersaoCurso;
  */
 public class ImportadorInscricoes {
 
+	EntityManager em = ImportadorTudo.entityManager;
+
 	private final String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
 			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
 			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC",
@@ -176,8 +178,6 @@ public class ImportadorInscricoes {
 		w = Workbook.getWorkbook(inputWorkbook, ws);
 		Sheet sheet = w.getSheet(0);
 
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
-
 		for (int i = 1; i < sheet.getRows(); i++) {
 
 			String aluno_matricula = sheet.getCell(
@@ -255,13 +255,9 @@ public class ImportadorInscricoes {
 			}
 
 		}
-
-		em.close();
 	}
 
 	public void gravarDadosImportados() {
-
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
 
 		em.getTransaction().begin();
 
@@ -330,8 +326,6 @@ public class ImportadorInscricoes {
 		}
 
 		em.getTransaction().commit();
-
-		em.close();
 
 		System.out.println("Foram importadas " + qtdTurmas + " turmas.");
 

@@ -1,8 +1,5 @@
 package br.cefetrj.sca.service;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -41,24 +38,8 @@ public class FornecerGradeDisponibilidadeService {
 	}
 
 	public void adicionarDisciplina(String codigoDisciplina) {
-		Disciplina d = disciplinaRepositorio
-				.findDisciplinaByCodigo(codigoDisciplina);
+		Disciplina d = disciplinaRepositorio.findDisciplinaByCodigo(codigoDisciplina);
 		gradeDisponibilidade.adicionarDisciplina(d);
-	}
-
-	private FichaDisponibilidade getFichaFake() {
-		FichaDisponibilidade ficha = new FichaDisponibilidade("1506449",
-				"Eduardo Bezerra");
-		Set<Disciplina> habilitacoes = new HashSet<>();
-		habilitacoes.add(new Disciplina("ESTATÍSTICA E PROBABILIDADE",
-				"GCC1518", "4", "72"));
-		habilitacoes.add(new Disciplina("ARQUITETURA E PADRÕES DE SOFTWARE",
-				"GCC1520", "4", "72"));
-		habilitacoes.add(new Disciplina("MATEMÁTICA DISCRETA", "GCC1208", "4",
-				"72"));
-
-		ficha.definirHabilitacoes(habilitacoes);
-		return ficha;
 	}
 
 }

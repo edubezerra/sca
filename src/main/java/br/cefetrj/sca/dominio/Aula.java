@@ -19,7 +19,7 @@ public class Aula {
 	private EnumDiaSemana dia;
 
 	@Embedded
-	private Intervalo intervalo;
+	private IntervaloTemporal intervalo;
 
 	@ManyToOne
 	private LocalAula local;
@@ -31,7 +31,7 @@ public class Aula {
 	public Aula(EnumDiaSemana dia, String strInicio, String strFim, LocalAula local) {
 		super();
 		this.dia = dia;
-		this.intervalo = new Intervalo(strInicio, strFim);
+		this.intervalo = new IntervaloTemporal(strInicio, strFim);
 		this.local = local;
 	}
 

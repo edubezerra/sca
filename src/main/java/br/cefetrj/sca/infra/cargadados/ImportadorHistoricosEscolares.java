@@ -26,6 +26,8 @@ import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
  */
 public class ImportadorHistoricosEscolares {
 
+	EntityManager em = ImportadorTudo.entityManager;
+
 	public void run() {
 		File folder = new File("./planilhas/historicos-escolares");
 		File[] listOfFiles = folder.listFiles();
@@ -83,8 +85,6 @@ public class ImportadorHistoricosEscolares {
 		ws.setEncoding("Cp1252");
 		w = Workbook.getWorkbook(inputWorkbook, ws);
 		Sheet sheet = w.getSheet(0);
-
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
 
 		em.getTransaction().begin();
 
@@ -207,8 +207,6 @@ public class ImportadorHistoricosEscolares {
 		}
 
 		em.getTransaction().commit();
-
-		em.close();
 
 		System.out.println("Importação de históricos finalizada.");
 	}

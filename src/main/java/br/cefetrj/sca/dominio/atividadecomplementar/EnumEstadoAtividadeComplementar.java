@@ -11,4 +11,8 @@ public enum EnumEstadoAtividadeComplementar {
 		}
 		return null;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/edubezerra/master

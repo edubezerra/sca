@@ -3,7 +3,7 @@
 delete from roles;
 delete from users;
 
-INSERT INTO users (id,dob,email,name,password) VALUES 
+INSERT INTO users (id,dob,login,name,password) VALUES 
  (1,NULL,'admin','Administrador','admin'),
  (2,NULL,'1506449','EDUARDO BEZERRA','1506449'),
  (3,NULL,'1311038BCC','CHRISTOFER MARINHO RAQUEL DANTAS','1311038BCC'),

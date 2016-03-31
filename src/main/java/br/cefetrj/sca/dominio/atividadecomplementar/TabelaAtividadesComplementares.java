@@ -112,4 +112,8 @@ public final class TabelaAtividadesComplementares {
 			return false;
 		return true;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/edubezerra/master

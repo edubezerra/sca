@@ -11,4 +11,8 @@ public enum EnumTipoAtividadeComplementar {
 		}
 		return null;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/edubezerra/master

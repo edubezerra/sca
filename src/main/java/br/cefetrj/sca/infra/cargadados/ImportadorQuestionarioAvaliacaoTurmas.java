@@ -28,7 +28,7 @@ public class ImportadorQuestionarioAvaliacaoTurmas {
 		Alternativa[] alternativas = new Alternativa[] { alternativa1,
 				alternativa2, alternativa3, alternativa4 };
 
-		EntityManager em = ImportadorTudo.emf.createEntityManager();
+		EntityManager em = ImportadorTudo.entityManager;
 
 		em.getTransaction().begin();
 
