@@ -8,6 +8,6 @@ import br.cefetrj.sca.dominio.atividadecomplementar.RegistroAtividadeComplementa
 
 public interface RegistroAtividadeComplementarRepositorio extends JpaRepository<RegistroAtividadeComplementar, Serializable>{
 	
-	RegistroAtividadeComplementar findRegistroAtividadeComplementarById(String id);
+	RegistroAtividadeComplementar findRegistroAtividadeComplementarById(Long id);
 
 }

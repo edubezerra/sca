@@ -54,7 +54,7 @@
             	  method="post" enctype="multipart/form-data" id="formularioRegistro">
             	  
             	<div class="row">
-            		<h4><b>Atividade Complementar:</b> ${requestScope.codigoAtiv} - ${requestScope.descrAtiv}</h4>
+            		<h4><b>Atividade Complementar:</b> ${requestScope.categoriaAtiv} - ${requestScope.descrAtiv}</h4>
               	</div>
               	<br/>
                 <div class="row">

@@ -19,11 +19,6 @@ public class TipoAtividadeComplementar {
 	@Id
 	@GeneratedValue
 	private Long id;
-
-	/**
-	 * O código da atividade complementar.
-	 */
-	private String codigo;
 	
 	/**
 	 * Descrição da Atividade Complementar.
@@ -37,28 +32,20 @@ public class TipoAtividadeComplementar {
 	private TipoAtividadeComplementar() {
 	}
 
-	public TipoAtividadeComplementar(String cod, String descr, EnumTipoAtividadeComplementar categoria) {
+	public TipoAtividadeComplementar(String descr, EnumTipoAtividadeComplementar categoria) {
 
-		if (cod == null || cod.isEmpty()) {
-			throw new IllegalArgumentException("Código da atividade complementar é obrigatório.");
-		}
 		if (descr == null || descr.isEmpty()) {
 			throw new IllegalArgumentException("Descrição da atividade complementar é obrigatória.");
 		}
 		if (categoria == null) {
 			throw new IllegalArgumentException("Categoria da atividade complementar é obrigatória.");
 		}
-		this.codigo = cod;
 		this.descricao = descr;
 		this.categoria = categoria;
 	}
 	
 	public Long getId() {
 		return id;
-	}
-	
-	public String getCodigo() {
-		return codigo;
 	}
 	
 	public String getDescricao() {
@@ -73,7 +60,8 @@ public class TipoAtividadeComplementar {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
+		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		return result;
 	}
 
@@ -86,15 +74,13 @@ public class TipoAtividadeComplementar {
 		if (getClass() != obj.getClass())
 			return false;
 		TipoAtividadeComplementar other = (TipoAtividadeComplementar) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
+		if (categoria != other.categoria)
+			return false;
+		if (descricao == null) {
+			if (other.descricao != null)
 				return false;
-		} else if (!codigo.equals(other.codigo))
+		} else if (!descricao.equals(other.descricao))
 			return false;
 		return true;
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> refs/remotes/edubezerra/master

@@ -45,7 +45,7 @@ public class Aluno {
 
 	@ManyToOne
 	private VersaoCurso versaoCurso;
-
+	
 	/**
 	 * Registros de atividade complementar deste aluno.
 	 */
@@ -53,7 +53,7 @@ public class Aluno {
 	// CascadeType.ALL necessário para persistir Alunos que fizeram registros de atividade complementar
 	@JoinColumn(name = "ALUNO_ID", referencedColumnName = "ID")
 	private Set<RegistroAtividadeComplementar> registrosAtiv = new HashSet<>();
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -146,6 +146,7 @@ public class Aluno {
 		return "Aluno [matricula=" + matricula + ", pessoa=" + pessoa + "]";
 	}
 	
+	
 	// Métodos relacionados às atividades complementares do aluno.
 	/**
 	 * Retorna todos os registros de atividade complementar deste aluno.
@@ -173,6 +174,18 @@ public class Aluno {
 		Set<RegistroAtividadeComplementar> regsAtiv = new HashSet<>();
 		for (RegistroAtividadeComplementar reg : registrosAtiv) {
 			if( reg.getAtividade().getTipo().getCategoria().equals(categoria) )
+				regsAtiv.add(reg);
+		}
+		return Collections.unmodifiableSet(regsAtiv);
+	}
+	
+	/**
+	 * Retorna os registros deste aluno que se encontram no estado passado como parâmetro.
+	 */
+	public Set<RegistroAtividadeComplementar> getRegistrosAtiv(EnumEstadoAtividadeComplementar status) {
+		Set<RegistroAtividadeComplementar> regsAtiv = new HashSet<>();
+		for (RegistroAtividadeComplementar reg : registrosAtiv) {
+			if( reg.getEstado().equals(status) )
 				regsAtiv.add(reg);
 		}
 		return Collections.unmodifiableSet(regsAtiv);
@@ -308,7 +321,7 @@ public class Aluno {
 	public boolean temCargaHorariaMaximaAtividade(AtividadeComplementar ativ){
 		return !(getCargaHorariaCumpridaAtiv(ativ).toHours() < ativ.getCargaHorariaMax().toHours());
 	}
-	
+		
 	/**
 	 * Checa se o aluno cumpriu carga horária de atividades complementares suficiente para se formar.
 	 */
@@ -321,6 +334,21 @@ public class Aluno {
 				return false;
 			}
 		}
+		return true;
+	}
+	
+	/**
+	 * Checa se o registro de atividade complementar passado como parâmetro pode ser DEFERIDO, 
+	 * de maneira que a carga horária cumprida pelo aluno não ultrapasse a carga horária máxima
+	 * da atividade complementar correspondente.
+	 */
+	public boolean podeTerRegistroDeferido(RegistroAtividadeComplementar reg) {
+		
+		if ( this.getCargaHorariaCumpridaAtiv(reg.getAtividade()).plus(reg.getCargaHoraria()).toHours()
+				> reg.getAtividade().getCargaHorariaMax().toHours() ) {
+			return false;
+		}
+		
 		return true;
 	}
 }

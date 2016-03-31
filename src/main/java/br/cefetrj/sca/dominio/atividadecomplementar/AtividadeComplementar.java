@@ -106,8 +106,4 @@ public class AtividadeComplementar {
 			return false;
 		return true;
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> refs/remotes/edubezerra/master

@@ -48,7 +48,7 @@ public class RegistrarAtividadesService {
 		SolicitaRegistroAtividadesResponse response = new SolicitaRegistroAtividadesResponse();
 
 		for (RegistroAtividadeComplementar reg : aluno.getRegistrosAtiv()) {
-			response.add(reg);
+			response.add(reg,aluno);
 		}
 
 		return response;
@@ -90,7 +90,7 @@ public class RegistrarAtividadesService {
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 		AtividadeComplementar atividade = aluno.getVersaoCurso().getTabelaAtividades().getAtividade(idAtividade);
 		
-		model.addAttribute("codigoAtiv", atividade.getTipo().getCodigo());
+		model.addAttribute("categoriaAtiv", atividade.getTipo().getCategoria().toString());
 		
 		String descricao = atividade.getTipo().getDescricao();
 		descricao = descricao.charAt(0) + (descricao.substring(1).toLowerCase());

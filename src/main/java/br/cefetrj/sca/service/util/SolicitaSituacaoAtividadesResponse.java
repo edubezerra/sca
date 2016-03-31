@@ -12,7 +12,6 @@ public class SolicitaSituacaoAtividadesResponse extends
 	public class Item {
 		
 		private Long idAtividade;
-		private String codigoAtividade;
 		private String descricao;		
 		private Long cargaHorariaMax;
 		private Long cargaHorariaMin;		
@@ -21,12 +20,11 @@ public class SolicitaSituacaoAtividadesResponse extends
 		private boolean cargaHorariaSuficente;
 		private boolean cargaHorariaMaxima;
 		
-		public Item(Long idAtividade, String codigoAtividade, String descricao, Long cargaHorariaMax,
+		public Item(Long idAtividade, String descricao, Long cargaHorariaMax,
 				Long cargaHorariaMin, String categoria, Long cargaHorariaCumprida,
 				boolean cargaHorariaSuficente, boolean cargaHorariaMaxima) {
 			super();
 			this.idAtividade = idAtividade;
-			this.codigoAtividade = codigoAtividade;
 			this.descricao = descricao;
 			this.cargaHorariaMax = cargaHorariaMax;
 			this.cargaHorariaMin = cargaHorariaMin;
@@ -38,10 +36,6 @@ public class SolicitaSituacaoAtividadesResponse extends
 
 		public Long getIdAtividade() {
 			return idAtividade;
-		}
-
-		public String getCodigoAtividade() {
-			return codigoAtividade;
 		}
 
 		public String getDescricao() {
@@ -77,8 +71,8 @@ public class SolicitaSituacaoAtividadesResponse extends
 		String descricao = ativ.getTipo().getDescricao();
 		descricao = descricao.charAt(0) + (descricao.substring(1).toLowerCase());
 		
-		Item novo = this.new Item(ativ.getId(), ativ.getTipo().getCodigo(), descricao, 
-				ativ.getCargaHorariaMax().toHours(), ativ.getCargaHorariaMin().toHours(), ativ.getTipo().getCategoria().toString(), 
+		Item novo = this.new Item(ativ.getId(), descricao, ativ.getCargaHorariaMax().toHours(), 
+				ativ.getCargaHorariaMin().toHours(), ativ.getTipo().getCategoria().toString(), 
 				cargaHorariaCumprida.toHours(), cargaHorariaSuficente, cargaHorariaMaxima);
 		super.add(novo);
 	}
