@@ -10,19 +10,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.config.AppConfig;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration("file:sca/WebContent")
 @ContextConfiguration(classes = AppConfig.class)
 @Transactional
 public class TurmaRepositorioTest {
