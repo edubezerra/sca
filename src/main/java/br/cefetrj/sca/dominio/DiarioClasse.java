@@ -4,5 +4,8 @@ public class DiarioClasse {
  
 	private Turma turma;
 	 
+	public Turma getTurma() {
+		return turma;
+	}
 }
  

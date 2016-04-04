@@ -1,8 +1,13 @@
+/**
+ * 
+ */
 package br.cefetrj.sca.dominio.usuarios;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,58 +17,92 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import br.cefetrj.sca.dominio.Role;
+
 @Entity
-@Table(name = "APP_USER")
+@Table(name = "USERS")
 public class Usuario {
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	
+	private String nome;
 
-	@NotEmpty
-	@Column(name = "SSO_ID", unique = true, nullable = false)
-	private String ssoId;
+	@Column(nullable = false, unique = true)
+	private String login;
 
-	@NotEmpty
-	@Column(name = "PASSWORD", nullable = false)
+	@Column(nullable = false)
 	private String password;
+	
+	private Date dob;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private Set<Role> roles = new HashSet<>();
 
 	@NotEmpty
-	@Column(name = "FIRST_NAME", nullable = false)
-	private String firstName;
-
-	@NotEmpty
-	@Column(name = "LAST_NAME", nullable = false)
-	private String lastName;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "USER_PROFILE_ID") })
+	private Set<PerfilUsuario> userProfiles = new HashSet<PerfilUsuario>();
 
 	@NotEmpty
 	@Column(name = "EMAIL", nullable = false)
 	private String email;
+	
+	public Usuario() {
+	}
 
-	@NotEmpty
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "APP_USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "USER_PROFILE_ID") })
-	private Set<PerfilUsuario> userProfiles = new HashSet<PerfilUsuario>();
+	public Usuario(int id, String nome, String login, String password, String email, Date dob) {
+		this.id = id;
+		this.nome = nome;
+		this.login = login;
+		this.password = password;
+		this.email = email;
+		this.dob = dob;
+	}
 
-	public Integer getId() {
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", nome=" + nome + ", login=" + login
+				+ ", dob=" + dob + "]";
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getSsoId() {
-		return ssoId;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setSsoId(String ssoId) {
-		this.ssoId = ssoId;
+	public void setNome(String name) {
+		this.nome = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getPassword() {
@@ -74,28 +113,20 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public Date getDob() {
+		return dob;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setDob(Date dob) {
+		this.dob = dob;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	public Set<PerfilUsuario> getUserProfiles() {
@@ -104,42 +135,5 @@ public class Usuario {
 
 	public void setUserProfiles(Set<PerfilUsuario> userProfiles) {
 		this.userProfiles = userProfiles;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Usuario))
-			return false;
-		Usuario other = (Usuario) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (ssoId == null) {
-			if (other.ssoId != null)
-				return false;
-		} else if (!ssoId.equals(other.ssoId))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", ssoId=" + ssoId + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + "]";
 	}
 }

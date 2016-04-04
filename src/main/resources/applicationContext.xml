@@ -40,8 +40,8 @@
 		<authentication-provider>
 			<jdbc-user-service id="userDetailsService"
 				data-source-ref="dataSource"
-				users-by-username-query="select email, password, true from users where email = ?"
-				authorities-by-username-query="select u.email, r.role_name from users u, roles r where u.email = ? and u.id = r.user_id" />
+				users-by-username-query="select login, password, true from users where login = ?"
+				authorities-by-username-query="select u.login, up.type from USERS u, USER_PROFILE up, USER_USER_PROFILE uup where u.login = ? and u.id = uup.USER_ID and p.id = uup.USER_PROFILE_ID" />
 		</authentication-provider>
 	</authentication-manager>
 

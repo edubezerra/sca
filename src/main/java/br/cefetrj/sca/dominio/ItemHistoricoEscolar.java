@@ -20,8 +20,9 @@ public class ItemHistoricoEscolar {
 	@Enumerated(EnumType.ORDINAL)
 	EnumSituacaoAvaliacao situacao;
 
-	private PeriodoLetivo periodo;
+	private PeriodoLetivo periodoLetivo;
 
+	@SuppressWarnings("unused")
 	private ItemHistoricoEscolar() {
 	}
 
@@ -29,7 +30,7 @@ public class ItemHistoricoEscolar {
 			EnumSituacaoAvaliacao situacao, PeriodoLetivo periodo) {
 		this.disciplina = disciplina;
 		this.situacao = situacao;
-		this.periodo = periodo;
+		this.periodoLetivo = periodo;
 	}
 
 	public Long getId() {
@@ -42,5 +43,9 @@ public class ItemHistoricoEscolar {
 
 	public Disciplina getDisciplina() {
 		return disciplina;
+	}
+	
+	public PeriodoLetivo getPeriodoLetivo() {
+		return periodoLetivo;
 	}
 }

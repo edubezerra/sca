@@ -13,10 +13,12 @@ public class ImportadorHabilitacoesParaProfessor {
 
 	public void run() {
 
+		String matricula = "1506449";
+
 		Professor professor;
 		try {
 			Query qry = em.createQuery("from Professor a where a.matricula = :matricula");
-			qry.setParameter("matricula", "1506449");
+			qry.setParameter("matricula", matricula);
 			professor = (Professor) qry.getSingleResult();
 		} catch (NoResultException e) {
 			professor = null;
@@ -28,7 +30,7 @@ public class ImportadorHabilitacoesParaProfessor {
 
 		d = findDisciplinaByCodigo("GCC1208");
 		professor.habilitarPara(d);
-		
+
 		d = findDisciplinaByCodigo("GCC1518");
 		professor.habilitarPara(d);
 
@@ -36,6 +38,7 @@ public class ImportadorHabilitacoesParaProfessor {
 		em.merge(professor);
 		em.getTransaction().commit();
 
+		System.out.println("Foram registradas 3 habilitações para o professor cuja matrícula é " + matricula);
 	}
 
 	private Disciplina findDisciplinaByCodigo(String codigo) {

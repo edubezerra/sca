@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.cefetrj.sca.dominio.User;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 
 @Repository
 @Transactional
@@ -21,19 +21,19 @@ public class JpaUserDaoImpl implements UserDao {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> findAll() {
-		return em.createQuery("select u from User u", User.class)
+	public List<Usuario> findAll() {
+		return em.createQuery("select u from User u", Usuario.class)
 				.getResultList();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public User findUserById(int id) {
-		return em.find(User.class, id);
+	public Usuario findUserById(int id) {
+		return em.find(Usuario.class, id);
 	}
 
 	@Override
-	public User create(User user) {
+	public Usuario create(Usuario user) {
 		if (user.getId() <= 0) {
 			em.persist(user);
 		} else {
@@ -43,10 +43,10 @@ public class JpaUserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User login(String email, String password) {
-		TypedQuery<User> query = em.createQuery(
+	public Usuario login(String email, String password) {
+		TypedQuery<Usuario> query = em.createQuery(
 				"select u from User u where u.email=?1 and u.password=?2",
-				User.class);
+				Usuario.class);
 		query.setParameter(1, email);
 		query.setParameter(2, password);
 		try {

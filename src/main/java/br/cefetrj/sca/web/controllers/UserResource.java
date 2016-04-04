@@ -16,40 +16,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.cefetrj.sca.dominio.User;
-import br.cefetrj.sca.service.UserService;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
+import br.cefetrj.sca.service.UsuarioService;
 
 @Controller
 @RequestMapping("/rest/users/")
 public class UserResource {
 
 	@Autowired
-	private UserService userService;
+	private UsuarioService userService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<User> findAll() {
+	public List<Usuario> findAll() {
 		return userService.findAll();
 	}
 
 	@RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public User findUser(@PathVariable("id") int id) {
+	public Usuario findUser(@PathVariable("id") int id) {
 		return userService.findUserById(id);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<User> createUser(@RequestBody User user) {
-		User savedUser = userService.create(user);
-		return new ResponseEntity<User>(savedUser, HttpStatus.CREATED);
+	public ResponseEntity<Usuario> createUser(@RequestBody Usuario user) {
+		Usuario savedUser = userService.create(user);
+		return new ResponseEntity<Usuario>(savedUser, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<User> updateUser(@RequestBody User user) {
-		User savedUser = userService.update(user);
-		return new ResponseEntity<User>(savedUser, HttpStatus.OK);
+	public ResponseEntity<Usuario> updateUser(@RequestBody Usuario user) {
+		Usuario savedUser = userService.update(user);
+		return new ResponseEntity<Usuario>(savedUser, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)

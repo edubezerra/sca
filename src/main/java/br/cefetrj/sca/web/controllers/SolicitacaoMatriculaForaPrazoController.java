@@ -18,9 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
-import br.cefetrj.sca.dominio.User;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.SolicitacaoMatriculaForaPrazoService;
 
 @Controller
@@ -43,7 +43,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 	public String solicitaInclusao(
 			@RequestParam("numeroSolicitacoes") int numeroSolicitacoes,
 			Model model) {
-		User usr = UserController.getCurrentUser();
+		Usuario usr = UserController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
 			service.solicitaInclusao(matricula, numeroSolicitacoes, model);
@@ -57,7 +57,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 	@RequestMapping(value = "/homeInclusao", method = RequestMethod.GET)
 	public String paginaInicialInclusao(HttpServletRequest request, Model model) {
 		try {
-			User usr = UserController.getCurrentUser();
+			Usuario usr = UserController.getCurrentUser();
 			String matriculaAluno = usr.getLogin();
 			service.carregaHomeView(model, matriculaAluno);
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
@@ -79,7 +79,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 			@RequestParam int numeroSolicitacoes, HttpServletRequest request,
 			Model model) throws IOException {
 
-		User usr = UserController.getCurrentUser();
+		Usuario usr = UserController.getCurrentUser();
 		String matricula = usr.getLogin();
 
 		try {

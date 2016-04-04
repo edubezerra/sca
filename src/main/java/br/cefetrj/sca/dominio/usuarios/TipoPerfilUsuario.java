@@ -1,9 +1,11 @@
 package br.cefetrj.sca.dominio.usuarios;
 
 public enum TipoPerfilUsuario {
-	USER("USER"),
-	DBA("DBA"),
-	ADMIN("ADMIN");
+	ROLE_ALUNO("ROLE_ALUNO"),
+	ROLE_PROFESSOR("ROLE_PROFESSOR"),
+	ROLE_USER("ROLE_USER"),
+	ROLE_COORDENADOR_CURSO("ROLE_COORDENADOR_CURSO"),
+	ROLE_ADMIN("ROLE_ADMIN");
 	
 	String userProfileType;
 	

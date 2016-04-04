@@ -5,13 +5,10 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Users List</title>
+<title>Lisa de Usuários</title>
 
-<link href="${rootURL}resources/bootstrap/css/bootstrap.css"
-	media="screen" rel="stylesheet" type="text/css" />
-
-<link href="${rootURL}resources/css/usuarios.css"
-	media="screen" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resources/bootstrap/css/bootstrap.css' />" rel="stylesheet" />
+	<link href="<c:url value='/resources/css/usuarios.css' />" rel="stylesheet" />
 
 </head>
 
@@ -20,7 +17,7 @@
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
 			<div class="panel-heading">
-				<span class="lead">List of Users </span>
+				<span class="lead">Lista de Usuários</span>
 			</div>
 			<table class="table table-hover">
 				<thead>
@@ -50,7 +47,7 @@
 			</table>
 		</div>
 		<div class="well">
-			<a href="<c:url value='/usuarios/newuser' />">Add New User</a>
+			<a href="<c:url value='/usuarios/newuser' />">Adicionar Novo Usuário</a>
 		</div>
 	</div>
 </body>

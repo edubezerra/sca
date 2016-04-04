@@ -66,10 +66,8 @@ public class HistoricoEscolar {
 
 		while (it.hasNext()) {
 			ItemHistoricoEscolar item = it.next();
-			if (item.getSituacao() == aprovado || item.getSituacao() == isento
-					|| item.getSituacao() == isentoTransf
-					|| item.getSituacao() == creditos
-					|| item.getSituacao() == estudos) {
+			if (item.getSituacao() == aprovado || item.getSituacao() == isento || item.getSituacao() == isentoTransf
+					|| item.getSituacao() == creditos || item.getSituacao() == estudos) {
 
 				disciplinasCursadas.add(item.getDisciplina());
 				disciplinas.remove(item.getDisciplina());
@@ -91,10 +89,83 @@ public class HistoricoEscolar {
 		return disciplinas;
 	}
 
-	public void lancar(Disciplina disciplina, EnumSituacaoAvaliacao situacao,
-			PeriodoLetivo periodo) {
-		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina,
-				situacao, periodo);
+	/**
+	 * @param aluno
+	 *            aluno para o qual se deseja conhecer as disciplinas cursadas
+	 *            com aprovação.
+	 * 
+	 * @return aluno coleção de disciplinas que o aluno já cursou com sucesso.
+	 */
+	// public Set<Disciplina> getDisciplinasCursadasComAprovacao(Aluno aluno) {
+	// List<Turma> turmas =
+	// obterTurmasCursadasComAprovacao(aluno.getMatricula());
+	// Set<Disciplina> disciplinas = new HashSet<Disciplina>();
+	// for (Turma turma : turmas) {
+	// if (turma.aprovado(aluno)) {
+	// disciplinas.add(turma.getDisciplina());
+	// }
+	// }
+	// return disciplinas;
+	// }
+	//
+
+	/**
+	 * 
+	 * @param aluno
+	 *            aluno para o qual se deseja conhecer as disciplinas
+	 *            indisponíveis.
+	 * 
+	 * @return coleção de disciplinas da grade curricular que não estão
+	 *         disponíveis para o aluno cursar.
+	 * 
+	 * 
+	 */
+	// public Set<Disciplina> getDisciplinasIndisponiveis(Aluno aluno) {
+	// Set<Disciplina> cursadas = getDisciplinasCursadasComAprovacao(aluno);
+	// Set<Disciplina> disciplinas = new HashSet<Disciplina>();
+	// List<Disciplina> todas = dr.getDisciplinas();
+	// for (Disciplina disciplina : todas) {
+	// Set<Disciplina> preReqs = disciplina.getPreRequisitos();
+	// if (!dr.estaContidaEm(preReqs, cursadas)) {
+	// disciplinas.add(disciplina);
+	// }
+	// }
+	// return disciplinas;
+	// }
+
+	/**
+	 * Dada a matrícula de um aluno, retorna a lista de turmas que o aluno já
+	 * cursou com aprovação.
+	 * 
+	 * @param matriculaAluno
+	 *            matrícula do aluno.
+	 * 
+	 * @return lista de turmas que o aluno de matrícula
+	 *         <code>matriculaAluno</code> cursou com aprovação.
+	 */
+	// public List<Turma> obterTurmasCursadasComAprovacao(String matriculaAluno)
+	// {
+	// Aluno aluno = ra.getByMatricula(matriculaAluno);
+	// List<Turma> turmas = rt.obterTodos();
+	// for (Turma turma : turmas) {
+	// Set<Inscricao> inscricoes = turma.getInscricoes();
+	// for (Inscricao inscricao : inscricoes) {
+	// if (aluno.getMatricula().equals(
+	// inscricao.getAluno().getMatricula())) {
+	// EnumSituacaoAvaliacao avaliacao = inscricao
+	// .getAvaliacao();
+	// if (avaliacao != EnumSituacaoAvaliacao.APROVADO) {
+	// break;
+	// }
+	// turmas.add(turma);
+	// }
+	// }
+	// }
+	// return turmas;
+	// }
+
+	public void lancar(Disciplina disciplina, EnumSituacaoAvaliacao situacao, PeriodoLetivo periodo) {
+		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina, situacao, periodo);
 		this.itens.add(item);
 	}
 }
