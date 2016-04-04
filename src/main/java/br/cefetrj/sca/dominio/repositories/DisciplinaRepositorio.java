@@ -11,8 +11,6 @@ import br.cefetrj.sca.dominio.VersaoCurso;
 
 public interface DisciplinaRepositorio extends
 		JpaRepository<Disciplina, Serializable> {
-//	void adicionarTodas(List<Disciplina> lista);
-
 	Disciplina findDisciplinaByNome(String nomeDisciplina);
 
 	Disciplina findDisciplinaByCodigo(String codigoDisciplina);

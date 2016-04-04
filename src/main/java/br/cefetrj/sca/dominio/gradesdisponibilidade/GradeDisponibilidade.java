@@ -87,6 +87,9 @@ public class GradeDisponibilidade implements Cloneable {
 					"Professor não está habilitado para disciplina \""
 							+ disciplina.getNome() + "\".");
 		}
+		if(this.disciplinas.contains(disciplina)){
+			throw new IllegalArgumentException("Habilitação já registrada.");
+		}
 		this.disciplinas.add(disciplina);
 		return disciplina;
 	}

@@ -1,6 +1,7 @@
 package br.cefetrj.sca.dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -53,7 +54,8 @@ public class HistoricoEscolar {
 	 */
 	public List<Disciplina> getDisciplinasPossiveis() {
 
-		List<Disciplina> disciplinas = this.versaoCurso.getDisciplinas();
+		List<Disciplina> disciplinas = new ArrayList<>();
+		disciplinas.addAll(this.versaoCurso.getDisciplinas());
 
 		List<Disciplina> disciplinasCursadas = new ArrayList<Disciplina>();
 
