@@ -26,7 +26,6 @@ public class IntervaloTemporal implements Cloneable {
 	/** fim do intervalo. */
 	private Date fim;
 
-	@SuppressWarnings("unused")
 	private IntervaloTemporal() {
 		formatador = new SimpleDateFormat("HH:mm");
 		formatador.setLenient(false);
