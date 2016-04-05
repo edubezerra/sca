@@ -24,7 +24,9 @@ import jxl.read.biff.BiffException;
 
 public class ImportadorAtividadesComp {
 
-	static String colunas[] = { "ID_ATIVIDADE", "DESCRICAO_ATIVIDADE", "CATEGORIA_ATIVIDADE", "CH_MIN", "CH_MAX",
+	EntityManager em = ImportadorTudo.entityManager;
+	
+	static String colunas[] = { "DESCRICAO_ATIVIDADE", "CATEGORIA_ATIVIDADE", "CH_MIN", "CH_MAX",
 			"COD_ESTRUTURADO", "NOME_UNIDADE", "SIGLA_UNIDADE", "COD_CURSO",
 			"NUM_VERSAO", "ID_VERSAO_CURSO", "CH_MIN_ATIVIDADES" };
 
@@ -54,8 +56,6 @@ public class ImportadorAtividadesComp {
 	}
 
 	private void gravarDadosImportados() {
-		EntityManager em = ImportadorTudo.entityManager;
-
 		em.getTransaction().begin();
 
 		/**
@@ -113,7 +113,6 @@ public class ImportadorAtividadesComp {
 	}
 
 	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
-		EntityManager em = ImportadorTudo.entityManager;
 		Query query = em
 				.createQuery("from VersaoCurso versao "
 						+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");
