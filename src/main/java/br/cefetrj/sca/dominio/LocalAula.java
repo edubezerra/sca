@@ -15,6 +15,7 @@ public class LocalAula {
 
 	private String descricao;
 
+	@SuppressWarnings("unused")
 	private LocalAula() {
 	}
 

@@ -8,15 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="USER_PROFILE")
+@Table(name = "USER_PROFILE")
 public class PerfilUsuario {
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-	@Column(name="TYPE", length=15, unique=true, nullable=false)
-	private String type = TipoPerfilUsuario.USER.getUserProfileType();
-	
+	@Column(name = "TYPE", length = 15, unique = true, nullable = false)
+	private String type = TipoPerfilUsuario.ROLE_USER.getUserProfileType();
+
 	public Integer getId() {
 		return id;
 	}
@@ -68,8 +69,5 @@ public class PerfilUsuario {
 	public String toString() {
 		return "UserProfile [id=" + id + ", type=" + type + "]";
 	}
-
-
-
 
 }

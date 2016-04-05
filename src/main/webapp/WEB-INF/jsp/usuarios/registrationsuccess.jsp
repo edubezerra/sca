@@ -8,11 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Registration Confirmation Page</title>
 
-<link href="${rootURL}resources/bootstrap/css/bootstrap.css"
-	media="screen" rel="stylesheet" type="text/css" />
-
-<link href="${rootURL}resources/css/usuarios.css"
-	media="screen" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resources/bootstrap/css/bootstrap.css' />" rel="stylesheet" />
+	<link href="<c:url value='/resources/css/usuarios.css' />" rel="stylesheet" />
 
 </head>
 <body>
@@ -20,7 +17,7 @@
 		<div class="alert alert-success lead">${success}</div>
 
 		<span class="well floatRight"> Go to <a
-			href="<c:url value='/usuarios/list' />">Users List</a>
+			href="<c:url value='/usuarios/list' />">Lista de Usuários</a>
 		</span>
 	</div>
 </body>

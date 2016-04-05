@@ -18,7 +18,7 @@
 
 	<h2>
 		Bem-vindo,
-		<%=UserController.getCurrentUser().getName()%>!
+		<%=UserController.getCurrentUser().getNome()%>!
 	</h2>
 	<h3>
 		Matrícula:

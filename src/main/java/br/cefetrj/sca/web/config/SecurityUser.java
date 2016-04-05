@@ -12,16 +12,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.cefetrj.sca.dominio.Role;
-import br.cefetrj.sca.dominio.User;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 
-public class SecurityUser extends User implements UserDetails {
+public class SecurityUser extends Usuario implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
-	public SecurityUser(User user) {
+	public SecurityUser(Usuario user) {
 		if (user != null) {
 			this.setId(user.getId());
-			this.setName(user.getName());
+			this.setNome(user.getNome());
 			this.setLogin(user.getLogin());
 			this.setPassword(user.getPassword());
 			this.setDob(user.getDob());

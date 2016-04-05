@@ -5,16 +5,16 @@ package br.cefetrj.sca.infra.dao;
 
 import java.util.List;
 
-import br.cefetrj.sca.dominio.User;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 
 public interface UserDao {
 
-	public List<User> findAll();
+	public List<Usuario> findAll();
 	
-	public User create(User user);
+	public Usuario create(Usuario user);
 	
-	public User findUserById(int id);
+	public Usuario findUserById(int id);
 
-	public User login(String email, String password);
+	public Usuario login(String email, String password);
 	
 }

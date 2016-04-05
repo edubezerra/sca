@@ -161,5 +161,7 @@ public class Disciplina {
 		return true;
 	}
 
-	
+	public int getCargaHoraria() {
+		return cargaHoraria;
+	}
 }
