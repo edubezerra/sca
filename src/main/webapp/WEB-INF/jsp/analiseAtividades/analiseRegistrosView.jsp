@@ -6,10 +6,16 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>SCA - Registro de Atividades Complementares</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	
+	<title>SCA - Análise de Registros de Atividade Complementar</title>
+	
+    <link href="${rootURL}resources/bootstrap/css/bootstrap.css"
+		media="screen" rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
+	<script type="text/javascript"
+		src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="${rootURL}resources/js/app.js"></script>
     
     <script>  
 	    function escondeMostra(x){  
@@ -22,20 +28,73 @@
 	    }  
 	</script>
 	
-	<script type="text/javascript">   
-		$(document).ready(function(){
-		        $("#div2").hide()
-				$("#job").change(
-		        function(){
-		        	var valor = $("option:selected", this).val();
-		        	if(valor == '6'){
-                       	$("#div2").show();                      
-					}
-					else{
-						$("#div2").hide();  
-					}		                        
-		        });
+	<script type="text/javascript">
+		$("#siglaCurso").change(function() {
+        	var selected = this.selectedIndex - 1;
+            var siglaCurso = this.value;
+            $("#numeroVersao").empty();
+            if (selected === -1) {
+                $("#numeroVersao").attr("disabled", true);
+            } else {
+                var numeroVersao = ${requestScope.versoesCursos.get(siglaCurso)};
+                for (var i = 0; i < numeroVersao.length; i++) {
+                    $("#numeroVersao").append($("<option value='"+numeroVersao[i]+"'></option>").text(numeroVersao[i]));
+                }
+                $("#numeroVersao").attr("disabled", false);
+            }
+        });
+	</script>
+	
+	<script>
+		jQuery(document).ready(function($) {	
+			$("#search-form").submit(function(event) {	
+				// Disble the search button
+				enableSearchButton(false);	
+				// Prevent the form from submitting via the browser.
+				event.preventDefault();	
+				searchViaAjax();	
+			});	
 		});
+	
+		function searchViaAjax() {	
+			var search = {}
+			search["siglaCurso"] = $("#siglaCurso").val();
+			search["numeroVersao"] = $("#numeroVersao").val();
+			search["status"] = $("#status").val();
+			$.ajax({
+				type : "POST",
+				contentType : "application/json",
+				url : "${pageContext.request.contextPath}/analiseAtividades/listarAtividades",
+				data : JSON.stringify(search),
+				dataType : 'json',
+				timeout : 100000,
+				success : function(data) {
+					console.log("SUCCESS: ", data);
+					display(data);},
+				error : function(e) {
+					console.log("ERROR: ", e);
+					display(e);},
+				done : function(e) {
+					console.log("DONE");
+					enableSearchButton(true);}
+			});	
+		}
+	
+		function enableSearchButton(flag) {
+			$("#btn-search").prop("disabled", flag);
+		}
+		//TODO
+		function display(data) {
+			$.each(data.Item,function(i,data){
+		             alert(data.value+":"+data.text);
+		             var div_data="<option value="+data.value+">"+data.text+"</option>";
+		            alert(div_data);
+		            $(div_data).appendTo('#ch_user1'); 
+		            });
+			var json = "<h4>Ajax Response</h4><pre>"
+					+ JSON.stringify(data, null, 4) + "</pre>";
+			$('#numeroVersao').html(json);
+		}
 	</script>
 </head>
 <body class="lista-solicitacoes">
@@ -66,7 +125,7 @@
 		</c:if>
 		
 		<div class="row">
-			<form action="${pageContext.request.contextPath}/analiseAtividades/listarAtividades" method="POST">
+			<form id="search-form">
           		<table>
 	          		<tr>
 	          			<td>
@@ -78,17 +137,21 @@
 	          			</td>
 	          			<td>
 	          				<select id="numeroVersao" disabled>
-	          					<c:forEach items="${requestScope.versoesCursos.}" var="siglaCurso" >
-							  		<option value="${siglaCurso}">${siglaCurso}</option>
+							</select>
+	          			</td>
+	          			<td>
+	          				<select id="status">
+	          					<c:forEach items="${requestScope.status}" var="status" >
+							  		<option value="${status}">${status}</option>
 							  	</c:forEach>
 							</select>
 	          			</td>
+	          			<td>
+	          				<button id="btn-search" type="submit" class="btn btn-default" title="Buscar registros">
+								<i class="fa fa-search"></i>Buscar</button>
+	          			</td>
 	          		</tr>
           		</table>
-          		
-          		<input type="hidden" name="idAtiv" value="${atividade.idAtividade}">
-				<button type="submit" class="btn btn-default" title="Registrar nova atividade">
-					<i class="fa fa-plus"></i></button>
 			</form>
 		</div>
 		
@@ -111,8 +174,7 @@
 									<td><b>Carga Horária</b></td>
 									<td><b>Comprovante</b></td>
 									<td><b>Data de Solicitação</b></td>
-									<td><b>Status</b></td>
-																	
+									<td><b>Status</b></td>																	
 								</tr>
 							</thead>
 							<tbody>

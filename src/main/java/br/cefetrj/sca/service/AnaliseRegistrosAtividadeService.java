@@ -42,7 +42,8 @@ public class AnaliseRegistrosAtividadeService {
 		model.addAttribute("matriculaProfessor", professor.getMatricula());
 		
 		HashMap<String, List<String>> versoesCursos = new HashMap<>();
-		for(VersaoCurso versaoCurso: cursoRepo.obterTodosVersaoCurso()){
+		//cursoRepo.findAllVersaoCurso() trocar por recuperação de versoes de curso das quais o professor é coordenador de atividades complementares
+		for(VersaoCurso versaoCurso: cursoRepo.findAllVersaoCurso()){
 			if (versoesCursos.get(versaoCurso.getCurso().getSigla()) == null) {
 				List<String> numerosVersoes = new ArrayList<>();
 				numerosVersoes.add(versaoCurso.getNumero());

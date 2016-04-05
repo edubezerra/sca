@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.RegistrarAtividadesService;
 
 @Controller
@@ -38,7 +39,8 @@ public class RegistrarAtividadeComplementarController {
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session,
 			Model model) {
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		if (matricula != null) {
 			return "/menuPrincipalView";
 		} else {
@@ -48,7 +50,8 @@ public class RegistrarAtividadeComplementarController {
 
 	@RequestMapping(value = "/registroAtividades", method = RequestMethod.GET)
 	public String solicitaRegistroAtividades(HttpSession session, Model model) {
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 
 		try {
 			service.solicitaRegistroAtividades(matricula,model);
@@ -68,7 +71,8 @@ public class RegistrarAtividadeComplementarController {
 	public String solicitaRegistroAtividade(HttpSession session,
 			@RequestParam String idAtiv, Model model) {
 		
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		try {
 			service.solicitaRegistroAtividades(matricula,model);
 			Long id = Long.parseLong(idAtiv);
@@ -92,7 +96,8 @@ public class RegistrarAtividadeComplementarController {
 			@RequestParam MultipartFile file,
 			Model model)  throws IOException {
 
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(idAtiv);
 			service.registraAtividade(matricula, id, descricao, cargaHoraria, file);
@@ -111,7 +116,8 @@ public class RegistrarAtividadeComplementarController {
 	public String removeRegistroAtividade(HttpSession session,
 			@RequestParam String idReg, Model model) {
 		
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(idReg);
 			service.removeRegistroAtividade(matricula, id);
@@ -129,7 +135,8 @@ public class RegistrarAtividadeComplementarController {
 	public String solicitaNovamenteRegistroAtividades(HttpSession session,
 			Model model) {
 
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		try {
 			service.solicitaRegistroAtividades(matricula,model);
 			model.addAttribute("registrosAtiv",
@@ -151,7 +158,8 @@ public class RegistrarAtividadeComplementarController {
 	public void downloadFile(HttpSession session,
 			@RequestParam String IdReg, HttpServletResponse response) {
 		
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(IdReg);
 			Comprovante comprovante = service.getComprovante(matricula,id);

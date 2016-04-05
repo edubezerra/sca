@@ -1,9 +1,12 @@
 package br.cefetrj.sca.dominio.repositories;
 
 import java.io.Serializable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Curso;
 import br.cefetrj.sca.dominio.VersaoCurso;
 
@@ -13,4 +16,7 @@ public interface CursoRepositorio extends JpaRepository<Curso, Serializable> {
 
 	@Query("FROM VersaoCurso v WHERE v.curso.sigla = ?1 and v.numero = ?2")
 	VersaoCurso getVersaoCurso(String codigoSigla, String numeroVersao);
+	
+	@Query("FROM VersaoCurso v")
+	List<VersaoCurso> findAllVersaoCurso();
 }

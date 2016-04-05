@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.service.AnaliseRegistrosAtividadeService;
+import br.cefetrj.sca.service.util.RegistrosAtividadeSearchCriteria;
+import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
 
 @Controller
 @SessionAttributes("login")
@@ -52,24 +56,20 @@ public class AnaliseRegistrosAtividadeComplementarController {
 		}
 	}
 	
-	@RequestMapping(value = "/listarAtividades", method = RequestMethod.POST)
-	public String listarAtividades(
-			@RequestParam String siglaCurso,
-			@RequestParam String numeroVersao,
-			@RequestParam String status,
+	@ResponseBody
+	@RequestMapping(value = "/listarAtividades")
+	public SolicitaRegistroAtividadesResponse listarAtividades(
+			@RequestBody RegistrosAtividadeSearchCriteria search,
 			Model model) {
 		
+		SolicitaRegistroAtividadesResponse registrosAtiv = null;
+		
 		try {
-			model.addAttribute("registrosAtiv", 
-					service.listarRegistrosAtividade(siglaCurso, numeroVersao, status));
-			model.addAttribute("siglaCurso", siglaCurso);
-			model.addAttribute("numeroVersao", numeroVersao);
-			model.addAttribute("status", status);
-			return "/analiseAtividades/analiseRegistrosView";
+			registrosAtiv = service.listarRegistrosAtividade(search.getSiglaCurso(),search.getNumeroVersao(),search.getStatus());
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "forward:/analiseAtividades/solicitaNovamenteHomeAnalise";
 		}
+		return registrosAtiv;
 	}
 		
 	@RequestMapping(value = "/defineStatusAtividade", method = RequestMethod.POST)

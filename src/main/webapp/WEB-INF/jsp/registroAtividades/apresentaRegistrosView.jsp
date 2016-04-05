@@ -5,11 +5,19 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		
 	<title>SCA - Registro de Atividades Complementares</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+	
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
+		media="screen" rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
 </head>
 <body class="lista-solicitacoes">
 
@@ -66,7 +74,7 @@
 							<td></td>
 						</tr>
 						<tr>
-							<td><b>Categoria</b></td>
+							<td class="text-left"><b>Categoria</b></td>
 							<td class="text-left"><b>Descrição</b></td>
 							<td><b>Mínima</b></td>
 							<td><b>Máxima</b></td>							

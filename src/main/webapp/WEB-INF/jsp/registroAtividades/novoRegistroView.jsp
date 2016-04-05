@@ -5,15 +5,26 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		
     <title>SCA - Requerimento de registro de atividade complementar</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-	<script src="${pageContext.request.contextPath}/js/vendor/jquery-1.11.3.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/vendor/angular.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/app.js"></script>
-    <script src="${pageContext.request.contextPath}/js/main.js"></script>
+    
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+	<script src="${pageContext.request.contextPath}/resources/js/vendor/jquery-1.11.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/vendor/angular.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/app.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+	
+	<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
+		media="screen" rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
     <script>
 		function textCounter(field,field2,maxlimit){
 		 	var countfield = document.getElementById(field2);
@@ -66,7 +77,7 @@
 					<h5>Faltam <label id="counter">144</label> caracteres.</h5>
 				</div>
 				               
-                <div class="form-group">
+                <div class="row">
 	                <label for="inputFile">Anexar comprovante de cumprimento da atividade complementar
 	                (Formatos aceitos: PDF, JPEG ou PNG. Tamanho Máximo: 10mb)</label>
 	                <input class="file" type="file" name="file" id="inputFile" required>
@@ -75,12 +86,12 @@
                 </div>
                 <br/>
                 
-                <div class="form-group">
+                <div class="row">
 	                <label for="cargaHoraria">Carga horária do registro (em horas):</label>
 	                <input class="form-control input-lg number" id="cargaHoraria" name="cargaHoraria" type="number"
 	                 maxlength="3" max="${requestScope.cargaHorariaRestante}" min="1" value="1" required/>
                 </div>
-               
+               <br/>
                 <hr/>
                 <div class="row checkbox">
                     <label>
@@ -90,9 +101,9 @@
                         através de consulta a esta mesma plataforma.
                     </label>
                 </div>
-                <br/>                
+                <br/>
 				<div class=text-center>
-					<input type="hidden" id="idAtiv" name="idAtiv" value="${requestScope.idAtiv}">
+					<input type="hidden" id="idAtiv" name="idAtiv" value="${requestScope.idAtiv}"> 			
 					<button type="submit" class="btn btn-primary btn-lg text-center">Confirmar</button>
 				</div>
                 
