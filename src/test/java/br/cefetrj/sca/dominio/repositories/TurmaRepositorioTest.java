@@ -1,9 +1,11 @@
 package br.cefetrj.sca.dominio.repositories;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.persistence.NonUniqueResultException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,9 +84,9 @@ public class TurmaRepositorioTest {
 		PeriodoLetivo periodoLetivo = new PeriodoLetivo(2015, 2);
 
 		assertEquals(periodo, periodoLetivo);
-		
-		Turma turma = turmaRepositorio.getByCodigoAndPeriodoLetivo(codigoTurma,
-				periodo);
+
+		Turma turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(
+				codigoTurma, periodo);
 
 		assertNotNull(turma);
 
@@ -133,4 +135,53 @@ public class TurmaRepositorioTest {
 		return false;
 	}
 
+	@Test(expected = NonUniqueResultException.class)
+	public void testObterTurmaExtraEmPeriodoLetivo() {
+
+		assertNotNull("Repositório não definido.", turmaRepositorio);
+
+		String codigoTurma = "EXTRA";
+		PeriodoLetivo periodo = new PeriodoLetivo(2015, EnumPeriodo.SEGUNDO);
+
+		PeriodoLetivo periodoLetivo = new PeriodoLetivo(2015, 2);
+
+		assertEquals(periodo, periodoLetivo);
+
+		Turma turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(
+				codigoTurma, periodo);
+
+		assertNotNull(turma);
+
+		System.out.println(turma.getPeriodo());
+
+		assertEquals(turma.getPeriodo(), periodo);
+
+		assertNotNull(turma.getId());
+	}
+
+	@Test
+	public void testFindTurmasLecionadasPorProfessorEmPeriodo() {
+		assertNotNull("Repositório não definido.", turmaRepositorio);
+
+		String matriculaProfessor = "1506449";
+
+		String arrayNomesDisciplinas[] = { "ALGORITMOS EM GRAFOS",
+				"PADRÕES DE SOFTWARE", "MATEMÁTICA DISCRETA",
+				"PROJETO E CONSTRUÇÃO DE SISTEMAS",
+				"ARQUITETURA E PADRÕES DE SOFTWARE" };
+
+		List<String> listaNomesDisciplinas = Arrays
+				.asList(arrayNomesDisciplinas);
+
+		PeriodoLetivo periodoLetivo = new PeriodoLetivo(2015, 2);
+
+		List<Turma> lista = turmaRepositorio
+				.findTurmasLecionadasPorProfessorEmPeriodo(matriculaProfessor,
+						periodoLetivo);
+		for (Turma turma : lista) {
+			assertTrue(listaNomesDisciplinas
+					.contains(turma.getNomeDisciplina()));
+		}
+
+	}
 }

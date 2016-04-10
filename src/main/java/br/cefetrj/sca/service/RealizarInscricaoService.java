@@ -26,7 +26,7 @@ public class RealizarInscricaoService {
 	}
 
 	public Turma registrarInscricao(String codigoTurma) {
-		Turma t = turmaRepositorio.getByCodigoAndPeriodoLetivo(codigoTurma,
+		Turma t = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codigoTurma,
 				PeriodoLetivo.PERIODO_CORRENTE.proximo());
 		t.inscreverAluno(aluno);
 		turmaSelecionadas.add(t);

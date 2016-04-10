@@ -10,7 +10,7 @@ public class FichaLancamentoAvaliacaoFabrica {
 	private static TurmaRepositorio turmaRepositorio;
 
 	public static FichaLancamentoAvaliacao criar(String codTurma) {
-		Turma turma = turmaRepositorio.getByCodigoAndPeriodoLetivo(codTurma,
+		Turma turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codTurma,
 				PeriodoLetivo.PERIODO_CORRENTE);
 		FichaLancamentoAvaliacao ficha = new FichaLancamentoAvaliacao(turma);
 		return ficha;

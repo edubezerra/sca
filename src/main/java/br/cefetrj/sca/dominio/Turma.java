@@ -280,4 +280,11 @@ public class Turma {
 	public String getNomeDisciplina() {
 		return getDisciplina().getNome();
 	}
+
+	public String getNomeProfessor() {
+		if (this.getProfessor() != null)
+			return this.getProfessor().getNome();
+		else
+			return null;
+	}
 }

@@ -24,8 +24,9 @@ import br.cefetrj.sca.dominio.Turma;
 
 public class ImportadorAulas {
 
-	String colunas[] = { "COD_CURSO", "COD_DISCIPLINA", "COD_TURMA", "PERIODO_IDEAL", "NOME_DISCIPLINA", "DIA_SEMANA",
-			"HR_INICIO", "HR_FIM", "TIPO_AULA", "NOME_UNIDADE", "ANO", "PERIODO", "NUM_SALA" };
+	String colunas[] = { "COD_CURSO", "COD_DISCIPLINA", "COD_TURMA",
+			"PERIODO_IDEAL", "NOME_DISCIPLINA", "DIA_SEMANA", "HR_INICIO",
+			"HR_FIM", "TIPO_AULA", "NOME_UNIDADE", "ANO", "PERIODO", "NUM_SALA" };
 
 	String siglas_dias[] = { "DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB" };
 
@@ -60,7 +61,8 @@ public class ImportadorAulas {
 
 	private void gravarDadosImportados() {
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("SCAPU");
 
 		EntityManager em = emf.createEntityManager();
 
@@ -74,7 +76,8 @@ public class ImportadorAulas {
 			Turma turma = null;
 
 			try {
-				query = em.createQuery("from Turma t where t.codigo = :codigoTurma");
+				query = em
+						.createQuery("from Turma t where t.codigo = :codigoTurma");
 				query.setParameter("codigoTurma", cod_turma);
 				turma = (Turma) query.getSingleResult();
 			} catch (NoResultException e) {
@@ -85,17 +88,21 @@ public class ImportadorAulas {
 			if (turma != null) {
 				Aula aula = turma_aulas.get(cod_turma);
 				try {
-					query = em.createQuery("from LocalAula la where la.descricao = :descricaoTurma");
-					query.setParameter("descricaoTurma", aula.getLocal().getDescricao());
+					query = em
+							.createQuery("from LocalAula la where la.descricao = :descricaoTurma");
+					query.setParameter("descricaoTurma", aula.getLocal()
+							.getDescricao());
 					LocalAula local = (LocalAula) query.getSingleResult();
-					turma.adicionarAula(aula.getDia().toString(), aula.getHoraInicio(), aula.getHoraTermino(),
-							local);
+					turma.adicionarAula(aula.getDia().toString(),
+							aula.getHoraInicio(), aula.getHoraTermino(), local);
 				} catch (NoResultException e) {
-					System.out.println("Local não encontrado: " + aula.getLocal().getDescricao());
-					turma.adicionarAula(aula.getDia().toString(), aula.getHoraInicio(), aula.getHoraTermino(),
-							null);
+					System.out.println("Local não encontrado: "
+							+ aula.getLocal().getDescricao());
+					turma.adicionarAula(aula.getDia().toString(),
+							aula.getHoraInicio(), aula.getHoraTermino(), null);
 				}
-				System.out.println("Atualizando turma de código " + turma.getCodigo());
+				System.out.println("Atualizando turma de código "
+						+ turma.getCodigo());
 				em.merge(turma);
 			}
 		}
@@ -105,14 +112,16 @@ public class ImportadorAulas {
 		em.close();
 	}
 
-	public void importarPlanilha(String inputFile) throws BiffException, IOException {
+	public void importarPlanilha(String inputFile) throws BiffException,
+			IOException {
 
 		File inputWorkbook = new File(inputFile);
 		importarPlanilha(inputWorkbook);
 
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
+	public void importarPlanilha(File inputWorkbook) throws BiffException,
+			IOException {
 
 		Workbook w;
 
@@ -126,15 +135,20 @@ public class ImportadorAulas {
 
 		for (int i = 1; i < sheet.getRows(); i++) {
 
-			String cod_turma = sheet.getCell(colunasList.indexOf("COD_TURMA"), i).getContents();
+			String cod_turma = sheet.getCell(colunasList.indexOf("COD_TURMA"),
+					i).getContents();
 
-			String dia_semana = sheet.getCell(colunasList.indexOf("DIA_SEMANA"), i).getContents();
+			String dia_semana = sheet.getCell(
+					colunasList.indexOf("DIA_SEMANA"), i).getContents();
 
-			String str_inicio = sheet.getCell(colunasList.indexOf("HR_INICIO"), i).getContents();
+			String str_inicio = sheet.getCell(colunasList.indexOf("HR_INICIO"),
+					i).getContents();
 
-			String str_fim = sheet.getCell(colunasList.indexOf("HR_FIM"), i).getContents();
+			String str_fim = sheet.getCell(colunasList.indexOf("HR_FIM"), i)
+					.getContents();
 
-			String num_sala = sheet.getCell(colunasList.indexOf("NUM_SALA"), i).getContents();
+			String num_sala = sheet.getCell(colunasList.indexOf("NUM_SALA"), i)
+					.getContents();
 
 			EnumDiaSemana dia = null;
 
@@ -146,11 +160,9 @@ public class ImportadorAulas {
 				for (int j = 0; j < EnumDiaSemana.dias().size(); j++) {
 
 					if (dia_semana.equals(siglas_dias[j])) {
-
-						dia = EnumDiaSemana.findByText(EnumDiaSemana.dias().get(j));
-
+						dia = EnumDiaSemana.findByText(EnumDiaSemana.dias()
+								.get(j));
 					}
-
 				}
 
 				LocalAula local = new LocalAula(num_sala);

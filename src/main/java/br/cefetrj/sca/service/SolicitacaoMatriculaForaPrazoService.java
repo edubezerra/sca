@@ -70,7 +70,7 @@ public class SolicitacaoMatriculaForaPrazoService {
 		Turma turma;
 
 		try {
-			turma = turmaRepositorio.getByCodigoAndPeriodoLetivo(codigoTurma,
+			turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codigoTurma,
 					PeriodoLetivo.PERIODO_CORRENTE);
 		} catch (Exception exc) {
 			turma = null;

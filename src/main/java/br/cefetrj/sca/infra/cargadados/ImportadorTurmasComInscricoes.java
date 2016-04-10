@@ -24,12 +24,17 @@ import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.VersaoCurso;
 
 /**
- * Essa classe faz a carga de objetos <code>Turma</code>.
+ * Esse importador faz a carga de objetos <code>Turma</code> e de seus
+ * respectivos objetos <code>Inscricao</code> para o repositório de objetos.
+ * 
+ * Eventualmente esse importador também faz a carga de objetos
+ * <code>Aluno</code> que estejam na planilha de entrada, mas que não ainda
+ * constam no repositório de objetos.
  * 
  * @author Eduardo Bezerra
  *
  */
-public class ImportadorInscricoes {
+public class ImportadorTurmasComInscricoes {
 
 	EntityManager em = ImportadorTudo.entityManager;
 
@@ -112,7 +117,7 @@ public class ImportadorInscricoes {
 	 */
 	private HashMap<String, String> mapaTurmasCodigos;
 
-	public ImportadorInscricoes() {
+	public ImportadorTurmasComInscricoes() {
 		mapaTurmasVersoesCurso = new HashMap<>();
 		mapaTurmasCursos = new HashMap<>();
 		mapaAlunosNomes = new HashMap<>();
@@ -201,14 +206,8 @@ public class ImportadorInscricoes {
 			String semestre_periodo = sheet.getCell(
 					colunasList.indexOf("PERIODO"), i).getContents();
 
-			int ano = Integer.parseInt(semestre_ano);
-			PeriodoLetivo.EnumPeriodo periodo = null;
-
-			if (semestre_periodo.equals("1º Semestre")) {
-				periodo = EnumPeriodo.PRIMEIRO;
-			} else if (semestre_periodo.equals("2º Semestre")) {
-				periodo = EnumPeriodo.SEGUNDO;
-			}
+			PeriodoLetivo semestre = UtilsImportacao.getPeriodoLetivo(
+					semestre_ano, semestre_periodo);
 
 			/**
 			 * O código não é único dentro de um período letivo. Por exemplo,
@@ -219,7 +218,6 @@ public class ImportadorInscricoes {
 			 */
 			String chaveTurma = turma_codigo + " - " + disciplina_codigo;
 
-			PeriodoLetivo semestre = new PeriodoLetivo(ano, periodo);
 			mapaTurmasParaPeriodos.put(chaveTurma, semestre);
 			mapaTurmasDisciplinas.put(chaveTurma, disciplina_codigo);
 
@@ -382,7 +380,6 @@ public class ImportadorInscricoes {
 					+ codigoDisciplina + " - " + numeroVersaoCurso);
 		}
 		return disciplina;
-
 	}
 
 }
