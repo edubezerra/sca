@@ -15,7 +15,7 @@ public class PerfilUsuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "TYPE", length = 15, unique = true, nullable = false)
+	@Column(name = "TYPE", length = 30, unique = true, nullable = false)
 	private String type = TipoPerfilUsuario.ROLE_USER.getUserProfileType();
 
 	public Integer getId() {
