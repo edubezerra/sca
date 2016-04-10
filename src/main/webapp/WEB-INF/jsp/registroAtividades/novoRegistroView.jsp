@@ -62,7 +62,7 @@
 		<hr/>
         <div class="row">
             <form action="${pageContext.request.contextPath}/registroAtividades/registraAtividade" 
-            	  method="post" enctype="multipart/form-data" id="formularioRegistro">
+            	  method="post" enctype="multipart/form-data">
             	  
             	<div class="row">
             		<h4><b>Atividade Complementar:</b> ${requestScope.categoriaAtiv} - ${requestScope.descrAtiv}</h4>

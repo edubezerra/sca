@@ -26,4 +26,3 @@ INSERT INTO roles (role_id,role_name,user_id) VALUES
  (4,'ROLE_ALUNO',3),
  (5,'ROLE_ALUNO',4),
  (6,'ROLE_ALUNO',5);
- (7,'ROLE_PROFESSOR',4),

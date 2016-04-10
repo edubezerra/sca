@@ -5,17 +5,19 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		
 	<title>SCA - Análise de Registros de Atividade Complementar</title>
 	
-    <link href="${rootURL}resources/bootstrap/css/bootstrap.css"
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 		media="screen" rel="stylesheet" type="text/css" />
 	<script type="text/javascript"
-		src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
+		src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
 	<script type="text/javascript"
-		src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
-	<script type="text/javascript" src="${rootURL}resources/js/app.js"></script>
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
     
     <script>  
 	    function escondeMostra(x){  
@@ -29,20 +31,24 @@
 	</script>
 	
 	<script type="text/javascript">
-		$("#siglaCurso").change(function() {
-        	var selected = this.selectedIndex - 1;
-            var siglaCurso = this.value;
+		function getVersoesCurso(){
+		   	var optionSelected = $("#siglaCurso").find("option:selected");
+            var siglaCurso  = optionSelected.val();
+            
             $("#numeroVersao").empty();
-            if (selected === -1) {
+            if (siglaCurso == "") {
+            	$('<option>').val("").text("Versão").appendTo($("#numeroVersao"));
                 $("#numeroVersao").attr("disabled", true);
             } else {
-                var numeroVersao = ${requestScope.versoesCursos.get(siglaCurso)};
+            	//TODO
+                var numeroVersao = "${requestScope.versoesCursos['BCC']}";
+                //$('#feedback').html(numeroVersao.length);
                 for (var i = 0; i < numeroVersao.length; i++) {
-                    $("#numeroVersao").append($("<option value='"+numeroVersao[i]+"'></option>").text(numeroVersao[i]));
+                	$('<option>').val(numeroVersao[i]).text(numeroVersao[i]).appendTo($("#numeroVersao"));
                 }
                 $("#numeroVersao").attr("disabled", false);
             }
-        });
+        }
 	</script>
 	
 	<script>
@@ -93,7 +99,7 @@
 		            });
 			var json = "<h4>Ajax Response</h4><pre>"
 					+ JSON.stringify(data, null, 4) + "</pre>";
-			$('#numeroVersao').html(json);
+			$('#feedback').html(json);
 		}
 	</script>
 </head>
@@ -124,23 +130,28 @@
 			</div>
 		</c:if>
 		
+		<div id="feedback"></div>
+		
 		<div class="row">
 			<form id="search-form">
-          		<table>
+          		<table class="table text-center">
 	          		<tr>
 	          			<td>
-	          				<select id="siglaCurso">
-	          					<c:forEach items="${requestScope.versoesCursos.keySet()}" var="siglaCurso" >
-							  		<option value="${siglaCurso}">${siglaCurso}</option>
+	          				<select class="form-control input" id="siglaCurso" onchange="getVersoesCurso()">
+	          					<option value="">Curso</option>
+	          					<c:forEach items="${requestScope.versoesCursos}" var="siglaCurso">
+							  		<option value="${siglaCurso.key}">${siglaCurso.key}</option>
 							  	</c:forEach>
 							</select>
 	          			</td>
 	          			<td>
-	          				<select id="numeroVersao" disabled>
+	          				<select class="form-control input" id="numeroVersao" disabled>
+	          					<option value="">Versão</option>
 							</select>
 	          			</td>
 	          			<td>
-	          				<select id="status">
+	          				<select class="form-control input" id="status">
+	          					<option value="">Status de registro</option>
 	          					<c:forEach items="${requestScope.status}" var="status" >
 							  		<option value="${status}">${status}</option>
 							  	</c:forEach>
@@ -156,7 +167,7 @@
 		</div>
 		
 		<div class="row">
-			<h4><b>Registros anteriores:</b></h4>
+			<h4><b>Registros de atividade complementar:</b></h4>
 			<c:choose>
 				<c:when test="${fn:length(requestScope.registrosAtiv) eq 0}">
 					<div class="vcenter well">

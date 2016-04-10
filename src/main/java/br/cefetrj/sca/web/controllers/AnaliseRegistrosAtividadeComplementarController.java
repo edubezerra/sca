@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.AnaliseRegistrosAtividadeService;
 import br.cefetrj.sca.service.util.RegistrosAtividadeSearchCriteria;
 import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
@@ -31,23 +32,25 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	@RequestMapping(value = "/{*}", method = RequestMethod.GET)
 	public String get(Model model) {
 		model.addAttribute("error", "Erro: página não encontrada.");
-		return "/homeView";
+		return "/login";
 	}
 	
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session, Model model) {
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		if (matricula != null) {
 			return "/menuPrincipalView";
 		} else {
-			return "/homeView";
+			return "/login";
 		}
 	}
 	
 	@RequestMapping(value = "/homeAnalise", method = RequestMethod.GET)
 	public String paginaInicialAnalise(HttpServletRequest request, HttpSession session, Model model){
 		try {
-			String matricula = (String) session.getAttribute("login");
+			Usuario usr = UserController.getCurrentUser();
+			String matricula = usr.getLogin();
 			service.homeAnaliseAtividades(matricula, model);		
 			return "/analiseAtividades/analiseRegistrosView";
 		} catch (Exception exc) {
@@ -94,7 +97,8 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	@RequestMapping(value = "/solicitaNovamenteHomeAnalise")
 	public String solicitaNovamenteHomeAnalise(HttpServletRequest request, HttpSession session, Model model){
 		try {
-			String matricula = (String) session.getAttribute("login");
+			Usuario usr = UserController.getCurrentUser();
+			String matricula = usr.getLogin();
 			service.homeAnaliseAtividades(matricula, model);		
 			return "/analiseAtividades/analiseRegistrosView";
 		} catch (Exception exc) {
@@ -107,7 +111,8 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	public void downloadFile(HttpSession session,
 			@RequestParam String IdReg, HttpServletResponse response) {
 		
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UserController.getCurrentUser();
+		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(IdReg);
 			Comprovante comprovante = service.getComprovante(matricula,id);
