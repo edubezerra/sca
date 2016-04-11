@@ -39,10 +39,6 @@ public class UsuarioService {
 		}
 	}
 
-	public Usuario findById(int id) {
-		return repositorio.findOne(id);
-	}
-
 	public List<Usuario> findAll() {
 		return repositorio.findAll();
 	}
@@ -67,8 +63,12 @@ public class UsuarioService {
 		repositorio.delete(id);
 	}
 
-	public Usuario findUserByEmail(String email) {
-		return repositorio.findUsuarioByLogin(email);
+	public Usuario findUserByLogin(String login) {
+		return repositorio.findUsuarioByLogin(login);
+	}
+
+	public boolean isLoginJaExistente(int id, String login) {
+		return repositorio.findUsuarioByLogin(login) != null;
 	}
 
 }

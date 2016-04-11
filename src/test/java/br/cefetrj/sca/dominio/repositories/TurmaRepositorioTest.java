@@ -105,7 +105,7 @@ public class TurmaRepositorioTest {
 		assertEquals("REBECCA PONTES SALLES", aluno.getNome());
 
 		List<Turma> lista = turmaRepositorio
-				.getTurmasCursadasPorAlunoNoPeriodo(aluno.getMatricula(),
+				.findTurmasCursadasPorAlunoNoPeriodo(aluno.getMatricula(),
 						new PeriodoLetivo(2015, 2));
 
 		assertEquals(6, lista.size());

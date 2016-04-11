@@ -48,7 +48,7 @@ public class AvaliacaoTurmaService {
 	public SolicitaAvaliacaoResponse obterTurmasCursadas(String matriculaAluno) {
 		getAlunoPorMatricula(matriculaAluno);
 
-		List<Turma> turmas = turmaRepositorio.getTurmasCursadasPorAluno(matriculaAluno);
+		List<Turma> turmas = turmaRepositorio.findTurmasCursadasPorAluno(matriculaAluno);
 
 		SolicitaAvaliacaoResponse response = new SolicitaAvaliacaoResponse();
 		AvaliacaoTurma turmaAvaliada;

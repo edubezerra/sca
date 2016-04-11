@@ -15,17 +15,17 @@ import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
 public class UserProfileServiceImpl implements UserProfileService{
 	
 	@Autowired
-	UserProfileRepository dao;
+	UserProfileRepository repositorio;
 	
 	public PerfilUsuario findById(int id) {
-		return dao.findOne(id);
+		return repositorio.findOne(id);
 	}
 
 	public PerfilUsuario findByType(String type){
-		return dao.findByType(type);
+		return repositorio.findByType(type);
 	}
 
 	public List<PerfilUsuario> findAll() {
-		return dao.findAll();
+		return repositorio.findAll();
 	}
 }

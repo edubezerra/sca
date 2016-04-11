@@ -43,7 +43,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 	public String solicitaInclusao(
 			@RequestParam("numeroSolicitacoes") int numeroSolicitacoes,
 			Model model) {
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
 			service.solicitaInclusao(matricula, numeroSolicitacoes, model);
@@ -57,7 +57,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 	@RequestMapping(value = "/homeInclusao", method = RequestMethod.GET)
 	public String paginaInicialInclusao(HttpServletRequest request, Model model) {
 		try {
-			Usuario usr = UserController.getCurrentUser();
+			Usuario usr = UsuarioController.getCurrentUser();
 			String matriculaAluno = usr.getLogin();
 			service.carregaHomeView(model, matriculaAluno);
 			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
@@ -79,7 +79,7 @@ public class SolicitacaoMatriculaForaPrazoController {
 			@RequestParam int numeroSolicitacoes, HttpServletRequest request,
 			Model model) throws IOException {
 
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 
 		try {

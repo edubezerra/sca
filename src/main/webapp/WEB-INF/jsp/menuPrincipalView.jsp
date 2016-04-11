@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<%@page import="br.cefetrj.sca.web.controllers.UserController"%>
+<%@page import="br.cefetrj.sca.web.controllers.UsuarioController"%>
 <%@include file="taglib.jsp"%>
 <html>
 <head>
-<title>Welcome</title>
+<title>SCA</title>
 
 <link href="${rootURL}resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
@@ -18,7 +18,7 @@
 
 	<h2>
 		Bem-vindo,
-		<%=UserController.getCurrentUser().getNome()%>!
+		<%=UsuarioController.getCurrentUser().getNome()%>!
 	</h2>
 	<h3>
 		Matrícula:
@@ -27,8 +27,7 @@
 	<h3>
 		<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<a href="${rootUrl}admin">Administration</a>
-			<li><a
-				href="${pageContext.request.contextPath}/usuarios/list">
+			<li><a href="${pageContext.request.contextPath}/usuarios/list">
 					Listar usuários </a></li>
 		</sec:authorize>
 	</h3>

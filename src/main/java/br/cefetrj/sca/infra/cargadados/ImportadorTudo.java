@@ -34,7 +34,9 @@ public class ImportadorTudo {
 			new ImportadorAlunos().run();
 			new ImportadorDocentes().run();
 			new ImportadorDepartamentos().run();
-			new ImportadorHistoricosEscolares().run();
+
+//			new ImportadorHistoricosEscolares().run();
+			
 			new ImportadorTurmasComInscricoes().run();
 			new ImportadorAlocacoesProfessoresEmTurmas().run();
 			new ImportadorAtividadesComp().run();

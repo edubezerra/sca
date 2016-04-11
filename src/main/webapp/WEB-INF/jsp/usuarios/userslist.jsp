@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lisa de Usuários</title>
+<title>SCA - Lista de Usuários</title>
 
 	<link href="<c:url value='/resources/bootstrap/css/bootstrap.css' />" rel="stylesheet" />
 	<link href="<c:url value='/resources/css/usuarios.css' />" rel="stylesheet" />
@@ -22,10 +22,10 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>Firstname</th>
-						<th>Lastname</th>
+						<th>Nome</th>
+						<th>Login</th>
 						<th>Email</th>
-						<th>SSO ID</th>
+						<th>Data Criação</th>
 						<th width="100"></th>
 						<th width="100"></th>
 					</tr>
@@ -33,14 +33,14 @@
 				<tbody>
 					<c:forEach items="${users}" var="user">
 						<tr>
-							<td>${user.firstName}</td>
-							<td>${user.lastName}</td>
+							<td>${user.nome}</td>
+							<td>${user.login}</td>
 							<td>${user.email}</td>
-							<td>${user.ssoId}</td>
-							<td><a href="<c:url value='/edit-user-${user.ssoId}' />"
-								class="btn btn-success custom-width">edit</a></td>
-							<td><a href="<c:url value='/delete-user-${user.ssoId}' />"
-								class="btn btn-danger custom-width">delete</a></td>
+							<td>${user.dob}</td>
+							<td><a href="<c:url value='/usuarios/edit-user-${user.login}' />"
+								class="btn btn-success custom-width">editar</a></td>
+							<td><a href="<c:url value='/usuarios/delete-user-${user.login}' />"
+								class="btn btn-danger custom-width">excluir</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>

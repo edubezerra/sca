@@ -103,7 +103,7 @@ public class AvaliacaoTurmaController {
 
 	@RequestMapping(value = "/avaliacaoTurmas", method = RequestMethod.GET)
 	public String solicitaAvaliacao(HttpSession session, Model model) {
-		String matricula = UserController.getCurrentUser().getLogin();
+		String matricula = UsuarioController.getCurrentUser().getLogin();
 		session.setAttribute("login", matricula);
 		try {
 			SolicitaAvaliacaoResponse turmasCursadas = service
