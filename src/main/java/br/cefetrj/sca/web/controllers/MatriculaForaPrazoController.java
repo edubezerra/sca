@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
@@ -30,8 +31,7 @@ import br.cefetrj.sca.service.util.FichaMatriculaForaPrazo;
 @RequestMapping("/requerimentoMatricula")
 public class MatriculaForaPrazoController {
 
-	protected Logger logger = Logger
-			.getLogger(MatriculaForaPrazoController.class.getName());
+	protected Logger logger = Logger.getLogger(MatriculaForaPrazoController.class.getName());
 
 	@Autowired
 	private MatriculaForaPrazoService service;
@@ -51,8 +51,7 @@ public class MatriculaForaPrazoController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
-			FichaMatriculaForaPrazo ficha = service
-					.criarFichaSolicitacao(matricula);
+			FichaMatriculaForaPrazo ficha = service.criarFichaSolicitacao(matricula);
 
 			sessao.setAttribute("fichaMatriculaForaPrazo", ficha);
 
@@ -60,8 +59,7 @@ public class MatriculaForaPrazoController {
 			model.addAttribute("matricula", ficha.getMatriculaAluno());
 			model.addAttribute("aluno", ficha.getAluno());
 			model.addAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
-			model.addAttribute("turmasDisponiveis", service
-					.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE));
+			model.addAttribute("turmasDisponiveis", service.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE));
 
 			return "/requerimentoMatricula/requerimentoMatriculaView";
 		} catch (Exception exc) {
@@ -76,11 +74,7 @@ public class MatriculaForaPrazoController {
 			Usuario usr = UsuarioController.getCurrentUser();
 			String matriculaAluno = usr.getLogin();
 			this.carregaHomeView(model, matriculaAluno);
-			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-					.getInstance();
-			model.addAttribute("periodoLetivo",
-					periodoAvaliacao.getPeriodoLetivo());
-
+			model.addAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
 			return "/requerimentoMatricula/visualizaRequerimentosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -88,120 +82,63 @@ public class MatriculaForaPrazoController {
 		}
 	}
 
-	// @RequestMapping(value = "/incluiSolicitacao", method =
-	// RequestMethod.POST)
-	// @RequestMapping(value = "/adicionarItemMatriculaForaPrazo", method =
-	// RequestMethod.POST)
-	// public String adicionarItemMatriculaForaPrazo(Principal principal) {
-	// System.out
-	// .println("MatriculaForaPrazoController.adicionarItemMatriculaForaPrazo()");
-	// System.out.println(principal.getName());
-	// return "/requerimentoMatricula/visualizaRequerimentosView";
-	// }
-
 	@RequestMapping(value = "/adicionarItemMatriculaForaPrazo", method = RequestMethod.POST)
-	public String adicionarItemEmRequerimento(
-			@RequestParam String departamento,
-			@RequestParam String descritorTurma, @RequestParam int opcao,
-			Model model, HttpSession sessao) throws IOException {
+	public String adicionarItemEmRequerimento(@RequestParam String nomeDepartamento,
+			@RequestParam String descritorTurma, @RequestParam int opcao, Model model, HttpSession sessao)
+					throws IOException {
 
-		Usuario usr = UsuarioController.getCurrentUser();
-		String matriculaAluno = usr.getLogin();
+		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao.getAttribute("fichaMatriculaForaPrazo");
 
 		try {
-			service.adicionarItemRequerimento(descritorTurma, matriculaAluno,
-					departamento, opcao);
-			model.addAttribute("sucesso", "Turma adicionada ao requerimento.");
-
-			this.carregaHomeView(model, matriculaAluno);
-
-			return "/requerimentoMatricula/requerimentoMatriculaView";
+			ficha.adicionarItemRequerimento(descritorTurma, nomeDepartamento, opcao);
+			model.addAttribute("sucesso", "Item foi adicionado ao requerimento.");
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-
-			FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao
-					.getAttribute("fichaMatriculaForaPrazo");
-
-			model.addAttribute("departamentos", ficha.getDepartamentos());
-			model.addAttribute("matricula", ficha.getMatriculaAluno());
-			model.addAttribute("aluno", ficha.getAluno());
-			model.addAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
-			model.addAttribute("itensRequerimento", ficha.getSolicitacoes());
-
-			return "/requerimentoMatricula/requerimentoMatriculaView";
 		}
+
+		model.addAttribute("departamentos", ficha.getDepartamentos());
+		model.addAttribute("matricula", ficha.getMatriculaAluno());
+		model.addAttribute("aluno", ficha.getAluno());
+		model.addAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
+		model.addAttribute("itensRequerimento", ficha.getItensRequerimentos());
+		model.addAttribute("turmasDisponiveis", service.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE));
+
+		return "/requerimentoMatricula/requerimentoMatriculaView";
 	}
 
-	// public String registrarRequerimentos(@RequestParam MultipartFile file,
-	// HttpServletRequest request, Model model) throws IOException {
-	//
-	// Usuario usr = UsuarioController.getCurrentUser();
-	// String matricula = usr.getLogin();
-	//
-	// try {
-	// Map<String, String[]> turmasSolicitadas = request.getParameterMap();
-	//
-	// service.registrarSolicitacao(turmasSolicitadas, matricula, file,
-	// departamento, opcao, observacao);
-	// model.addAttribute("sucesso", "Solicitação registrada.");
-	// this.carregaHomeView(model, matricula);
-	//
-	// return "/requerimentoMatricula/visualizaRequerimentosView";
-	// } catch (Exception exc) {
-	// model.addAttribute("error", exc.getMessage());
-	//
-	// FichaMatriculaForaPrazo ficha = service
-	// .getFichaSolicitacao(matricula);
-	//
-	// PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
-	// .getInstance();
-	//
-	// model.addAttribute("departamentos", ficha.getDepartamentos());
-	// model.addAttribute("cpf", ficha.getCpfAluno());
-	// model.addAttribute("aluno", ficha.getAluno());
-	// model.addAttribute("periodoLetivo",
-	// periodoAvaliacao.getPeriodoLetivo());
-	//
-	// return "/requerimentoMatricula/requerimentoMatriculaView";
-	// }
-	//
-	// }
+	@RequestMapping(value = "/incluiSolicitacao", method = RequestMethod.POST)
+	public String registrarRequerimentos(@RequestParam String observacao, @RequestParam MultipartFile file,
+			HttpServletRequest request, Model model, HttpSession sessao) throws IOException {
 
-	private void carregaHomeView(Model model, String matriculaAluno) {
-		MatriculaForaPrazo solicitacaoAtual = service
-				.getSolicitacaoAtual(matriculaAluno);
-		if (solicitacaoAtual != null) {
-			List<MatriculaForaPrazo> solicitacoes = service
-					.findMatriculasForaPrazoByAluno(solicitacaoAtual.getAluno()
-							.getId());
-			List<PeriodoLetivo> listaSemestresLetivos = MatriculaForaPrazo
-					.semestresCorrespondentes(solicitacoes);
-			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matricula = usr.getLogin();
+
+		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao.getAttribute("fichaMatriculaForaPrazo");
+
+		validarArquivoComprovanteMatricula(file);
+		ficha.setComprovante(file.getContentType(), file.getBytes(), file.getName());
+
+		try {
+			service.registrarSolicitacao(ficha);
+			model.addAttribute("sucesso", "Solicitação registrada com sucesso.");
+			this.carregaHomeView(model, matricula);
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			model.addAttribute("aluno", ficha.getAluno());
+			model.addAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
 		}
 
-		model.addAttribute("aluno",
-				service.findAlunoByMatricula(matriculaAluno));
-
-		// if (solicitacaoAtual != null) {
-		// model.addAttribute("numeroSolicitacoes", solicitacaoAtual
-		// .getItensSolicitacao().size());
-		// } else {
-		// model.addAttribute("numeroSolicitacoes", 0);
-		// }
+		return "/requerimentoMatricula/visualizaRequerimentosView";
 	}
 
 	@RequestMapping(value = "/listarSolicitacoes", method = RequestMethod.POST)
-	public String listarSolicitacoes(
-			@ModelAttribute("login") String matriculaAluno,
-			@RequestParam int ano, @RequestParam EnumPeriodo periodo,
-			HttpServletRequest request, HttpServletResponse response,
-			Model model) {
+	public String listarSolicitacoes(@ModelAttribute("login") String matriculaAluno, @RequestParam int ano,
+			@RequestParam EnumPeriodo periodo, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		try {
 			Aluno aluno = service.findAlunoByMatricula(matriculaAluno);
-			MatriculaForaPrazo solicitacaoAtual = service
-					.findMatriculaForaPrazoByAlunoAndPeriodo(aluno.getId(),
-							new PeriodoLetivo(ano, periodo));
+			MatriculaForaPrazo solicitacaoAtual = service.findMatriculaForaPrazoByAlunoAndPeriodo(aluno.getId(),
+					new PeriodoLetivo(ano, periodo));
 
 			model.addAttribute("solicitacaoAtual", solicitacaoAtual);
 			model.addAttribute("aluno", aluno);
@@ -214,24 +151,36 @@ public class MatriculaForaPrazoController {
 		}
 	}
 
-	// @ModelAttribute("itemMatriculaForaPrazo")
-	// MatriculaForaPrazo construirMatriculaForaPrazo() {
-	// // return new ItemMatriculaForaPrazo();
-	// System.out
-	// .println("MatriculaForaPrazoController.construirMatriculaForaPrazo()");
-	// return null;
-	// }
-
 	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
-	public void downloadFile(@ModelAttribute("login") String matricula,
-			@RequestParam Long solicitacaoId, HttpServletRequest request,
-			HttpServletResponse response) {
+	public void downloadFile(@ModelAttribute("login") String matricula, @RequestParam Long solicitacaoId,
+			HttpServletRequest request, HttpServletResponse response, HttpSession sessao) {
 		try {
-			Comprovante comprovante = service.getComprovante(solicitacaoId);
-			GerenteArquivos.downloadFile(matricula, solicitacaoId, request,
-					response, comprovante);
+			FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao.getAttribute("fichaMatriculaForaPrazo");
+			Comprovante comprovante = ficha.getComprovante();
+			GerenteArquivos.downloadFile(matricula, solicitacaoId, request, response, comprovante);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void validarArquivoComprovanteMatricula(MultipartFile file) {
+		if (file == null) {
+			throw new IllegalArgumentException("O comprovante da matrícula no período corrente deve ser fornecido.");
+		}
+		if (file.getSize() > MatriculaForaPrazoService.TAMANHO_MAXIMO_COMPROVANTE) {
+			throw new IllegalArgumentException("O arquivo de comprovante deve ter 10mb no máximo");
+		}
+		String[] tiposAceitos = { "application/pdf", "image/jpeg", "image/png" };
+		if (ArrayUtils.indexOf(tiposAceitos, file.getContentType()) < 0) {
+			throw new IllegalArgumentException("O arquivo de comprovante deve ser no formato PDF, JPEG ou PNG");
+		}
+	}
+
+	private void carregaHomeView(Model model, String matriculaAluno) {
+		Aluno aluno = service.findAlunoByMatricula(matriculaAluno);
+		List<MatriculaForaPrazo> solicitacoes = service.findMatriculasForaPrazoByAluno(aluno.getId());
+		List<PeriodoLetivo> listaSemestresLetivos = MatriculaForaPrazo.semestresCorrespondentes(solicitacoes);
+		model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
+		model.addAttribute("aluno", aluno);
 	}
 }

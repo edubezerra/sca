@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
 import br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService;
 
 @Controller
@@ -83,12 +84,13 @@ public class AnaliseSolicitacoesMatriculaForaPrazoController {
 	}
 
 	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
-	public void downloadFile(@ModelAttribute("login") String cpf,
+	public void downloadFile(@ModelAttribute("login") String matricula,
 			@RequestParam Long solicitacaoId, HttpServletRequest request,
 			HttpServletResponse response) {
 		try {
-			Comprovante comprovante = service.getComprovante(solicitacaoId);
-			GerenteArquivos.downloadFile(cpf, solicitacaoId, request, response,
+			MatriculaForaPrazo requerimento = service.getMatriculaForaPrazoById(solicitacaoId);
+			Comprovante comprovante = requerimento.getComprovante();
+			GerenteArquivos.downloadFile(matricula, solicitacaoId, request, response,
 					comprovante);
 		} catch (Exception e) {
 			e.printStackTrace();

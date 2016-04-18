@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
 
 public interface MatriculaForaPrazoRepositorio extends
@@ -22,10 +21,6 @@ public interface MatriculaForaPrazoRepositorio extends
 			+ "WHERE s.aluno.id = ?1 AND s.semestreLetivo = ?2 ")
 	public MatriculaForaPrazo findMatriculaForaPrazoByAlunoAndSemestre(
 			Long alunoId, PeriodoLetivo periodo);
-
-	@Query("SELECT c FROM Comprovante c, ItemMatriculaForaPrazo s "
-			+ "WHERE s.id = ?1 " + "AND c.id = s.comprovante.id")
-	public Comprovante getComprovante(Long solicitacaoId);
 
 	@Query("SELECT t FROM ItemMatriculaForaPrazo i, MatriculaForaPrazo s, Turma t "
 			+ "WHERE s.aluno.id = ?1 "

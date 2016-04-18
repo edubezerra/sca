@@ -48,7 +48,7 @@
 		</c:if>
 
 		<form role="form"
-			action="${pageContext.request.contextPath}/inclusaoDisciplina/incluiSolicitacao"
+			action="${pageContext.request.contextPath}/requerimentoMatricula/incluiSolicitacao"
 			method="post" enctype="multipart/form-data"
 			id="formularioSolicitacao">
 
@@ -66,9 +66,9 @@
 					<tbody>
 						<c:forEach items="${itensRequerimento}" var="item">
 							<tr>
-								<td>${item.turma.codigo}</td>
-								<td>${item.turma.nomeDisciplina}</td>
-								<td>${item.departamento.nome}</td>
+								<td>${item.codigoTurma}</td>
+								<td>${item.nomeDisciplina}</td>
+								<td>${item.nomeDepartamento}</td>
 								<td>${item.opcao}</td>
 								<td><a
 									href="<spring:url value="/users/remove/${user.id}.html" />"
@@ -123,14 +123,12 @@
 
 			<hr />
 			<div class=text-center>
-				<input type="hidden" name="numeroSolicitacoes"
-					value="${requestScope.numeroSolicitacoes}">
 				<button type="submit" class="btn btn-primary btn-lg text-center">Confirmar</button>
 			</div>
 		</form>
 
 		<a class="btn btn-default"
-			href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
+			href="${pageContext.request.contextPath}/requerimetoMatricula/homeInclusao">
 			<i class="fa fa-arrow-left"> </i> Voltar
 		</a>
 
@@ -183,13 +181,13 @@
 						<hr />
 						<div class="form-group">
 							<label for="departamento">Departamento Acadêmico:</label> <select
-								class="form-control" name="departamento" id="departamento"
-								required>
+								class="form-control" name="nomeDepartamento"
+								id="nomeDepartamento" required>
 								<option value="" label="Escolha o departamento desejado"
 									selected disabled></option>
 								<c:forEach items="${requestScope.departamentos}"
 									var="departamento">
-									<option value="${departamento.codigoDepartamento}">
+									<option value="${departamento.nomeDepartamento}">
 										${departamento.nomeDepartamento}</option>
 								</c:forEach>
 							</select>
@@ -204,7 +202,8 @@
 								<option value="" label="Escolha o departamento desejado"
 									selected disabled>Selecione</option>
 								<c:forEach items="${requestScope.turmasDisponiveis}" var="turma">
-									<option value="${turma.codigo};${turma.disciplina.codigo}">${turma.codigo}-
+									<option
+										value="${turma.codigo};${turma.disciplina.codigo};${turma.nomeDisciplina}">${turma.codigo}-
 										${turma.nomeDisciplina}</option>
 								</c:forEach>
 							</select>

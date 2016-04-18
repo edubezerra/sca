@@ -4,19 +4,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.inclusaodisciplina.ItemMatriculaForaPrazo;
 import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
-import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import br.cefetrj.sca.dominio.repositories.MatriculaForaPrazoRepositorio;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
-@Component
+@Service
 public class AnaliseSolicitacoesMatriculaForaPrazoService {
 
 	@Autowired
@@ -27,28 +26,23 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 
 	public void homeInclusao(String matricula, Model model) {
 		Professor professor = getProfessorByMatricula(matricula);
-		List<MatriculaForaPrazo> solicitacao = solicitacaoRepo
-				.findAll();
+		List<MatriculaForaPrazo> solicitacao = solicitacaoRepo.findAll();
 		if (solicitacao != null) {
-			List<PeriodoLetivo> listaSemestresLetivos = MatriculaForaPrazo
-					.semestresCorrespondentes(solicitacao);
+			List<PeriodoLetivo> listaSemestresLetivos = MatriculaForaPrazo.semestresCorrespondentes(solicitacao);
 			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
 		}
 
 		model.addAttribute("professor", professor);
 	}
 
-	public void listarSolicitacoes(String matricula, EnumPeriodo periodo,
-			int ano, Model model) {
+	public void listarSolicitacoes(String matricula, EnumPeriodo periodo, int ano, Model model) {
 		Professor professor = getProfessorByMatricula(matricula);
 		Long departamentoId = professor.getDepartmento().getId();
 		List<MatriculaForaPrazo> solicitacoes = solicitacaoRepo
-				.findMatriculasForaPrazoByDepartamentoAndSemestre(periodo, ano,
-						departamentoId);
+				.findMatriculasForaPrazoByDepartamentoAndSemestre(periodo, ano, departamentoId);
 
 		for (MatriculaForaPrazo solicitacaoInclusao : solicitacoes) {
-			Iterator<ItemMatriculaForaPrazo> it = solicitacaoInclusao
-					.getItensSolicitacao().iterator();
+			Iterator<ItemMatriculaForaPrazo> it = solicitacaoInclusao.getItensSolicitacao().iterator();
 			while (it.hasNext()) {
 				if (!it.next().getDepartamento().getId().equals(departamentoId)) {
 					it.remove();
@@ -64,18 +58,15 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 		return professorRepositorio.findProfessorByMatricula(matricula);
 	}
 
-	public void definirStatusSolicitacao(Long idSolicitacao,
-			Long idItemSolicitacao, String status) {
-		MatriculaForaPrazo solicitacao = solicitacaoRepo
-				.findOne(idSolicitacao);
+	public void definirStatusSolicitacao(Long idSolicitacao, Long idItemSolicitacao, String status) {
+		MatriculaForaPrazo solicitacao = solicitacaoRepo.findOne(idSolicitacao);
 
 		solicitacao.definirStatusItem(idItemSolicitacao, status);
 
 		solicitacaoRepo.save(solicitacao);
 	}
 
-	public Comprovante getComprovante(Long solicitacaoId) {
-		return solicitacaoRepo.getComprovante(solicitacaoId);
+	public MatriculaForaPrazo getMatriculaForaPrazoById(Long solicitacaoId) {
+		return solicitacaoRepo.findOne(solicitacaoId);
 	}
-
 }

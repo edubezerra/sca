@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Departamento;
@@ -35,15 +36,18 @@ public class MatriculaForaPrazo {
 
 	private PeriodoLetivo semestreLetivo;
 
+	private String observacoes;
+
+	@OneToOne
+	public Comprovante comprovante;
+
 	@SuppressWarnings("unused")
 	private MatriculaForaPrazo() {
 	}
 
-	public MatriculaForaPrazo(List<ItemMatriculaForaPrazo> itemSolicitacao,
-			Aluno aluno, PeriodoLetivo semestreLetivo) {
+	public MatriculaForaPrazo(List<ItemMatriculaForaPrazo> itemSolicitacao, Aluno aluno, PeriodoLetivo semestreLetivo) {
 		if (itemSolicitacao == null || aluno == null || semestreLetivo == null) {
-			throw new IllegalArgumentException(
-					"Erro: argumentos inválidos para SolicitacaoInclusao().");
+			throw new IllegalArgumentException("Erro: argumentos inválidos para SolicitacaoInclusao().");
 		}
 		this.itensMatriculaForaPrazo = new ArrayList<>();
 		this.itensMatriculaForaPrazo.addAll(itemSolicitacao);
@@ -79,8 +83,7 @@ public class MatriculaForaPrazo {
 	 * 
 	 * @return conjunto de objetos <code>SemestreLetivo</code>.
 	 */
-	public static List<PeriodoLetivo> semestresCorrespondentes(
-			List<MatriculaForaPrazo> solicitacoes) {
+	public static List<PeriodoLetivo> semestresCorrespondentes(List<MatriculaForaPrazo> solicitacoes) {
 		List<PeriodoLetivo> result = new ArrayList<>();
 		HashSet<PeriodoLetivo> set = new HashSet<>();
 		for (MatriculaForaPrazo item : solicitacoes) {
@@ -111,8 +114,23 @@ public class MatriculaForaPrazo {
 	}
 
 	public void addItem(Turma turma, Departamento departamento, int opcao) {
-		ItemMatriculaForaPrazo item = new ItemMatriculaForaPrazo(turma,
-				departamento, opcao);
+		ItemMatriculaForaPrazo item = new ItemMatriculaForaPrazo(turma, departamento, opcao);
 		itensMatriculaForaPrazo.add(item);
+	}
+
+	public void setComprovante(Comprovante comprovante) {
+		this.comprovante = comprovante;
+	}
+
+	public Comprovante getComprovante() {
+		return comprovante;
+	}
+
+	public void setObservacoes(String observacoes) {
+		this.observacoes = observacoes;
+	}
+	
+	public String getObservacoes() {
+		return observacoes;
 	}
 }
