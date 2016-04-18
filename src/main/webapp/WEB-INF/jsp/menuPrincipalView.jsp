@@ -53,7 +53,7 @@
 					href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
 						Avaliação de Turmas por Discentes </a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
+					href="${pageContext.request.contextPath}/requerimentoMatricula/visualizaRequerimentos">
 						Inclusão de Disciplina Fora de Prazo</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">

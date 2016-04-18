@@ -11,26 +11,26 @@ import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemSolicitacaoMatriculaForaPrazo;
-import br.cefetrj.sca.dominio.inclusaodisciplina.SolicitacaoMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.inclusaodisciplina.ItemMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
-import br.cefetrj.sca.dominio.repositories.SolicitacaoMatriculaForaPrazoRepositorio;
+import br.cefetrj.sca.dominio.repositories.MatriculaForaPrazoRepositorio;
 
 @Component
 public class AnaliseSolicitacoesMatriculaForaPrazoService {
 
 	@Autowired
-	private SolicitacaoMatriculaForaPrazoRepositorio solicitacaoRepo;
+	private MatriculaForaPrazoRepositorio solicitacaoRepo;
 
 	@Autowired
 	private ProfessorRepositorio professorRepositorio;
 
 	public void homeInclusao(String matricula, Model model) {
 		Professor professor = getProfessorByMatricula(matricula);
-		List<SolicitacaoMatriculaForaPrazo> solicitacao = solicitacaoRepo
+		List<MatriculaForaPrazo> solicitacao = solicitacaoRepo
 				.findAll();
 		if (solicitacao != null) {
-			List<PeriodoLetivo> listaSemestresLetivos = SolicitacaoMatriculaForaPrazo
+			List<PeriodoLetivo> listaSemestresLetivos = MatriculaForaPrazo
 					.semestresCorrespondentes(solicitacao);
 			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
 		}
@@ -42,12 +42,12 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 			int ano, Model model) {
 		Professor professor = getProfessorByMatricula(matricula);
 		Long departamentoId = professor.getDepartmento().getId();
-		List<SolicitacaoMatriculaForaPrazo> solicitacoes = solicitacaoRepo
-				.getTodasSolicitacoesByDepartamentoSemestre(periodo, ano,
+		List<MatriculaForaPrazo> solicitacoes = solicitacaoRepo
+				.findMatriculasForaPrazoByDepartamentoAndSemestre(periodo, ano,
 						departamentoId);
 
-		for (SolicitacaoMatriculaForaPrazo solicitacaoInclusao : solicitacoes) {
-			Iterator<ItemSolicitacaoMatriculaForaPrazo> it = solicitacaoInclusao
+		for (MatriculaForaPrazo solicitacaoInclusao : solicitacoes) {
+			Iterator<ItemMatriculaForaPrazo> it = solicitacaoInclusao
 					.getItensSolicitacao().iterator();
 			while (it.hasNext()) {
 				if (!it.next().getDepartamento().getId().equals(departamentoId)) {
@@ -66,7 +66,7 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 
 	public void definirStatusSolicitacao(Long idSolicitacao,
 			Long idItemSolicitacao, String status) {
-		SolicitacaoMatriculaForaPrazo solicitacao = solicitacaoRepo
+		MatriculaForaPrazo solicitacao = solicitacaoRepo
 				.findOne(idSolicitacao);
 
 		solicitacao.definirStatusItem(idItemSolicitacao, status);

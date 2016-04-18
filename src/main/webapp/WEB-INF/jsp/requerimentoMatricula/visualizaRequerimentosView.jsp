@@ -6,9 +6,7 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SCA</title>
 
 <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
@@ -21,7 +19,7 @@
 
 </head>
 
-<body class="home-inclusao text-center">
+<body class="text-center">
 	<div class="container">
 		<div class="row">
 			<h2>Solicitação de Matrícula Fora do Prazo</h2>
@@ -65,7 +63,7 @@
 										<td>${semestreLetivo}</td>
 										<td>
 											<form
-												action="${pageContext.request.contextPath}/inclusaoDisciplina/listarSolicitacoes"
+												action="${pageContext.request.contextPath}/requerimentoMatricula/listarSolicitacoes"
 												method="POST">
 												<input type="hidden" name="ano"
 													value="${semestreLetivo.ano}"> <input type="hidden"
@@ -81,22 +79,22 @@
 				</c:otherwise>
 			</c:choose>
 			<div class="row">
-				<c:choose>
-					<c:when test="${numeroSolicitacoes lt 3}">
+<%-- 				<c:choose> --%>
+<%-- 					<c:when test="${numeroSolicitacoes lt 3}"> --%>
 						<form
-							action="${pageContext.request.contextPath}/inclusaoDisciplina/solicitaInclusaoDisciplinas"
+							action="${pageContext.request.contextPath}/requerimentoMatricula/solicitaInclusaoDisciplinas"
 							method="POST">
 							<input type="hidden" name="numeroSolicitacoes"
 								value="${numeroSolicitacoes}">
 							<button type="submit" class="btn btn-primary">Fazer
 								Solicitação</button>
 						</form>
-					</c:when>
-					<c:otherwise>
-						<span class="label label-warning">Você já fez o numero
-							máximo de solicitações para o período atual.</span>
-					</c:otherwise>
-				</c:choose>
+<%-- 					</c:when> --%>
+<%-- 					<c:otherwise> --%>
+<!-- 						<span class="label label-warning">Você já fez o numero -->
+<!-- 							máximo de solicitações para o período atual.</span> -->
+<%-- 					</c:otherwise> --%>
+<%-- 				</c:choose> --%>
 			</div>
 		</div>
 		<a class="btn btn-default"

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>SCA - Mattrícula Fora do Prazo</title>
+<title>SCA - Requerimento de Matrícula Fora do Prazo</title>
 
 <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
@@ -22,7 +22,7 @@
 	<div class="container">
 		<div class="row text-center">
 			<h2>
-				Solicitações de matrícula fora do parazo -
+				Requerimentos de matrícula fora do prazo -
 				<c:out value="${solicitacaoAtual.semestreLetivo}"></c:out>
 			</h2>
 			<h4>
@@ -78,7 +78,7 @@
 
 						<c:if test="${itemSolicitacao.comprovante != null}">
 							<form
-								action="${pageContext.request.contextPath}/inclusaoDisciplina/downloadFile"
+								action="${pageContext.request.contextPath}/requerimentoMatricula/downloadFile"
 								method="POST" target="_blank">
 								<input type="hidden" name="solicitacaoId"
 									value="${itemSolicitacao.id}">
@@ -93,7 +93,7 @@
 			</c:forEach>
 		</div>
 		<a class="btn btn-default"
-			href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao"> <i
+			href="${pageContext.request.contextPath}/requerimentoMatricula/visualizaRequerimentos"> <i
 			class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>
