@@ -92,10 +92,10 @@
 
 			<hr />
 			<div class="form-group">
-				<label for="observacao">Observações adicionais:</label>
+				<label for="observacoes">Observações adicionais:</label>
 
-				<textarea name="observacao" class="form-control" rows="6"
-					id="observacao" maxlength="500"
+				<textarea name="observacoes" class="form-control" rows="6"
+					id="observacoes" maxlength="500"
 					placeholder="(opcional, max 500 caracteres)"></textarea>
 
 				<h5>
@@ -195,15 +195,13 @@
 
 						<hr />
 						<div class="form-group">
-							<label for="turmasDisponiveis">Turmas disponíveis:</label> <br />
-							<select class="selectpicker" data-width="auto"
-								data-live-search="true" name="descritorTurma"
-								id="descritorTurma" required>
+							<label for="turmasDisponiveis">Turma:</label> <br /> <select
+								class="selectpicker" data-width="auto" data-live-search="true"
+								name="idTurma" id="idTurma" required>
 								<option value="" label="Escolha o departamento desejado"
 									selected disabled>Selecione</option>
 								<c:forEach items="${requestScope.turmasDisponiveis}" var="turma">
-									<option
-										value="${turma.codigo};${turma.disciplina.codigo};${turma.nomeDisciplina}">${turma.codigo}-
+									<option value="${turma.id}">${turma.codigo}-
 										${turma.nomeDisciplina}</option>
 								</c:forEach>
 							</select>

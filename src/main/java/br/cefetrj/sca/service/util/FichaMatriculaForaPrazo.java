@@ -19,19 +19,14 @@ public class FichaMatriculaForaPrazo {
 		private String codigoTurma;
 		private String codigoDisciplina;
 		private String nomeDisciplina;
-		private String descritorTurma;
 
-		public String getDescritorTurma() {
-			return descritorTurma;
-		}
-		
-		public ItemRequerimentoInfo(String codigoTurma, String codigoDisciplina, String nomeDisciplina,
+		public ItemRequerimentoInfo(String codigoTurma,
+				String codigoDisciplina, String nomeDisciplina,
 				String nomeDepartamento, int opcao) {
 			super();
 			this.codigoTurma = codigoTurma;
 			this.codigoDisciplina = codigoDisciplina;
 			this.nomeDisciplina = nomeDisciplina;
-			this.descritorTurma = codigoTurma + ";" + codigoDisciplina + ";" + nomeDisciplina;
 			this.nomeDepartamento = nomeDepartamento;
 			this.opcao = opcao;
 		}
@@ -63,7 +58,8 @@ public class FichaMatriculaForaPrazo {
 		private String nomeDepartamento;
 		private String codigoDepartamento;
 
-		public DepartamentoInfo(String nomeDepartamento, String codigoDepartamento) {
+		public DepartamentoInfo(String nomeDepartamento,
+				String codigoDepartamento) {
 			this.codigoDepartamento = codigoDepartamento;
 			this.nomeDepartamento = nomeDepartamento;
 		}
@@ -87,7 +83,8 @@ public class FichaMatriculaForaPrazo {
 
 	public void comDepartamentos(List<Departamento> departamentos) {
 		for (Departamento depto : departamentos) {
-			this.departamentos.add(new DepartamentoInfo(depto.getNome(), depto.getId().toString()));
+			this.departamentos.add(new DepartamentoInfo(depto.getNome(), depto
+					.getId().toString()));
 		}
 	}
 
@@ -103,17 +100,16 @@ public class FichaMatriculaForaPrazo {
 		return aluno;
 	}
 
-	public void adicionarItemRequerimento(String descritorTurma, String nomeDepartamento, int opcao) {
-		String[] componentes = descritorTurma.split(";");
-		String codigoTurma = componentes[0];
-		String codigoDisciplina = componentes[1];
-		String nomeDisciplina = componentes[2];
+	public void adicionarItemRequerimento(String codigoTurma,
+			String codigoDisciplina, String nomeDisciplina,
+			String nomeDepartamento, int opcao) {
 		if (isSolicitacaoRepetida(codigoTurma, codigoDisciplina)) {
 			throw new IllegalArgumentException(
-					"Erro: já existe uma solicitação para a turma/disciplina " + codigoTurma + "/" + codigoDisciplina);
+					"Erro: já existe uma solicitação para a turma/disciplina "
+							+ codigoTurma + "/" + codigoDisciplina);
 		} else {
-			ItemRequerimentoInfo item = new ItemRequerimentoInfo(codigoTurma, codigoDisciplina, nomeDisciplina,
-					nomeDepartamento, opcao);
+			ItemRequerimentoInfo item = new ItemRequerimentoInfo(codigoTurma,
+					codigoDisciplina, nomeDisciplina, nomeDepartamento, opcao);
 			itensRequerimentos.add(item);
 		}
 	}
@@ -122,22 +118,27 @@ public class FichaMatriculaForaPrazo {
 		return itensRequerimentos;
 	}
 
-	public void comSolicitacoes(final List<ItemMatriculaForaPrazo> itensSolicitacao) {
+	public void comSolicitacoes(
+			final List<ItemMatriculaForaPrazo> itensSolicitacao) {
 		for (ItemMatriculaForaPrazo item : itensSolicitacao) {
 			String nomeDepartamento = item.getDepartamento().getNome();
 			int opcao = item.getOpcao();
 			String nomeDisciplina = item.getTurma().getNomeDisciplina();
-			String codigoDisciplina = item.getTurma().getDisciplina().getCodigo();
+			String codigoDisciplina = item.getTurma().getDisciplina()
+					.getCodigo();
 			String codigoTurma = item.getTurma().getCodigo();
-			ItemRequerimentoInfo itemreq = new ItemRequerimentoInfo(codigoTurma, codigoDisciplina, nomeDisciplina,
+			ItemRequerimentoInfo itemreq = new ItemRequerimentoInfo(
+					codigoTurma, codigoDisciplina, nomeDisciplina,
 					nomeDepartamento, opcao);
 			itensRequerimentos.add(itemreq);
 		}
 	}
 
-	public boolean isSolicitacaoRepetida(String codigoTurma, String codigoDisciplina) {
+	public boolean isSolicitacaoRepetida(String codigoTurma,
+			String codigoDisciplina) {
 		for (ItemRequerimentoInfo item : itensRequerimentos) {
-			if (item.getCodigoTurma().equals(codigoTurma) && item.getCodigoDisciplina().equals(codigoDisciplina))
+			if (item.getCodigoTurma().equals(codigoTurma)
+					&& item.getCodigoDisciplina().equals(codigoDisciplina))
 				return true;
 		}
 		return false;
