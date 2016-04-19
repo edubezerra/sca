@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -32,7 +33,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	RoleToUserProfileConverter roleToUserProfileConverter;
 
-	@Override
+    @Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		super.addViewControllers(registry);
 		registry.addViewController("login/form").setViewName("login");
@@ -41,6 +42,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addViewController("admin").setViewName("admin");
 	}
 
+    @Bean(name = "multipartResolver")
+    public StandardServletMultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
+    
 	@Bean
 	public ViewResolver resolver() {
 		InternalResourceViewResolver url = new InternalResourceViewResolver();

@@ -9,26 +9,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SCA</title>
 
-<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
+<link
+	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 
 </head>
 
 <body class="text-center">
 	<div class="container">
 		<div class="row">
-			<h2>Solicitação de Matrícula Fora do Prazo</h2>
-			<h4>
-				Aluno:
-				<c:out value="${requestScope.aluno.nome}"></c:out>
-				(Matrícula:
-				<c:out value="${requestScope.aluno.matricula}"></c:out>)
-			</h4>
+			<h2>Requerimentos de Matrícula Fora do Prazo</h2>
+			<h4>Aluno: ${requestScope.aluno.nome} (Matrícula
+				${requestScope.aluno.matricula})</h4>
 		</div>
 		<c:if test="${requestScope.sucesso != null}">
 			<div class="row">
@@ -44,57 +42,46 @@
 			<c:choose>
 				<c:when test="${fn:length(requestScope.listaSemestresLetivos) eq 0}">
 					<div class="vcenter well ">
-						<p>Não há solicitações anteriores</p>
+						<p>Não há requerimentos anteriores.</p>
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div class="table-responsive">
-						<h4>Solicitações anteriores:</h4>
-						<table class="table table-bordered text-center">
-							<thead>
+
+					<table class="table table-bordered table-hover table-striped">
+						<thead>
+							<tr>
+								<th>Requerimentos por Período Letivo</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${listaSemestresLetivos}" var="periodoLetivo">
 								<tr>
-									<th class="text-center">Período Letivo</th>
-									<th></th>
+									<td>
+										<form
+											action="${pageContext.request.contextPath}/requerimentoMatricula/visualizarDetalhesRequerimento"
+											method="POST">
+											<input type="hidden" name="ano" value="${periodoLetivo.ano}">
+											<input type="hidden" name="periodo"
+												value="${periodoLetivo.periodo}">
+											<button type="submit" class="btn btn-link">${periodoLetivo}</button>
+										</form>
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${listaSemestresLetivos}" var="semestreLetivo">
-									<tr>
-										<td>${semestreLetivo}</td>
-										<td>
-											<form
-												action="${pageContext.request.contextPath}/requerimentoMatricula/listarSolicitacoes"
-												method="POST">
-												<input type="hidden" name="ano"
-													value="${semestreLetivo.ano}"> <input type="hidden"
-													name="periodo" value="${semestreLetivo.periodo}">
-												<button type="submit" class="btn btn-link">Detalhes</button>
-											</form>
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
+							</c:forEach>
+						</tbody>
+					</table>
+
 				</c:otherwise>
 			</c:choose>
 			<div class="row">
-<%-- 				<c:choose> --%>
-<%-- 					<c:when test="${numeroSolicitacoes lt 3}"> --%>
-						<form
-							action="${pageContext.request.contextPath}/requerimentoMatricula/solicitaInclusaoDisciplinas"
-							method="POST">
-							<input type="hidden" name="numeroSolicitacoes"
-								value="${numeroSolicitacoes}">
-							<button type="submit" class="btn btn-primary">Fazer
-								Solicitação</button>
-						</form>
-<%-- 					</c:when> --%>
-<%-- 					<c:otherwise> --%>
-<!-- 						<span class="label label-warning">Você já fez o numero -->
-<!-- 							máximo de solicitações para o período atual.</span> -->
-<%-- 					</c:otherwise> --%>
-<%-- 				</c:choose> --%>
+				<%-- 				<c:choose> --%>
+				<%-- 					<c:when test="${numeroSolicitacoes lt 3}"> --%>
+				<form
+					action="${pageContext.request.contextPath}/requerimentoMatricula/solicitaInclusaoDisciplinas"
+					method="POST">
+					<button type="submit" class="btn btn-primary">Realizar
+						Novo Requerimento</button>
+				</form>
 			</div>
 		</div>
 		<a class="btn btn-default"

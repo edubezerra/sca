@@ -3,36 +3,48 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <html>
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>SCA - Requerimento de Matrícula Fora do Prazo</title>
 
-<link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
+<link
+	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
+
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 
 </head>
+
 <body class="lista-solicitacoes">
 	<div class="container">
 		<div class="row text-center">
-			<h2>
-				Requerimentos de matrícula fora do prazo -
-				<c:out value="${solicitacaoAtual.semestreLetivo}"></c:out>
-			</h2>
-			<h4>
-				Aluno:
-				<c:out value="${aluno.nome}"></c:out>
-			</h4>
-			<h4>
-				Matricula:
-				<c:out value="${aluno.matricula}"></c:out>
-			</h4>
+			<h2>Requerimento de matrícula fora do prazo -
+				${solicitacaoAtual.semestreLetivo}</h2>
+
+			<h3>Aluno: ${aluno.nome} (matrícula ${aluno.matricula})</h3>
+
+			<h3>
+				<c:if test="${solicitacaoAtual.comprovante != null}">
+					<form
+						action="${pageContext.request.contextPath}/requerimentoMatricula/downloadFile"
+						method="POST" target="_blank">
+						<input type="hidden" name="solicitacaoId"
+							value="${solicitacaoAtual.id}">
+						<button type="submit" class="btn btn-link">
+							<i class="fa fa-download fa-2x"></i>
+							<h4 class="comprovante">Comprovante da Matrícula no Período</h4>
+						</button>
+					</form>
+				</c:if>
+			</h3>
+
 		</div>
 		<div class="row">
 			<c:forEach items="${solicitacaoAtual.itensSolicitacao}"
@@ -43,7 +55,7 @@
 							<b>Departamento:</b> ${itemSolicitacao.departamento.nome}
 						</p>
 						<p>
-							<b>Discipilna solicitada:</b>
+							<b>Item solicitado:</b>
 							${itemSolicitacao.turma.disciplina.codigo} -
 							${itemSolicitacao.turma.disciplina.nome}
 						</p>
@@ -54,7 +66,13 @@
 							<b>Data da solicitação:</b> ${itemSolicitacao.dataSolicitacao}
 						</p>
 						<p>
-							<b>Observações:</b> ${itemSolicitacao.observacao}
+							<b>Observações:</b>
+							<c:if test="${itemSolicitacao.observacao eq ''}">
+								sem observações.
+							</c:if>
+							<c:if test="${itemSolicitacao.observacao != null}">
+								${itemSolicitacao.observacao}
+							</c:if>
 						</p>
 					</div>
 					<div class="status text-center">
@@ -75,26 +93,13 @@
 						<p class="${classeStatus}">
 							<b>${itemSolicitacao.status}</b>
 						</p>
-
-						<c:if test="${itemSolicitacao.comprovante != null}">
-							<form
-								action="${pageContext.request.contextPath}/requerimentoMatricula/downloadFile"
-								method="POST" target="_blank">
-								<input type="hidden" name="solicitacaoId"
-									value="${itemSolicitacao.id}">
-								<button type="submit" class="btn btn-link">
-									<i class="fa fa-download fa-2x"></i>
-									<h4 class="comprovante">Comprovante</h4>
-								</button>
-							</form>
-						</c:if>
 					</div>
 				</div>
 			</c:forEach>
 		</div>
 		<a class="btn btn-default"
-			href="${pageContext.request.contextPath}/requerimentoMatricula/visualizaRequerimentos"> <i
-			class="fa fa-arrow-left"> </i> Voltar
+			href="${pageContext.request.contextPath}/requerimentoMatricula/visualizaRequerimentos">
+			<i class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>
 

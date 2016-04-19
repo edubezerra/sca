@@ -36,7 +36,7 @@
 
 <body>
 	<div class="container">
-		<h1 class="text-center">Requerimento de Matrícula Fora do Prazo</h1>
+		<h1 class="text-center">Requerimento de Matrícula Fora do Prazo (${requestScope.periodoLetivo})</h1>
 
 		<h3 class="aluno">Aluno: ${requestScope.aluno.nome}
 			(${requestScope.aluno.matricula})</h3>
@@ -123,12 +123,13 @@
 
 			<hr />
 			<div class=text-center>
-				<button type="submit" class="btn btn-primary btn-lg text-center">Confirmar</button>
+				<button type="submit" name="submit"
+					class="btn btn-primary btn-lg text-center">Confirmar</button>
 			</div>
 		</form>
 
 		<a class="btn btn-default"
-			href="${pageContext.request.contextPath}/requerimetoMatricula/homeInclusao">
+			href="${pageContext.request.contextPath}/requerimentoMatricula/visualizaRequerimentos">
 			<i class="fa fa-arrow-left"> </i> Voltar
 		</a>
 
@@ -244,7 +245,6 @@
 			</div>
 		</div>
 	</form:form>
-
 </body>
 
 </html>

@@ -30,8 +30,7 @@ public class FichaMatriculaForaPrazoFabrica {
 		List<Departamento> departamentos = departamentoRepo.findAll();
 		ficha.comDepartamentos(departamentos);
 
-		MatriculaForaPrazo solicitacao = this
-				.getSolicitacaoAtual(matriculaAluno);
+		MatriculaForaPrazo solicitacao = this.getSolicitacaoAtual(matriculaAluno);
 		if (solicitacao != null) {
 			ficha.comSolicitacoes(solicitacao.getItensSolicitacao());
 		}
@@ -44,11 +43,9 @@ public class FichaMatriculaForaPrazoFabrica {
 
 	private MatriculaForaPrazo getSolicitacaoAtual(String matriculaAluno) {
 		Aluno aluno = alunoRepo.findAlunoByMatricula(matriculaAluno);
-		Long idAluno = aluno.getId();
 		PeriodoLetivo periodoLetivo = PeriodoLetivo.PERIODO_CORRENTE;
 		MatriculaForaPrazo solicitacaoAtual = matriculaForaPrazoRepositorio
-				.findMatriculaForaPrazoByAlunoAndSemestre(idAluno,
-						periodoLetivo);
+				.findMatriculaForaPrazoByAlunoAndSemestre(aluno, periodoLetivo);
 		return solicitacaoAtual;
 	}
 

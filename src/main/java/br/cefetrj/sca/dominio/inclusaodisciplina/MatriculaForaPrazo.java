@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,29 +29,30 @@ public class MatriculaForaPrazo {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "SOLICITACAO_INCLUSAO_ID", referencedColumnName = "ID")
-	private List<ItemMatriculaForaPrazo> itensMatriculaForaPrazo;
+	private List<ItemMatriculaForaPrazo> itensMatriculaForaPrazo = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Aluno aluno;
 
+	@Embedded
 	private PeriodoLetivo semestreLetivo;
 
 	private String observacoes;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	public Comprovante comprovante;
 
 	@SuppressWarnings("unused")
 	private MatriculaForaPrazo() {
 	}
 
-	public MatriculaForaPrazo(List<ItemMatriculaForaPrazo> itemSolicitacao, Aluno aluno, PeriodoLetivo semestreLetivo) {
-		if (itemSolicitacao == null || aluno == null || semestreLetivo == null) {
-			throw new IllegalArgumentException("Erro: argumentos inválidos para SolicitacaoInclusao().");
-		}
+	public MatriculaForaPrazo(Aluno aluno, PeriodoLetivo semestreLetivo) {
+//		if (itens == null || aluno == null || semestreLetivo == null) {
+//			throw new IllegalArgumentException("Erro: argumentos inválidos para SolicitacaoInclusao().");
+//		}
 		this.itensMatriculaForaPrazo = new ArrayList<>();
-		this.itensMatriculaForaPrazo.addAll(itemSolicitacao);
+//		this.itensMatriculaForaPrazo.addAll(itens);
 		this.aluno = aluno;
 		this.semestreLetivo = semestreLetivo;
 	}

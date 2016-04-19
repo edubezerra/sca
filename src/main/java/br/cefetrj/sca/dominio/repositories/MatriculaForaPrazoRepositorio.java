@@ -6,41 +6,34 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
 
-public interface MatriculaForaPrazoRepositorio extends
-		JpaRepository<MatriculaForaPrazo, Serializable> {
+public interface MatriculaForaPrazoRepositorio extends JpaRepository<MatriculaForaPrazo, Serializable> {
 
 	@Query("SELECT s FROM MatriculaForaPrazo s WHERE s.aluno.id = ?1")
 	public List<MatriculaForaPrazo> findMatriculasForaPrazoByAluno(Long idAluno);
 
-	@Query("SELECT s FROM MatriculaForaPrazo s "
-			+ "WHERE s.aluno.id = ?1 AND s.semestreLetivo = ?2 ")
-	public MatriculaForaPrazo findMatriculaForaPrazoByAlunoAndSemestre(
-			Long alunoId, PeriodoLetivo periodo);
+	@Query("SELECT s FROM MatriculaForaPrazo s " + "WHERE s.aluno = ?1 AND s.semestreLetivo = ?2 ")
+	public MatriculaForaPrazo findMatriculaForaPrazoByAlunoAndSemestre(Aluno aluno, PeriodoLetivo periodo);
 
-	@Query("SELECT t FROM ItemMatriculaForaPrazo i, MatriculaForaPrazo s, Turma t "
-			+ "WHERE s.aluno.id = ?1 "
-			+ "AND s.semestreLetivo.ano = ?2 "
-			+ "AND s.semestreLetivo.periodo = ?3 "
-			+ "AND t.codigo = ?4 "
+	@Query("SELECT t FROM ItemMatriculaForaPrazo i, MatriculaForaPrazo s, Turma t " + "WHERE s.aluno.id = ?1 "
+			+ "AND s.semestreLetivo.ano = ?2 " + "AND s.semestreLetivo.periodo = ?3 " + "AND t.codigo = ?4 "
 			+ "AND t.id = i.turma.id")
-	public Turma getTurmaSolicitada(Long idAluno, String codigoTurma, int ano,
-			EnumPeriodo periodo);
+	public Turma getTurmaSolicitada(Long idAluno, String codigoTurma, int ano, EnumPeriodo periodo);
 
-	@Query("SELECT s FROM MatriculaForaPrazo s "
-			+ "WHERE s.semestreLetivo.ano = ?1 "
+	@Query("SELECT s FROM MatriculaForaPrazo s " + "WHERE s.semestreLetivo.ano = ?1 "
 			+ "AND s.semestreLetivo.periodo = ?2")
-	public List<MatriculaForaPrazo> findMatriculasForaPrazoBySemestre(
-			EnumPeriodo periodo, int ano);
+	public List<MatriculaForaPrazo> findMatriculasForaPrazoBySemestre(EnumPeriodo periodo, int ano);
 
 	@Query("SELECT DISTINCT s FROM MatriculaForaPrazo s "
-			+ "JOIN s.itensMatriculaForaPrazo i WHERE s.semestreLetivo.ano = ?1 "
-			+ "AND s.semestreLetivo.periodo = ?2 "
+			+ "JOIN s.itensMatriculaForaPrazo i WHERE s.semestreLetivo.ano = ?1 " + "AND s.semestreLetivo.periodo = ?2 "
 			+ "AND i.departamento.id = ?3")
-	public List<MatriculaForaPrazo> findMatriculasForaPrazoByDepartamentoAndSemestre(
-			EnumPeriodo periodo, int ano, Long departamentoId);
+	public List<MatriculaForaPrazo> findMatriculasForaPrazoByDepartamentoAndSemestre(EnumPeriodo periodo, int ano,
+			Long departamentoId);
+
+	public MatriculaForaPrazo findMatriculaForaPrazoById(Long solicitacaoId);
 }

@@ -13,8 +13,11 @@
 		<junit.version>4.11</junit.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<logback.version>1.0.13</logback.version>
+		
 		<spring.version>4.0.0.RELEASE</spring.version>
+		
 		<spring-data-jpa.version>1.4.1.RELEASE</spring-data-jpa.version>
+
 		<spring-security.version>3.2.0.RELEASE</spring-security.version>
 		<hibernate.version>4.2.6.Final</hibernate.version>
 		<aspectj.version>1.7.2</aspectj.version>
@@ -62,9 +65,6 @@
 		</dependency>
 
 		<!-- Spring dependencies -->
-
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -79,7 +79,9 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -221,12 +223,14 @@
 			<version>1.1.1</version>
 		</dependency>
 
+		<!-- Apache Commons IO -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
 
+		<!-- Apache Commons FileUpload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>

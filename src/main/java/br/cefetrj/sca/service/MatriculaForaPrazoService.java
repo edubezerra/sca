@@ -46,15 +46,13 @@ public class MatriculaForaPrazoService {
 
 	public Turma findTurmaByCodigo(String codigoTurma) {
 		if (codigoTurma == null || codigoTurma.trim().equals("")) {
-			throw new IllegalArgumentException("Turma " + codigoTurma
-					+ " inválido");
+			throw new IllegalArgumentException("Turma " + codigoTurma + " inválido");
 		}
 
 		Turma turma;
 
 		try {
-			turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(
-					codigoTurma, PeriodoLetivo.PERIODO_CORRENTE);
+			turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codigoTurma, PeriodoLetivo.PERIODO_CORRENTE);
 		} catch (Exception exc) {
 			turma = null;
 		}
@@ -62,28 +60,18 @@ public class MatriculaForaPrazoService {
 		return turma;
 	}
 
-	public MatriculaForaPrazo findMatriculaForaPrazoByAlunoAndPeriodo(
-			Long alunoId, PeriodoLetivo periodo) {
-		return matriculaForaPrazoRepositorio
-				.findMatriculaForaPrazoByAlunoAndSemestre(alunoId, periodo);
-	}
-
 	public List<MatriculaForaPrazo> findMatriculasForaPrazoByAluno(Long idAluno) {
-		return matriculaForaPrazoRepositorio
-				.findMatriculasForaPrazoByAluno(idAluno);
+		return matriculaForaPrazoRepositorio.findMatriculasForaPrazoByAluno(idAluno);
 	}
 
-	public void incluirItensSolicitacao(
-			List<ItemMatriculaForaPrazo> itensSolicitacao, Aluno aluno,
+	public void incluirItensSolicitacao(List<ItemMatriculaForaPrazo> itensSolicitacao, Aluno aluno,
 			PeriodoLetivo semestreLetivo) {
 
-		MatriculaForaPrazo solicitacao = findMatriculaForaPrazoByAlunoAndPeriodo(
-				aluno.getId(), semestreLetivo);
+		MatriculaForaPrazo solicitacao = findMatriculaForaPrazoByAlunoAndPeriodo(aluno, semestreLetivo);
 		if (solicitacao != null) {
 			solicitacao.addItensSolicitacao(itensSolicitacao);
 		} else {
-			solicitacao = new MatriculaForaPrazo(itensSolicitacao, aluno,
-					semestreLetivo);
+			solicitacao = new MatriculaForaPrazo(aluno, semestreLetivo);
 		}
 
 		matriculaForaPrazoRepositorio.save(solicitacao);
@@ -98,21 +86,21 @@ public class MatriculaForaPrazoService {
 	// return solicitacaoAtual;
 	// }
 
-	public void registrarSolicitacao(FichaMatriculaForaPrazo ficha)
-			throws IOException {
+	public void registrarSolicitacao(FichaMatriculaForaPrazo ficha) throws IOException {
 
 		MatriculaForaPrazo matriculaForaPrazo = matriculaForaPrazoRepositorio
-				.findMatriculaForaPrazoByAlunoAndSemestre(ficha.getAluno()
-						.getId(), PeriodoLetivo.PERIODO_CORRENTE);
+				.findMatriculaForaPrazoByAlunoAndSemestre(ficha.getAluno(), PeriodoLetivo.PERIODO_CORRENTE);
+
+		if (matriculaForaPrazo == null) {
+			matriculaForaPrazo = new MatriculaForaPrazo(ficha.getAluno(), PeriodoLetivo.PERIODO_CORRENTE);
+		}
 
 		for (ItemRequerimentoInfo item : ficha.getItensRequerimentos()) {
 			String codigoTurma = item.getCodigoTurma();
 			String codigoDisciplina = item.getCodigoDisciplina();
-			Turma turma = turmaRepositorio
-					.findTurmaByCodigoAndDisciplinaAndPeriodo(codigoTurma,
-							codigoDisciplina, PeriodoLetivo.PERIODO_CORRENTE);
-			Departamento depto = departamentoRepositorio
-					.findDepartamentoByNome(item.getNomeDepartamento());
+			Turma turma = turmaRepositorio.findTurmaByCodigoAndDisciplinaAndPeriodo(codigoTurma, codigoDisciplina,
+					PeriodoLetivo.PERIODO_CORRENTE);
+			Departamento depto = departamentoRepositorio.findDepartamentoByNome(item.getNomeDepartamento());
 			int opcao = item.getOpcao();
 			matriculaForaPrazo.addItem(turma, depto, opcao);
 		}
@@ -134,5 +122,18 @@ public class MatriculaForaPrazoService {
 
 	public Turma findTurmaById(Long idTurma) {
 		return turmaRepositorio.findOne(idTurma);
+	}
+
+	public MatriculaForaPrazo findMatriculaForaPrazoById(Long solicitacaoId) {
+		return matriculaForaPrazoRepositorio.findMatriculaForaPrazoById(solicitacaoId);
+	}
+
+	public MatriculaForaPrazo findMatriculaForaPrazoByAlunoAndPeriodo(String matriculaAluno, PeriodoLetivo periodo) {
+		Aluno aluno = alunoRepositorio.findAlunoByMatricula(matriculaAluno);
+		return matriculaForaPrazoRepositorio.findMatriculaForaPrazoByAlunoAndSemestre(aluno, periodo);
+	}
+
+	public MatriculaForaPrazo findMatriculaForaPrazoByAlunoAndPeriodo(Aluno aluno, PeriodoLetivo periodo) {
+		return matriculaForaPrazoRepositorio.findMatriculaForaPrazoByAlunoAndSemestre(aluno, periodo);
 	}
 }
