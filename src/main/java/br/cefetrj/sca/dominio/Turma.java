@@ -127,8 +127,7 @@ public class Turma {
 	 * @param periodo
 	 *            período letivo em que a turma é ofertada
 	 */
-	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas,
-			PeriodoLetivo periodo) {
+	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas, PeriodoLetivo periodo) {
 
 		this(disciplina, codigo);
 
@@ -136,8 +135,7 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas indefinido!");
 		}
 		if (numeroVagas <= 0) {
-			throw new IllegalArgumentException(
-					"Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
 		}
 		this.capacidadeMaxima = numeroVagas;
 
@@ -201,15 +199,12 @@ public class Turma {
 	public void inscreverAluno(Aluno aluno) {
 		if (inscricoes.size() + 1 > capacidadeMaxima) {
 			throw new IllegalStateException(
-					"Inscrição não realizada. Limite de vagas já alcançado ("
-							+ capacidadeMaxima + ")");
+					"Inscrição não realizada. Limite de vagas já alcançado (" + capacidadeMaxima + ")");
 		} else {
 			Inscricao inscricao = new Inscricao(aluno);
 			for (Inscricao umaInscricao : inscricoes) {
-				if (umaInscricao.getAluno().getMatricula()
-						.equals(aluno.getMatricula())) {
-					throw new IllegalArgumentException(
-							"Aluno já inscrito na turma.");
+				if (umaInscricao.getAluno().getMatricula().equals(aluno.getMatricula())) {
+					throw new IllegalArgumentException("Aluno já inscrito na turma.");
 				}
 			}
 			this.inscricoes.add(inscricao);
@@ -232,12 +227,10 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas é obrigatório.");
 		}
 		if (capacidadeMaxima <= 0) {
-			throw new IllegalArgumentException(
-					"Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
 		}
 		if (capacidadeMaxima < inscricoes.size()) {
-			throw new IllegalArgumentException(
-					"Há mais inscritos do que a capacidade máxima fornecida.");
+			throw new IllegalArgumentException("Há mais inscritos do que a capacidade máxima fornecida.");
 		}
 		this.capacidadeMaxima = capacidadeMaxima;
 	}
@@ -270,10 +263,8 @@ public class Turma {
 		this.professor = professor;
 	}
 
-	public void adicionarAula(String diaSemana, String horarioInicio,
-			String horarioTermino, LocalAula local) {
-		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
-				horarioTermino, local);
+	public void adicionarAula(String diaSemana, String horarioInicio, String horarioTermino, LocalAula local) {
+		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio, horarioTermino, local);
 		this.aulas.add(a);
 	}
 
@@ -286,5 +277,18 @@ public class Turma {
 			return this.getProfessor().getNome();
 		else
 			return null;
+	}
+
+	public void lancarAvaliacao(FichaAvaliacoes.ItemFicha item) {
+		Inscricao inscricao = localizarInscricao(item.matriculaAluno);
+		if(inscricao != null){
+			inscricao.lancarAvaliacao(item);
+		}
+
+	}
+
+	private Inscricao localizarInscricao(String matriculaAluno) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
