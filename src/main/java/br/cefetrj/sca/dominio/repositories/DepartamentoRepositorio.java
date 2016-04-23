@@ -10,4 +10,6 @@ public interface DepartamentoRepositorio extends
 		JpaRepository<Departamento, Serializable> {
 
 	public Departamento findDepartamentoById(Long id);
+
+	public Departamento findDepartamentoByNome(String siglaDepartamento);
 }

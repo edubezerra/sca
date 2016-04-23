@@ -11,6 +11,8 @@ import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import br.cefetrj.sca.dominio.FichaAvaliacoes.ItemFicha;
+
 /**
  * Representa a inscrição de um aluno em um turma em um determinado semestre
  * letivo.
@@ -84,5 +86,10 @@ public class Inscricao {
 
 	public Long getId() {
 		return id;
+	}
+
+	public void lancarAvaliacao(ItemFicha item) {
+		// TODO Auto-generated method stub
+		
 	}
 }

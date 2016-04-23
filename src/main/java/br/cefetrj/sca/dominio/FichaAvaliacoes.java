@@ -37,10 +37,19 @@ public class FichaAvaliacoes {
 		return codigoTurma;
 	}
 
-	public void lancar(String matriculaAluno, 
-			BigDecimal notaP1, 
-			BigDecimal notaP2, 
-			BigDecimal notaP3,
+	public void lancar(String matriculaAluno, BigDecimal notaP1, BigDecimal notaP2, BigDecimal notaP3,
 			Integer qtdFaltas) {
+	}
+
+	public List<ItemFicha> getItensFicha() {
+		return itensFicha;
+	}
+
+	public void lancarAvaliacoesEmTurma(Turma turma) {
+		if (turma != null) {
+			for (FichaAvaliacoes.ItemFicha item : this.getItensFicha()) {
+				turma.lancarAvaliacao(item);
+			}
+		}
 	}
 }

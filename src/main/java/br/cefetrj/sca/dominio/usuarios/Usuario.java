@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import br.cefetrj.sca.dominio.Role;
+//import br.cefetrj.sca.dominio.Role;
 
 @Entity
 @Table(name = "USERS")
@@ -41,12 +41,12 @@ public class Usuario {
 	
 	private Date dob;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private Set<Role> roles = new HashSet<>();
+//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "user_id")
+//	private Set<Role> roles = new HashSet<>();
 
 	@NotEmpty
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "USER_PROFILE_ID") })
 	private Set<PerfilUsuario> userProfiles = new HashSet<PerfilUsuario>();
@@ -85,8 +85,8 @@ public class Usuario {
 		return nome;
 	}
 
-	public void setNome(String name) {
-		this.nome = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getEmail() {
@@ -121,13 +121,13 @@ public class Usuario {
 		this.dob = dob;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+//	public Set<Role> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(Set<Role> roles) {
+//		this.roles = roles;
+//	}
 
 	public Set<PerfilUsuario> getUserProfiles() {
 		return userProfiles;

@@ -59,7 +59,7 @@
 				<div class="form-group col-md-12">
 					<label class="col-md-3 control-lable" for="senha">Senha</label>
 					<div class="col-md-7">
-						<form:input type="password" path="senha" id="senha"
+						<form:input type="password" path="password" id="senha"
 							class="form-control input-sm" />
 						<div class="has-error">
 							<form:errors path="password" class="help-inline" />

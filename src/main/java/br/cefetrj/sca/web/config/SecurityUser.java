@@ -11,7 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.cefetrj.sca.dominio.Role;
+//import br.cefetrj.sca.dominio.Role;
+import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 
 public class SecurityUser extends Usuario implements UserDetails {
@@ -25,7 +26,7 @@ public class SecurityUser extends Usuario implements UserDetails {
 			this.setLogin(user.getLogin());
 			this.setPassword(user.getPassword());
 			this.setDob(user.getDob());
-			this.setRoles(user.getRoles());
+			this.setUserProfiles(user.getUserProfiles());
 		}
 	}
 
@@ -33,12 +34,12 @@ public class SecurityUser extends Usuario implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		Set<Role> userRoles = this.getRoles();
+		Set<PerfilUsuario> userRoles = this.getUserProfiles();
 
 		if (userRoles != null) {
-			for (Role role : userRoles) {
+			for (PerfilUsuario role : userRoles) {
 				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
-						role.getRoleName());
+						role.getType());
 				authorities.add(authority);
 			}
 		}

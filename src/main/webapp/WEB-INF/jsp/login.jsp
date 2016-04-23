@@ -28,13 +28,13 @@
 			<form:form id="loginForm" method="post" action="${rootURL}login" modelAttribute="user" 
 		class="form-horizontal" role="form" cssStyle="width: 800px; margin: 0 auto;">
 		  <div class="form-group">
-		    <label for="username" class="col-sm-2 control-label">UserName*</label>
+		    <label for="username" class="col-sm-2 control-label">Usuário*</label>
 		    <div class="col-sm-4">
 		      <input type="text" id="username" name="username" class="form-control" placeholder="UserName" />
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label for="password" class="col-sm-2 control-label">Password*</label>
+		    <label for="password" class="col-sm-2 control-label">Senha*</label>
 		    <div class="col-sm-4">
 		      <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
 		    </div>

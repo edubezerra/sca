@@ -5,19 +5,23 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.EnumStatusSolicitacao;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.Turma;
 
 @Entity
-public class SolicitacaoMatriculaForaPrazo {
+public class MatriculaForaPrazo {
 
 	@Id
 	@GeneratedValue
@@ -25,27 +29,30 @@ public class SolicitacaoMatriculaForaPrazo {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "SOLICITACAO_INCLUSAO_ID", referencedColumnName = "ID")
-	private List<ItemSolicitacaoMatriculaForaPrazo> itensSolicitacao;
+	private List<ItemMatriculaForaPrazo> itensMatriculaForaPrazo = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Aluno aluno;
 
+	@Embedded
 	private PeriodoLetivo semestreLetivo;
 
+	private String observacoes;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	public Comprovante comprovante;
+
 	@SuppressWarnings("unused")
-	private SolicitacaoMatriculaForaPrazo() {
+	private MatriculaForaPrazo() {
 	}
 
-	public SolicitacaoMatriculaForaPrazo(
-			List<ItemSolicitacaoMatriculaForaPrazo> itemSolicitacao,
-			Aluno aluno, PeriodoLetivo semestreLetivo) {
-		if (itemSolicitacao == null || aluno == null || semestreLetivo == null) {
-			throw new IllegalArgumentException(
-					"Erro: argumentos inválidos para SolicitacaoInclusao().");
-		}
-		this.itensSolicitacao = new ArrayList<>();
-		this.itensSolicitacao.addAll(itemSolicitacao);
+	public MatriculaForaPrazo(Aluno aluno, PeriodoLetivo semestreLetivo) {
+//		if (itens == null || aluno == null || semestreLetivo == null) {
+//			throw new IllegalArgumentException("Erro: argumentos inválidos para SolicitacaoInclusao().");
+//		}
+		this.itensMatriculaForaPrazo = new ArrayList<>();
+//		this.itensMatriculaForaPrazo.addAll(itens);
 		this.aluno = aluno;
 		this.semestreLetivo = semestreLetivo;
 	}
@@ -54,8 +61,8 @@ public class SolicitacaoMatriculaForaPrazo {
 		return id;
 	}
 
-	public List<ItemSolicitacaoMatriculaForaPrazo> getItensSolicitacao() {
-		return itensSolicitacao;
+	public List<ItemMatriculaForaPrazo> getItensSolicitacao() {
+		return itensMatriculaForaPrazo;
 	}
 
 	public Aluno getAluno() {
@@ -66,8 +73,8 @@ public class SolicitacaoMatriculaForaPrazo {
 		return semestreLetivo;
 	}
 
-	public void addItemSolicitacao(List<ItemSolicitacaoMatriculaForaPrazo> itens) {
-		this.itensSolicitacao.addAll(itens);
+	public void addItensSolicitacao(List<ItemMatriculaForaPrazo> itens) {
+		this.itensMatriculaForaPrazo.addAll(itens);
 	}
 
 	/**
@@ -78,11 +85,10 @@ public class SolicitacaoMatriculaForaPrazo {
 	 * 
 	 * @return conjunto de objetos <code>SemestreLetivo</code>.
 	 */
-	public static List<PeriodoLetivo> semestresCorrespondentes(
-			List<SolicitacaoMatriculaForaPrazo> solicitacoes) {
+	public static List<PeriodoLetivo> semestresCorrespondentes(List<MatriculaForaPrazo> solicitacoes) {
 		List<PeriodoLetivo> result = new ArrayList<>();
 		HashSet<PeriodoLetivo> set = new HashSet<>();
-		for (SolicitacaoMatriculaForaPrazo item : solicitacoes) {
+		for (MatriculaForaPrazo item : solicitacoes) {
 			PeriodoLetivo semestre = item.getSemestreLetivo();
 			if (!set.contains(semestre)) {
 				result.add(semestre);
@@ -93,8 +99,8 @@ public class SolicitacaoMatriculaForaPrazo {
 	}
 
 	public void definirStatusItem(Long idItemSolicitacao, String status) {
-		ItemSolicitacaoMatriculaForaPrazo itemSolicitacao = null;
-		for (ItemSolicitacaoMatriculaForaPrazo item : itensSolicitacao) {
+		ItemMatriculaForaPrazo itemSolicitacao = null;
+		for (ItemMatriculaForaPrazo item : itensMatriculaForaPrazo) {
 			if (item.getId().equals(idItemSolicitacao)) {
 				itemSolicitacao = item;
 				break;
@@ -107,5 +113,26 @@ public class SolicitacaoMatriculaForaPrazo {
 				itemSolicitacao.setStatus(EnumStatusSolicitacao.INDEFERIDO);
 			}
 		}
+	}
+
+	public void addItem(Turma turma, Departamento departamento, int opcao) {
+		ItemMatriculaForaPrazo item = new ItemMatriculaForaPrazo(turma, departamento, opcao);
+		itensMatriculaForaPrazo.add(item);
+	}
+
+	public void setComprovante(Comprovante comprovante) {
+		this.comprovante = comprovante;
+	}
+
+	public Comprovante getComprovante() {
+		return comprovante;
+	}
+
+	public void setObservacoes(String observacoes) {
+		this.observacoes = observacoes;
+	}
+	
+	public String getObservacoes() {
+		return observacoes;
 	}
 }
