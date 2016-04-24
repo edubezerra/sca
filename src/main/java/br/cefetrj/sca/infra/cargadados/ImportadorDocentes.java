@@ -106,19 +106,22 @@ public class ImportadorDocentes {
 			/**
 			 * Dados relativos aos docentes.
 			 */
-			String prof_matricula = sheet.getCell(
+			String matriculaProfessor = sheet.getCell(
 					colunasList.indexOf("MATR_EXTERNA"), i).getContents();
-			String prof_nome = sheet.getCell(
+			String nomeProfessor = sheet.getCell(
 					colunasList.indexOf("NOME_DOCENTE"), i).getContents();
 
-			if (prof_nome.isEmpty()) {
-				String nome_disciplina = sheet.getCell(
+			if (nomeProfessor.isEmpty()) {
+				String nomeDisciplina = sheet.getCell(
 						colunasList.indexOf("NOME_DISCIPLINA"), i)
 						.getContents();
-				System.err.println("Turma sem professor para disciplina "
-						+ nome_disciplina);
+				String codigoTurma = sheet.getCell(
+						colunasList.indexOf("COD_TURMA"), i).getContents();
+
+				System.err.println("Turma sem professor alocado: " + nomeDisciplina
+						+ "(turma " + codigoTurma + ")");
 			} else {
-				profs_nomes.put(prof_matricula, prof_nome);
+				profs_nomes.put(matriculaProfessor, nomeProfessor);
 			}
 		}
 	}

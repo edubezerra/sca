@@ -9,7 +9,7 @@ import br.cefetrj.sca.dominio.Departamento;
 public interface DepartamentoRepositorio extends
 		JpaRepository<Departamento, Serializable> {
 
-	public Departamento findDepartamentoById(Long id);
+	Departamento findDepartamentoById(Long id);
 
-	public Departamento findDepartamentoByNome(String siglaDepartamento);
+	Departamento findDepartamentoBySigla(String siglaDepartamento);
 }

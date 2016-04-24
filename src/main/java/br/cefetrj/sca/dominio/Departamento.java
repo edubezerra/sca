@@ -15,16 +15,19 @@ public class Departamento {
 	@GeneratedValue
 	private Long id;
 
+	private String sigla;
+
 	private String nome;
 
-	@OneToMany(mappedBy = "departamento")
+	@OneToMany
 	private Set<Professor> professores = new HashSet<Professor>();
 
 	@SuppressWarnings("unused")
 	private Departamento() {
 	}
 
-	public Departamento(String nome) {
+	public Departamento(String sigla, String nome) {
+		this.sigla = sigla;
 		this.nome = nome;
 	}
 
@@ -36,16 +39,17 @@ public class Departamento {
 		return nome;
 	}
 
-	public void setName(String deptName) {
+	public void setNome(String deptName) {
 		this.nome = deptName;
+	}
+
+	public String getSigla() {
+		return sigla;
 	}
 
 	public void addProfessor(Professor professor) {
 		if (!getProfessores().contains(professor)) {
 			getProfessores().add(professor);
-			if (professor.getDepartmento() != null) {
-				professor.getDepartmento().getProfessores().remove(professor);
-			}
 		}
 	}
 
@@ -56,4 +60,5 @@ public class Departamento {
 	public String toString() {
 		return "Departamento.id: " + getId() + ", nome: " + getNome();
 	}
+
 }

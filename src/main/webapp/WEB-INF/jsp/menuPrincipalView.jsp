@@ -53,8 +53,8 @@
 					href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
 						Avaliação de Turmas por Discentes </a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/requerimentoMatricula/visualizaRequerimentos">
-						Inclusão de Disciplina Fora de Prazo</a></li>
+					href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos">
+						Requerimento de Matrícula Fora de Prazo</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
 						Avaliação de Curso por Egresso</a></li>
@@ -69,10 +69,15 @@
 					href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
 						Fornecimento de Grade de Disponibilidades
 						(${requestScope.periodoLetivo})</a></li>
+			</ul>
+		</sec:authorize>
 
+		<sec:authorize access="hasRole('ROLE_COORDENADOR_CURSO')">
+			<h3>Coordenador de Curso</h3>
+			<ul>
 				<li><a
-					href="${pageContext.request.contextPath}/professor/homeInclusao/">
-						Análise de Solicitações de Matrícula Fora do Prazo</a></li>
+					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
+						Análise de Matrículas Fora do Prazo</a></li>
 			</ul>
 		</sec:authorize>
 

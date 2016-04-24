@@ -2,7 +2,7 @@
 <%@include file="taglib.jsp" %>
 <html>
 <head>
-<title>Login</title>
+<title>SCA - Login</title>
 <link href="${rootURL}resources/bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>

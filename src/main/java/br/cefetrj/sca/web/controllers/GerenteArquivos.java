@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 public class GerenteArquivos {
 

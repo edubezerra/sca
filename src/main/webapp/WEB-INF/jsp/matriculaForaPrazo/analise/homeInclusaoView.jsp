@@ -9,30 +9,26 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>SCA - Inclusão de disciplina</title>
+<title>SCA - Análise de Matrículas Fora do Prazo</title>
 
-<link href="${rootURL}resources/bootstrap/css/bootstrap.css"
+<link
+	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript"
-	src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
+	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
+
 <script type="text/javascript"
-	src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="${rootURL}resources/js/app.js"></script>
+	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 
 </head>
 
 <body class="home-inclusao text-center">
 	<div class="container">
 		<div class="row">
-			<h2>Avaliação de Solicitações de Marícula Fora do Prazo</h2>
-			<h4>
-				Professor:
-				<c:out value="${requestScope.professor.nome}"></c:out>
-			</h4>
-			<h4>
-				Matricula:
-				<c:out value="${requestScope.professor.matricula}"></c:out>
-			</h4>
+			<h2>Análise de Matrículas Fora do Prazo</h2>
+			<h4>Analisador: ${requestScope.professor.nome} (matrícula:
+				${requestScope.professor.matricula} )</h4>
 		</div>
 		<c:if test="${requestScope.sucesso != null}">
 			<div class="row">
@@ -48,16 +44,16 @@
 			<c:choose>
 				<c:when test="${fn:length(requestScope.listaSemestresLetivos) eq 0}">
 					<div class="vcenter well ">
-						<p>Não há solicitações</p>
+						<p>Não há requerimentos para analisar.</p>
 					</div>
 				</c:when>
 				<c:otherwise>
 					<div class="table-responsive">
-						<h4>Solicitações:</h4>
+						<h4>Requerimentos:</h4>
 						<table class="table table-bordered text-center">
 							<thead>
 								<tr>
-									<th class="text-center">Semestre Letivo</th>
+									<th class="text-center">Período Letivo</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -66,13 +62,14 @@
 									<tr>
 										<td>${semestreLetivo}</td>
 										<td>
-											<form action="${rootUrl}professor/listarSolicitacoes"
+											<form
+												action="${pageContext.request.contextPath}/matriculaForaPrazo/analise/listarSolicitacoes"
 												method="POST">
 												<input type="hidden" name="ano"
 													value="${semestreLetivo.ano}"> <input type="hidden"
 													name="periodo" value="${semestreLetivo.periodo}">
 												<button type="submit" class="btn btn-link">Ver
-													Solicitações</button>
+													Requerimentos</button>
 											</form>
 										</td>
 									</tr>
@@ -83,8 +80,9 @@
 				</c:otherwise>
 			</c:choose>
 		</div>
-		<a class="btn btn-default" href="${rootUrl}autenticacao/menuPrincipal">
-			<i class="fa fa-arrow-left"> </i> Voltar
+		<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
+			class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>
 

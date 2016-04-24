@@ -48,7 +48,7 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
 		return multipartConfigElement;
 	}
 
-	private static final String LOCATION = "C:/temp/"; // Temporary location
+	private static final String LOCATION = System.getProperty("java.io.tmpdir");//"C:/temp/"; // Temporary location
 														// where files will be
 														// stored
 

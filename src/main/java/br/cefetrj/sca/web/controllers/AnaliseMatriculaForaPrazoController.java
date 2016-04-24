@@ -7,32 +7,31 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
-import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
-import br.cefetrj.sca.service.AnaliseSolicitacoesMatriculaForaPrazoService;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.MatriculaForaPrazo;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
+import br.cefetrj.sca.service.AnaliseMatriculaForaPrazoService;
 
 @Controller
-@SessionAttributes("login")
-@RequestMapping("/professor")
-public class AnaliseSolicitacoesMatriculaForaPrazoController {
+@RequestMapping("/matriculaForaPrazo/analise")
+public class AnaliseMatriculaForaPrazoController {
 
 	@Autowired
-	AnaliseSolicitacoesMatriculaForaPrazoService service;
+	AnaliseMatriculaForaPrazoService service;
 
 	@RequestMapping(value = "/homeInclusao", method = RequestMethod.GET)
 	public String paginaInicialInclusao(HttpServletRequest request,
 			HttpSession session, Model model) {
 		try {
-			String login = (String) session.getAttribute("login");
-			service.homeInclusao(login, model);
-			return "/professor/homeInclusaoView";
+			Usuario usr = UsuarioController.getCurrentUser();
+			String matricula = usr.getLogin();
+			service.homeInclusao(matricula, model);
+			return "/matriculaForaPrazo/analise/homeInclusaoView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "/homeView";
@@ -40,13 +39,14 @@ public class AnaliseSolicitacoesMatriculaForaPrazoController {
 	}
 
 	@RequestMapping(value = "/listarSolicitacoes", method = RequestMethod.POST)
-	public String listarSolicitacoes(@ModelAttribute("login") String matricula,
-			@RequestParam int ano, @RequestParam EnumPeriodo periodo,
-			Model model) {
+	public String listarSolicitacoes(@RequestParam int ano,
+			@RequestParam EnumPeriodo periodo, Model model) {
 
 		try {
+			Usuario usr = UsuarioController.getCurrentUser();
+			String matricula = usr.getLogin();
 			service.listarSolicitacoes(matricula, periodo, ano, model);
-			return "/professor/listaSolicitacoesView";
+			return "/matriculaForaPrazo/analise/listaSolicitacoesView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "/homeView";
@@ -55,9 +55,10 @@ public class AnaliseSolicitacoesMatriculaForaPrazoController {
 
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session, Model model) {
-		String matricula = (String) session.getAttribute("login");
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matricula = usr.getLogin();
 		if (matricula != null) {
-			return "/professor/menuPrincipalProfessorView";
+			return "/matriculaForaPrazo/analise/menuPrincipalProfessorView";
 		} else {
 			return "/homeView";
 		}
@@ -70,12 +71,13 @@ public class AnaliseSolicitacoesMatriculaForaPrazoController {
 			@RequestParam Long idItemSolicitacao, @RequestParam int ano,
 			@RequestParam EnumPeriodo periodo) {
 		try {
-			String matricula = (String) session.getAttribute("login");
+			Usuario usr = UsuarioController.getCurrentUser();
+			String matricula = usr.getLogin();
 			service.definirStatusSolicitacao(idSolicitacao, idItemSolicitacao,
 					status);
 			service.listarSolicitacoes(matricula, periodo, ano, model);
 			model.addAttribute("sucesso", "Status do item foi atualizado!");
-			return "/professor/listaSolicitacoesView";
+			return "/matriculaForaPrazo/analise/listaSolicitacoesView";
 		} catch (Exception e) {
 			String erro = "Ocorreu um erro ao atualizar o status do item de soliticação.";
 			model.addAttribute("error", erro);
@@ -84,14 +86,16 @@ public class AnaliseSolicitacoesMatriculaForaPrazoController {
 	}
 
 	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
-	public void downloadFile(@ModelAttribute("login") String matricula,
-			@RequestParam Long solicitacaoId, HttpServletRequest request,
-			HttpServletResponse response) {
+	public void downloadFile(@RequestParam Long solicitacaoId,
+			HttpServletRequest request, HttpServletResponse response) {
 		try {
-			MatriculaForaPrazo requerimento = service.getMatriculaForaPrazoById(solicitacaoId);
+			Usuario usr = UsuarioController.getCurrentUser();
+			String matricula = usr.getLogin();
+			MatriculaForaPrazo requerimento = service
+					.getMatriculaForaPrazoById(solicitacaoId);
 			Comprovante comprovante = requerimento.getComprovante();
-			GerenteArquivos.downloadFile(matricula, solicitacaoId, request, response,
-					comprovante);
+			GerenteArquivos.downloadFile(matricula, solicitacaoId, request,
+					response, comprovante);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

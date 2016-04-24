@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import br.cefetrj.sca.dominio.contas.Email;
@@ -21,8 +20,6 @@ import br.cefetrj.sca.dominio.gradesdisponibilidade.GradeDisponibilidade;
 
 @Entity
 public class Professor {
-	private static final int TAMANHO_MATRICULA = 7;
-
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -36,16 +33,11 @@ public class Professor {
 	private Set<GradeDisponibilidade> grades;
 
 	@ManyToMany(cascade = CascadeType.MERGE)
-	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = {
-			@JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
-					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
+	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = { @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
 	private Set<Disciplina> habilitacoes = new HashSet<>();
 
 	@Embedded
 	Pessoa pessoa;
-	
-	@ManyToOne
-	private Departamento departamento;
 
 	public Long getId() {
 		return id;
@@ -75,7 +67,8 @@ public class Professor {
 		// + TAMANHO_MATRICULA + ".");
 		// }
 		if (!contemApenasDigitos(matricula)) {
-			throw new IllegalArgumentException("Matrícula deve conter apenas dígitos: " + matricula + ".");
+			throw new IllegalArgumentException(
+					"Matrícula deve conter apenas dígitos: " + matricula + ".");
 		}
 		this.matricula = matricula;
 	}
@@ -119,12 +112,11 @@ public class Professor {
 	}
 
 	public void removerHabilitacoes(List<String> nomesDisciplinas) {
+		for (String nome : nomesDisciplinas) {
+			
+		}
 		// TODO Auto-generated method stub
 
-	}
-
-	public Departamento getDepartmento() {
-		return departamento;
 	}
 
 	public void habilitarPara(Disciplina d) {

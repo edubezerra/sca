@@ -1,4 +1,4 @@
-package br.cefetrj.sca.dominio.inclusaodisciplina;
+package br.cefetrj.sca.dominio.matriculaforaprazo;
 
 import java.util.Date;
 

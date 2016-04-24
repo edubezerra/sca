@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 
 /**

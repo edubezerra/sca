@@ -10,13 +10,13 @@ import org.springframework.ui.Model;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemMatriculaForaPrazo;
-import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
+import br.cefetrj.sca.dominio.matriculaforaprazo.ItemMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.matriculaforaprazo.MatriculaForaPrazo;
 import br.cefetrj.sca.dominio.repositories.MatriculaForaPrazoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
 @Service
-public class AnaliseSolicitacoesMatriculaForaPrazoService {
+public class AnaliseMatriculaForaPrazoService {
 
 	@Autowired
 	private MatriculaForaPrazoRepositorio solicitacaoRepo;
@@ -28,7 +28,7 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 		Professor professor = getProfessorByMatricula(matricula);
 		List<MatriculaForaPrazo> solicitacao = solicitacaoRepo.findAll();
 		if (solicitacao != null) {
-			List<PeriodoLetivo> listaSemestresLetivos = MatriculaForaPrazo.semestresCorrespondentes(solicitacao);
+			List<PeriodoLetivo> listaSemestresLetivos = MatriculaForaPrazo.periodosCorrespondentes(solicitacao);
 			model.addAttribute("listaSemestresLetivos", listaSemestresLetivos);
 		}
 
@@ -42,7 +42,7 @@ public class AnaliseSolicitacoesMatriculaForaPrazoService {
 				.findMatriculasForaPrazoByDepartamentoAndSemestre(periodo, ano, departamentoId);
 
 		for (MatriculaForaPrazo solicitacaoInclusao : solicitacoes) {
-			Iterator<ItemMatriculaForaPrazo> it = solicitacaoInclusao.getItensSolicitacao().iterator();
+			Iterator<ItemMatriculaForaPrazo> it = solicitacaoInclusao.getItens().iterator();
 			while (it.hasNext()) {
 				if (!it.next().getDepartamento().getId().equals(departamentoId)) {
 					it.remove();

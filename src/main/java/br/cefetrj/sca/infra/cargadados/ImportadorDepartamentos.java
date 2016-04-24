@@ -12,28 +12,28 @@ public class ImportadorDepartamentos {
 
 		em.getTransaction().begin();
 
-		Departamento dep1 = criaDepartamento("DEMAT");
-		Departamento dep2 = criaDepartamento("DEPEA");
-		Departamento dep3 = criaDepartamento("DEMEC");
-		Departamento dep4 = criaDepartamento("DEPRO");
-		Departamento dep5 = criaDepartamento("DEPEC");
-		Departamento dep6 = criaDepartamento("DEELE");
-		Departamento dep7 = criaDepartamento("DEPIN");
-		Departamento dep8 = criaDepartamento("DEAMB");
-		Departamento dep9 = criaDepartamento("DEFIS");
-		Departamento dep10 = criaDepartamento("DECAP Química");
-		Departamento dep11 = criaDepartamento("DECAP Desenho");
-		Departamento dep12 = criaDepartamento("DEELT");
-		Departamento dep13 = criaDepartamento("DETEL");
-		Departamento dep14 = criaDepartamento("DECAU");
+		Departamento dep1 = criar("DEMAT", "Departamento de Matemática");
+		Departamento dep2 = criar("DEPEA", "Departamento de Administração");
+		Departamento dep3 = criar("DEMEC", "Departamento de Engenharia Mecânica");
+		Departamento dep4 = criar("DEPRO", "Departamento de Engenharia de Produção");
+		Departamento dep5 = criar("DEPEC", "Departamento de Engenharia Civil");
+		Departamento dep6 = criar("DEELE", "Departamento de ");
+		Departamento dep7 = criar("DEPIN", "Departamento de Informática");
+		Departamento dep8 = criar("DEAMB", "Departamento de Engenharia Ambiental");
+		Departamento dep9 = criar("DEFIS", "Departamento de Física");
+		Departamento dep10 = criar("DECAP Química", "Departamento de Ciência Aplicadas - Química");
+		Departamento dep11 = criar("DECAP Desenho", "Departamento de Ciência Aplicadas - Desenho");
+		Departamento dep12 = criar("DEELT", "Departamento de Engenharia Eletrônica");
+		Departamento dep13 = criar("DETEL", "Departamento de Engenharia de Telecomunicações");
+		Departamento dep14 = criar("DECAU", "Departamento de Engenharia de Automação");
 
 		Departamento[] departamentos = new Departamento[] { dep1, dep2, dep3,
 				dep4, dep5, dep6, dep7, dep8, dep9, dep10, dep11, dep12, dep13,
 				dep14 };
 
 		for (Departamento departamento : departamentos) {
-			System.out.println("Importando departamento:"
-					+ departamento.getNome());
+			System.out.println("Importando departamento "
+					+ departamento.getSigla());
 			em.persist(departamento);
 		}
 
@@ -42,7 +42,7 @@ public class ImportadorDepartamentos {
 		System.out.println("Departamentos Importados com sucesso");
 	}
 
-	private static Departamento criaDepartamento(String nome) {
-		return new Departamento(nome);
+	private static Departamento criar(String sigla, String nome) {
+		return new Departamento(sigla, nome);
 	}
 }

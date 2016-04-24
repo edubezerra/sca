@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.isencoes.SolicitacaoIsencaoDisciplinas;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 public interface SolicitacaoIsencaoDisciplinasRepositorio extends
 		JpaRepository<SolicitacaoIsencaoDisciplinas, Serializable> {

@@ -1,7 +1,7 @@
 package br.cefetrj.sca.web.controllers;
 
-import java.text.ParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -11,30 +11,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.service.MatriculaForaPrazoService;
+import br.cefetrj.sca.service.RequerimentoMatriculaForaPrazoService;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/rest")
 public class ScaRestController {
 
-	protected Logger logger = Logger.getLogger(MatriculaForaPrazoController.class.getName());
+	protected Logger logger = Logger
+			.getLogger(RequerimentoMatriculaForaPrazoController.class.getName());
 
 	@Autowired
-	private MatriculaForaPrazoService service;
+	private RequerimentoMatriculaForaPrazoService service;
 
-	@RequestMapping(value = "/turma/{codigoTurma}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public Map<String, String> changeTaskStatus(@PathVariable String codigoTurma) throws ParseException {
-		Map<String, String> turmaDisciplina = new HashMap<String, String>();
-		Turma turma = service.findTurmaByCodigo(codigoTurma);
-		if (turma != null) {
-			String nomeDisciplina = turma.getDisciplina().getCodigo() + " - " + turma.getDisciplina().getNome();
-			turmaDisciplina.put(codigoTurma, nomeDisciplina);
-		} else {
-			turmaDisciplina.put(codigoTurma, "Turma não encontrada");
+	@RequestMapping(value = "/turmas/{siglaDepartamento}", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
+	public String getTurmasNoperiodoCorrenteByDepartamento(
+			@PathVariable String siglaDepartamento) {
+
+		List<Turma> turmas = service.findTurmasByDepartamentoAndPeriodoLetivo(
+				siglaDepartamento, PeriodoLetivo.PERIODO_CORRENTE);
+
+		Map<String, String> mapaTurmas = new HashMap<String, String>();
+		for (Turma turma : turmas) {
+			mapaTurmas.put(turma.getId().toString(), turma.getCodigo() + " - "
+					+ turma.getNomeDisciplina() + " ("
+					+ turma.getDisciplina().getCodigo() + ")");
 		}
-
-		return turmaDisciplina;
-
+		String mapAsJson;
+		try {
+			mapAsJson = new ObjectMapper().writeValueAsString(mapaTurmas);
+			return mapAsJson;
+		} catch (JsonProcessingException e) {
+			return null;
+		}
 	}
 }

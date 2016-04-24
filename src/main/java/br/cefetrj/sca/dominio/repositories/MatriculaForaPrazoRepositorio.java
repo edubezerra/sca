@@ -10,7 +10,7 @@ import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
+import br.cefetrj.sca.dominio.matriculaforaprazo.MatriculaForaPrazo;
 
 public interface MatriculaForaPrazoRepositorio extends JpaRepository<MatriculaForaPrazo, Serializable> {
 

@@ -291,4 +291,8 @@ public class Turma {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public String getCodigoDisciplina() {
+		return this.getDisciplina().getCodigo();
+	}
 }

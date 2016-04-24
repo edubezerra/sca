@@ -8,13 +8,15 @@
 
 <title>SCA - Menu Principal</title>
 
-<link href="${rootURL}resources/bootstrap/css/bootstrap.css"
+<link
+	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript"
-	src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
+	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
+
 <script type="text/javascript"
-	src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="${rootURL}resources/js/app.js"></script>
+	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 
 </head>
 <body class="menu-principal">
@@ -35,9 +37,8 @@
 			<div class="col-md-4 col-md-offset-4">
 				<ul class="nav nav-pills nav-stacked text-center">
 					<li><a class="btn-default"
-						href="${rootUrl}professor/homeInclusao">
+						href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao">
 							Inclusão de Disciplina </a></li>
-					<li class="active"><a href="${rootUrl}logout">Sair do sistema</a></li>
 				</ul>
 			</div>
 		</div>

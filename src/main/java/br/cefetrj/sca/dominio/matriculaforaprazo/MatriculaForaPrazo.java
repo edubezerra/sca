@@ -1,4 +1,4 @@
-package br.cefetrj.sca.dominio.inclusaodisciplina;
+package br.cefetrj.sca.dominio.matriculaforaprazo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +22,8 @@ import br.cefetrj.sca.dominio.Turma;
 
 @Entity
 public class MatriculaForaPrazo {
+
+	public static final int QTD_MAXIMA_ITENS = 3;
 
 	@Id
 	@GeneratedValue
@@ -48,11 +50,7 @@ public class MatriculaForaPrazo {
 	}
 
 	public MatriculaForaPrazo(Aluno aluno, PeriodoLetivo semestreLetivo) {
-//		if (itens == null || aluno == null || semestreLetivo == null) {
-//			throw new IllegalArgumentException("Erro: argumentos inválidos para SolicitacaoInclusao().");
-//		}
 		this.itensMatriculaForaPrazo = new ArrayList<>();
-//		this.itensMatriculaForaPrazo.addAll(itens);
 		this.aluno = aluno;
 		this.semestreLetivo = semestreLetivo;
 	}
@@ -61,7 +59,7 @@ public class MatriculaForaPrazo {
 		return id;
 	}
 
-	public List<ItemMatriculaForaPrazo> getItensSolicitacao() {
+	public List<ItemMatriculaForaPrazo> getItens() {
 		return itensMatriculaForaPrazo;
 	}
 
@@ -85,7 +83,7 @@ public class MatriculaForaPrazo {
 	 * 
 	 * @return conjunto de objetos <code>SemestreLetivo</code>.
 	 */
-	public static List<PeriodoLetivo> semestresCorrespondentes(List<MatriculaForaPrazo> solicitacoes) {
+	public static List<PeriodoLetivo> periodosCorrespondentes(List<MatriculaForaPrazo> solicitacoes) {
 		List<PeriodoLetivo> result = new ArrayList<>();
 		HashSet<PeriodoLetivo> set = new HashSet<>();
 		for (MatriculaForaPrazo item : solicitacoes) {

@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <html>
 
@@ -26,28 +27,28 @@
 	<div class="container">
 		<div class="row text-center">
 			<h2>Requerimento de matrícula fora do prazo -
-				${solicitacaoAtual.semestreLetivo}</h2>
+				${requerimento.semestreLetivo}</h2>
 
-			<h3>Aluno: ${aluno.nome} (matrícula ${aluno.matricula})</h3>
+			<h3>Aluno: ${requerimento.aluno.nome} (matrícula ${requerimento.aluno.matricula})</h3>
 
-			<h3>
-				<c:if test="${solicitacaoAtual.comprovante != null}">
-					<form
-						action="${pageContext.request.contextPath}/requerimentoMatricula/downloadFile"
-						method="POST" target="_blank">
-						<input type="hidden" name="solicitacaoId"
-							value="${solicitacaoAtual.id}">
-						<button type="submit" class="btn btn-link">
-							<i class="fa fa-download fa-2x"></i>
-							<h4 class="comprovante">Comprovante da Matrícula no Período</h4>
-						</button>
-					</form>
-				</c:if>
-			</h3>
+<!-- 			<h3> -->
+<%-- 				<c:if test="${requerimento.comprovante != null}"> --%>
+<!-- 					<form -->
+<%-- 						action="${pageContext.request.contextPath}/matriculaForaPrazo/downloadFile" --%>
+<!-- 						method="POST" target="_blank"> -->
+<!-- 						<input type="hidden" name="solicitacaoId" -->
+<%-- 							value="${requerimento.id}"> --%>
+<!-- 						<button type="submit" class="btn btn-link"> -->
+<!-- 							<i class="fa fa-download fa-2x"></i> -->
+<!-- 							<h4 class="comprovante">Comprovante da Matrícula no Período</h4> -->
+<!-- 						</button> -->
+<!-- 					</form> -->
+<%-- 				</c:if> --%>
+<!-- 			</h3> -->
 
 		</div>
 		<div class="row">
-			<c:forEach items="${solicitacaoAtual.itensSolicitacao}"
+			<c:forEach items="${requerimento.itens}"
 				var="itemSolicitacao">
 				<div class="well">
 					<div class="dados-aluno">
@@ -63,7 +64,9 @@
 							<b>Turma:</b> ${itemSolicitacao.turma.codigo}
 						</p>
 						<p>
-							<b>Data da solicitação:</b> ${itemSolicitacao.dataSolicitacao}
+							<b>Data e hora do requerimento:</b>
+							<fmt:formatDate pattern="dd/MM/yyyy, HH:mm"
+								value="${itemSolicitacao.dataSolicitacao}" />
 						</p>
 						<p>
 							<b>Observações:</b>
@@ -98,7 +101,7 @@
 			</c:forEach>
 		</div>
 		<a class="btn btn-default"
-			href="${pageContext.request.contextPath}/requerimentoMatricula/visualizaRequerimentos">
+			href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos">
 			<i class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>

@@ -57,16 +57,16 @@ public class Inscricao {
 
 	public BigDecimal getNotaFinal() {
 		if (avaliacao == null)
-			throw new IllegalStateException(
-					"Avaliação ainda não foi registrada.");
+			return null;
 		return this.estrategiaAvaliacao.getNotaFinal(this.avaliacao);
 	}
 
 	public String getGrau() {
-		if (avaliacao == null)
-			throw new IllegalStateException(
-					"Avaliação ainda não foi registrada.");
-		return this.estrategiaAvaliacao.getConceito(this.avaliacao);
+		if (avaliacao != null) {
+			return this.estrategiaAvaliacao.getConceito(this.avaliacao);
+		} else {
+			return null;
+		}
 	}
 
 	public void setEstrategiaCalculoGrau(EstrategiaAvaliacaoAluno strategia) {
@@ -74,10 +74,11 @@ public class Inscricao {
 	}
 
 	public EnumSituacaoAvaliacao getAvaliacao() {
-		if (avaliacao == null)
-			throw new IllegalStateException(
-					"Avaliação ainda não foi registrada.");
-		return this.estrategiaAvaliacao.getSituacaoFinal(this.avaliacao);
+		if (avaliacao == null) {
+			return EnumSituacaoAvaliacao.INDEFINIDA;
+		} else {
+			return this.estrategiaAvaliacao.getSituacaoFinal(this.avaliacao);
+		}
 	}
 
 	public void registrarAvaliacao(NotaFinal avaliacao) {
@@ -90,6 +91,6 @@ public class Inscricao {
 
 	public void lancarAvaliacao(ItemFicha item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
