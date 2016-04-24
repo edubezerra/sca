@@ -3,7 +3,6 @@ package br.cefetrj.sca.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -48,9 +48,7 @@ public class Departamento {
 	}
 
 	public void addProfessor(Professor professor) {
-		if (!getProfessores().contains(professor)) {
-			getProfessores().add(professor);
-		}
+		this.professores.add(professor);
 	}
 
 	public Collection<Professor> getProfessores() {
@@ -58,7 +56,7 @@ public class Departamento {
 	}
 
 	public String toString() {
-		return "Departamento.id: " + getId() + ", nome: " + getNome();
+		return "sigla: " + getSigla() + ", nome: " + getNome();
 	}
 
 }

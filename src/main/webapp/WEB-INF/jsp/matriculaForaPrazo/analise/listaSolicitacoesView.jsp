@@ -23,8 +23,8 @@
 	<div class="container">
 		<div class="row text-center">
 			<h2>Requerimentos de Matrícula Fora do Prazo</h2>
-			<h4>Professor: ${professor.nome}
-				(Matrícula:${professor.matricula})</h4>
+			<h4>Professor: ${professor.nome} (Matrícula
+				${professor.matricula})</h4>
 		</div>
 		<c:if test="${requestScope.sucesso != null}">
 			<div class="row text-center">
@@ -37,9 +37,8 @@
 			</div>
 		</c:if>
 		<div class="row">
-			<c:forEach items="${solicitacoes}" var="solicitacao">
-				<c:forEach items="${solicitacao.itemSolicitacao}"
-					var="itemSolicitacao">
+			<c:forEach items="${requerimentos}" var="solicitacao">
+				<c:forEach items="${solicitacao.itens}" var="itemSolicitacao">
 					<div class="well">
 						<div class="dados-aluno">
 							<p>
@@ -75,11 +74,11 @@
 										method="POST">
 										<button type="submit" name="status" value="Deferido"
 											class="btn btn-success">
-											<i class="fa fa-check"></i> Deferido
+											<i class="fa fa-check"></i> Deferir
 										</button>
 										<button type="submit" name="status" value="Indeferido"
 											class="btn btn-danger">
-											<i class="fa fa-times"></i> Indeferido
+											<i class="fa fa-times"></i> Indeferir
 										</button>
 										<input type="hidden" name="idSolicitacao"
 											value="${solicitacao.id}"></input> <input type="hidden"

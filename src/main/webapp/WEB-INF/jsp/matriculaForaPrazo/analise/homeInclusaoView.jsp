@@ -27,7 +27,7 @@
 	<div class="container">
 		<div class="row">
 			<h2>Análise de Matrículas Fora do Prazo</h2>
-			<h4>Analisador: ${requestScope.professor.nome} (matrícula:
+			<h4>Analisador: ${requestScope.professor.nome} (matrícula
 				${requestScope.professor.matricula} )</h4>
 		</div>
 		<c:if test="${requestScope.sucesso != null}">
@@ -48,34 +48,41 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div class="table-responsive">
-						<h4>Requerimentos:</h4>
-						<table class="table table-bordered text-center">
-							<thead>
-								<tr>
-									<th class="text-center">Período Letivo</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${listaSemestresLetivos}" var="semestreLetivo">
+
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Requerimento</h3>
+						</div>
+						<div class="panel-body">
+							<table class="table table-bordered text-center">
+								<thead>
 									<tr>
-										<td>${semestreLetivo}</td>
-										<td>
-											<form
-												action="${pageContext.request.contextPath}/matriculaForaPrazo/analise/listarSolicitacoes"
-												method="POST">
-												<input type="hidden" name="ano"
-													value="${semestreLetivo.ano}"> <input type="hidden"
-													name="periodo" value="${semestreLetivo.periodo}">
-												<button type="submit" class="btn btn-link">Ver
-													Requerimentos</button>
-											</form>
-										</td>
+										<th class="text-center">Período Letivo</th>
+										<th></th>
 									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
+								</thead>
+								<tbody>
+									<c:forEach items="${listaSemestresLetivos}"
+										var="semestreLetivo">
+										<tr>
+											<td>${semestreLetivo}</td>
+											<td>
+												<form
+													action="${pageContext.request.contextPath}/matriculaForaPrazo/analise/listarSolicitacoes"
+													method="POST">
+													<input type="hidden" name="ano"
+														value="${semestreLetivo.ano}"> <input
+														type="hidden" name="periodo"
+														value="${semestreLetivo.periodo}">
+													<button type="submit" class="btn btn-link">Ver
+														Requerimentos</button>
+												</form>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</c:otherwise>
 			</c:choose>

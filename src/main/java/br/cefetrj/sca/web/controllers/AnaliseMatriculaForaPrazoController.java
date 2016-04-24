@@ -1,5 +1,8 @@
 package br.cefetrj.sca.web.controllers;
 
+import java.util.List;
+import java.util.SortedMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.matriculaforaprazo.MatriculaForaPrazo;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
@@ -30,7 +35,14 @@ public class AnaliseMatriculaForaPrazoController {
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
 			String matricula = usr.getLogin();
-			service.homeInclusao(matricula, model);
+			
+			Professor professor = service.getProfessorByMatricula(matricula);
+
+			SortedMap<PeriodoLetivo, MatriculaForaPrazo> mapa = service.homeInclusao(matricula);
+
+			model.addAttribute("professor", professor);
+			model.addAttribute("listaSemestresLetivos", mapa.keySet());
+
 			return "/matriculaForaPrazo/analise/homeInclusaoView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -41,11 +53,19 @@ public class AnaliseMatriculaForaPrazoController {
 	@RequestMapping(value = "/listarSolicitacoes", method = RequestMethod.POST)
 	public String listarSolicitacoes(@RequestParam int ano,
 			@RequestParam EnumPeriodo periodo, Model model) {
-
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matricula = usr.getLogin();
-			service.listarSolicitacoes(matricula, periodo, ano, model);
+			String matriculaProfessor = usr.getLogin();
+
+			PeriodoLetivo periodoLetivo = new PeriodoLetivo(ano, periodo);
+			List<MatriculaForaPrazo> requerimentos = service
+					.listarSolicitacoes(matriculaProfessor, periodoLetivo);
+
+			Professor professor = service
+					.getProfessorByMatricula(matriculaProfessor);
+
+			model.addAttribute("professor", professor);
+			model.addAttribute("requerimentos", requerimentos);
 			return "/matriculaForaPrazo/analise/listaSolicitacoesView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -72,14 +92,24 @@ public class AnaliseMatriculaForaPrazoController {
 			@RequestParam EnumPeriodo periodo) {
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matricula = usr.getLogin();
+			String matriculaProfessor = usr.getLogin();
 			service.definirStatusSolicitacao(idSolicitacao, idItemSolicitacao,
 					status);
-			service.listarSolicitacoes(matricula, periodo, ano, model);
-			model.addAttribute("sucesso", "Status do item foi atualizado!");
+
+			PeriodoLetivo periodoLetivo = new PeriodoLetivo(ano, periodo);
+			List<MatriculaForaPrazo> requerimentos = service
+					.listarSolicitacoes(matriculaProfessor, periodoLetivo);
+
+			Professor professor = service
+					.getProfessorByMatricula(matriculaProfessor);
+
+			model.addAttribute("professor", professor);
+			model.addAttribute("requerimentos", requerimentos);
+			model.addAttribute("sucesso",
+					"Status do item de requerimento foi atualizado!");
 			return "/matriculaForaPrazo/analise/listaSolicitacoesView";
 		} catch (Exception e) {
-			String erro = "Ocorreu um erro ao atualizar o status do item de soliticação.";
+			String erro = "Ocorreu um erro ao atualizar o status do item de requerimento.";
 			model.addAttribute("error", erro);
 			return "/homeView";
 		}
