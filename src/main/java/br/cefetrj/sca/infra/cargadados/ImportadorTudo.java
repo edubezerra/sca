@@ -2,6 +2,7 @@ package br.cefetrj.sca.infra.cargadados;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,13 @@ public class ImportadorTudo {
 		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
 		
 		entityManager = emf.createEntityManager();
+
+//		entityManager.getTransaction().begin();
+//		String dropCmd = "DROP SCHEMA PUBLIC CASCADE";
+//		Query query = entityManager.createNativeQuery(dropCmd);
+//		query.executeUpdate();
+//		entityManager.getTransaction().commit();
+		
 		importador.run();
 		entityManager.close();
 		emf.close();
