@@ -23,6 +23,7 @@ public class ImportadorTudo {
 		entityManager = emf.createEntityManager();
 		importador.run();
 		entityManager.close();
+		emf.close();
 	}
 
 	public void run() {

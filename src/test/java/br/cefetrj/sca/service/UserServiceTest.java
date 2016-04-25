@@ -38,9 +38,10 @@ public class UserServiceTest {
 		assertNotNull(user);
 	}
 
-	@Test
+	@Test(expected = javax.validation.ConstraintViolationException.class)
 	public void createUser() {
-		Usuario user = new Usuario(0, "Eduardo Bezerra", "edubezerra", "edubezerra", "edubezerra@gmail.com", new Date());
+		Usuario user = new Usuario(0, "Eduardo Bezerra", "edubezerra",
+				"edubezerra", "edubezerra@gmail.com", new Date());
 		Usuario savedUser = userService.create(user);
 		Usuario newUser = userService.findUserById(savedUser.getId());
 		assertEquals("Eduardo", newUser.getNome());
