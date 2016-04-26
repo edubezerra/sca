@@ -23,12 +23,6 @@ public class ImportadorTudo {
 		
 		entityManager = emf.createEntityManager();
 
-//		entityManager.getTransaction().begin();
-//		String dropCmd = "DROP SCHEMA PUBLIC CASCADE";
-//		Query query = entityManager.createNativeQuery(dropCmd);
-//		query.executeUpdate();
-//		entityManager.getTransaction().commit();
-		
 		importador.run();
 		entityManager.close();
 		emf.close();

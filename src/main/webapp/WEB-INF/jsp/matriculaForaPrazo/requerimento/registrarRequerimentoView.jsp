@@ -84,6 +84,37 @@
 			<hr />
 		</c:if>
 
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Turmas solicitadas pelo portal em 2016/1</h3>
+			</div>
+			<div class="panel-body">
+				<c:if test="${not empty sessionScope.turmasCursadas}">
+
+					<div class="row">
+						<table class="table table-bordered table-hover table-striped">
+							<thead>
+								<tr>
+									<th>Turma/Disciplina</th>
+									<th>Horário</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${sessionScope.turmasCursadas}" var="item">
+									<tr>
+										<td>${item.codigo} (${item.disciplina.codigo} -
+											${item.nomeDisciplina})</td>
+										<td>${item.horarioFormatado}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</c:if>
+			</div>
+		</div>
+
+
 		<form role="form"
 			action="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/confirmarRegistroRequerimento"
 			method="post" id="formularioSolicitacao">
@@ -109,7 +140,8 @@
 									<c:forEach items="${sessionScope.ficha.itensRequerimento}"
 										var="item">
 										<tr>
-											<td>${item.codigoTurma} (${item.codigoDisciplina} - ${item.nomeDisciplina})</td>
+											<td>${item.codigoTurma}(${item.codigoDisciplina} -
+												${item.nomeDisciplina})</td>
 											<td>${item.siglaDepartamento}</td>
 											<td class="text-center">${item.opcao}</td>
 

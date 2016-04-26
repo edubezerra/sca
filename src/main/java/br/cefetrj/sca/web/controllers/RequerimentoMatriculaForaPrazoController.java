@@ -74,12 +74,15 @@ public class RequerimentoMatriculaForaPrazoController {
 	@RequestMapping(value = "/iniciarRegistroRequerimento", method = RequestMethod.POST)
 	public String iniciarRegistroRequerimento(Model model, HttpSession sessao) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matriculaAluno = usr.getLogin();
 		try {
 			FichaMatriculaForaPrazo ficha = service
-					.criarFichaSolicitacao(matricula);
+					.criarFichaSolicitacao(matriculaAluno);
 
 			sessao.setAttribute("ficha", ficha);
+
+			sessao.setAttribute("turmasCursadas", service
+					.findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno, PeriodoLetivo.PERIODO_CORRENTE));
 
 			sessao.setAttribute("turmasDisponiveis", service
 					.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE));
