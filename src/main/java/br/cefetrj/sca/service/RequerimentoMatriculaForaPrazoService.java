@@ -91,11 +91,11 @@ public class RequerimentoMatriculaForaPrazoService {
 		return fabrica.criar(matricula);
 	}
 
-	public List<Turma> findTurmasByDepartamentoAndPeriodoLetivo(String siglaDepartamento, PeriodoLetivo periodo) {
+	public List<Turma> findTurmasByDepartamentoAndPeriodoLetivo(String matriculaAluno, String siglaDepartamento, PeriodoLetivo periodo) {
 		Departamento depto = departamentoRepositorio.findDepartamentoBySigla(siglaDepartamento);
 		AlocacacaoDisciplinasEmDepartamento a = alocacaoRepositorio
 				.findAlocacacaoDisciplinasEmDepartamentoByDepartamento(depto);
-		List<Turma> turmasDoPeriodo = findTurmasByPeriodoLetivo(periodo);
+		List<Turma> turmasDoPeriodo = this.findTurmasByPeriodoLetivo(matriculaAluno, periodo);
 		List<Turma> turmas = new ArrayList<>();
 		for (Turma turma : turmasDoPeriodo) {
 			if (a.getDisciplinas().contains(turma.getDisciplina())) {
@@ -109,7 +109,7 @@ public class RequerimentoMatriculaForaPrazoService {
 		List<Turma> turmasDisponiveis = turmaRepositorio.findTurmasAbertasNoPeriodo(periodo);
 		List<Turma>  turmaCursadas = findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno, periodo);
 		turmasDisponiveis.removeAll(turmaCursadas);
-		return tu
+		return turmasDisponiveis;
 	}
 
 	public Turma findTurmaById(Long idTurma) {

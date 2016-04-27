@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.RequerimentoMatriculaForaPrazoService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,23 +23,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/rest")
 public class ScaRestController {
 
-	protected Logger logger = Logger
-			.getLogger(RequerimentoMatriculaForaPrazoController.class.getName());
+	protected Logger logger = Logger.getLogger(RequerimentoMatriculaForaPrazoController.class.getName());
 
 	@Autowired
 	private RequerimentoMatriculaForaPrazoService service;
 
-	@RequestMapping(value = "/turmas/{siglaDepartamento}", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
-	public String getTurmasNoperiodoCorrenteByDepartamento(
-			@PathVariable String siglaDepartamento) {
+	@RequestMapping(value = "/turmas/{siglaDepartamento}", method = RequestMethod.GET, produces = {
+			"application/json; charset=UTF-8" })
+	public String getTurmasNoperiodoCorrenteByDepartamento(@PathVariable String siglaDepartamento) {
 
-		List<Turma> turmas = service.findTurmasByDepartamentoAndPeriodoLetivo(
-				siglaDepartamento, PeriodoLetivo.PERIODO_CORRENTE);
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matriculaAluno = usr.getLogin();
+
+		List<Turma> turmas = service.findTurmasByDepartamentoAndPeriodoLetivo(matriculaAluno, siglaDepartamento,
+				PeriodoLetivo.PERIODO_CORRENTE);
 
 		Map<String, String> mapaTurmas = new HashMap<String, String>();
 		for (Turma turma : turmas) {
-			mapaTurmas.put(turma.getId().toString(), turma.getCodigo() + " - "
-					+ turma.getNomeDisciplina() + " ("
+			mapaTurmas.put(turma.getId().toString(), turma.getCodigo() + " - " + turma.getNomeDisciplina() + " ("
 					+ turma.getDisciplina().getCodigo() + ")");
 		}
 		String mapAsJson;
