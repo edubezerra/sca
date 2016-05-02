@@ -11,7 +11,12 @@
 	<title>SCA - Registro de Atividades Complementares</title>
 	
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
+		media="screen" rel="stylesheet" type="text/css" />	
+	<link
+		href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-select.css"
 		media="screen" rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-select.js"></script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
 	<script type="text/javascript"
@@ -19,7 +24,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
 </head>
-<body class="lista-solicitacoes">
+<body>
 
 	<div class="container">
 		<div class="row text-center">
@@ -27,8 +32,8 @@
 		</div>
 		<hr/>
 		<div class="row">
-			<h5><b>Aluno:</b> <c:out value="${requestScope.nomeAluno}"></c:out> (Matrícula: <c:out value="${requestScope.matricula}"></c:out>)</h5>
-			<h5><b>Curso:</b> <c:out value="${requestScope.curso.sigla}"></c:out> - <c:out value="${requestScope.curso.nome}"></c:out> (Grade: <c:out value="${requestScope.versaoCurso}"></c:out>)</h5>
+			<h5><b>Aluno:</b> <c:out value="${requestScope.dadosAluno.nomeAluno}"></c:out> (Matrícula: <c:out value="${requestScope.matricula}"></c:out>)</h5>
+			<h5><b>Curso:</b> <c:out value="${requestScope.dadosAluno.curso.sigla}"></c:out> - <c:out value="${requestScope.dadosAluno.curso.nome}"></c:out> (Grade: <c:out value="${requestScope.dadosAluno.versaoCurso}"></c:out>)</h5>
 		</div>
 		<br/>
 		<c:if test="${requestScope.sucesso != null}">
@@ -48,12 +53,12 @@
 		</c:if>
 		
 		<div class="row">
-			<c:if test="${requestScope.temAtividadesSuficientes}">
+			<c:if test="${requestScope.dadosAluno.temAtividadesSuficientes}">
 				<div class="row text-center">
 					<span class="label label-success">Parabéns! Você cumpriu atividades complementares suficientes para se formar.</span>
 				</div>
 			</c:if>
-			<c:if test="${!requestScope.temAtividadesSuficientes}">
+			<c:if test="${!requestScope.dadosAluno.temAtividadesSuficientes}">
 				<div class="row text-center">
 					<span class="label label-warning">
 					<i class="fa fa-warning"></i> Você ainda não cumpriu atividades complementares suficientes para se formar.</span>
@@ -69,8 +74,7 @@
 						<tr>
 							<td></td>
 							<td></td>
-							<td></td>
-							<td colspan="3"><b>Carga Horária</b></td>							
+							<td colspan="3" class="text-center"><b>Carga Horária</b></td>							
 							<td></td>
 						</tr>
 						<tr>
@@ -128,7 +132,7 @@
 						<tr>
 							<td colspan="2"></td>
 							<td colspan="2"><b>TOTAL:</b></td>							
-							<td><b>${requestScope.totalCH}</b></td>
+							<td><b>${requestScope.dadosAluno.totalCH}</b></td>
 							<td></td>
 						</tr>
 					</tbody>
@@ -150,7 +154,7 @@
 						<table class="table text-center">
 							<thead>
 								<tr>
-									<td><b>Categoria da Atividade</b></td>
+									<td><b>Categoria</b></td>
 									<td><b>Descrição</b></td>
 									<td><b>Carga Horária</b></td>
 									<td><b>Comprovante</b></td>

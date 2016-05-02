@@ -45,8 +45,8 @@
 		</div>
 		<hr/>
         <div class="row">
-			<h5><b>Aluno:</b> <c:out value="${requestScope.nomeAluno}"></c:out> (Matrícula: <c:out value="${requestScope.matricula}"></c:out>)</h5>
-			<h5><b>Curso:</b> <c:out value="${requestScope.curso.sigla}"></c:out> - <c:out value="${requestScope.curso.nome}"></c:out> (Grade: <c:out value="${requestScope.versaoCurso}"></c:out>)</h5>
+			<h5><b>Aluno:</b> <c:out value="${requestScope.dadosAluno.nomeAluno}"></c:out> (Matrícula: <c:out value="${requestScope.matricula}"></c:out>)</h5>
+			<h5><b>Curso:</b> <c:out value="${requestScope.dadosAluno.curso.sigla}"></c:out> - <c:out value="${requestScope.dadosAluno.curso.nome}"></c:out> (Grade: <c:out value="${requestScope.dadosAluno.versaoCurso}"></c:out>)</h5>
 		</div>
         <br/>
         <div class="row">
@@ -65,7 +65,7 @@
             	  method="post" enctype="multipart/form-data">
             	  
             	<div class="row">
-            		<h4><b>Atividade Complementar:</b> ${requestScope.categoriaAtiv} - ${requestScope.descrAtiv}</h4>
+            		<h4><b>Atividade Complementar:</b> ${requestScope.dadosAtiv.categoriaAtiv} - ${requestScope.dadosAtiv.descrAtiv}</h4>
               	</div>
               	<br/>
                 <div class="row">
@@ -89,7 +89,7 @@
                 <div class="row">
 	                <label for="cargaHoraria">Carga horária do registro (em horas):</label>
 	                <input class="form-control input-lg number" id="cargaHoraria" name="cargaHoraria" type="number"
-	                 maxlength="3" max="${requestScope.cargaHorariaRestante}" min="1" value="1" required/>
+	                 maxlength="3" max="${requestScope.dadosAtiv.cargaHorariaRestante}" min="1" value="1" required/>
                 </div>
                <br/>
                 <hr/>

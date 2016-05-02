@@ -9,7 +9,6 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
@@ -18,6 +17,8 @@ import br.cefetrj.sca.dominio.atividadecomplementar.RegistroAtividadeComplementa
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.RegistroAtividadeComplementarRepositorio;
+import br.cefetrj.sca.service.util.SituacaoAlunoAtividades;
+import br.cefetrj.sca.service.util.SituacaoAtividade;
 import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
 import br.cefetrj.sca.service.util.SolicitaSituacaoAtividadesResponse;
 
@@ -31,7 +32,6 @@ public class RegistrarAtividadesService {
 	
 	@Autowired
 	private RegistroAtividadeComplementarRepositorio regRepo;
-
 	/**
 	 * Esse método é invocado quando um aluno solicita o registro de atividades complementares.
 	 * 
@@ -54,54 +54,63 @@ public class RegistrarAtividadesService {
 		return response;
 	}
 	
-	public SolicitaSituacaoAtividadesResponse obterSituacaoAtividades(String matriculaAluno, Model model) {
+	public SolicitaSituacaoAtividadesResponse obterSituacaoAtividades(String matriculaAluno) {
 		
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 
 		SolicitaSituacaoAtividadesResponse response = new SolicitaSituacaoAtividadesResponse();
 		
-		Set<String> categorias = new HashSet<String>();
-
 		for (AtividadeComplementar ativ : aluno.getVersaoCurso().getTabelaAtividades().getAtividades()) {
 			response.add(ativ, aluno.getCargaHorariaCumpridaAtiv(ativ),
 					aluno.temCargaHorariaMinimaAtividade(ativ),aluno.temCargaHorariaMaximaAtividade(ativ));
-			categorias.add(ativ.getTipo().getCategoria().toString());
 		}
-		model.addAttribute("categorias", categorias);
 
 		return response;
 	}
 	
-	public void solicitaRegistroAtividades(String matriculaAluno, Model model) {
+	public Set<String> obterCategoriasAtividade(String matriculaAluno) {
+		
+		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
+
+		Set<String> categorias = new HashSet<String>();
+
+		for (AtividadeComplementar ativ : aluno.getVersaoCurso().getTabelaAtividades().getAtividades()) {
+			categorias.add(ativ.getTipo().getCategoria().toString());
+		}
+		
+		return categorias;
+	}
+	
+	public SituacaoAlunoAtividades obterSituacaAluno(String matriculaAluno) {
 
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 		
-		model.addAttribute("nomeAluno", aluno.getNome());
-		model.addAttribute("curso", aluno.getVersaoCurso().getCurso());
-		model.addAttribute("versaoCurso", aluno.getVersaoCurso().getNumero());
-		model.addAttribute("temAtividadesSuficientes", aluno.temAtividadesSuficientes());
-		
 		String totalCH = aluno.getCargaHorariaCumpridaAtiv().toHours()+"/"+aluno.getVersaoCurso().getCargaHorariaMinAitvComp().toHours(); 
-		model.addAttribute("totalCH", totalCH);
+		
+		SituacaoAlunoAtividades dadosAluno = 
+				new SituacaoAlunoAtividades(aluno.getNome(),aluno.getVersaoCurso().getCurso(),
+						aluno.getVersaoCurso().getNumero(), aluno.temAtividadesSuficientes(),
+						totalCH);
+		return dadosAluno;
 	}
 	
-	public void solicitaRegistroAtividade(String matriculaAluno, Long idAtividade, Model model) {
+	public SituacaoAtividade obterSituacaoAtividade(String matriculaAluno, Long idAtividade) {
 
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 		AtividadeComplementar atividade = aluno.getVersaoCurso().getTabelaAtividades().getAtividade(idAtividade);
 		
-		model.addAttribute("categoriaAtiv", atividade.getTipo().getCategoria().toString());
-		
 		String descricao = atividade.getTipo().getDescricao();
 		descricao = descricao.charAt(0) + (descricao.substring(1).toLowerCase());
-		
-		model.addAttribute("descrAtiv", descricao);
 		
 		Long cargaHorariaCumprida = aluno.getCargaHorariaCumpridaAtiv(atividade).toHours();
 		Long cargaHorariaMax = atividade.getCargaHorariaMax().toHours();
 		Long cargaHorariaRestante = cargaHorariaMax - cargaHorariaCumprida;
 		
-		model.addAttribute("cargaHorariaRestante", cargaHorariaRestante);
+		SituacaoAtividade dadosAtiv = 
+				new SituacaoAtividade(atividade.getTipo().getCategoria().toString(),
+					descricao, cargaHorariaRestante);
+		
+		return dadosAtiv;
 	}
 
 	public void registraAtividade(String matriculaAluno, Long idAtividade, String descricao,

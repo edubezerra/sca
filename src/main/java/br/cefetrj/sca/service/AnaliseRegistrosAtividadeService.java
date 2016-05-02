@@ -1,14 +1,15 @@
 package br.cefetrj.sca.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.Curso;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.VersaoCurso;
 import br.cefetrj.sca.dominio.atividadecomplementar.EnumEstadoAtividadeComplementar;
@@ -18,6 +19,7 @@ import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import br.cefetrj.sca.dominio.repositories.RegistroAtividadeComplementarRepositorio;
+import br.cefetrj.sca.service.util.DadosFormPesquisaAtividades;
 import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
 
 @Component
@@ -35,27 +37,31 @@ public class AnaliseRegistrosAtividadeService {
 	@Autowired
 	private CursoRepositorio cursoRepo;
 	
-	public void homeAnaliseAtividades(String matricula, Model model){
-		Professor professor = getProfessorByMatricula(matricula);
-				
-		model.addAttribute("nomeProfessor", professor.getNome());
-		model.addAttribute("matriculaProfessor", professor.getMatricula());
+	public List<String> obterVersoesCurso(String siglaCurso){
 		
-		HashMap<String, List<String>> versoesCursos = new HashMap<>();
-		//cursoRepo.findAllVersaoCurso() trocar por recuperação de versoes de curso das quais o professor é coordenador de atividades complementares
-		for(VersaoCurso versaoCurso: cursoRepo.findAllVersaoCurso()){
-			if (versoesCursos.get(versaoCurso.getCurso().getSigla()) == null) {
-				List<String> numerosVersoes = new ArrayList<>();
-				numerosVersoes.add(versaoCurso.getNumero());
-				versoesCursos.put(versaoCurso.getCurso().getSigla(),numerosVersoes);
-			}
-			else{
-				versoesCursos.get(versaoCurso.getCurso().getSigla()).add(versaoCurso.getNumero());
-			}
+		List<String> versoesCursos = new ArrayList<>();
+		for(VersaoCurso versaoCurso: cursoRepo.findAllVersaoCursoByCurso(siglaCurso)){
+			versoesCursos.add(versaoCurso.getNumero());
 		}
 		
-		model.addAttribute("versoesCursos", versoesCursos);						
-		model.addAttribute("status", EnumEstadoAtividadeComplementar.values());
+		return versoesCursos;
+	}
+	
+	public DadosFormPesquisaAtividades homeAnaliseAtividades(String matricula){
+		Professor professor = getProfessorByMatricula(matricula);
+		
+		Set<String> siglaCursos = new HashSet<String>();
+		//TODO
+		//cursoRepo.findAll() trocar por recuperação de cursos dos quais o professor é coordenador de atividades complementares
+		for(Curso curso: cursoRepo.findAll()){
+			siglaCursos.add(curso.getSigla());
+		}
+		
+		DadosFormPesquisaAtividades dadosAnaliseAtividades = 
+				new DadosFormPesquisaAtividades(professor.getNome(),professor.getMatricula(),
+						siglaCursos,EnumEstadoAtividadeComplementar.values());
+		
+		return dadosAnaliseAtividades;
 	}
 	
 	public SolicitaRegistroAtividadesResponse listarRegistrosAtividade(String siglaCurso,

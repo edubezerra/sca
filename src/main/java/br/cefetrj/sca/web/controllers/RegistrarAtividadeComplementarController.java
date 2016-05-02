@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +39,7 @@ public class RegistrarAtividadeComplementarController {
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session,
 			Model model) {
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		if (matricula != null) {
 			return "/menuPrincipalView";
@@ -51,15 +50,18 @@ public class RegistrarAtividadeComplementarController {
 
 	@RequestMapping(value = "/registroAtividades", method = RequestMethod.GET)
 	public String solicitaRegistroAtividades(HttpSession session, Model model) {
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 
 		try {
-			service.solicitaRegistroAtividades(matricula,model);
+			model.addAttribute("dadosAluno",
+					service.obterSituacaAluno(matricula));
 			model.addAttribute("registrosAtiv",
 					service.obterRegistrosAtividade(matricula));
 			model.addAttribute("situacaoAtiv",
-					service.obterSituacaoAtividades(matricula,model));
+					service.obterSituacaoAtividades(matricula));
+			model.addAttribute("categorias", 
+					service.obterCategoriasAtividade(matricula));
 			model.addAttribute("matricula", matricula);
 			return "/registroAtividades/apresentaRegistrosView";
 		} catch (Exception exc) {
@@ -72,12 +74,14 @@ public class RegistrarAtividadeComplementarController {
 	public String solicitaRegistroAtividade(HttpSession session,
 			@RequestParam String idAtiv, Model model) {
 		
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
-			service.solicitaRegistroAtividades(matricula,model);
+			model.addAttribute("dadosAluno",
+					service.obterSituacaAluno(matricula));
 			Long id = Long.parseLong(idAtiv);
-			service.solicitaRegistroAtividade(matricula, id, model);
+			model.addAttribute("dadosAtiv",
+					service.obterSituacaoAtividade(matricula, id));
 			model.addAttribute("idAtiv", idAtiv);
 			model.addAttribute("matricula", matricula);
 						
@@ -91,13 +95,13 @@ public class RegistrarAtividadeComplementarController {
 
 	@RequestMapping(value = "/registraAtividade", method = RequestMethod.POST)
 	public String registraAtividade(HttpSession session,
-			@ModelAttribute("idAtiv") String idAtiv,
-			@ModelAttribute("descricao") String descricao,			
-			@ModelAttribute("cargaHoraria") String cargaHoraria,
-			@ModelAttribute("file") MultipartFile file,
+			@RequestParam String idAtiv,
+			@RequestParam String descricao,			
+			@RequestParam String cargaHoraria,
+			@RequestParam MultipartFile file,
 			Model model)  throws IOException {
 
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(idAtiv);
@@ -117,7 +121,7 @@ public class RegistrarAtividadeComplementarController {
 	public String removeRegistroAtividade(HttpSession session,
 			@RequestParam String idReg, Model model) {
 		
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(idReg);
@@ -136,14 +140,17 @@ public class RegistrarAtividadeComplementarController {
 	public String solicitaNovamenteRegistroAtividades(HttpSession session,
 			Model model) {
 
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
-			service.solicitaRegistroAtividades(matricula,model);
+			model.addAttribute("dadosAluno",
+					service.obterSituacaAluno(matricula));
 			model.addAttribute("registrosAtiv",
 					service.obterRegistrosAtividade(matricula));
 			model.addAttribute("situacaoAtiv",
-					service.obterSituacaoAtividades(matricula,model));
+					service.obterSituacaoAtividades(matricula));
+			model.addAttribute("categorias", 
+					service.obterCategoriasAtividade(matricula));
 			model.addAttribute("matricula", matricula);
 			
 			return "/registroAtividades/apresentaRegistrosView";
@@ -159,7 +166,7 @@ public class RegistrarAtividadeComplementarController {
 	public void downloadFile(HttpSession session,
 			@RequestParam String IdReg, HttpServletResponse response) {
 		
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(IdReg);

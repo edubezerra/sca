@@ -1,5 +1,7 @@
 package br.cefetrj.sca.web.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,6 +22,7 @@ import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.AnaliseRegistrosAtividadeService;
 import br.cefetrj.sca.service.util.RegistrosAtividadeSearchCriteria;
 import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
+import br.cefetrj.sca.service.util.VersoesCursoSearchCriteria;
 
 @Controller
 @SessionAttributes("login")
@@ -37,7 +40,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session, Model model) {
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		if (matricula != null) {
 			return "/menuPrincipalView";
@@ -49,14 +52,31 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	@RequestMapping(value = "/homeAnalise", method = RequestMethod.GET)
 	public String paginaInicialAnalise(HttpServletRequest request, HttpSession session, Model model){
 		try {
-			Usuario usr = UserController.getCurrentUser();
+			Usuario usr = UsuarioController.getCurrentUser();
 			String matricula = usr.getLogin();
-			service.homeAnaliseAtividades(matricula, model);		
+			model.addAttribute("dadosAnaliseAtividades", 
+					service.homeAnaliseAtividades(matricula));				
 			return "/analiseAtividades/analiseRegistrosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "forward:/analiseAtividades/menuPrincipal";
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/obterVersoesCurso")
+	public List<String> obterVersoesCurso(
+			@RequestBody VersoesCursoSearchCriteria search,
+			Model model) {
+		
+		List<String> versoesCurso = null;
+		
+		try {
+			versoesCurso = service.obterVersoesCurso(search.getSiglaCurso());
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+		}
+		return versoesCurso;
 	}
 	
 	@ResponseBody
@@ -97,9 +117,10 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	@RequestMapping(value = "/solicitaNovamenteHomeAnalise")
 	public String solicitaNovamenteHomeAnalise(HttpServletRequest request, HttpSession session, Model model){
 		try {
-			Usuario usr = UserController.getCurrentUser();
+			Usuario usr = UsuarioController.getCurrentUser();
 			String matricula = usr.getLogin();
-			service.homeAnaliseAtividades(matricula, model);		
+			model.addAttribute("dadosAnaliseAtividades", 
+					service.homeAnaliseAtividades(matricula));
 			return "/analiseAtividades/analiseRegistrosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -111,7 +132,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	public void downloadFile(HttpSession session,
 			@RequestParam String IdReg, HttpServletResponse response) {
 		
-		Usuario usr = UserController.getCurrentUser();
+		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(IdReg);
