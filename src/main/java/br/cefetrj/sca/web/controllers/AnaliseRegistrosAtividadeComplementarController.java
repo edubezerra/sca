@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.AnaliseRegistrosAtividadeService;
+import br.cefetrj.sca.service.util.AtualizaStatusAtividadeSearchCriteria;
 import br.cefetrj.sca.service.util.RegistrosAtividadeSearchCriteria;
 import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
 import br.cefetrj.sca.service.util.VersoesCursoSearchCriteria;
@@ -94,24 +94,23 @@ public class AnaliseRegistrosAtividadeComplementarController {
 		}
 		return registrosAtiv;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/defineStatusAtividade")
+	public SolicitaRegistroAtividadesResponse atualizaStatusRegistro(
+			@RequestBody AtualizaStatusAtividadeSearchCriteria search,
+			Model model){
 		
-	@RequestMapping(value = "/defineStatusAtividade", method = RequestMethod.POST)
-	public String atualizaStatusRegistro(HttpSession session, Model model,
-			@RequestParam(value = "status") String status, 
-			@RequestParam Long idRegistro,
-			@RequestParam String matriculaAluno,
-			@ModelAttribute("siglaCurso") String siglaCurso,
-			@ModelAttribute("numeroVersao") String numeroVersao,
-			@ModelAttribute("status") String statusBusca) {
+		SolicitaRegistroAtividadesResponse registrosAtiv = null;
+		
 		try {
-			service.atualizaStatusRegistro(matriculaAluno,idRegistro,status);
-			model.addAttribute("registrosAtiv", 
-					service.listarRegistrosAtividade(siglaCurso, numeroVersao, statusBusca));
-			return "forward:/analiseAtividades/listarAtividades";		
+			Long idRegistro = Long.parseLong(search.getIdReg());
+			service.atualizaStatusRegistro(search.getMatriculaAluno(),idRegistro,search.getNovoStatus());
+			registrosAtiv = service.listarRegistrosAtividade(search.getSiglaCurso(),search.getNumeroVersao(),search.getStatus());
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "forward:/analiseAtividades/listarAtividades";
 		}
+		return registrosAtiv;
 	}
 	
 	@RequestMapping(value = "/solicitaNovamenteHomeAnalise")

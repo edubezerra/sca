@@ -48,12 +48,12 @@ public class RegistroAtividadeComplementar {
 	private Date dataSolicitacao;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataAnalise;
+	private Date dataAnalise = null;
 	
 	@ManyToOne
 	private Professor avaliador = null;
 	
-	private String justificativa;
+	private String justificativa = null;
 
 	@SuppressWarnings("unused")
 	private RegistroAtividadeComplementar() {

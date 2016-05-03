@@ -10,6 +10,7 @@
 		
 	<title>SCA - Análise de Registros de Atividade Complementar</title>
 	
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 		media="screen" rel="stylesheet" type="text/css" />
 	<script type="text/javascript"
@@ -69,6 +70,35 @@
 	</script>
 	
 	<script>
+		function atualizaStatusAtividade(idForm,novoStatus) {
+			var search = {}
+			search["siglaCurso"] = $("#siglaCurso").val();
+			search["numeroVersao"] = $("#numeroVersao").val();
+			search["status"] = $("#status").val();
+			search["novoStatus"] = novoStatus;
+			search["IdReg"] = $("#"+idForm+" IdReg").val();
+			search["matriculaAluno"] = $("#"+idForm+" matriculaAluno").val();
+			$.ajax({
+				type : "POST",
+				contentType : "application/json",
+				url : "${pageContext.request.contextPath}/analiseAtividades/defineStatusAtividade",
+				data : JSON.stringify(search),
+				dataType : 'json',
+				timeout : 100000,
+				success : function(data) {
+					console.log("SUCCESS: ", data);
+					display(data);},
+				error : function(e) {
+					console.log("ERROR: ", e);
+					display(e);},
+				done : function(e) {
+					console.log("DONE");
+					enableSearchButton(true);}
+			});	
+		}
+	</script>
+	
+	<script>
 		jQuery(document).ready(function($) {	
 			$("#search-form").submit(function(event) {	
 				// Disble the search button
@@ -102,44 +132,158 @@
 					enableSearchButton(true);}
 			});	
 		}
+	</script>
 	
+	<script>
 		function enableSearchButton(flag) {
 			$("#btn-search").prop("disabled", flag);
 		}
 		
-		/*var json = "<h4>Ajax Response</h4><pre>"
-					+ JSON.stringify(data, null, 4) + "</pre>";
-			$('#feedback').html(json);*/		
 		function display(data) {
 			if(data.length == 0){
-				$("#lista").html("Não há registros de atividades complementares com os critérios pesquisados!");
+				$("#lista_registros").html("Não há registros de atividades complementares com os critérios pesquisados!");
 			}
-			else{//TODO
-				$.each(data.Item,
-						function(registro){						
-							$("#lista_registros").html(
-															
-							);
-							alert(data.value+":"+data.text);
-				             var div_data="<option value="+data.value+">"+data.text+"</option>";
-				            alert(div_data);
-				            $(div_data).appendTo('#ch_user1'); 
-			            }
-						function(registro) {
-			                var table = $('#display'), row = null, data = null;
-			                $.each(data, function(id, obj) {
-			                    row = $('<tr></tr>'); // build a row
-			                        $.each(obj, function(colIndex, property) {
-			                            data = $('<td></td>', { //build a td element
-			                                        text : property[colIndex]
-			                                    // assign the value from the iterated json property
-			                                    }).appendTo(row);
-			                        });
-			                    });
-			                row.appendTo(table); //finally append the row to the table
-			            }
-				);
-			}		
+			else{
+				var table_data = "<table class='table text-center'><thead><tr>";
+				table_data = table_data+"<thead>";
+				table_data = table_data+"<tr>";
+          		table_data = table_data+
+          			"<td class='text-left'><b>Aluno</b></td>"+
+					"<td class='text-left'><b>Atividade</b></td>"+
+					"<td><b>Data de Solicitação</b></td>"+
+					"<td><b>Data de Análise</b></td>"+
+          			"</tr></thead>";
+          		table_data = table_data+"<tbody id='corpo_lista_registros'>";
+				
+				var registros = data;
+                for (var i = 0; i < registros.length; i++) {
+                	             	
+                	table_data = table_data+
+						"<tr class='btn btn-default' onclick='escondeMostra('infoAnalise/"+registros[i].idRegistro+"');'>";
+					table_data = table_data+"<td class='text-left'>"+registros[i].nomeAluno+"</td>";
+					table_data = table_data+
+						"<td class='text-left'><div style='overflow:auto;width:300px;height:50px;'>"+
+						registros[i].descrAtividade+"</div></td>";
+	          		table_data = table_data+"<td>"+registros[i].dataSolicitacao+"</td>";
+	          		table_data = table_data+"<td>"+registros[i].dataAnalise+"</td>";
+	          		table_data = table_data+"</tr>";
+	          		
+	          		table_data = table_data+
+	          			"<tr id='infoAnalise/"+registros[i].idRegistro+"' style='display:none'></tr>";
+	          		table_data = table_data+"<td colspan='4'><table class='table text-center'><thead><tr>";
+	          		table_data = table_data+
+	          			"<td class='text-left'><b>Descrição</b></td>"+
+						"<td><b>Carga Horária</b></td>"+
+						"<td><b>Comprovante</b></td>"+
+						"<td><b>Status: </b>";
+	          		switch(registros[i].estado){
+			          	case "INDEFERIDO":
+			          		var classeStatus = "text-danger";break;
+			          	case "DEFERIDO":
+			          		var classeStatus = "text-success";break;
+			          	case "EM_ANÁLISE":
+			          		var classeStatus = "text-warning";break;
+			          	case "SUBMETIDO":
+			          		var classeStatus = "text-primary";break;
+		          	}
+					table_data = table_data+"<p class='"+classeStatus+"'><b>"+registros[i].estado+"</b></p>";
+					table_data = table_data+
+						"</td>";
+					table_data = table_data+"</tr></thead>";
+	          			
+	          		table_data = table_data+"<tbody><tr>";
+	          		table_data = table_data+
+						"<td class='text-left'><div style='overflow:auto;width:300px;height:50px;'>"+
+						registros[i].descricao+"</div></td>";
+	          		table_data = table_data+"<td>"+registros[i].cargaHoraria+"</td>";
+	          		table_data = table_data+"<td>";
+	          		if(registros[i].documento != null){
+	          			table_data = table_data+
+	          			"<form action='${pageContext.request.contextPath}/registroAtividades/downloadFile' method='POST' target='_blank'>"+
+		          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
+						"<button type='submit' class='btn btn-default' title='Download'>"+
+							"<i class='fa fa-download'></i>"+
+						"</button>"+
+						"</form>";
+	          		}
+	          		table_data = table_data+"</td>";
+	          		
+	          		table_data = table_data+"<td>";
+		          	switch(registros[i].estado){
+			          	case "INDEFERIDO":
+			          		table_data = table_data+
+		          			"<form id='emanalise-form/"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','EM_ANÁLISE')' class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
+								"<i class='fa fa-question'></i>"+
+							"</button>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','DEFERIDO')' class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
+								"<i class='fa fa-check'></i>"+
+							"</button>"+
+							"</form>";break;
+			          	case "DEFERIDO":
+			          		table_data = table_data+
+		          			"<form id='emanalise-form/"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','EM_ANÁLISE')' class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
+								"<i class='fa fa-question'></i>"+
+							"</button>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','INDEFERIDO')' class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
+								"<i class='fa fa-times'></i>"+
+							"</button>"+
+							"</form>";break;
+			          	case "EM_ANÁLISE":
+			          		table_data = table_data+
+		          			"<form  id='indeferido-form/"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','INDEFERIDO')' class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
+								"<i class='fa fa-times'></i>"+
+							"</button>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','DEFERIDO')' class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
+								"<i class='fa fa-check'></i>"+
+							"</button>"+
+							"</form>";break;
+			          	case "SUBMETIDO":
+			          		table_data = table_data+
+		          			"<form id='emanalise-form/"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
+			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','EM_ANÁLISE')' class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
+								"<i class='fa fa-question'></i>"+
+							"</button>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','INDEFERIDO')' class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
+								"<i class='fa fa-times'></i>"+
+							"</button>"+
+							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','DEFERIDO')' class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
+								"<i class='fa fa-check'></i>"+
+							"</button>"+
+							"</form>";break;
+		          	}
+					table_data = table_data+"</td>";
+					table_data = table_data+"</tr>";
+					
+					if(registros[i].estado != "SUBMETIDO"){
+						table_data = table_data+"<tr>";
+						table_data = table_data+"<td colspan='4'><b>Professor Avaliador:</b> "+registros[i].nomeAvaliador+"</td>";
+					    table_data = table_data+"</tr>";
+					    table_data = table_data+"<tr>";
+					    table_data = table_data+"<td><b>Justificativa:</b></td>";
+					    table_data = table_data+"<td></td><td></td><td></td>";
+						table_data = table_data+"</tr>";
+						table_data = table_data+"<tr>";
+						table_data = table_data+"<td colspan='4'>"+registros[i].justificativa+"</td>";
+						table_data = table_data+"</tr>";
+					}
+					table_data = table_data+"</tbody></table>";		            		        
+                }
+                table_data = table_data+"</tbody>";
+				table_data = table_data+"</table>";				
+          		
+				$("#lista_registros").html(table_data);
+			}
 		}
 	</script>
 </head>
@@ -199,109 +343,16 @@
 	          			</td>
 	          			<td>
 	          				<button id="btn-search" type="submit" class="btn btn-default" title="Buscar registros">
-								<i class="fa fa-search"></i>Buscar</button>
+								<i class="fa fa-search"></i> Buscar</button>
 	          			</td>
 	          		</tr>
           		</table>
 			</form>
 		</div>
 		
-		<div class="row" id="lista_registros">
+		<div class="row">
 			<h4><b>Registros de atividade complementar:</b></h4>
-			<div class="vcenter well" id="lista">						
-				<table class="table text-center">
-					<thead>
-						<tr>
-							<td><b>Código da Atividade</b></td>
-							<td><b>Descrição</b></td>
-							<td><b>Carga Horária</b></td>
-							<td><b>Comprovante</b></td>
-							<td><b>Data de Solicitação</b></td>
-							<td><b>Status</b></td>																	
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${requestScope.registrosAtiv}" var="registro" >
-							<c:choose>
-								<c:when test="${registro.estado ne 'SUBMETIDO'}">
-									<tr class="btn btn-default" onclick="escondeMostra('infoAnalise/${registro.idRegistro}');">
-								</c:when>
-								<c:otherwise>
-									<tr>
-								</c:otherwise>
-							</c:choose>
-							  <td>${registro.codigoAtividade}</td>
-					          <td class="text-left">
-					          	<div style="overflow:auto;width:300px;height:50px;">
-					          		${registro.descricao}
-								</div>
-					          </td>
-					          <td>${registro.cargaHoraria}</td>
-					          <td>
-					          	<c:if test="${registro.documento != null}">
-									<form action="${pageContext.request.contextPath}/registroAtividades/downloadFile" method="POST" target="_blank">
-						          		<input type="hidden" name="IdReg" value="${registro.idRegistro}">
-										<button type="submit" class="btn btn-default" title="Download">
-											<i class="fa fa-download"></i>
-										</button>
-									</form>
-								</c:if>
-					          </td>
-					          <td>${registro.dataSolicitacao}</td>
-					          <td>
-					          	<c:set var="classeStatus" scope="page">
-									<c:choose>
-										<c:when test="${registro.estado eq 'INDEFERIDO'}">
-											text-danger
-										</c:when>
-										<c:when test="${registro.estado eq 'DEFERIDO'}">
-											text-success
-										</c:when>
-										<c:when test="${registro.estado eq 'EM_ANÁLISE'}">
-											text-warning
-										</c:when>
-										<c:when test="${registro.estado eq 'SUBMETIDO'}">
-											text-primary
-										</c:when>
-									</c:choose>
-								</c:set>
-								<p class="${classeStatus}"><b>${registro.estado}</b></p>
-					          </td>
-					          <td>
-					          	<c:if test="${registro.podeSerCancelado}">
-									<form action="${pageContext.request.contextPath}/registroAtividades/removeRegistroAtividade" method="POST">
-						          		<input type="hidden" name="idReg" value="${registro.idRegistro}">
-										<button type="submit" class="btn btn-default" title="Cancelar submissão">
-											<i class="fa fa-trash-o"></i></button>
-									</form>
-								</c:if>						          	
-							  </td>
-					        </tr>
-					        <tr id="infoAnalise/${registro.idRegistro}" style="display:none">
-					        	<td></td>
-					        	<td colspan="5">
-						        	<table>
-						        		<tr>
-							        		<td><b>Professor Avaliador</b></td>
-											<td><b>Data de Análise</b></td>
-										</tr>
-										<tr>
-											<td>${registro.nomeAvaliador}</td>
-											<td>${registro.dataAnalise}</td>
-										</tr>
-										<tr>
-											<td><b>Justificativa</b></td>
-											<td></td>
-										</tr>
-										<tr>
-											<td colspan="2">${registro.justificativa}</td>
-										</tr>
-						        	</table>
-					        	</td>						        	
-					        </tr>
-						</c:forEach>
-					</tbody>
-				</table>
+			<div class="vcenter well" id="lista_registros">				
 			</div>
 		</div>
 		

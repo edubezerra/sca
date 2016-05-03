@@ -10,6 +10,7 @@
 		
 	<title>SCA - Registro de Atividades Complementares</title>
 	
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 		media="screen" rel="stylesheet" type="text/css" />	
 	<link
@@ -23,6 +24,18 @@
 		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
+	
+	<script>  
+	    function escondeMostra(x){  
+	        if(document.getElementById(x).style.display == "none" || document.getElementById(x).style.display == ""){  
+	            document.getElementById(x).style.display = "inline";  
+	        }  
+	        else{  
+	            document.getElementById(x).style.display = "none";  
+	        }  
+	    }  
+	</script>
+
 </head>
 <body>
 
@@ -165,7 +178,14 @@
 							</thead>
 							<tbody>
 								<c:forEach items="${requestScope.registrosAtiv}" var="registro" >
-									<tr>
+									  <c:choose>
+											<c:when test="${registro.estado ne 'SUBMETIDO'}">
+												<tr class="btn btn-default" onclick="escondeMostra('infoAnalise/${registro.idRegistro}');">
+											</c:when>
+											<c:otherwise>
+												<tr>
+											</c:otherwise>
+									  </c:choose>
 							          <td>${registro.categoria}</td>
 							          <td>${registro.descricao}</td>
 							          <td>${registro.cargaHoraria}</td>
@@ -208,6 +228,22 @@
 											</form>
 										</c:if>							          	
 									  </td>
+							        </tr>
+							        <tr id="infoAnalise/${registro.idRegistro}" style="display:none">
+							        	<td colspan="6">
+								        	<table class="table text-center">
+								        		<tr>
+									        		<td class="text-left"><b>Professor Avaliador:</b></td>
+													<td class="text-left">${registro.nomeAvaliador}</td>
+													<td><b>Data de Análise:</b></td>
+													<td>${registro.dataAnalise}</td>
+												</tr>
+												<tr>
+													<td class="text-left"><b>Justificativa:</b></td>
+													<td colspan="3" class="text-left">${registro.justificativa}</td>
+												</tr>
+								        	</table>
+							        	</td>						        	
 							        </tr>
 								</c:forEach>
 							</tbody>
