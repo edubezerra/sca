@@ -1,6 +1,7 @@
 package br.cefetrj.sca.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,13 +81,18 @@ public class AnaliseRegistrosAtividadeService {
 		return response;
 	}
 	
-	public void atualizaStatusRegistro(String matriculaAluno, Long idRegistro, String status){
+	public void atualizaStatusRegistro(String matriculaProfessor, String matriculaAluno,
+			Long idRegistro, String status, String justificativa){
 		
+		Professor professor = getProfessorByMatricula(matriculaProfessor);
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 		RegistroAtividadeComplementar registroAtiv = regRepo.findRegistroAtividadeComplementarById(idRegistro);
 		
 		if(aluno.podeTerRegistroDeferido(registroAtiv)){
 			registroAtiv.setEstado(EnumEstadoAtividadeComplementar.findByText(status));
+			registroAtiv.setDataAnalise(Calendar.getInstance().getTime());
+			registroAtiv.setAvaliador(professor);
+			registroAtiv.setJustificativa(justificativa);
 		}
 
 		regRepo.save(registroAtiv);

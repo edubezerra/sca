@@ -186,8 +186,10 @@
 												<tr>
 											</c:otherwise>
 									  </c:choose>
-							          <td>${registro.categoria}</td>
-							          <td>${registro.descricao}</td>
+							          <td class='text-left'>${registro.categoria}</td>
+							          <td class='text-left'>
+							          	<div style='overflow:auto;width:300px;height:50px;'>
+							          		${registro.descricao}</div></td>
 							          <td>${registro.cargaHoraria}</td>
 							          <td>
 							          	<c:if test="${registro.documento != null}">
@@ -230,18 +232,17 @@
 									  </td>
 							        </tr>
 							        <tr id="infoAnalise/${registro.idRegistro}" style="display:none">
-							        	<td colspan="6">
+							        	<td colspan="7">
 								        	<table class="table text-center">
 								        		<tr>
-									        		<td class="text-left"><b>Professor Avaliador:</b></td>
-													<td class="text-left">${registro.nomeAvaliador}</td>
-													<td><b>Data de Análise:</b></td>
-													<td>${registro.dataAnalise}</td>
+									        		<td class="text-left"><b>Professor Avaliador:</b> ${registro.nomeAvaliador}</td>
+													<td class="text-left"><b>Data de Análise:</b> ${registro.dataAnalise}</td>
 												</tr>
-												<tr>
-													<td class="text-left"><b>Justificativa:</b></td>
-													<td colspan="3" class="text-left">${registro.justificativa}</td>
-												</tr>
+												<c:if test="${registro.estado eq 'INDEFERIDO'}">
+													<tr>
+														<td colspan="2" class="text-left"><b>Justificativa:</b> ${registro.justificativa}</td>
+													</tr>
+												</c:if>
 								        	</table>
 							        	</td>						        	
 							        </tr>

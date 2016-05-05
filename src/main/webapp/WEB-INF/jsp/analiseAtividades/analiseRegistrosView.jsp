@@ -20,6 +20,17 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
     
+    <script src="http://tablesorter.com/__jquery.tablesorter.min.js" type="text/javascript"></script>
+        
+    <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-popup.min.js"></script>
+    
+    <style>
+  		th{cursor:pointer;}
+  	</style>
+    
     <script>  
 	    function escondeMostra(x){  
 	        if(document.getElementById(x).style.display == "none" || document.getElementById(x).style.display == ""){  
@@ -70,14 +81,25 @@
 	</script>
 	
 	<script>
-		function atualizaStatusAtividade(idForm,novoStatus) {
+		function promptJustificativa(idRegistro,matriculaAluno,novoStatus){
+			$.bs.popup.prompt({
+				  title: 'Justificativa',
+				  info: 'Informe a justificativa para o indeferimento.'
+				}, function(dialogE, message) {
+					atualizaStatusAtividade(idRegistro,matriculaAluno,novoStatus,message);
+					dialogE.modal('hide');
+				});			
+		}
+		function atualizaStatusAtividade(idRegistro,matriculaAluno,novoStatus,justificativa) {
+			
 			var search = {}
-			search["siglaCurso"] = $("#siglaCurso").val();
-			search["numeroVersao"] = $("#numeroVersao").val();
-			search["status"] = $("#status").val();
-			search["novoStatus"] = novoStatus;
-			search["IdReg"] = $("#"+idForm+" IdReg").val();
-			search["matriculaAluno"] = $("#"+idForm+" matriculaAluno").val();
+			search["siglaCurso"] = String($("#siglaCurso").val());
+			search["numeroVersao"] = String($("#numeroVersao").val());
+			search["status"] = String($("#status").val());
+			search["novoStatus"] =  String(novoStatus);
+			search["idRegistro"] = String(idRegistro);
+			search["matriculaAluno"] = String(matriculaAluno);
+			search["justificativa"] = String(justificativa);
 			$.ajax({
 				type : "POST",
 				contentType : "application/json",
@@ -90,10 +112,7 @@
 					display(data);},
 				error : function(e) {
 					console.log("ERROR: ", e);
-					display(e);},
-				done : function(e) {
-					console.log("DONE");
-					enableSearchButton(true);}
+					$("#lista_registros").html(JSON.stringify(e));}
 			});	
 		}
 	</script>
@@ -102,7 +121,7 @@
 		jQuery(document).ready(function($) {	
 			$("#search-form").submit(function(event) {	
 				// Disble the search button
-				enableSearchButton(false);	
+				enableSearchButton(false);
 				// Prevent the form from submitting via the browser.
 				event.preventDefault();	
 				searchRegistrosAtividade();	
@@ -126,7 +145,7 @@
 					display(data);},
 				error : function(e) {
 					console.log("ERROR: ", e);
-					display(e);},
+					$("#lista_registros").html(JSON.stringify(e));},
 				done : function(e) {
 					console.log("DONE");
 					enableSearchButton(true);}
@@ -144,38 +163,39 @@
 				$("#lista_registros").html("Não há registros de atividades complementares com os critérios pesquisados!");
 			}
 			else{
-				var table_data = "<table class='table text-center'><thead><tr>";
+				var table_data = "<table id='tabela_registros' class='table text-center tablesorter'>";
 				table_data = table_data+"<thead>";
 				table_data = table_data+"<tr>";
           		table_data = table_data+
-          			"<td class='text-left'><b>Aluno</b></td>"+
-					"<td class='text-left'><b>Atividade</b></td>"+
-					"<td><b>Data de Solicitação</b></td>"+
-					"<td><b>Data de Análise</b></td>"+
-          			"</tr></thead>";
+          			"<th class='text-left'><b>Aluno</b></th>"+
+					"<th class='text-left'><b>Atividade</b></th>"+
+					"<th><b>Data de Solicitação</b></th>"+
+					"<th><b>Data de Análise</b></th>"+
+          			"</tr>";
+          		table_data = table_data+"</thead>";
           		table_data = table_data+"<tbody id='corpo_lista_registros'>";
 				
 				var registros = data;
                 for (var i = 0; i < registros.length; i++) {
                 	             	
                 	table_data = table_data+
-						"<tr class='btn btn-default' onclick='escondeMostra('infoAnalise/"+registros[i].idRegistro+"');'>";
+						"<tr class='row-vm btn btn-default' onclick='escondeMostra(\"infoAnalise/"+registros[i].idRegistro+"\")'>";
 					table_data = table_data+"<td class='text-left'>"+registros[i].nomeAluno+"</td>";
 					table_data = table_data+
-						"<td class='text-left'><div style='overflow:auto;width:300px;height:50px;'>"+
+						"<td class='text-left'><div style='overflow:auto;width:370px;height:40px;'>"+
 						registros[i].descrAtividade+"</div></td>";
 	          		table_data = table_data+"<td>"+registros[i].dataSolicitacao+"</td>";
 	          		table_data = table_data+"<td>"+registros[i].dataAnalise+"</td>";
 	          		table_data = table_data+"</tr>";
 	          		
 	          		table_data = table_data+
-	          			"<tr id='infoAnalise/"+registros[i].idRegistro+"' style='display:none'></tr>";
+	          			"<tr class='row-details expand-child' id='infoAnalise/"+registros[i].idRegistro+"' style=\"display:none\">";
 	          		table_data = table_data+"<td colspan='4'><table class='table text-center'><thead><tr>";
 	          		table_data = table_data+
 	          			"<td class='text-left'><b>Descrição</b></td>"+
 						"<td><b>Carga Horária</b></td>"+
 						"<td><b>Comprovante</b></td>"+
-						"<td><b>Status: </b>";
+						"<td><b>Status: ";
 	          		switch(registros[i].estado){
 			          	case "INDEFERIDO":
 			          		var classeStatus = "text-danger";break;
@@ -186,21 +206,22 @@
 			          	case "SUBMETIDO":
 			          		var classeStatus = "text-primary";break;
 		          	}
-					table_data = table_data+"<p class='"+classeStatus+"'><b>"+registros[i].estado+"</b></p>";
+					table_data = table_data+"<span class='"+classeStatus+"'>"+registros[i].estado+"</b></span>";
 					table_data = table_data+
 						"</td>";
 					table_data = table_data+"</tr></thead>";
 	          			
 	          		table_data = table_data+"<tbody><tr>";
 	          		table_data = table_data+
-						"<td class='text-left'><div style='overflow:auto;width:300px;height:50px;'>"+
+						"<td class='text-left'><div style='overflow:auto;width:450px;height:30px;'>"+
 						registros[i].descricao+"</div></td>";
 	          		table_data = table_data+"<td>"+registros[i].cargaHoraria+"</td>";
 	          		table_data = table_data+"<td>";
 	          		if(registros[i].documento != null){
 	          			table_data = table_data+
-	          			"<form action='${pageContext.request.contextPath}/registroAtividades/downloadFile' method='POST' target='_blank'>"+
+	          			"<form action='${pageContext.request.contextPath}/analiseAtividades/downloadFile' method='POST' target='_blank'>"+
 		          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
+		          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
 						"<button type='submit' class='btn btn-default' title='Download'>"+
 							"<i class='fa fa-download'></i>"+
 						"</button>"+
@@ -212,77 +233,78 @@
 		          	switch(registros[i].estado){
 			          	case "INDEFERIDO":
 			          		table_data = table_data+
-		          			"<form id='emanalise-form/"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','EM_ANÁLISE')' class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
+			          		"<button "+
+							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"EM_ANÁLISE\",\"\")' "+
+							  "class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
 								"<i class='fa fa-question'></i>"+
 							"</button>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','DEFERIDO')' class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
+							"<button "+
+							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")' "+
+							  "class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
 								"<i class='fa fa-check'></i>"+
-							"</button>"+
-							"</form>";break;
+							"</button>";break;
 			          	case "DEFERIDO":
 			          		table_data = table_data+
-		          			"<form id='emanalise-form/"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','EM_ANÁLISE')' class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
+			          		"<button "+
+							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"EM_ANÁLISE\",\"\")' "+
+							  "class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
 								"<i class='fa fa-question'></i>"+
 							"</button>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','INDEFERIDO')' class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
+							"<button "+
+							  "onclick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")' "+
+							  "class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
 								"<i class='fa fa-times'></i>"+
-							"</button>"+
-							"</form>";break;
+							"</button>";break;
 			          	case "EM_ANÁLISE":
 			          		table_data = table_data+
-		          			"<form  id='indeferido-form/"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','INDEFERIDO')' class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
+			          		"<button "+
+							  "onclick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")' "+
+							  "class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
 								"<i class='fa fa-times'></i>"+
 							"</button>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','DEFERIDO')' class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
+							"<button "+
+							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")' "+
+							  "class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
 								"<i class='fa fa-check'></i>"+
-							"</button>"+
-							"</form>";break;
+							"</button>";break;
 			          	case "SUBMETIDO":
 			          		table_data = table_data+
-		          			"<form id='emanalise-form/"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
-			          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','EM_ANÁLISE')' class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
+		          			"<button "+
+							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"EM_ANÁLISE\",\"\")' "+
+							  "class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
 								"<i class='fa fa-question'></i>"+
 							"</button>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','INDEFERIDO')' class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
+							"<button "+
+							  "onclick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")' "+
+							  "class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
 								"<i class='fa fa-times'></i>"+
 							"</button>"+
-							"<button onclick='atualizaStatusAtividade('emanalise-form/"+registros[i].idRegistro+"','DEFERIDO')' class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
+							"<button "+
+							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")' "+
+							  "class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
 								"<i class='fa fa-check'></i>"+
-							"</button>"+
-							"</form>";break;
+							"</button>";break;
 		          	}
 					table_data = table_data+"</td>";
 					table_data = table_data+"</tr>";
 					
 					if(registros[i].estado != "SUBMETIDO"){
 						table_data = table_data+"<tr>";
-						table_data = table_data+"<td colspan='4'><b>Professor Avaliador:</b> "+registros[i].nomeAvaliador+"</td>";
+						table_data = table_data+"<td class='text-left' colspan='4'><b>Professor Avaliador:</b> "+registros[i].nomeAvaliador+"</td>";
 					    table_data = table_data+"</tr>";
-					    table_data = table_data+"<tr>";
-					    table_data = table_data+"<td><b>Justificativa:</b></td>";
-					    table_data = table_data+"<td></td><td></td><td></td>";
-						table_data = table_data+"</tr>";
-						table_data = table_data+"<tr>";
-						table_data = table_data+"<td colspan='4'>"+registros[i].justificativa+"</td>";
-						table_data = table_data+"</tr>";
+					    if(registros[i].estado == "INDEFERIDO"){
+						    table_data = table_data+"<tr>";
+						    table_data = table_data+"<td class='text-left' colspan='4'><b>Justificativa:</b> "+registros[i].justificativa+"</td>";
+							table_data = table_data+"</tr>";
+					    }
 					}
-					table_data = table_data+"</tbody></table>";		            		        
+					table_data = table_data+"</tbody></table></tr>";		            		        
                 }
                 table_data = table_data+"</tbody>";
 				table_data = table_data+"</table>";				
           		
-				$("#lista_registros").html(table_data);
+				$("#lista_registros").html(table_data);				
+				$("#tabela_registros").tablesorter();
 			}
 		}
 	</script>

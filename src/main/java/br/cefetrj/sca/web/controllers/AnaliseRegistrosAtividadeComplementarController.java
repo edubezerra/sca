@@ -101,11 +101,15 @@ public class AnaliseRegistrosAtividadeComplementarController {
 			@RequestBody AtualizaStatusAtividadeSearchCriteria search,
 			Model model){
 		
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matriculaProfessor = usr.getLogin();
+		
 		SolicitaRegistroAtividadesResponse registrosAtiv = null;
 		
 		try {
-			Long idRegistro = Long.parseLong(search.getIdReg());
-			service.atualizaStatusRegistro(search.getMatriculaAluno(),idRegistro,search.getNovoStatus());
+			Long idRegistro = Long.parseLong(search.getIdRegistro());
+			service.atualizaStatusRegistro(matriculaProfessor,search.getMatriculaAluno(),
+					idRegistro,search.getNovoStatus(), search.getJustificativa());
 			registrosAtiv = service.listarRegistrosAtividade(search.getSiglaCurso(),search.getNumeroVersao(),search.getStatus());
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -129,13 +133,13 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	
 	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
 	public void downloadFile(HttpSession session,
-			@RequestParam String IdReg, HttpServletResponse response) {
+			@RequestParam String IdReg, 
+			@RequestParam String matriculaAluno, 
+			HttpServletResponse response) {
 		
-		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
 		try {
 			Long id = Long.parseLong(IdReg);
-			Comprovante comprovante = service.getComprovante(matricula,id);
+			Comprovante comprovante = service.getComprovante(matriculaAluno,id);
 			GerenteArquivos.downloadFile(response,comprovante);
 		} catch (Exception e) {
 			e.printStackTrace();

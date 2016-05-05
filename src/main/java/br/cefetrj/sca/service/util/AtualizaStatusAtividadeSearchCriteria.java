@@ -6,8 +6,9 @@ public class AtualizaStatusAtividadeSearchCriteria {
 	String numeroVersao;
 	String status;
 	String novoStatus;
-	String IdReg;
+	String idRegistro;
 	String matriculaAluno;
+	String justificativa;
 	
 	public String getSiglaCurso() {
 		return siglaCurso;
@@ -33,17 +34,23 @@ public class AtualizaStatusAtividadeSearchCriteria {
 	public void setNovoStatus(String novoStatus) {
 		this.novoStatus = novoStatus;
 	}
-	public String getIdReg() {
-		return IdReg;
+	public String getIdRegistro() {
+		return idRegistro;
 	}
-	public void setIdReg(String idReg) {
-		IdReg = idReg;
+	public void setIdRegistro(String idRegistro) {
+		this.idRegistro = idRegistro;
 	}
 	public String getMatriculaAluno() {
 		return matriculaAluno;
 	}
 	public void setMatriculaAluno(String matriculaAluno) {
 		this.matriculaAluno = matriculaAluno;
+	}
+	public String getJustificativa() {
+		return justificativa;
+	}
+	public void setJustificativa(String justificativa) {
+		this.justificativa = justificativa;
 	}
 	
 }
