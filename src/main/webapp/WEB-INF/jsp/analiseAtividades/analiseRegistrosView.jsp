@@ -44,7 +44,7 @@
   	</style>
   	
   	<script>
-	  	function setThemeAndPager() {
+	  	function setTablesorter() {
 	  		
 	  	  // call the tablesorter plugin and apply the uitheme widget
 	  	  var $table1 = $("#tabela_registros").tablesorter({
@@ -57,6 +57,9 @@
 	        cssChildRow: "tablesorter-childRow",
 	
 	  	    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
+	  	    
+	  		// sort on the fifth column and first column, order desc and asc 
+	        sortList: [[2,1],[0,0]],
 	
 	  	    // widget code contained in the jquery.tablesorter.widgets.js file
 	  	    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
@@ -437,7 +440,7 @@
 				table_data = table_data+"</table>";				
           		
 				$("#lista_registros").html(table_data);				
-				setThemeAndPager();
+				setTablesorter();
 				$("#tabela_registros").tablesorter();
 			}
 		}

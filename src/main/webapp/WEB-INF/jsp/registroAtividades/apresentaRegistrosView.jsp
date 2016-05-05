@@ -65,6 +65,9 @@
 	        cssChildRow: "tablesorter-childRow",
 	
 	  	    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
+	  	    
+	  		// sort on the fifth column and first column, order desc and asc 
+	        sortList: [[4,1],[0,0]],
 	
 	  	    // widget code contained in the jquery.tablesorter.widgets.js file
 	  	    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
@@ -322,7 +325,7 @@
 													text-success
 												</c:when>
 												<c:when test="${registro.estado eq 'EM_ANÁLISE'}">
-													text-primary
+													text-warning
 												</c:when>
 												<c:when test="${registro.estado eq 'SUBMETIDO'}">
 													text-primary
