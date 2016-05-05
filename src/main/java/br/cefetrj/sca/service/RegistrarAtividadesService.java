@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.atividadecomplementar.AtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.RegistroAtividadeComplementar;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.RegistroAtividadeComplementarRepositorio;
 import br.cefetrj.sca.service.util.SituacaoAlunoAtividades;

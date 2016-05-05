@@ -28,59 +28,74 @@
 			<h4>Aluno: ${requestScope.aluno.nome} (Matrícula
 				${requestScope.aluno.matricula})</h4>
 		</div>
+
 		<c:if test="${requestScope.sucesso != null}">
+			<hr />
 			<div class="row">
 				<span class="label label-success">${requestScope.sucesso}</span>
 			</div>
+			<hr />
 		</c:if>
+
 		<c:if test="${requestScope.error != null}">
+			<hr />
 			<div class="row">
 				<span class="label label-danger">${requestScope.error}</span>
 			</div>
+			<hr />
 		</c:if>
+
 		<div class="row">
 			<c:choose>
-				<c:when test="${fn:length(requestScope.listaSemestresLetivos) eq 0}">
+				<c:when test="${fn:length(requestScope.listaPeriodosLetivos) eq 0}">
 					<div class="vcenter well ">
 						<p>Não há requerimentos anteriores.</p>
 					</div>
 				</c:when>
 				<c:otherwise>
 
-					<table class="table table-bordered table-hover table-striped">
-						<thead>
-							<tr>
-								<th>Requerimentos por Período Letivo</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${listaSemestresLetivos}" var="periodoLetivo">
-								<tr>
-									<td>
-										<form
-											action="${pageContext.request.contextPath}/requerimentoMatricula/visualizarDetalhesRequerimento"
-											method="POST">
-											<input type="hidden" name="ano" value="${periodoLetivo.ano}">
-											<input type="hidden" name="periodo"
-												value="${periodoLetivo.periodo}">
-											<button type="submit" class="btn btn-link">${periodoLetivo}</button>
-										</form>
-									</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Requerimentos por Período Letivo</h3>
+						</div>
+						<div class="panel-body">
+							<table class="table table-bordered table-hover table-striped">
+								<tbody>
+									<c:forEach items="${listaPeriodosLetivos}" var="periodoLetivo">
+										<tr>
+											<td>
+												<form
+													action="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarDetalhesRequerimento"
+													method="POST">
+													<input type="hidden" name="ano"
+														value="${periodoLetivo.ano}"> <input type="hidden"
+														name="periodo" value="${periodoLetivo.periodo}">
+													<button type="submit" class="btn btn-link">${periodoLetivo}</button>
+												</form>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
 
 				</c:otherwise>
 			</c:choose>
 			<div class="row">
-				<%-- 				<c:choose> --%>
-				<%-- 					<c:when test="${numeroSolicitacoes lt 3}"> --%>
 				<form
-					action="${pageContext.request.contextPath}/requerimentoMatricula/solicitaInclusaoDisciplinas"
+					action="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/iniciarRegistroRequerimento"
 					method="POST">
-					<button type="submit" class="btn btn-primary">Realizar
-						Novo Requerimento</button>
+
+					<c:if test="${requestScope.periodoLetivoCorrente == null}">
+						<button type="submit" class="btn btn-primary">Criar
+							Requerimento</button>
+					</c:if>
+					<c:if test="${requestScope.periodoLetivoCorrente != null}">
+						<button type="submit" class="btn btn-primary">Editar
+							Requerimento (${requestScope.periodoLetivoCorrente})</button>
+					</c:if>
+
 				</form>
 			</div>
 		</div>

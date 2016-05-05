@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.RegistrarAtividadesService;
 

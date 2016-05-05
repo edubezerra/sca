@@ -15,7 +15,7 @@ import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.VersaoCurso;
 import br.cefetrj.sca.dominio.atividadecomplementar.EnumEstadoAtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.RegistroAtividadeComplementar;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;

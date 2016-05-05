@@ -1,7 +1,9 @@
 package br.cefetrj.sca.service;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +13,9 @@ import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.FichaMatriculaForaPrazoFabrica;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemMatriculaForaPrazo;
-import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
+import br.cefetrj.sca.dominio.matriculaforaprazo.AlocacacaoDisciplinasEmDepartamento;
+import br.cefetrj.sca.dominio.matriculaforaprazo.MatriculaForaPrazo;
+import br.cefetrj.sca.dominio.repositories.AlocacacaoDisciplinasEmDepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositories.MatriculaForaPrazoRepositorio;
@@ -21,7 +24,7 @@ import br.cefetrj.sca.service.util.FichaMatriculaForaPrazo;
 import br.cefetrj.sca.service.util.FichaMatriculaForaPrazo.ItemRequerimentoInfo;
 
 @Service
-public class MatriculaForaPrazoService {
+public class RequerimentoMatriculaForaPrazoService {
 
 	public static final int TAMANHO_MAXIMO_COMPROVANTE = 10000000;
 
@@ -40,53 +43,25 @@ public class MatriculaForaPrazoService {
 	@Autowired
 	private AlunoRepositorio alunoRepositorio;
 
+	@Autowired
+	AlocacacaoDisciplinasEmDepartamentoRepositorio alocacaoRepositorio;
+
 	public Aluno findAlunoByMatricula(String matriculaAluno) {
 		return alunoRepositorio.findAlunoByMatricula(matriculaAluno);
 	}
 
-	public Turma findTurmaByCodigo(String codigoTurma) {
-		if (codigoTurma == null || codigoTurma.trim().equals("")) {
-			throw new IllegalArgumentException("Turma " + codigoTurma + " inválido");
+	public SortedMap<PeriodoLetivo, MatriculaForaPrazo> findMatriculasForaPrazoByAluno(Long idAluno) {
+		List<MatriculaForaPrazo> requerimentos = matriculaForaPrazoRepositorio.findMatriculasForaPrazoByAluno(idAluno);
+		List<PeriodoLetivo> periodosLetivos = MatriculaForaPrazo.periodosCorrespondentes(requerimentos);
+		SortedMap<PeriodoLetivo, MatriculaForaPrazo> mapa = new TreeMap<>();
+		for (int i = 0; i < requerimentos.size(); i++) {
+			mapa.put(periodosLetivos.get(i), requerimentos.get(i));
 		}
 
-		Turma turma;
-
-		try {
-			turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codigoTurma, PeriodoLetivo.PERIODO_CORRENTE);
-		} catch (Exception exc) {
-			turma = null;
-		}
-
-		return turma;
+		return mapa;
 	}
 
-	public List<MatriculaForaPrazo> findMatriculasForaPrazoByAluno(Long idAluno) {
-		return matriculaForaPrazoRepositorio.findMatriculasForaPrazoByAluno(idAluno);
-	}
-
-	public void incluirItensSolicitacao(List<ItemMatriculaForaPrazo> itensSolicitacao, Aluno aluno,
-			PeriodoLetivo semestreLetivo) {
-
-		MatriculaForaPrazo solicitacao = findMatriculaForaPrazoByAlunoAndPeriodo(aluno, semestreLetivo);
-		if (solicitacao != null) {
-			solicitacao.addItensSolicitacao(itensSolicitacao);
-		} else {
-			solicitacao = new MatriculaForaPrazo(aluno, semestreLetivo);
-		}
-
-		matriculaForaPrazoRepositorio.save(solicitacao);
-	}
-
-	// private MatriculaForaPrazo getSolicitacaoAtual(String matriculaAluno) {
-	// Aluno aluno = findAlunoByMatricula(matriculaAluno);
-	// Long idAluno = aluno.getId();
-	// PeriodoLetivo periodoLetivo = PeriodoLetivo.PERIODO_CORRENTE;
-	// MatriculaForaPrazo solicitacaoAtual =
-	// findMatriculaForaPrazoByAlunoAndPeriodo(idAluno, periodoLetivo);
-	// return solicitacaoAtual;
-	// }
-
-	public void registrarSolicitacao(FichaMatriculaForaPrazo ficha) throws IOException {
+	public void confirmarRegistroRequerimento(FichaMatriculaForaPrazo ficha) {
 
 		MatriculaForaPrazo matriculaForaPrazo = matriculaForaPrazoRepositorio
 				.findMatriculaForaPrazoByAlunoAndSemestre(ficha.getAluno(), PeriodoLetivo.PERIODO_CORRENTE);
@@ -95,19 +70,19 @@ public class MatriculaForaPrazoService {
 			matriculaForaPrazo = new MatriculaForaPrazo(ficha.getAluno(), PeriodoLetivo.PERIODO_CORRENTE);
 		}
 
-		for (ItemRequerimentoInfo item : ficha.getItensRequerimentos()) {
+		matriculaForaPrazo.getItens().clear();
+
+		for (ItemRequerimentoInfo item : ficha.getItensRequerimento()) {
 			String codigoTurma = item.getCodigoTurma();
 			String codigoDisciplina = item.getCodigoDisciplina();
 			Turma turma = turmaRepositorio.findTurmaByCodigoAndDisciplinaAndPeriodo(codigoTurma, codigoDisciplina,
 					PeriodoLetivo.PERIODO_CORRENTE);
-			Departamento depto = departamentoRepositorio.findDepartamentoByNome(item.getNomeDepartamento());
+			Departamento depto = departamentoRepositorio.findDepartamentoBySigla(item.getSiglaDepartamento());
 			int opcao = item.getOpcao();
 			matriculaForaPrazo.addItem(turma, depto, opcao);
 		}
 
 		matriculaForaPrazo.setComprovante(ficha.getComprovante());
-
-		matriculaForaPrazo.setObservacoes(ficha.getObservacoes());
 
 		matriculaForaPrazoRepositorio.save(matriculaForaPrazo);
 	}
@@ -116,8 +91,25 @@ public class MatriculaForaPrazoService {
 		return fabrica.criar(matricula);
 	}
 
-	public List<Turma> findTurmasByPeriodoLetivo(PeriodoLetivo periodo) {
-		return turmaRepositorio.findTurmasAbertasNoPeriodo(periodo);
+	public List<Turma> findTurmasByDepartamentoAndPeriodoLetivo(String matriculaAluno, String siglaDepartamento, PeriodoLetivo periodo) {
+		Departamento depto = departamentoRepositorio.findDepartamentoBySigla(siglaDepartamento);
+		AlocacacaoDisciplinasEmDepartamento a = alocacaoRepositorio
+				.findAlocacacaoDisciplinasEmDepartamentoByDepartamento(depto);
+		List<Turma> turmasDoPeriodo = this.findTurmasByPeriodoLetivo(matriculaAluno, periodo);
+		List<Turma> turmas = new ArrayList<>();
+		for (Turma turma : turmasDoPeriodo) {
+			if (a.getDisciplinas().contains(turma.getDisciplina())) {
+				turmas.add(turma);
+			}
+		}
+		return turmas;
+	}
+
+	public List<Turma> findTurmasByPeriodoLetivo(String matriculaAluno, PeriodoLetivo periodo) {
+		List<Turma> turmasDisponiveis = turmaRepositorio.findTurmasAbertasNoPeriodo(periodo);
+		List<Turma>  turmaCursadas = findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno, periodo);
+		turmasDisponiveis.removeAll(turmaCursadas);
+		return turmasDisponiveis;
 	}
 
 	public Turma findTurmaById(Long idTurma) {
@@ -133,7 +125,7 @@ public class MatriculaForaPrazoService {
 		return matriculaForaPrazoRepositorio.findMatriculaForaPrazoByAlunoAndSemestre(aluno, periodo);
 	}
 
-	public MatriculaForaPrazo findMatriculaForaPrazoByAlunoAndPeriodo(Aluno aluno, PeriodoLetivo periodo) {
-		return matriculaForaPrazoRepositorio.findMatriculaForaPrazoByAlunoAndSemestre(aluno, periodo);
+	public List<Turma> findTurmasCursadasPorAlunoNoPeriodo(String matriculaAluno, PeriodoLetivo periodo) {
+		return turmaRepositorio.findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno, periodo);
 	}
 }

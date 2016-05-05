@@ -118,7 +118,7 @@ public class AvaliacaoTurmaController {
 	}
 
 	@RequestMapping(value = "/menuPrincipal")
-	public String solicitaNovamenteAvaliacaoMatricula() {
+	public String solicitaNovamenteAvaliacaoTurma() {
 		return "/menuPrincipalView";
 	}
 
@@ -140,7 +140,7 @@ public class AvaliacaoTurmaController {
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 
-			return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula";
+			return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoTurma";
 		}
 	}
 
@@ -192,11 +192,11 @@ public class AvaliacaoTurmaController {
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
 		}
 
-		return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula";
+		return "forward:/avaliacaoTurma/solicitaNovamenteAvaliacaoTurma";
 	}
 
-	@RequestMapping(value = "/solicitaNovamenteAvaliacaoMatricula")
-	public String solicitaNovamenteAvaliacaoMatricula(
+	@RequestMapping(value = "/solicitaNovamenteAvaliacaoTurma")
+	public String solicitaNovamenteAvaliacaoTurma(
 			@ModelAttribute("matricula") String matricula, Model model) {
 
 		try {

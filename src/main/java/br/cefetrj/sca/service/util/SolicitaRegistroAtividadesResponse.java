@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.atividadecomplementar.RegistroAtividadeComplementar;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 @SuppressWarnings("serial")
 public class SolicitaRegistroAtividadesResponse extends

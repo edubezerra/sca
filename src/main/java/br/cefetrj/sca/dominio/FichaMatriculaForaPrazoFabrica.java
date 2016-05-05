@@ -5,8 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemMatriculaForaPrazo;
-import br.cefetrj.sca.dominio.inclusaodisciplina.MatriculaForaPrazo;
+import br.cefetrj.sca.dominio.matriculaforaprazo.MatriculaForaPrazo;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositories.MatriculaForaPrazoRepositorio;
@@ -32,7 +31,7 @@ public class FichaMatriculaForaPrazoFabrica {
 
 		MatriculaForaPrazo solicitacao = this.getSolicitacaoAtual(matriculaAluno);
 		if (solicitacao != null) {
-			ficha.comSolicitacoes(solicitacao.getItensSolicitacao());
+			ficha.comSolicitacoes(solicitacao.getItens());
 		}
 
 		Aluno aluno = alunoRepo.findAlunoByMatricula(matriculaAluno);

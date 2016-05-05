@@ -3,13 +3,18 @@ package br.cefetrj.sca.dominio.repositories;
 import java.io.Serializable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import br.cefetrj.sca.dominio.Departamento;
 
 public interface DepartamentoRepositorio extends
 		JpaRepository<Departamento, Serializable> {
 
-	public Departamento findDepartamentoById(Long id);
+	Departamento findDepartamentoById(Long id);
 
-	public Departamento findDepartamentoByNome(String siglaDepartamento);
+	Departamento findDepartamentoBySigla(String siglaDepartamento);
+	
+	@Query("SELECT d from Departamento d JOIN d.professores p WHERE p.matricula = ?1")
+	Departamento findDepartamentoByProfessor(String matriculaProfessor);
+
 }

@@ -5,42 +5,49 @@ import java.util.List;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
-import br.cefetrj.sca.dominio.inclusaodisciplina.ItemMatriculaForaPrazo;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.ItemMatriculaForaPrazo;
 
 public class FichaMatriculaForaPrazo {
 	Aluno aluno;
 
-	String observacoes;
-
 	public class ItemRequerimentoInfo {
-		String nomeDepartamento;
+		String siglaDepartamento;
 		int opcao;
+		private Long idTurma;
 		private String codigoTurma;
 		private String codigoDisciplina;
 		private String nomeDisciplina;
+		private String observacao;
 
-		public ItemRequerimentoInfo(String codigoTurma,
+		public ItemRequerimentoInfo(Long idTurma, String codigoTurma,
 				String codigoDisciplina, String nomeDisciplina,
-				String nomeDepartamento, int opcao) {
+				String siglaDepartamento, int opcao, String observacao) {
 			super();
+			this.idTurma = idTurma;
 			this.codigoTurma = codigoTurma;
 			this.codigoDisciplina = codigoDisciplina;
 			this.nomeDisciplina = nomeDisciplina;
-			this.nomeDepartamento = nomeDepartamento;
+			this.siglaDepartamento = siglaDepartamento;
 			this.opcao = opcao;
+			this.observacao = observacao;
 		}
 
 		public String getCodigoDisciplina() {
 			return codigoDisciplina;
 		}
 
+		public Long getIdTurma() {
+			return idTurma;
+		}
+
 		public String getCodigoTurma() {
 			return codigoTurma;
 		}
 
-		public String getNomeDepartamento() {
-			return nomeDepartamento;
+		public String getSiglaDepartamento() {
+			return siglaDepartamento;
 		}
 
 		public int getOpcao() {
@@ -50,26 +57,35 @@ public class FichaMatriculaForaPrazo {
 		public String getNomeDisciplina() {
 			return nomeDisciplina;
 		}
-	}
 
-	private List<ItemRequerimentoInfo> itensRequerimentos = new ArrayList<>();
-
-	public class DepartamentoInfo {
-		private String nomeDepartamento;
-		private String codigoDepartamento;
-
-		public DepartamentoInfo(String nomeDepartamento,
-				String codigoDepartamento) {
-			this.codigoDepartamento = codigoDepartamento;
-			this.nomeDepartamento = nomeDepartamento;
+		public void setObservacao(String observacao) {
+			this.observacao = observacao;
 		}
 
-		public String getNomeDepartamento() {
-			return nomeDepartamento;
+		public String getObservacao() {
+			return this.observacao;
+		}
+
+	}
+
+	private List<ItemRequerimentoInfo> itensRequerimento = new ArrayList<>();
+
+	public class DepartamentoInfo {
+		private String siglaDepartamento;
+		private String idDepartamento;
+
+		public DepartamentoInfo(String siglaDepartamento,
+				String idDepartamento) {
+			this.idDepartamento = idDepartamento;
+			this.siglaDepartamento = siglaDepartamento;
+		}
+
+		public String getSiglaDepartamento() {
+			return siglaDepartamento;
 		}
 
 		public String getCodigoDepartamento() {
-			return codigoDepartamento;
+			return idDepartamento;
 		}
 	}
 
@@ -83,7 +99,7 @@ public class FichaMatriculaForaPrazo {
 
 	public void comDepartamentos(List<Departamento> departamentos) {
 		for (Departamento depto : departamentos) {
-			this.departamentos.add(new DepartamentoInfo(depto.getNome(), depto
+			this.departamentos.add(new DepartamentoInfo(depto.getSigla(), depto
 					.getId().toString()));
 		}
 	}
@@ -100,43 +116,54 @@ public class FichaMatriculaForaPrazo {
 		return aluno;
 	}
 
-	public void adicionarItemRequerimento(String codigoTurma,
+	public void adicionarItemRequerimento(Long idTurma, String codigoTurma,
 			String codigoDisciplina, String nomeDisciplina,
-			String nomeDepartamento, int opcao) {
+			String siglaDepartamento, int opcao, String observacao) {
 		if (isSolicitacaoRepetida(codigoTurma, codigoDisciplina)) {
 			throw new IllegalArgumentException(
 					"Erro: já existe uma solicitação para a turma/disciplina "
 							+ codigoTurma + "/" + codigoDisciplina);
 		} else {
-			ItemRequerimentoInfo item = new ItemRequerimentoInfo(codigoTurma,
-					codigoDisciplina, nomeDisciplina, nomeDepartamento, opcao);
-			itensRequerimentos.add(item);
+			ItemRequerimentoInfo item = new ItemRequerimentoInfo(idTurma,
+					codigoTurma, codigoDisciplina, nomeDisciplina,
+					siglaDepartamento, opcao, observacao);
+			itensRequerimento.add(item);
 		}
 	}
 
-	public List<ItemRequerimentoInfo> getItensRequerimentos() {
-		return itensRequerimentos;
+	public void removerItemRequerimento(long idTurma) {
+		for (ItemRequerimentoInfo item : itensRequerimento) {
+			if (item.getIdTurma().equals(idTurma)) {
+				itensRequerimento.remove(item);
+				return;
+			}
+		}
+	}
+
+	public List<ItemRequerimentoInfo> getItensRequerimento() {
+		return itensRequerimento;
 	}
 
 	public void comSolicitacoes(
 			final List<ItemMatriculaForaPrazo> itensSolicitacao) {
 		for (ItemMatriculaForaPrazo item : itensSolicitacao) {
-			String nomeDepartamento = item.getDepartamento().getNome();
+			String siglaDepartamento = item.getDepartamento().getSigla();
 			int opcao = item.getOpcao();
 			String nomeDisciplina = item.getTurma().getNomeDisciplina();
 			String codigoDisciplina = item.getTurma().getDisciplina()
 					.getCodigo();
 			String codigoTurma = item.getTurma().getCodigo();
-			ItemRequerimentoInfo itemreq = new ItemRequerimentoInfo(
-					codigoTurma, codigoDisciplina, nomeDisciplina,
-					nomeDepartamento, opcao);
-			itensRequerimentos.add(itemreq);
+			ItemRequerimentoInfo itemreq = new ItemRequerimentoInfo(item
+					.getTurma().getId(), codigoTurma, codigoDisciplina,
+					nomeDisciplina, siglaDepartamento, opcao,
+					item.getObservacao());
+			itensRequerimento.add(itemreq);
 		}
 	}
 
 	public boolean isSolicitacaoRepetida(String codigoTurma,
 			String codigoDisciplina) {
-		for (ItemRequerimentoInfo item : itensRequerimentos) {
+		for (ItemRequerimentoInfo item : itensRequerimento) {
 			if (item.getCodigoTurma().equals(codigoTurma)
 					&& item.getCodigoDisciplina().equals(codigoDisciplina))
 				return true;
@@ -152,11 +179,7 @@ public class FichaMatriculaForaPrazo {
 		return this.comprovante;
 	}
 
-	public void setObservacoes(String observacoes) {
-		this.observacoes = observacoes;
-	}
-
-	public String getObservacoes() {
-		return this.observacoes;
+	public PeriodoLetivo getPeriodoLetivoCorrente() {
+		return PeriodoLetivo.PERIODO_CORRENTE;
 	}
 }

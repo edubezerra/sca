@@ -76,6 +76,11 @@ public class StandalonePersistenceConfig {
 				properties.getProperty("hibernate.dialect"));
 		jpaProperties.put("hibernate.hbm2ddl.auto",
 				properties.getProperty("hibernate.hbm2ddl.auto"));
+
+		jpaProperties.put(
+				"javax.persistence.schema-generation.database.action",
+				"drop-and-create");
+
 		factory.setJpaProperties(jpaProperties);
 
 		factory.afterPropertiesSet();

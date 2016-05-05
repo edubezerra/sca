@@ -281,7 +281,7 @@ public class Turma {
 
 	public void lancarAvaliacao(FichaAvaliacoes.ItemFicha item) {
 		Inscricao inscricao = localizarInscricao(item.matriculaAluno);
-		if(inscricao != null){
+		if (inscricao != null) {
 			inscricao.lancarAvaliacao(item);
 		}
 
@@ -290,5 +290,29 @@ public class Turma {
 	private Inscricao localizarInscricao(String matriculaAluno) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getCodigoDisciplina() {
+		return this.getDisciplina().getCodigo();
+	}
+
+	public String getHorarioFormatado() {
+		StringBuilder sb = new StringBuilder();
+		int qtdAulas = this.aulas.size(), i = 0;
+		if (qtdAulas == 0) {
+			sb.append("indefinido");
+		} else {
+			for (Aula aula : this.aulas) {
+				sb.append(aula.getDia());
+				sb.append(", ");
+				sb.append(aula.getHoraInicio());
+				sb.append(" - ");
+				sb.append(aula.getHoraTermino());
+				if (++i < qtdAulas) {
+					sb.append("; ");
+				}
+			}
+		}
+		return sb.toString();
 	}
 }

@@ -2,6 +2,7 @@ package br.cefetrj.sca.infra.cargadados;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
@@ -21,8 +22,10 @@ public class ImportadorTudo {
 		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
 		
 		entityManager = emf.createEntityManager();
+
 		importador.run();
 		entityManager.close();
+		emf.close();
 	}
 
 	public void run() {
@@ -41,6 +44,11 @@ public class ImportadorTudo {
 			new ImportadorTurmasComInscricoes().run();
 			new ImportadorAlocacoesProfessoresEmTurmas().run();
 			new ImportadorHabilitacoesParaProfessor().run();
+			
+			new ImportadorAlocacoesProfessoresEmDepartamentos().run();
+			
+			new ImportadorAlocacoesDisciplinasEmDepartamentos().run();
+			
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());
 			System.exit(1);

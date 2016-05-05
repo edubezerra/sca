@@ -60,7 +60,7 @@ public class ImportadorAlunos {
 	}
 
 	public void gravarDadosImportados() {
-		System.out.println("Realizando a persitência de objetos Aluno...");
+		System.out.println("Realizando a persistência de objetos Aluno...");
 
 		EntityManager em = ImportadorTudo.entityManager;
 
