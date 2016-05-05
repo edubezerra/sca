@@ -25,6 +25,21 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
 	
+	<!-- Required for tablesorter-->
+    <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+    
+    <!-- Bootstrap stylesheet -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/bootstrap.min.css">
+	<!-- bootstrap widget theme -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/theme.bootstrap_2.css">
+	<!-- tablesorter plugin -->
+	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.js"></script>
+	<!-- tablesorter widget file - loaded after the plugin -->
+	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.widgets.js"></script>
+	<!-- pager plugin -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/jquery.tablesorter.pager.css">
+	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.pager.js"></script>
+	
 	<script>  
 	    function escondeMostra(x){  
 	        if(document.getElementById(x).style.display == "none" || document.getElementById(x).style.display == ""){  
@@ -35,6 +50,102 @@
 	        }  
 	    }  
 	</script>
+	
+	<script>
+	  	$(function() {
+	  		
+	  	  // call the tablesorter plugin and apply the uitheme widget
+	  	  var $table1 = $("#tabela_registros").tablesorter({
+	  	    // this will apply the bootstrap theme if "uitheme" widget is included
+	  	    // the widgetOptions.uitheme is no longer required to be set
+	  	    theme : "bootstrap",
+	
+	  	    widthFixed: true,
+	  		// this is the default setting
+	        cssChildRow: "tablesorter-childRow",
+	
+	  	    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
+	
+	  	    // widget code contained in the jquery.tablesorter.widgets.js file
+	  	    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+	  	    widgets : [ "uitheme", "filter", "zebra", "pager" ],
+	
+	  	    widgetOptions : {
+	  	      // If there are child rows in the table (rows with class name from "cssChildRow" option)
+              // and this option is true and a match is found anywhere in the child row, then it will make that row
+              // visible; default is false
+              filter_childRows: true,
+	  	      // using the default zebra striping class name, so it actually isn't included in the theme variable above
+	  	      // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+	  	      zebra : ["even", "odd"],
+	
+	  	      // hide the filter row when not active
+	  	      filter_hideFilters : true,
+	  	      
+	          // output default: '{page}/{totalPages}'
+	          // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+	          pager_output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
+
+	          pager_removeRows: false,
+
+	          // class name applied to filter row and each input
+	          filter_cssFilter  : 'tablesorter-filter',
+	          // search from beginning
+	          filter_startsWith : false,
+	          // Set this option to false to make the searches case sensitive
+	          filter_ignoreCase : true
+	        }
+	  	  })
+	  	  .tablesorterPager({
+	
+	  	    // target the pager markup - see the HTML block below
+	  	    container: $(".ts-pager"),
+	
+	  	    // target the pager page select dropdown - choose a page
+	  	    cssGoto  : ".pagenum",
+	
+	  	    // remove rows from the table to speed up the sort of large tables.
+	  	    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+	  	    removeRows: false,
+	
+	  	    // output string - default is '{page}/{totalPages}';
+	  	    // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+	  	    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+	
+	  	  });
+	  	  
+	  	  // hide child rows - get in the habit of not using .hide()
+	  	  // See http://jsfiddle.net/Mottie/u507846y/ & https://github.com/jquery/jquery/issues/1767
+	  	  // and https://github.com/jquery/jquery/issues/2308
+	  	  // This won't be a problem in jQuery v3.0+
+	  	  $table1.find( '.tablesorter-childRow td' ).addClass( 'hidden' );
+
+	  	  // Toggle child row content (td), not hiding the row since we are using rowspan
+	  	  // Using delegate because the pager plugin rebuilds the table after each page change
+	  	  // "delegate" works in jQuery 1.4.2+; use "live" back to v1.3; for older jQuery - SOL
+	  	  $table1.delegate( '.toggle', 'click' ,function() {
+	  	    // use "nextUntil" to toggle multiple child rows
+	  	    // toggle table cells instead of the row
+	  	    $( this )
+	  	      .closest( 'tr' )
+	  	      .nextUntil( 'tr.tablesorter-hasChildRow' )
+	  	      .find( 'td' )
+	  	      .toggleClass( 'hidden' );
+	  	    return false;
+	  	  });
+
+	  	  // Toggle filter_childRows option
+	  	  $( 'button.toggle-combined' ).click( function() {
+	  	    var wo = $table1[0].config.widgetOptions,
+	  	    o = !wo.filter_childRows;
+	  	    wo.filter_childRows = o;
+	  	    $( '.state1' ).html( o.toString() );
+	  	    // update filter; include false parameter to force a new search
+	  	    $table1.trigger( 'search', false );
+	  	    return false;
+	  	  });
+	  	});
+  	</script>
 
 </head>
 <body>
@@ -164,23 +275,22 @@
 				<c:otherwise>
 					<div class="vcenter well">
 						
-						<table class="table text-center">
+						<table id="tabela_registros" class="table text-center tablesorter">
 							<thead>
 								<tr>
-									<td><b>Categoria</b></td>
-									<td><b>Descrição</b></td>
-									<td><b>Carga Horária</b></td>
-									<td><b>Comprovante</b></td>
-									<td><b>Data de Solicitação</b></td>
-									<td><b>Status</b></td>
-																	
+									<th><b>Categoria</b></th>
+									<th><b>Descrição</b></th>
+									<th><b>Carga Horária</b></th>
+									<th class="sorter-false filter-false"><b>Comprovante</b></th>
+									<th class="filter-select filter-exact" data-placeholder="Escolha uma data"><b>Data de Solicitação</b></th>
+									<th class="filter-select filter-exact" data-placeholder="Escolha um status"><b>Status</b></th>																	
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${requestScope.registrosAtiv}" var="registro" >
 									  <c:choose>
 											<c:when test="${registro.estado ne 'SUBMETIDO'}">
-												<tr class="btn btn-default" onclick="escondeMostra('infoAnalise/${registro.idRegistro}');">
+												<tr class="tablesorter-hasChildRow toggle btn btn-default" onclick="escondeMostra('infoAnalise/${registro.idRegistro}');">
 											</c:when>
 											<c:otherwise>
 												<tr>
@@ -188,7 +298,7 @@
 									  </c:choose>
 							          <td class='text-left'>${registro.categoria}</td>
 							          <td class='text-left'>
-							          	<div style='overflow:auto;width:300px;height:50px;'>
+							          	<div style='overflow:auto;width:270px;height:50px;'>
 							          		${registro.descricao}</div></td>
 							          <td>${registro.cargaHoraria}</td>
 							          <td>
@@ -219,19 +329,17 @@
 												</c:when>
 											</c:choose>
 										</c:set>
-										<p class="${classeStatus}"><b>${registro.estado}</b></p>
-							          </td>
-							          <td>
-							          	<c:if test="${registro.podeSerCancelado}">
-											<form action="${pageContext.request.contextPath}/registroAtividades/removeRegistroAtividade" method="POST">
-								          		<input type="hidden" name="idReg" value="${registro.idRegistro}">
-												<button type="submit" class="btn btn-default" title="Cancelar submissão">
-													<i class="fa fa-trash-o"></i></button>
-											</form>
-										</c:if>							          	
-									  </td>
+										<span class="${classeStatus}"><b>${registro.estado}</b>
+								          <c:if test="${registro.podeSerCancelado}">
+												<form action="${pageContext.request.contextPath}/registroAtividades/removeRegistroAtividade" method="POST">
+									          		<input type="hidden" name="idReg" value="${registro.idRegistro}">
+													<button type="submit" class="btn btn-default" title="Cancelar submissão">
+														<i class="fa fa-trash-o"></i></button>
+												</form>
+										  </c:if></span>
+									  </td>	
 							        </tr>
-							        <tr id="infoAnalise/${registro.idRegistro}" style="display:none">
+							        <tr class="tablesorter-childRow" id="infoAnalise/${registro.idRegistro}" style="display:none">
 							        	<td colspan="7">
 								        	<table class="table text-center">
 								        		<tr>
@@ -248,6 +356,32 @@
 							        </tr>
 								</c:forEach>
 							</tbody>
+							<tfoot>
+			          			<tr>
+									<th><b>Categoria</b></th>
+									<th><b>Descrição</b></th>
+									<th><b>Carga Horária</b></th>
+									<th><b>Comprovante</b></th>
+									<th><b>Data de Solicitação</b></th>
+									<th><b>Status</b></th>																	
+								</tr>
+			          		
+			                	<tr>
+			                  	<th colspan='7' class='ts-pager form-horizontal'>
+			                    <button type='button' class='btn first'><i class='icon-step-backward glyphicon glyphicon-step-backward'></i></button>
+			                    <button type='button' class='btn prev'><i class='icon-arrow-left glyphicon glyphicon-backward'></i></button>
+			                    <span class='pagedisplay'></span>
+			                    <button type='button' class='btn next'><i class='icon-arrow-right glyphicon glyphicon-forward'></i></button>
+			                    <button type='button' class='btn last'><i class='icon-step-forward glyphicon glyphicon-step-forward'></i></button>
+			                    <select class='pagesize input-mini' title='Selecione o tamanho da página'>
+			                      <option selected='selected' value='10'>10</option>
+			                      <option value='20'>20</option>
+			                      <option value='30'>30</option>
+			                      <option value='40'>40</option>
+			                    </select>
+			                    <select class='pagenum input-mini' title='Selecione a página'></select>
+			                  	</th></tr>
+			                </tfoot>
 						</table>
 					</div>
 				</c:otherwise>
