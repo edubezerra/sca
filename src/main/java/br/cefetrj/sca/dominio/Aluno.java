@@ -104,7 +104,11 @@ public class Aluno {
 	}
 
 	public String getEmail() {
-		return pessoa.getEmail().toString();
+		if (pessoa.getEmail() != null) {
+			return pessoa.getEmail().toString();
+		} else {
+			return null;
+		}
 	}
 
 	public String getCpf() {
