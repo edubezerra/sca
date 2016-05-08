@@ -1,7 +1,10 @@
 package br.cefetrj.sca.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,18 +69,83 @@ public class AnaliseRegistrosAtividadeService {
 	}
 	
 	public SolicitaRegistroAtividadesResponse listarRegistrosAtividade(String siglaCurso,
-			String numeroVersao, String status){
+			String numeroVersao, String status, String startDate, String endDate){
 		
-		VersaoCurso versaoCurso = cursoRepo.getVersaoCurso(siglaCurso, numeroVersao);
-		List<Aluno> alunos = alunoRepo.findAllByVersaoCurso(versaoCurso);
+		List<Aluno> alunos = new ArrayList<>();
 		
-		SolicitaRegistroAtividadesResponse response = new SolicitaRegistroAtividadesResponse();
-		for (Aluno aluno : alunos) {
-			for (RegistroAtividadeComplementar reg : 
-				aluno.getRegistrosAtiv(EnumEstadoAtividadeComplementar.findByText(status))) {
-				response.add(reg, aluno);
+		if(!siglaCurso.equals("") && !numeroVersao.equals("")){
+			VersaoCurso versaoCurso = cursoRepo.getVersaoCurso(siglaCurso, numeroVersao);
+			alunos = alunoRepo.findAllByVersaoCurso(versaoCurso);
+		}
+		else if(!siglaCurso.equals("") && numeroVersao.equals("")){			
+			for(VersaoCurso versaoCurso: cursoRepo.findAllVersaoCursoByCurso(siglaCurso)){
+				alunos.addAll(alunoRepo.findAllByVersaoCurso(versaoCurso));
 			}
 		}
+		else if(siglaCurso.equals("") && numeroVersao.equals("")){			
+			for(VersaoCurso versaoCurso: cursoRepo.findAllVersaoCurso()){
+				alunos.addAll(alunoRepo.findAllByVersaoCurso(versaoCurso));
+			}
+		}
+		
+		SolicitaRegistroAtividadesResponse response = new SolicitaRegistroAtividadesResponse();
+		if(!status.equals("") && startDate.equals("") && endDate.equals("")){
+			for (Aluno aluno : alunos) {
+				for (RegistroAtividadeComplementar reg : 
+					aluno.getRegistrosAtiv(EnumEstadoAtividadeComplementar.findByText(status))) {
+					response.add(reg, aluno);
+				}
+			}
+		}
+		else if(!status.equals("") && !startDate.equals("") && !endDate.equals("")){
+			DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+			Date dataInicio,dataFim;
+			try {
+				dataInicio = df.parse(startDate);
+				Calendar c = Calendar.getInstance();
+				c.setTime(df.parse(endDate));
+				c.add(Calendar.DATE, 1);  // number of days to add
+				dataFim = c.getTime();
+				//dataFim = df.parse(endDate);
+			} catch (ParseException e) {
+				throw new IllegalArgumentException("Intervalo dos registros buscados mal definido!", e);
+			} 
+			for (Aluno aluno : alunos) {
+				for (RegistroAtividadeComplementar reg : 
+					aluno.getRegistrosAtiv(EnumEstadoAtividadeComplementar.findByText(status))) {
+					if(reg.getDataSolicitacao().compareTo(dataInicio)>=0 && reg.getDataSolicitacao().compareTo(dataFim)<=0)
+						response.add(reg, aluno);
+				}
+			}
+		}
+		else if(status.equals("") && !startDate.equals("") && !endDate.equals("")){
+			DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+			Date dataInicio,dataFim;
+			try {
+				dataInicio = df.parse(startDate);
+				Calendar c = Calendar.getInstance();
+				c.setTime(df.parse(endDate));
+				c.add(Calendar.DATE, 1);  // number of days to add
+				dataFim = c.getTime();
+				//dataFim = df.parse(endDate);
+			} catch (ParseException e) {
+				throw new IllegalArgumentException("Intervalo dos registros buscados mal definido!", e);
+			} 
+			for (Aluno aluno : alunos) {
+				for (RegistroAtividadeComplementar reg : aluno.getRegistrosAtiv()) {
+					if(reg.getDataSolicitacao().compareTo(dataInicio)>=0 && reg.getDataSolicitacao().compareTo(dataFim)<=0)
+						response.add(reg, aluno);
+				}
+			}
+		}
+		else if(status.equals("") && startDate.equals("") && endDate.equals("")){
+			for (Aluno aluno : alunos) {
+				for (RegistroAtividadeComplementar reg : aluno.getRegistrosAtiv()) {
+					response.add(reg, aluno);
+				}
+			}
+		}
+
 		return response;
 	}
 	

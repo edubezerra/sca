@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.atividadecomplementar.RegistroAtividadeComplementar;
-import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 @SuppressWarnings("serial")
 public class SolicitaRegistroAtividadesResponse extends
@@ -22,7 +21,7 @@ public class SolicitaRegistroAtividadesResponse extends
 		private Long idRegistro;
 		private String descricao;
 		private Long cargaHoraria;
-		private Comprovante documento;
+		private boolean temDocumento;
 		private String estado;
 		private String dataSolicitacao;
 		private boolean podeSerCancelado;
@@ -34,7 +33,7 @@ public class SolicitaRegistroAtividadesResponse extends
 				
 		public Item(Long idAluno, String matriculaAluno, String nomeAluno,
 				Long idAtividade, String descrAtividade, String categoria, Long idRegistro, String descricao, 
-				Long cargaHoraria, Comprovante documento, String estado, String dataSolicitacao,
+				Long cargaHoraria, boolean temDocumento, String estado, String dataSolicitacao,
 				boolean podeSerCancelado, String dataAnalise, Long idAvaliador, String matriculaAvaliador, 
 				String nomeAvaliador, String justificativa) {
 			super();
@@ -47,7 +46,7 @@ public class SolicitaRegistroAtividadesResponse extends
 			this.idRegistro = idRegistro;
 			this.descricao = descricao;
 			this.cargaHoraria = cargaHoraria;
-			this.documento = documento;
+			this.temDocumento = temDocumento;
 			this.estado = estado;
 			this.dataSolicitacao = dataSolicitacao;
 			this.podeSerCancelado = podeSerCancelado;
@@ -74,8 +73,8 @@ public class SolicitaRegistroAtividadesResponse extends
 			return cargaHoraria;
 		}
 
-		public Comprovante getDocumento() {
-			return documento;
+		public boolean getTemDocumento() {
+			return temDocumento;
 		}
 
 		public String getEstado() {
@@ -139,7 +138,7 @@ public class SolicitaRegistroAtividadesResponse extends
 			novo = this.new Item(aluno.getId(), aluno.getMatricula(), aluno.getNome(),
 					reg.getAtividade().getId(), reg.getAtividade().getTipo().getDescricao(), 
 					reg.getAtividade().getTipo().getCategoria().toString(),	reg.getId(), 
-					reg.getDescricao(), reg.getCargaHoraria().toHours(), reg.getDocumento(), 
+					reg.getDescricao(), reg.getCargaHoraria().toHours(), reg.getDocumento()!=null, 
 					reg.getEstado().toString(), f.format(reg.getDataSolicitacao()), reg.podeSerCancelado(),
 					"", null, "", "", "");
 		}
@@ -147,7 +146,7 @@ public class SolicitaRegistroAtividadesResponse extends
 			novo = this.new Item(aluno.getId(), aluno.getMatricula(), aluno.getNome(),
 					reg.getAtividade().getId(), reg.getAtividade().getTipo().getDescricao(),
 					reg.getAtividade().getTipo().getCategoria().toString(),	reg.getId(),
-					reg.getDescricao(), reg.getCargaHoraria().toHours(), reg.getDocumento(), 
+					reg.getDescricao(), reg.getCargaHoraria().toHours(), reg.getDocumento()!=null, 
 					reg.getEstado().toString(), f.format(reg.getDataSolicitacao()), reg.podeSerCancelado(),
 					f.format(reg.getDataAnalise()), reg.getAvaliador().getId(), reg.getAvaliador().getMatricula(),
 					reg.getAvaliador().getNome(), reg.getJustificativa());

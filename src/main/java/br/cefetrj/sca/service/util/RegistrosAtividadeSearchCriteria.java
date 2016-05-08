@@ -5,6 +5,8 @@ public class RegistrosAtividadeSearchCriteria {
 	String siglaCurso;
 	String numeroVersao;
 	String status;
+	String startDate;
+	String endDate;
 	
 	public String getSiglaCurso() {
 		return siglaCurso;
@@ -23,6 +25,18 @@ public class RegistrosAtividadeSearchCriteria {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 	
 }

@@ -25,7 +25,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
 	
-	<!-- Required for tablesorter-->
+	<!-- Required for tablesorter and jquery.popconfirm-->
     <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
     
     <!-- Bootstrap stylesheet -->
@@ -39,6 +39,10 @@
 	<!-- pager plugin -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/jquery.tablesorter.pager.css">
 	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.pager.js"></script>
+	
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" 
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.popconfirm.js"></script>
 	
 	<script>  
 	    function escondeMostra(x){  
@@ -148,6 +152,9 @@
 	  	    return false;
 	  	  });
 	  	});
+	  	$(function() {
+		  	  $("[data-toggle='confirmation']").popConfirm();
+		});
   	</script>
 
 </head>
@@ -305,7 +312,7 @@
 							          		${registro.descricao}</div></td>
 							          <td>${registro.cargaHoraria}</td>
 							          <td>
-							          	<c:if test="${registro.documento != null}">
+							          	<c:if test="${registro.temDocumento}">
 											<form action="${pageContext.request.contextPath}/registroAtividades/downloadFile" method="POST" target="_blank">
 								          		<input type="hidden" name="IdReg" value="${registro.idRegistro}">
 												<button type="submit" class="btn btn-default" title="Download">
@@ -336,7 +343,9 @@
 								          <c:if test="${registro.podeSerCancelado}">
 												<form action="${pageContext.request.contextPath}/registroAtividades/removeRegistroAtividade" method="POST">
 									          		<input type="hidden" name="idReg" value="${registro.idRegistro}">
-													<button type="submit" class="btn btn-default" title="Cancelar submissão">
+													<button type="submit" class="btn btn-default" data-toggle='confirmation'
+													  data-confirm-title='Confirmação' data-confirm-content='Cancelar esta submissão?'
+													  data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'>
 														<i class="fa fa-trash-o"></i></button>
 												</form>
 										  </c:if></span>

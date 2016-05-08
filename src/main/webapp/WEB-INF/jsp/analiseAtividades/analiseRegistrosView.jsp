@@ -20,7 +20,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
     
-    <!-- Required for tablesorter and bootstrap-popup-->
+    <!-- Required for tablesorter, bootstrap-popup and jquery.popconfirm-->
     <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
     
     <!-- Bootstrap stylesheet -->
@@ -34,112 +34,164 @@
 	<!-- pager plugin -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/jquery.tablesorter.pager.css">
 	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.pager.js"></script>
-        
+     
+    <!-- Include bootstrap-popup and jquery.popconfirm -->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-popup.min.js"></script>
+	<script type="text/javascript" 
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.popconfirm.js"></script>
     
+	<!-- Include Date Range Picker -->
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/daterangepicker.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap/css/daterangepicker.css" />
+
     <style>
   		th{cursor:pointer;}
   	</style>
   	
+  	<script type="text/javascript">
+		$(function() {		
+		    function cb(start, end) {
+		        $('#daterange span').html(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
+		        $('#startDate').val(start.format('DD/MM/YYYY'));
+		        $('#endDate').val(end.format('DD/MM/YYYY'));
+		    }
+		    //cb(moment().subtract(29, 'days'), moment());
+		
+		    $('#daterange').daterangepicker({
+		    	"locale": {
+		            "format": "DD/MM/YYYY",
+		            "separator": " - ",
+		            "applyLabel": "Aplicar",
+		            "cancelLabel": "Cancelar",
+		            "fromLabel": "De",
+		            "toLabel": "Até",
+		            "customRangeLabel": "Intervalo Customizado",
+		            "daysOfWeek": [
+		                "D","S","T","Q","Q","S","S"
+		            ],
+		            "monthNames": [
+		                "Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
+		            ],
+		            "firstDay": 1
+		        },
+		        ranges: {
+		           'Hoje': [moment(), moment()],
+		           'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+		           'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+		           'Este Mês': [moment().startOf('month'), moment().endOf('month')],		           
+		           'Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		           'Este ano': [moment().startOf('year'), moment().endOf('year')],
+		           'Desde o início': [moment("00/00/00"),moment()],
+		        }
+		    }, cb);
+		
+		});
+	</script>
+  	
   	<script>
 	  	function setTablesorter() {
 	  		
-	  	  // call the tablesorter plugin and apply the uitheme widget
-	  	  var $table1 = $("#tabela_registros").tablesorter({
-	  	    // this will apply the bootstrap theme if "uitheme" widget is included
-	  	    // the widgetOptions.uitheme is no longer required to be set
-	  	    theme : "bootstrap",
+		  	  // call the tablesorter plugin and apply the uitheme widget
+		  	  var $table1 = $("#tabela_registros").tablesorter({
+		  	    // this will apply the bootstrap theme if "uitheme" widget is included
+		  	    // the widgetOptions.uitheme is no longer required to be set
+		  	    theme : "bootstrap",
+		
+		  	    widthFixed: true,
+		  		// this is the default setting
+		        cssChildRow: "tablesorter-childRow",
+		
+		  	    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
+		  	    
+		  		// sort on the fifth column and first column, order desc and asc 
+		        sortList: [[2,1],[0,0]],
+		
+		  	    // widget code contained in the jquery.tablesorter.widgets.js file
+		  	    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+		  	    widgets : [ "uitheme", "filter", "zebra", "pager" ],
+		
+		  	    widgetOptions : {
+		  	      // If there are child rows in the table (rows with class name from "cssChildRow" option)
+	              // and this option is true and a match is found anywhere in the child row, then it will make that row
+	              // visible; default is false
+	              filter_childRows: true,
+		  	      // using the default zebra striping class name, so it actually isn't included in the theme variable above
+		  	      // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+		  	      zebra : ["even", "odd"],
+		
+		  	      // hide the filter row when not active
+		  	      filter_hideFilters : true,
+		  	      
+		          // output default: '{page}/{totalPages}'
+		          // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+		          pager_output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
 	
-	  	    widthFixed: true,
-	  		// this is the default setting
-	        cssChildRow: "tablesorter-childRow",
+		          pager_removeRows: false,
 	
-	  	    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
-	  	    
-	  		// sort on the fifth column and first column, order desc and asc 
-	        sortList: [[2,1],[0,0]],
+		          // class name applied to filter row and each input
+		          filter_cssFilter  : 'tablesorter-filter',
+		          // search from beginning
+		          filter_startsWith : false,
+		          // Set this option to false to make the searches case sensitive
+		          filter_ignoreCase : true
+		        }
+		  	  })
+		  	  .tablesorterPager({
+		
+		  	    // target the pager markup - see the HTML block below
+		  	    container: $(".ts-pager"),
+		
+		  	    // target the pager page select dropdown - choose a page
+		  	    cssGoto  : ".pagenum",
+		
+		  	    // remove rows from the table to speed up the sort of large tables.
+		  	    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+		  	    removeRows: false,
+		
+		  	    // output string - default is '{page}/{totalPages}';
+		  	    // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+		  	    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+		
+		  	  });
+		  	  
+		  	  // hide child rows - get in the habit of not using .hide()
+		  	  // See http://jsfiddle.net/Mottie/u507846y/ & https://github.com/jquery/jquery/issues/1767
+		  	  // and https://github.com/jquery/jquery/issues/2308
+		  	  // This won't be a problem in jQuery v3.0+
+		  	  $table1.find( '.tablesorter-childRow td' ).addClass( 'hidden' );
 	
-	  	    // widget code contained in the jquery.tablesorter.widgets.js file
-	  	    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
-	  	    widgets : [ "uitheme", "filter", "zebra", "pager" ],
+		  	  // Toggle child row content (td), not hiding the row since we are using rowspan
+		  	  // Using delegate because the pager plugin rebuilds the table after each page change
+		  	  // "delegate" works in jQuery 1.4.2+; use "live" back to v1.3; for older jQuery - SOL
+		  	  $table1.delegate( '.toggle', 'click' ,function() {
+		  	    // use "nextUntil" to toggle multiple child rows
+		  	    // toggle table cells instead of the row
+		  	    $( this )
+		  	      .closest( 'tr' )
+		  	      .nextUntil( 'tr.tablesorter-hasChildRow' )
+		  	      .find( 'td' )
+		  	      .toggleClass( 'hidden' );
+		  	    return false;
+		  	  });
 	
-	  	    widgetOptions : {
-	  	      // If there are child rows in the table (rows with class name from "cssChildRow" option)
-              // and this option is true and a match is found anywhere in the child row, then it will make that row
-              // visible; default is false
-              filter_childRows: true,
-	  	      // using the default zebra striping class name, so it actually isn't included in the theme variable above
-	  	      // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
-	  	      zebra : ["even", "odd"],
-	
-	  	      // hide the filter row when not active
-	  	      filter_hideFilters : true,
-	  	      
-	          // output default: '{page}/{totalPages}'
-	          // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
-	          pager_output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
-
-	          pager_removeRows: false,
-
-	          // class name applied to filter row and each input
-	          filter_cssFilter  : 'tablesorter-filter',
-	          // search from beginning
-	          filter_startsWith : false,
-	          // Set this option to false to make the searches case sensitive
-	          filter_ignoreCase : true
-	        }
-	  	  })
-	  	  .tablesorterPager({
-	
-	  	    // target the pager markup - see the HTML block below
-	  	    container: $(".ts-pager"),
-	
-	  	    // target the pager page select dropdown - choose a page
-	  	    cssGoto  : ".pagenum",
-	
-	  	    // remove rows from the table to speed up the sort of large tables.
-	  	    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
-	  	    removeRows: false,
-	
-	  	    // output string - default is '{page}/{totalPages}';
-	  	    // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
-	  	    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
-	
-	  	  });
-	  	  
-	  	  // hide child rows - get in the habit of not using .hide()
-	  	  // See http://jsfiddle.net/Mottie/u507846y/ & https://github.com/jquery/jquery/issues/1767
-	  	  // and https://github.com/jquery/jquery/issues/2308
-	  	  // This won't be a problem in jQuery v3.0+
-	  	  $table1.find( '.tablesorter-childRow td' ).addClass( 'hidden' );
-
-	  	  // Toggle child row content (td), not hiding the row since we are using rowspan
-	  	  // Using delegate because the pager plugin rebuilds the table after each page change
-	  	  // "delegate" works in jQuery 1.4.2+; use "live" back to v1.3; for older jQuery - SOL
-	  	  $table1.delegate( '.toggle', 'click' ,function() {
-	  	    // use "nextUntil" to toggle multiple child rows
-	  	    // toggle table cells instead of the row
-	  	    $( this )
-	  	      .closest( 'tr' )
-	  	      .nextUntil( 'tr.tablesorter-hasChildRow' )
-	  	      .find( 'td' )
-	  	      .toggleClass( 'hidden' );
-	  	    return false;
-	  	  });
-
-	  	  // Toggle filter_childRows option
-	  	  $( 'button.toggle-combined' ).click( function() {
-	  	    var wo = $table1[0].config.widgetOptions,
-	  	    o = !wo.filter_childRows;
-	  	    wo.filter_childRows = o;
-	  	    $( '.state1' ).html( o.toString() );
-	  	    // update filter; include false parameter to force a new search
-	  	    $table1.trigger( 'search', false );
-	  	    return false;
-	  	  });
+		  	  // Toggle filter_childRows option
+		  	  $( 'button.toggle-combined' ).click( function() {
+		  	    var wo = $table1[0].config.widgetOptions,
+		  	    o = !wo.filter_childRows;
+		  	    wo.filter_childRows = o;
+		  	    $( '.state1' ).html( o.toString() );
+		  	    // update filter; include false parameter to force a new search
+		  	    $table1.trigger( 'search', false );
+		  	    return false;
+		  	  });
 	  	}
+	  	
+	  	function setConfirmations() {
+		  	  $("[data-toggle='confirmation']").popConfirm();
+		}
   	</script>
     
     <script>  
@@ -171,10 +223,11 @@
 					console.log("SUCCESS: ", data);					
 					$("#numeroVersao").empty();
 		            if (siglaCurso == "") {
-		            	$('<option>').val("").text("Versão").appendTo($("#numeroVersao"));
+		            	$('<option>').val("").text("Todas as versões").appendTo($("#numeroVersao"));
 		                $("#numeroVersao").attr("disabled", true);
 		            } else {		            	
 		                var numeroVersao = data;
+		                $('<option>').val("").text("Todas as versões").appendTo($("#numeroVersao"));
 		                for (var i = 0; i < numeroVersao.length; i++) {
 		                	$('<option>').val(numeroVersao[i]).text(numeroVersao[i]).appendTo($("#numeroVersao"));
 		                }
@@ -190,7 +243,6 @@
 			});	
 		}
 	</script>
-	
 	<script>
 		function promptJustificativa(idRegistro,matriculaAluno,novoStatus){
 			$.bs.popup.prompt({
@@ -207,6 +259,8 @@
 			search["siglaCurso"] = String($("#siglaCurso").val());
 			search["numeroVersao"] = String($("#numeroVersao").val());
 			search["status"] = String($("#status").val());
+			search["startDate"] = $('#startDate').val();
+			search["endDate"] = $('#endDate').val();
 			search["novoStatus"] =  String(novoStatus);
 			search["idRegistro"] = String(idRegistro);
 			search["matriculaAluno"] = String(matriculaAluno);
@@ -244,6 +298,8 @@
 			search["siglaCurso"] = $("#siglaCurso").val();
 			search["numeroVersao"] = $("#numeroVersao").val();
 			search["status"] = $("#status").val();
+			search["startDate"] = $('#startDate').val();
+			search["endDate"] = $('#endDate').val();
 			$.ajax({
 				type : "POST",
 				contentType : "application/json",
@@ -328,7 +384,7 @@
 						registros[i].descricao+"</div></td>";
 	          		table_data = table_data+"<td>"+registros[i].cargaHoraria+"</td>";
 	          		table_data = table_data+"<td>";
-	          		if(registros[i].documento != null){
+	          		if(registros[i].temDocumento){
 	          			table_data = table_data+
 	          			"<form action='${pageContext.request.contextPath}/analiseAtividades/downloadFile' method='POST' target='_blank'>"+
 		          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
@@ -347,53 +403,77 @@
 			          		"<button "+
 							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"EM_ANÁLISE\",\"\")' "+
 							  "class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
-								"<i class='fa fa-question'></i>"+
+								"<i class='fa fa-question text-warning'></i>"+
 							"</button>"+
 							"<button "+
-							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")' "+
-							  "class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
-								"<i class='fa fa-check'></i>"+
+							  "class='btn btn-default'"+
+							  "data-toggle='confirmation'"+
+							  "data-confirm-title='Confirmação' data-confirm-content='Atualizar status para DEFERIDO?'"+
+							  "data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'"+
+							  "onClick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")'"+
+							">"+
+								"<i class='fa fa-check text-success'></i>"+
 							"</button>";break;
 			          	case "DEFERIDO":
 			          		table_data = table_data+
 			          		"<button "+
 							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"EM_ANÁLISE\",\"\")' "+
 							  "class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
-								"<i class='fa fa-question'></i>"+
+								"<i class='fa fa-question text-warning'></i>"+
 							"</button>"+
 							"<button "+
-							  "onclick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")' "+
-							  "class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
-								"<i class='fa fa-times'></i>"+
+							  "class='btn btn-default'"+
+							  "data-toggle='confirmation'"+
+							  "data-confirm-title='Confirmação' data-confirm-content='Atualizar status para INDEFERIDO?'"+
+							  "data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'"+
+							  "onClick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")'"+
+							">"+
+								"<i class='fa fa-times text-danger'></i>"+
 							"</button>";break;
 			          	case "EM_ANÁLISE":
 			          		table_data = table_data+
 			          		"<button "+
-							  "onclick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")' "+
-							  "class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
-								"<i class='fa fa-times'></i>"+
+							  "class='btn btn-default'"+
+							  "data-toggle='confirmation'"+
+							  "data-confirm-title='Confirmação' data-confirm-content='Atualizar status para INDEFERIDO?'"+
+							  "data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'"+
+							  "onClick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")'"+
+							">"+
+								"<i class='fa fa-times text-danger'></i>"+
 							"</button>"+
 							"<button "+
-							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")' "+
-							  "class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
-								"<i class='fa fa-check'></i>"+
+							  "class='btn btn-default'"+
+							  "data-toggle='confirmation'"+
+							  "data-confirm-title='Confirmação' data-confirm-content='Atualizar status para DEFERIDO?'"+
+							  "data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'"+
+							  "onClick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")'"+
+							">"+
+								"<i class='fa fa-check text-success'></i>"+
 							"</button>";break;
 			          	case "SUBMETIDO":
 			          		table_data = table_data+
 		          			"<button "+
 							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"EM_ANÁLISE\",\"\")' "+
 							  "class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
-								"<i class='fa fa-question'></i>"+
+								"<i class='fa fa-question text-warning'></i>"+
 							"</button>"+
 							"<button "+
-							  "onclick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")' "+
-							  "class='btn btn-default' title='Atualizar status para: INDEFERIDO'>"+
-								"<i class='fa fa-times'></i>"+
+							  "class='btn btn-default'"+
+							  "data-toggle='confirmation'"+
+							  "data-confirm-title='Confirmação' data-confirm-content='Atualizar status para INDEFERIDO?'"+
+							  "data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'"+
+							  "onClick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")'"+
+							">"+
+								"<i class='fa fa-times text-danger'></i>"+
 							"</button>"+
 							"<button "+
-							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")' "+
-							  "class='btn btn-default' title='Atualizar status para: DEFERIDO'>"+
-								"<i class='fa fa-check'></i>"+
+							  "class='btn btn-default'"+
+							  "data-toggle='confirmation'"+
+							  "data-confirm-title='Confirmação' data-confirm-content='Atualizar status para DEFERIDO?'"+
+							  "data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'"+
+							  "onClick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")'"+
+							">"+
+								"<i class='fa fa-check text-success'></i>"+
 							"</button>";break;
 		          	}
 					table_data = table_data+"</td>";
@@ -441,6 +521,7 @@
           		
 				$("#lista_registros").html(table_data);				
 				setTablesorter();
+				setConfirmations();
 				$("#tabela_registros").tablesorter();
 			}
 		}
@@ -481,7 +562,7 @@
 	          		<tr>
 	          			<td>
 	          				<select class="form-control input" id="siglaCurso" onchange="getVersoesCurso()">
-	          					<option value="">Curso</option>
+	          					<option value="">Todos os cursos</option>
 	          					<c:forEach items="${requestScope.dadosAnaliseAtividades.siglaCursos}" var="siglaCurso">
 							  		<option value="${siglaCurso}">${siglaCurso}</option>
 							  	</c:forEach>
@@ -489,16 +570,24 @@
 	          			</td>
 	          			<td>
 	          				<select class="form-control input" id="numeroVersao" disabled>
-	          					<option value="">Versão</option>
+	          					<option value="">Todas as versões</option>
 							</select>
 	          			</td>
 	          			<td>
 	          				<select class="form-control input" id="status">
-	          					<option value="">Status de registro</option>
+	          					<option value="">Todos os status de registro</option>
 	          					<c:forEach items="${requestScope.dadosAnaliseAtividades.status}" var="status" >
 							  		<option value="${status}">${status}</option>
 							  	</c:forEach>
 							</select>
+	          			</td>
+	          			<td class="text-left">
+	          				<div id="daterange" title="Restringir intervalo" class="form-control input pull-right">
+							    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+							    <span>Desde o início</span> <b class="caret"></b>
+							</div>
+							<input type="hidden" id="startDate" name="startDate" value="">
+							<input type="hidden" id="endDate" name="endDate" value="">
 	          			</td>
 	          			<td>
 	          				<button id="btn-search" type="submit" class="btn btn-default" title="Buscar registros">
@@ -511,7 +600,8 @@
 		
 		<div class="row">
 			<h4><b>Registros de atividade complementar:</b></h4>
-			<div class="vcenter well" id="lista_registros">				
+			<div class="vcenter well" id="lista_registros">
+				Pesquise os registros de atividade complementar a serem analisados.			
 			</div>
 		</div>
 		

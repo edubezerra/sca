@@ -9,6 +9,8 @@ public class AtualizaStatusAtividadeSearchCriteria {
 	String idRegistro;
 	String matriculaAluno;
 	String justificativa;
+	String startDate;
+	String endDate;
 	
 	public String getSiglaCurso() {
 		return siglaCurso;
@@ -52,5 +54,16 @@ public class AtualizaStatusAtividadeSearchCriteria {
 	public void setJustificativa(String justificativa) {
 		this.justificativa = justificativa;
 	}
-	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 }
