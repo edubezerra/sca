@@ -72,9 +72,6 @@
 					href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
 						Fornecimento de Grade de Disponibilidades
 						(${requestScope.periodoLetivo})</a></li>
-				<li><a 
-					href="${pageContext.request.contextPath}/analiseAtividades/homeAnalise">
-						Análise de Registros de Atividade Complementar </a></li>
 			</ul>
 		</sec:authorize>
 		<sec:authorize access="hasRole('ROLE_COORDENADOR_CURSO')">
@@ -83,6 +80,9 @@
 				<li><a
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
 						Análise de Matrículas Fora do Prazo</a></li>
+				<li><a 
+					href="${pageContext.request.contextPath}/analiseAtividades/homeAnalise">
+						Análise de Registros de Atividade Complementar </a></li>
 			</ul>
 		</sec:authorize>
 

@@ -133,10 +133,13 @@ public class SolicitaRegistroAtividadesResponse extends
 	public void add(RegistroAtividadeComplementar reg, Aluno aluno) {
 		DateFormat f = DateFormat.getDateInstance(DateFormat.LONG); //Data Completa
 		
+		String descrAtividade = reg.getAtividade().getTipo().getDescricao();
+		descrAtividade = descrAtividade.charAt(0) + (descrAtividade.substring(1).toLowerCase());
+		
 		Item novo;
 		if(reg.podeSerCancelado()){
 			novo = this.new Item(aluno.getId(), aluno.getMatricula(), aluno.getNome(),
-					reg.getAtividade().getId(), reg.getAtividade().getTipo().getDescricao(), 
+					reg.getAtividade().getId(), descrAtividade, 
 					reg.getAtividade().getTipo().getCategoria().toString(),	reg.getId(), 
 					reg.getDescricao(), reg.getCargaHoraria().toHours(), reg.getDocumento()!=null, 
 					reg.getEstado().toString(), f.format(reg.getDataSolicitacao()), reg.podeSerCancelado(),
@@ -144,7 +147,7 @@ public class SolicitaRegistroAtividadesResponse extends
 		}
 		else{
 			novo = this.new Item(aluno.getId(), aluno.getMatricula(), aluno.getNome(),
-					reg.getAtividade().getId(), reg.getAtividade().getTipo().getDescricao(),
+					reg.getAtividade().getId(), descrAtividade,
 					reg.getAtividade().getTipo().getCategoria().toString(),	reg.getId(),
 					reg.getDescricao(), reg.getCargaHoraria().toHours(), reg.getDocumento()!=null, 
 					reg.getEstado().toString(), f.format(reg.getDataSolicitacao()), reg.podeSerCancelado(),

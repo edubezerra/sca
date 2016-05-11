@@ -47,7 +47,7 @@
 	<script>  
 	    function escondeMostra(x){  
 	        if(document.getElementById(x).style.display == "none" || document.getElementById(x).style.display == ""){  
-	            document.getElementById(x).style.display = "inline";  
+	            document.getElementById(x).style.display = "table-row";  
 	        }  
 	        else{  
 	            document.getElementById(x).style.display = "none";  
@@ -60,6 +60,7 @@
 	  		
 	  	  // call the tablesorter plugin and apply the uitheme widget
 	  	  var $table1 = $("#tabela_registros").tablesorter({
+	  		textExtraction: "complex",
 	  	    // this will apply the bootstrap theme if "uitheme" widget is included
 	  	    // the widgetOptions.uitheme is no longer required to be set
 	  	    theme : "bootstrap",
@@ -201,9 +202,135 @@
 		</div>
 		
 		<div class="row">
+			<h4><b>Registros de Atividades Complementares:</b></h4>
+			<c:choose>
+				<c:when test="${fn:length(requestScope.registrosAtiv) eq 0}">
+					<div class="vcenter well">
+						<p>Não há registros de atividades complementares</p>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="vcenter well">
+						
+						<table id="tabela_registros" class="table text-center tablesorter">
+							<thead>
+								<tr>
+									<th><b>Categoria</b></th>
+									<th><b>Descrição</b></th>
+									<th><b>Carga Horária</b></th>
+									<th class="sorter-false filter-false"><b>Comprovante</b></th>
+									<th class="filter-select filter-exact" data-placeholder="Escolha uma data"><b>Data de Solicitação</b></th>
+									<th class="filter-select filter-exact" data-placeholder="Escolha um status"><b>Status</b></th>																	
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${requestScope.registrosAtiv}" var="registro" >
+									  <c:choose>
+											<c:when test="${registro.estado ne 'SUBMETIDO'}">
+												<tr class="tablesorter-hasChildRow toggle" style="cursor: pointer; cursor: hand;">
+											</c:when>
+											<c:otherwise>
+												<tr>
+											</c:otherwise>
+									  </c:choose>
+							          <td class='text-left'>${registro.categoria}</td>
+							          <td class='text-left'>
+							          	<div style='overflow:auto;width:100%;height:50px;'>
+							          		${registro.descricao}</div></td>
+							          <td>${registro.cargaHoraria}</td>
+							          <td>
+							          	<c:if test="${registro.temDocumento}">
+											<form style="height:10px;" action="${pageContext.request.contextPath}/registroAtividades/downloadFile" method="POST" target="_blank">
+								          		<input type="hidden" name="IdReg" value="${registro.idRegistro}">
+												<button type="submit" class="btn btn-default" title="Download">
+													<i class="fa fa-download"></i>
+												</button>
+											</form>
+										</c:if>
+							          </td>
+							          <td>${registro.dataSolicitacao}</td>
+							          <td>
+							          	<c:set var="classeStatus" scope="page">
+											<c:choose>
+												<c:when test="${registro.estado eq 'INDEFERIDO'}">
+													text-danger
+												</c:when>
+												<c:when test="${registro.estado eq 'DEFERIDO'}">
+													text-success
+												</c:when>
+												<c:when test="${registro.estado eq 'EM_ANÁLISE'}">
+													text-warning
+												</c:when>
+												<c:when test="${registro.estado eq 'SUBMETIDO'}">
+													text-primary
+												</c:when>
+											</c:choose>
+										</c:set>
+										<span class="${classeStatus}"><b>${registro.estado}</b>
+								          <c:if test="${registro.podeSerCancelado}">
+												<form style="height:10px;" action="${pageContext.request.contextPath}/registroAtividades/removeRegistroAtividade" method="POST">
+									          		<input type="hidden" name="idReg" value="${registro.idRegistro}">
+													<button type="submit" class="btn btn-default" data-toggle='confirmation'
+													  data-confirm-title='Confirmação' data-confirm-content='Cancelar esta submissão?'
+													  data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'>
+														<i class="fa fa-trash-o"></i></button>
+												</form>
+										  </c:if></span>
+									  </td>	
+							        </tr>
+							        <tr class="tablesorter-childRow">
+							        	<td colspan="6">
+								        	<table class="table text-center">
+								        		<tr>
+									        		<td class="text-left"><b>Professor Avaliador:</b> ${registro.nomeAvaliador}</td>
+													<td class="text-left"><b>Data de Análise:</b> ${registro.dataAnalise}</td>
+												</tr>
+												<c:if test="${registro.estado eq 'INDEFERIDO'}">
+													<tr>
+														<td colspan="2" class="text-left"><b>Justificativa:</b> ${registro.justificativa}</td>
+													</tr>
+												</c:if>
+								        	</table>
+							        	</td>						        	
+							        </tr>
+								</c:forEach>
+							</tbody>
+							<tfoot>
+			          			<tr>
+									<th><b>Categoria</b></th>
+									<th><b>Descrição</b></th>
+									<th><b>Carga Horária</b></th>
+									<th><b>Comprovante</b></th>
+									<th><b>Data de Solicitação</b></th>
+									<th><b>Status</b></th>																	
+								</tr>
+			          		
+			                	<tr>
+			                  	<th colspan='7' class='ts-pager form-horizontal'>
+			                    <button type='button' class='btn first'><i class='icon-step-backward glyphicon glyphicon-step-backward'></i></button>
+			                    <button type='button' class='btn prev'><i class='icon-arrow-left glyphicon glyphicon-backward'></i></button>
+			                    <span class='pagedisplay'></span>
+			                    <button type='button' class='btn next'><i class='icon-arrow-right glyphicon glyphicon-forward'></i></button>
+			                    <button type='button' class='btn last'><i class='icon-step-forward glyphicon glyphicon-step-forward'></i></button>
+			                    <select class='pagesize input-mini' title='Selecione o tamanho da página'>
+			                      <option selected='selected' value='10'>10</option>
+			                      <option value='20'>20</option>
+			                      <option value='30'>30</option>
+			                      <option value='40'>40</option>
+			                    </select>
+			                    <select class='pagenum input-mini' title='Selecione a página'></select>
+			                  	</th></tr>
+			                </tfoot>
+						</table>
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</div>
+		
+		<div class="row">
 			<h4><b>Atividades Complementares - Situação atual:</b></h4>
 			<div class="well">				
-				<table class="table text-center">
+				<table class="table text-center table-hover table-striped">
 					<thead>
 						<tr>
 							<td></td>
@@ -252,7 +379,7 @@
 							          </td>
 							          <td>
 							          	<c:if test="${!atividade.cargaHorariaMaxima}">
-											<form action="${pageContext.request.contextPath}/registroAtividades/solicitaRegistroAtividade" method="POST">
+											<form style="height:10px;" action="${pageContext.request.contextPath}/registroAtividades/solicitaRegistroAtividade" method="POST">
 								          		<input type="hidden" name="idAtiv" value="${atividade.idAtividade}">
 												<button type="submit" class="btn btn-default" title="Registrar nova atividade">
 													<i class="fa fa-plus"></i></button>
@@ -272,132 +399,6 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
-		
-		<div class="row">
-			<h4><b>Registros anteriores:</b></h4>
-			<c:choose>
-				<c:when test="${fn:length(requestScope.registrosAtiv) eq 0}">
-					<div class="vcenter well">
-						<p>Não há registros de atividades complementares</p>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<div class="vcenter well">
-						
-						<table id="tabela_registros" class="table text-center tablesorter">
-							<thead>
-								<tr>
-									<th><b>Categoria</b></th>
-									<th><b>Descrição</b></th>
-									<th><b>Carga Horária</b></th>
-									<th class="sorter-false filter-false"><b>Comprovante</b></th>
-									<th class="filter-select filter-exact" data-placeholder="Escolha uma data"><b>Data de Solicitação</b></th>
-									<th class="filter-select filter-exact" data-placeholder="Escolha um status"><b>Status</b></th>																	
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${requestScope.registrosAtiv}" var="registro" >
-									  <c:choose>
-											<c:when test="${registro.estado ne 'SUBMETIDO'}">
-												<tr class="tablesorter-hasChildRow toggle btn btn-default" onclick="escondeMostra('infoAnalise/${registro.idRegistro}');">
-											</c:when>
-											<c:otherwise>
-												<tr>
-											</c:otherwise>
-									  </c:choose>
-							          <td class='text-left'>${registro.categoria}</td>
-							          <td class='text-left'>
-							          	<div style='overflow:auto;width:270px;height:50px;'>
-							          		${registro.descricao}</div></td>
-							          <td>${registro.cargaHoraria}</td>
-							          <td>
-							          	<c:if test="${registro.temDocumento}">
-											<form action="${pageContext.request.contextPath}/registroAtividades/downloadFile" method="POST" target="_blank">
-								          		<input type="hidden" name="IdReg" value="${registro.idRegistro}">
-												<button type="submit" class="btn btn-default" title="Download">
-													<i class="fa fa-download"></i>
-												</button>
-											</form>
-										</c:if>
-							          </td>
-							          <td>${registro.dataSolicitacao}</td>
-							          <td>
-							          	<c:set var="classeStatus" scope="page">
-											<c:choose>
-												<c:when test="${registro.estado eq 'INDEFERIDO'}">
-													text-danger
-												</c:when>
-												<c:when test="${registro.estado eq 'DEFERIDO'}">
-													text-success
-												</c:when>
-												<c:when test="${registro.estado eq 'EM_ANÁLISE'}">
-													text-warning
-												</c:when>
-												<c:when test="${registro.estado eq 'SUBMETIDO'}">
-													text-primary
-												</c:when>
-											</c:choose>
-										</c:set>
-										<span class="${classeStatus}"><b>${registro.estado}</b>
-								          <c:if test="${registro.podeSerCancelado}">
-												<form action="${pageContext.request.contextPath}/registroAtividades/removeRegistroAtividade" method="POST">
-									          		<input type="hidden" name="idReg" value="${registro.idRegistro}">
-													<button type="submit" class="btn btn-default" data-toggle='confirmation'
-													  data-confirm-title='Confirmação' data-confirm-content='Cancelar esta submissão?'
-													  data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'>
-														<i class="fa fa-trash-o"></i></button>
-												</form>
-										  </c:if></span>
-									  </td>	
-							        </tr>
-							        <tr class="tablesorter-childRow" id="infoAnalise/${registro.idRegistro}" style="display:none">
-							        	<td colspan="7">
-								        	<table class="table text-center">
-								        		<tr>
-									        		<td class="text-left"><b>Professor Avaliador:</b> ${registro.nomeAvaliador}</td>
-													<td class="text-left"><b>Data de Análise:</b> ${registro.dataAnalise}</td>
-												</tr>
-												<c:if test="${registro.estado eq 'INDEFERIDO'}">
-													<tr>
-														<td colspan="2" class="text-left"><b>Justificativa:</b> ${registro.justificativa}</td>
-													</tr>
-												</c:if>
-								        	</table>
-							        	</td>						        	
-							        </tr>
-								</c:forEach>
-							</tbody>
-							<tfoot>
-			          			<tr>
-									<th><b>Categoria</b></th>
-									<th><b>Descrição</b></th>
-									<th><b>Carga Horária</b></th>
-									<th><b>Comprovante</b></th>
-									<th><b>Data de Solicitação</b></th>
-									<th><b>Status</b></th>																	
-								</tr>
-			          		
-			                	<tr>
-			                  	<th colspan='7' class='ts-pager form-horizontal'>
-			                    <button type='button' class='btn first'><i class='icon-step-backward glyphicon glyphicon-step-backward'></i></button>
-			                    <button type='button' class='btn prev'><i class='icon-arrow-left glyphicon glyphicon-backward'></i></button>
-			                    <span class='pagedisplay'></span>
-			                    <button type='button' class='btn next'><i class='icon-arrow-right glyphicon glyphicon-forward'></i></button>
-			                    <button type='button' class='btn last'><i class='icon-step-forward glyphicon glyphicon-step-forward'></i></button>
-			                    <select class='pagesize input-mini' title='Selecione o tamanho da página'>
-			                      <option selected='selected' value='10'>10</option>
-			                      <option value='20'>20</option>
-			                      <option value='30'>30</option>
-			                      <option value='40'>40</option>
-			                    </select>
-			                    <select class='pagenum input-mini' title='Selecione a página'></select>
-			                  	</th></tr>
-			                </tfoot>
-						</table>
-					</div>
-				</c:otherwise>
-			</c:choose>
 		</div>
 		
 		<a class="btn btn-default" href="${pageContext.request.contextPath}/registroAtividades/menuPrincipal">

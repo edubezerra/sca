@@ -89,7 +89,8 @@
                 
                 <div class="row">
 	                <label for="cargaHoraria">Carga horária do registro (em horas):</label>
-	                <input class="form-control input-lg number" id="cargaHoraria" name="cargaHoraria" type="number"
+	                <input style="width:100px;" class="form-control number" 
+	                 id="cargaHoraria" name="cargaHoraria" type="number"
 	                 maxlength="3" max="${requestScope.dadosAtiv.cargaHorariaRestante}" min="1" value="1" required/>
                 </div>
                <br/>

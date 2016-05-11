@@ -87,7 +87,6 @@
 		           'Desde o início': [moment("00/00/00"),moment()],
 		        }
 		    }, cb);
-		
 		});
 	</script>
   	
@@ -197,7 +196,7 @@
     <script>  
 	    function escondeMostra(x){  
 	        if(document.getElementById(x).style.display == "none" || document.getElementById(x).style.display == ""){  
-	            document.getElementById(x).style.display = "inline";  
+	            document.getElementById(x).style.display = "table-row";  
 	        }  
 	        else{  
 	            document.getElementById(x).style.display = "none";  
@@ -346,17 +345,17 @@
                 for (var i = 0; i < registros.length; i++) {
                 	             	
                 	table_data = table_data+
-						"<tr class='tablesorter-hasChildRow toggle btn btn-default' onclick='escondeMostra(\"infoAnalise/"+registros[i].idRegistro+"\")'>";
+						"<tr class='tablesorter-hasChildRow toggle' style='cursor: pointer; cursor: hand;'>";
 					table_data = table_data+"<td class='text-left'>"+registros[i].nomeAluno+"</td>";
 					table_data = table_data+
-						"<td class='text-left'><div style='overflow:auto;width:370px;height:40px;'>"+
+						"<td class='text-left'><div style='overflow:auto;width:100%;height:40px;'>"+
 						registros[i].descrAtividade+"</div></td>";
 	          		table_data = table_data+"<td>"+registros[i].dataSolicitacao+"</td>";
 	          		table_data = table_data+"<td>"+registros[i].dataAnalise+"</td>";
 	          		table_data = table_data+"</tr>";
 	          		
 	          		table_data = table_data+
-	          			"<tr class='tablesorter-childRow' id='infoAnalise/"+registros[i].idRegistro+"' style=\"display:none\">";
+	          			"<tr class='tablesorter-childRow'>";
 	          		table_data = table_data+"<td colspan='4'><table class='table text-center'><thead><tr>";
 	          		table_data = table_data+
 	          			"<td class='text-left'><b>Descrição</b></td>"+
@@ -380,13 +379,13 @@
 	          			
 	          		table_data = table_data+"<tbody><tr>";
 	          		table_data = table_data+
-						"<td class='text-left'><div style='overflow:auto;width:450px;height:30px;'>"+
+						"<td class='text-left'><div style='overflow:auto;width:100%;height:30px;'>"+
 						registros[i].descricao+"</div></td>";
 	          		table_data = table_data+"<td>"+registros[i].cargaHoraria+"</td>";
 	          		table_data = table_data+"<td>";
 	          		if(registros[i].temDocumento){
 	          			table_data = table_data+
-	          			"<form action='${pageContext.request.contextPath}/analiseAtividades/downloadFile' method='POST' target='_blank'>"+
+	          			"<form style='height:10px;' action='${pageContext.request.contextPath}/analiseAtividades/downloadFile' method='POST' target='_blank'>"+
 		          		"<input type='hidden' name='IdReg' value='"+registros[i].idRegistro+"'>"+
 		          		"<input type='hidden' name='matriculaAluno' value='"+registros[i].matriculaAluno+"'>"+
 						"<button type='submit' class='btn btn-default' title='Download'>"+
@@ -413,22 +412,6 @@
 							  "onClick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"DEFERIDO\",\"\")'"+
 							">"+
 								"<i class='fa fa-check text-success'></i>"+
-							"</button>";break;
-			          	case "DEFERIDO":
-			          		table_data = table_data+
-			          		"<button "+
-							  "onclick='atualizaStatusAtividade(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"EM_ANÁLISE\",\"\")' "+
-							  "class='btn btn-default' title='Atualizar status para: EM ANÁLISE'>"+
-								"<i class='fa fa-question text-warning'></i>"+
-							"</button>"+
-							"<button "+
-							  "class='btn btn-default'"+
-							  "data-toggle='confirmation'"+
-							  "data-confirm-title='Confirmação' data-confirm-content='Atualizar status para INDEFERIDO?'"+
-							  "data-confirm-placement='top' data-confirm-yesBtn='Sim' data-confirm-noBtn='Não'"+
-							  "onClick='promptJustificativa(\""+registros[i].idRegistro+"\",\""+registros[i].matriculaAluno+"\",\"INDEFERIDO\")'"+
-							">"+
-								"<i class='fa fa-times text-danger'></i>"+
 							"</button>";break;
 			          	case "EM_ANÁLISE":
 			          		table_data = table_data+

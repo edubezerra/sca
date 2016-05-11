@@ -63,7 +63,7 @@ public class RegistrarAtividadeComplementarController {
 			model.addAttribute("categorias", 
 					service.obterCategoriasAtividade(matricula));
 			model.addAttribute("matricula", matricula);
-			return "/registroAtividades/apresentaRegistrosView";
+			return "/atividadeComplementar/registroAtividades/apresentaRegistrosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "forward:/registroAtividades/menuPrincipal";
@@ -85,7 +85,7 @@ public class RegistrarAtividadeComplementarController {
 			model.addAttribute("idAtiv", idAtiv);
 			model.addAttribute("matricula", matricula);
 						
-			return "/registroAtividades/novoRegistroView";
+			return "/atividadeComplementar/registroAtividades/novoRegistroView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 
@@ -153,7 +153,7 @@ public class RegistrarAtividadeComplementarController {
 					service.obterCategoriasAtividade(matricula));
 			model.addAttribute("matricula", matricula);
 			
-			return "/registroAtividades/apresentaRegistrosView";
+			return "/atividadeComplementar/registroAtividades/apresentaRegistrosView";
 			
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());

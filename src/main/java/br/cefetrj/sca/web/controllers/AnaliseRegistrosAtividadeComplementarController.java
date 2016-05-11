@@ -56,7 +56,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 			String matricula = usr.getLogin();
 			model.addAttribute("dadosAnaliseAtividades", 
 					service.homeAnaliseAtividades(matricula));				
-			return "/analiseAtividades/analiseRegistrosView";
+			return "/atividadeComplementar/analiseAtividades/analiseRegistrosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "forward:/analiseAtividades/menuPrincipal";
@@ -126,7 +126,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 			String matricula = usr.getLogin();
 			model.addAttribute("dadosAnaliseAtividades", 
 					service.homeAnaliseAtividades(matricula));
-			return "/analiseAtividades/analiseRegistrosView";
+			return "/atividadeComplementar/analiseAtividades/analiseRegistrosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "forward:/analiseAtividades/menuPrincipal";
