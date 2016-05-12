@@ -1,7 +1,6 @@
 package br.cefetrj.sca.web.controllers;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.SortedMap;
 import java.util.logging.Logger;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
