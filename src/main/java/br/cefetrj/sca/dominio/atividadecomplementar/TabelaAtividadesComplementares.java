@@ -60,18 +60,6 @@ public final class TabelaAtividadesComplementares {
 	}
 	
 	/**
-	 * Retorna a atividade complementar especificada pelo codigo passado como parâmetro.
-	 */
-	public AtividadeComplementar getAtividade(String codigo) {
-		for (AtividadeComplementar ativ : atividades) {
-			if (ativ.getTipo().getCodigo().equals(codigo)) {
-				return ativ;
-			}
-		}
-		return null;
-	}
-	
-	/**
 	 * Adiciona uma atividade complementar nesta tabela.
 	 */
 	public void adicionarAtividade(AtividadeComplementar ativ) {
