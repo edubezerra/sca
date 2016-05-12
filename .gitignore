@@ -6,4 +6,4 @@ log
 .settings/*
 .project
 .classpath
-app.log
+app.txt

@@ -1,5 +1,3 @@
-
-
 delete from USER_USER_PROFILE;
 delete from USERS;
 delete from USER_PROFILE;

@@ -28,20 +28,20 @@ public final class VersaoCurso {
 	@Id
 	@GeneratedValue
 	Long id;
-
+	
 	private final String numero;
-
+	
 	@ManyToOne
 	private Curso curso;
 
-	@OneToMany(mappedBy = "versaoCurso", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER)
 	List<Disciplina> disciplinas;
-
+	
 	/**
 	 * Carga horária mínima de disciplinas optativas.
 	 */
 	private Duration cargaHorariaMinOptativas = Duration.ofHours(0);
-
+	
 	/**
 	 * Carga horária mínima de atividades complementares.
 	 */
@@ -52,14 +52,15 @@ public final class VersaoCurso {
 	 */
 	@OneToOne(cascade = CascadeType.ALL)
 	private TabelaAtividadesComplementares atividades = null;
-
+	
+	
 	@SuppressWarnings("unused")
 	private VersaoCurso() {
 		numero = null;
 	}
 
 	public VersaoCurso(String numero, Curso curso) {
-
+		
 		if (curso == null) {
 			throw new IllegalArgumentException("Curso não fornecido!");
 		}
@@ -69,19 +70,17 @@ public final class VersaoCurso {
 		this.curso = curso;
 		this.numero = numero;
 	}
+	
+	public VersaoCurso(String numero, Curso curso,Duration chMinOpt,Duration chaMinAitv) {
 
-	public VersaoCurso(String numero, Curso curso, Duration chMinOpt, Duration chaMinAitv) {
-
-		this(numero, curso);
+		this(numero,curso);
 		if (chMinOpt == null || chMinOpt.isNegative()) {
-			throw new IllegalArgumentException(
-					"Carga horária mínima de disciplinas optativas não pode ser nula e deve ser maior ou igual a zero.");
+			throw new IllegalArgumentException("Carga horária mínima de disciplinas optativas não pode ser nula e deve ser maior ou igual a zero.");
 		}
 		if (chaMinAitv == null || chaMinAitv.isNegative()) {
-			throw new IllegalArgumentException(
-					"Carga horária mínima de atividades complementares não pode ser nula e deve ser maior ou igual a zero.");
+			throw new IllegalArgumentException("Carga horária mínima de atividades complementares não pode ser nula e deve ser maior ou igual a zero.");
 		}
-
+	
 		this.cargaHorariaMinOptativas = chMinOpt;
 		this.cargaHorariaMinAitvComp = chaMinAitv;
 	}
@@ -89,11 +88,11 @@ public final class VersaoCurso {
 	public Long getId() {
 		return id;
 	}
-
+	
 	public TabelaAtividadesComplementares getTabelaAtividades() {
 		return this.atividades;
 	}
-
+	
 	public List<Disciplina> getDisciplinas() {
 		return Collections.unmodifiableList(this.disciplinas);
 	}
@@ -104,29 +103,30 @@ public final class VersaoCurso {
 	public void setTabelaAtividades(TabelaAtividadesComplementares tabelaAtiv) {
 		this.atividades = tabelaAtiv;
 	}
-
+	
 	/**
-	 * Adiciona uma atividade complementar à tabela de atividades complementares
-	 * desta grade. Caso a tabela de atividades complementares desta grade for
-	 * nula, uma nova instância de TabelaAtividadesComplementares é criada
-	 * contendo a atividade complementar passada como parâmetro.
+	 * Adiciona uma atividade complementar à tabela de atividades complementares desta grade.
+	 * Caso a tabela de atividades complementares desta grade for nula, uma nova instância de
+	 * TabelaAtividadesComplementares é criada contendo a atividade complementar passada como
+	 * parâmetro. 
 	 */
 	public void adicionaAtividade(AtividadeComplementar ativ) {
-		if (this.atividades == null)
+		if(this.atividades == null)
 			setTabelaAtividades(new TabelaAtividadesComplementares());
 		this.atividades.adicionarAtividade(ativ);
 	}
-
+		
 	/**
 	 * Adiciona uma disciplina nesta grade.
 	 */
 	public void adicionarDisciplina(Disciplina d) {
 		if (disciplinas.contains(d)) {
-			throw new IllegalArgumentException("Esta disciplina já está associada a esta versão de curso.");
+			throw new IllegalArgumentException(
+					"Esta disciplina já está associada a esta grade.");
 		}
 		this.disciplinas.add(d);
 	}
-
+		
 	public String getNumero() {
 		return numero;
 	}
@@ -138,7 +138,7 @@ public final class VersaoCurso {
 	public Duration getCargaHorariaMinAitvComp() {
 		return cargaHorariaMinAitvComp;
 	}
-
+	
 	public void setCargaHorariaMinOptativas(Duration cargaHorariaMinOptativas) {
 		this.cargaHorariaMinOptativas = cargaHorariaMinOptativas;
 	}
@@ -150,16 +150,16 @@ public final class VersaoCurso {
 	public Curso getCurso() {
 		return curso;
 	}
-
+	
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "VersaoCurso [numero=" + numero + "]";
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

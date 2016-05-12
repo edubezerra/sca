@@ -24,8 +24,9 @@ import jxl.read.biff.BiffException;
 
 public class ImportadorAtividadesComp {
 
-	static String colunas[] = { "ID_ATIVIDADE", "COD_ATIVIDADE",
-			"DESCRICAO_ATIVIDADE", "CATEGORIA_ATIVIDADE", "CH_MIN", "CH_MAX",
+	EntityManager em = ImportadorTudo.entityManager;
+	
+	static String colunas[] = { "DESCRICAO_ATIVIDADE", "CATEGORIA_ATIVIDADE", "CH_MIN", "CH_MAX",
 			"COD_ESTRUTURADO", "NOME_UNIDADE", "SIGLA_UNIDADE", "COD_CURSO",
 			"NUM_VERSAO", "ID_VERSAO_CURSO", "CH_MIN_ATIVIDADES" };
 
@@ -55,8 +56,6 @@ public class ImportadorAtividadesComp {
 	}
 
 	private void gravarDadosImportados() {
-		EntityManager em = ImportadorTudo.entityManager;
-
 		em.getTransaction().begin();
 
 		/**
@@ -114,7 +113,6 @@ public class ImportadorAtividadesComp {
 	}
 
 	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
-		EntityManager em = ImportadorTudo.entityManager;
 		Query query = em
 				.createQuery("from VersaoCurso versao "
 						+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");
@@ -151,8 +149,6 @@ public class ImportadorAtividadesComp {
 		System.out
 				.println("Iniciando importação de dados relativos a tipos de atividade complementar...");
 		for (int i = 1; i < sheet.getRows(); i++) {
-			String codigoAtividade = sheet.getCell(
-					colunasList.indexOf("COD_ATIVIDADE"), i).getContents();
 			String descrAtividade = sheet.getCell(
 					colunasList.indexOf("DESCRICAO_ATIVIDADE"), i).getContents();
 			String categoria = sheet.getCell(colunasList.indexOf("CATEGORIA_ATIVIDADE"), i)
@@ -160,26 +156,27 @@ public class ImportadorAtividadesComp {
 
 			boolean tipoAtividadeJaExiste = false;
 			for (TipoAtividadeComplementar tipoAtiv : tiposAtividades) {
-				if (tipoAtiv.getCodigo().equals(codigoAtividade)) {
+				if (tipoAtiv.getDescricao().equals(descrAtividade) && tipoAtiv.getCategoria().equals(categoria)) {
 					tipoAtividadeJaExiste = true;
 					break;
 				}
 			}
 
 			if (!tipoAtividadeJaExiste) {
-				TipoAtividadeComplementar tipoAtiv = new TipoAtividadeComplementar(codigoAtividade, 
+				TipoAtividadeComplementar tipoAtiv = new TipoAtividadeComplementar(
 						descrAtividade, EnumTipoAtividadeComplementar.findByText(categoria));
 
 				tiposAtividades.add(tipoAtiv);
 			} else {
-				System.err.println("Já existe tipo de atividade complementar com este código "	+ codigoAtividade);
+				System.err.println("Já existe tipo de atividade complementar com esta descricao "	+ descrAtividade);
 			}
 		}
 	}
 	
-	private TipoAtividadeComplementar getTipoAtividadeComp(String codigoAtividade) {
+	private TipoAtividadeComplementar getTipoAtividadeComp(String descrAtividade, String categoria) {
 		for (TipoAtividadeComplementar tipoAtiv : tiposAtividades) {
-			if (tipoAtiv.getCodigo().equals(codigoAtividade)) {
+			if (tipoAtiv.getDescricao().equals(descrAtividade) && 
+					tipoAtiv.getCategoria().equals(EnumTipoAtividadeComplementar.findByText(categoria))) {
 				return tipoAtiv;
 			}
 		}
@@ -190,7 +187,10 @@ public class ImportadorAtividadesComp {
 		System.out
 				.println("Iniciando importação de dados relativos à tabela de atividades complementares...");
 		for (int i = 1; i < sheet.getRows(); i++) {
-			String codigoAtividade = sheet.getCell(colunasList.indexOf("COD_ATIVIDADE"), i).getContents();
+			String descrAtividade = sheet.getCell(
+					colunasList.indexOf("DESCRICAO_ATIVIDADE"), i).getContents();
+			String categoria = sheet.getCell(colunasList.indexOf("CATEGORIA_ATIVIDADE"), i)
+					.getContents();
 			String cargaHorMin = sheet.getCell(colunasList.indexOf("CH_MIN"), i).getContents();
 			String cargaHorMax = sheet.getCell(colunasList.indexOf("CH_MAX"), i).getContents();
 			String codCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
@@ -202,7 +202,7 @@ public class ImportadorAtividadesComp {
 				
 				Duration chMax = Duration.ofHours(Long.parseLong(cargaHorMax));
 				Duration chMin = Duration.ofHours(Long.parseLong(cargaHorMin));
-				AtividadeComplementar ativ = new AtividadeComplementar(getTipoAtividadeComp(codigoAtividade), chMax, chMin);
+				AtividadeComplementar ativ = new AtividadeComplementar(getTipoAtividadeComp(descrAtividade,categoria), chMax, chMin);
 				
 				tab.adicionarAtividade(ativ);
 				tabAtividades.put(numeroMaisSigla, tab);
@@ -210,7 +210,7 @@ public class ImportadorAtividadesComp {
 			else{
 				boolean atividadeJaExiste = false;
 				for (AtividadeComplementar ativ : tabAtividades.get(numeroMaisSigla).getAtividades()) {
-					if (ativ.getTipo().getCodigo().equals(codigoAtividade)) {
+					if (ativ.getTipo().getDescricao().equals(descrAtividade) && ativ.getTipo().getCategoria().equals(categoria)) {
 						atividadeJaExiste = true;
 						break;
 					}
@@ -218,12 +218,11 @@ public class ImportadorAtividadesComp {
 				if (!atividadeJaExiste) {
 					Duration chMax = Duration.ofHours(Long.parseLong(cargaHorMax));
 					Duration chMin = Duration.ofHours(Long.parseLong(cargaHorMin));
-					AtividadeComplementar ativ = new AtividadeComplementar(getTipoAtividadeComp(codigoAtividade), chMax, chMin);
+					AtividadeComplementar ativ = new AtividadeComplementar(getTipoAtividadeComp(descrAtividade,categoria), chMax, chMin);
 
 					tabAtividades.get(numeroMaisSigla).adicionarAtividade(ativ);
 				} else {
-					System.err.println("Já existe atividade complementar com este código "
-							+ codigoAtividade);
+					System.err.println("Já existe atividade complementar com esta descricao "+ descrAtividade);
 				}
 			}
 		}

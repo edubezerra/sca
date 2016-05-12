@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 
@@ -45,6 +46,14 @@ public class RegistroAtividadeComplementar {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataSolicitacao;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataAnalise = null;
+	
+	@ManyToOne
+	private Professor avaliador = null;
+	
+	private String justificativa = null;
 
 	@SuppressWarnings("unused")
 	private RegistroAtividadeComplementar() {
@@ -102,6 +111,30 @@ public class RegistroAtividadeComplementar {
 	
 	public Date getDataSolicitacao() {
 		return dataSolicitacao;
+	}
+	
+	public Date getDataAnalise() {
+		return dataAnalise;
+	}
+
+	public void setDataAnalise(Date dataAnalise) {
+		this.dataAnalise = dataAnalise;
+	}
+
+	public Professor getAvaliador() {
+		return avaliador;
+	}
+
+	public void setAvaliador(Professor avaliador) {
+		this.avaliador = avaliador;
+	}
+
+	public String getJustificativa() {
+		return justificativa;
+	}
+
+	public void setJustificativa(String justificativa) {
+		this.justificativa = justificativa;
 	}
 	
 	/**
