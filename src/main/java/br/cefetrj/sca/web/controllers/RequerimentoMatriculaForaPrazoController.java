@@ -148,7 +148,6 @@ public class RequerimentoMatriculaForaPrazoController {
 		ficha.removerItemRequerimento(idTurma);
 
 		return "/matriculaForaPrazo/requerimento/registrarRequerimentoView";
-		// return completarDespachoParaView(model, ficha);
 	}
 
 	/**
@@ -164,26 +163,16 @@ public class RequerimentoMatriculaForaPrazoController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getLogin();
 
-		// if (file == null) {
-		// model.addAttribute("error",
-		// "Ccomprovante de matrícula deve ser fornecido.");
-		// } else {
 		try {
-			// validarArquivoComprovanteMatricula(file);
-			// ficha.setComprovante(file.getContentType(), file.getBytes(),
-			// file.getOriginalFilename());
 			service.confirmarRegistroRequerimento(ficha);
 			model.addAttribute("sucesso", "Solicitação registrada com sucesso.");
 			this.definirModelParaVisualizacaoRequerimentos(model, matricula);
-			// } catch (IOException e) {
-			// model.addAttribute("error",
-			// "Erro: comprovante de matrícula é inválido.");
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			model.addAttribute("aluno", ficha.getAluno());
 			model.addAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
 		}
-		// }
+
 		return "/matriculaForaPrazo/requerimento/visualizarRequerimentosView";
 
 	}
@@ -193,9 +182,7 @@ public class RequerimentoMatriculaForaPrazoController {
 	 * requerimento.
 	 */
 	@RequestMapping(value = "/visualizarDetalhesRequerimento", method = RequestMethod.POST)
-	public String visualizarDetalhesRequerimento(
-			@RequestParam int ano, 
-			@RequestParam EnumPeriodo periodo,
+	public String visualizarDetalhesRequerimento(@RequestParam int ano, @RequestParam EnumPeriodo periodo,
 			Model model) {
 
 		Usuario usr = UsuarioController.getCurrentUser();
@@ -203,8 +190,7 @@ public class RequerimentoMatriculaForaPrazoController {
 
 		try {
 			MatriculaForaPrazo requerimento;
-			requerimento = service.findMatriculaForaPrazoByAlunoAndPeriodo(
-					matriculaAluno,
+			requerimento = service.findMatriculaForaPrazoByAlunoAndPeriodo(matriculaAluno,
 					new PeriodoLetivo(ano, periodo));
 
 			model.addAttribute("requerimento", requerimento);
@@ -216,49 +202,6 @@ public class RequerimentoMatriculaForaPrazoController {
 			return "/matriculaForaPrazo/requerimento/visualizarRequerimentosView";
 		}
 	}
-
-	// @RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
-	// public void downloadFile(@RequestParam Long solicitacaoId,
-	// HttpServletRequest request, HttpServletResponse response,
-	// HttpSession sessao) {
-	// Usuario usr = UsuarioController.getCurrentUser();
-	// String matriculaAluno = usr.getLogin();
-	// try {
-	// MatriculaForaPrazo requerimento =
-	// service.findMatriculaForaPrazoById(solicitacaoId);
-	// Comprovante comprovante = requerimento.getComprovante();
-	// GerenteArquivos.downloadFile(matriculaAluno, solicitacaoId, request,
-	// response, comprovante);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-
-	// @RequestMapping(method = RequestMethod.GET, value =
-	// "/getTurmasByDepartamento")
-	// @ResponseBody
-	// public String handleRequest(@RequestParam("idDepartamento") int id) {
-	// List<Turma> turmas =
-	// service.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE);
-	// return turmas.toString();
-	// }
-
-	// private void validarArquivoComprovanteMatricula(MultipartFile file) {
-	// if (file == null) {
-	// throw new IllegalArgumentException(
-	// "O comprovante da matrícula no período corrente deve ser fornecido.");
-	// }
-	// if (file.getSize() >
-	// MatriculaForaPrazoService.TAMANHO_MAXIMO_COMPROVANTE) {
-	// throw new IllegalArgumentException(
-	// "O arquivo de comprovante deve ter 10mb no máximo");
-	// }
-	// String[] tiposAceitos = { "application/pdf", "image/jpeg", "image/png" };
-	// if (ArrayUtils.indexOf(tiposAceitos, file.getContentType()) < 0) {
-	// throw new IllegalArgumentException(
-	// "O arquivo de comprovante deve ser no formato PDF, JPEG ou PNG");
-	// }
-	// }
 
 	private void definirModelParaVisualizacaoRequerimentos(Model model, String matriculaAluno) {
 		Aluno aluno = service.findAlunoByMatricula(matriculaAluno);

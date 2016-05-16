@@ -131,11 +131,11 @@ public final class PeriodoLetivo implements Comparable<PeriodoLetivo> {
 		return 0;
 	}
 
-	public PeriodoLetivo sucessor(PeriodoLetivo outro) {
+	public PeriodoLetivo sucessor() {
 		return null;
 	}
 
-	public PeriodoLetivo antecessor(PeriodoLetivo outro) {
+	public PeriodoLetivo antecessor() {
 		return null;
 	}
 }
