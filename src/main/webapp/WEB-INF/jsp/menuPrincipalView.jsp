@@ -52,7 +52,7 @@
 				<li><a
 					href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
 						Avaliação de Turmas por Discentes </a></li>
-				<li><a 
+				<li><a
 					href="${pageContext.request.contextPath}/registroAtividades/registroAtividades">
 						Registro de Atividades Complementares </a></li>
 				<li><a
@@ -61,6 +61,11 @@
 				<li><a
 					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
 						Avaliação de Curso por Egresso</a></li>
+
+				<li><a
+					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao">
+						Realizar Inscriçôes</a></li>
+
 			</ul>
 		</sec:authorize>
 
@@ -80,7 +85,7 @@
 				<li><a
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
 						Análise de Matrículas Fora do Prazo</a></li>
-				<li><a 
+				<li><a
 					href="${pageContext.request.contextPath}/analiseAtividades/homeAnalise">
 						Análise de Registros de Atividade Complementar </a></li>
 			</ul>

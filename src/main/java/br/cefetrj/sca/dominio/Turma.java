@@ -315,4 +315,8 @@ public class Turma {
 		}
 		return sb.toString();
 	}
+
+	public List<Aula> getAulas() {
+		return aulas;
+	}
 }

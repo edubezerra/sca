@@ -1,36 +1,67 @@
 package br.cefetrj.sca.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.inscricoes.TurmasPossiveisServico;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 
+@Component
 public class RealizarInscricaoService {
 
-	Aluno aluno;
+	@Autowired
+	private AlunoRepositorio alunoRepo;
 
 	@Autowired
-	TurmaRepositorio turmaRepositorio;
+	private TurmaRepositorio turmaRepositorio;
 
-	private List<Turma> turmaSelecionadas;
-
-	private TurmasPossiveisServico tpServico;
-
-	public List<Turma> iniciarInscricao(String matrAluno) {
-		return tpServico.getTurmasPossiveis(matrAluno);
+	public Aluno findAlunoByMatricula(String matriculaAluno) {
+		return alunoRepo.findAlunoByMatricula(matriculaAluno);
 	}
 
-	public Turma registrarInscricao(String codigoTurma) {
-		Turma t = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codigoTurma,
-				PeriodoLetivo.PERIODO_CORRENTE.proximo());
-		t.inscreverAluno(aluno);
-		turmaSelecionadas.add(t);
-		return t;
+	public Turma getTurmaPorCodigo(String codigoTurma) {
+		if (codigoTurma == null || codigoTurma.trim().equals("")) {
+			throw new IllegalArgumentException("Turma " + codigoTurma + " inválido");
+		}
+
+		Turma turma;
+
+		try {
+			turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codigoTurma, PeriodoLetivo.PERIODO_CORRENTE);
+		} catch (Exception exc) {
+			turma = null;
+		}
+		return turma;
 	}
 
+	public String registrarInscricao(Turma t, Aluno aluno) {
+		try {
+			t.inscreverAluno(aluno);
+			turmaRepositorio.save(t);
+			return "Inscrição realizada com sucesso!";
+		} catch (IllegalArgumentException e1) {
+			return "Inscrição já realizada!";
+		} catch (IllegalStateException e2) {
+			return "Limite de vagas já alcançado!";
+		}
+	}
+
+	public List<Turma> getTurmasPossiveis(Aluno aluno, List<Disciplina> dp) {
+		List<Turma> turmasPossiveis = new ArrayList<Turma>();
+		List<Turma> turmas = turmaRepositorio.findAll();
+
+		for (Turma turma : turmas) {
+			if (dp.contains(turma.getDisciplina())) {
+				turmasPossiveis.add(turma);
+			}
+		}
+		return turmasPossiveis;
+	}
 }
