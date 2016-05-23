@@ -37,6 +37,9 @@ public final class VersaoCurso {
 	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER)
 	List<Disciplina> disciplinas;
 	
+	@OneToMany(fetch=FetchType.EAGER)
+	List<TabelaEquivalencias> tabelasEquivalencias;
+	
 	/**
 	 * Carga horária mínima de disciplinas optativas.
 	 */
