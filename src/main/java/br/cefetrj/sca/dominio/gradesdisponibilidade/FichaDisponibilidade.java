@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.EnumDiaSemana;
+import br.cefetrj.sca.dominio.GradeHorarios;
 import br.cefetrj.sca.dominio.IntervaloTemporal;
 
 public class FichaDisponibilidade {
@@ -17,6 +19,8 @@ public class FichaDisponibilidade {
 	public FichaDisponibilidade(String matricula, String nome) {
 		this.matriculaProfessor = matricula;
 		this.nomeProfessor = nome;
+		this.definirTemposAula();
+		this.definirDiasSemana(EnumDiaSemana.dias());
 	}
 
 	public String getNomeProfessor() {
@@ -39,8 +43,8 @@ public class FichaDisponibilidade {
 		this.habilitacoes.addAll(habilitacoes);
 	}
 
-	public void definirTemposAula(List<IntervaloTemporal> itens) {
-		this.temposAula.addAll(itens);
+	private void definirTemposAula() {
+		this.temposAula.addAll(GradeHorarios.getTemposAula());
 	}
 
 	public void definirDiasSemana(List<String> dias) {
