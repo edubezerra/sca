@@ -3,8 +3,6 @@ package br.cefetrj.sca.dominio.gradesdisponibilidade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.cefetrj.sca.dominio.EnumDiaSemana;
-import br.cefetrj.sca.dominio.ItemHorario;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
@@ -33,8 +31,6 @@ public class FichaDisponibilidadeFabrica {
 		if (professor != null) {
 			FichaDisponibilidade ficha = new FichaDisponibilidade(professor.getMatricula(), professor.getNome());
 			ficha.definirHabilitacoes(professor.getHabilitacoes());
-			ficha.definirTemposAula(ItemHorario.temposAula());
-			ficha.definirDiasSemana(EnumDiaSemana.dias());
 			return ficha;
 		} else {
 			return null;
