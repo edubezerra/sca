@@ -1,8 +1,12 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Curso {
@@ -14,6 +18,12 @@ public class Curso {
 	String sigla;
 
 	String nome;
+	
+	@OneToMany
+	List<Disciplina> disciplinas;
+	
+	@OneToOne
+	Professor coordenador;
 
 	@SuppressWarnings("unused")
 	private Curso() {
@@ -60,5 +70,13 @@ public class Curso {
 	@Override
 	public String toString() {
 		return "Curso [sigla=" + sigla + ", nome=" + nome + "]";
+	}
+
+	public Professor getCoordenador() {
+		return coordenador;
+	}
+
+	public void setCoordenador(Professor coordenador) {
+		this.coordenador = coordenador;
 	}
 }

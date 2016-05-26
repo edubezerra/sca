@@ -29,6 +29,8 @@
 			<a href="${rootUrl}admin">Administration</a>
 			<li><a href="${pageContext.request.contextPath}/usuarios/list">
 					Listar usuários </a></li>
+			<li><a href="${pageContext.request.contextPath}/usuarios/listProfessorDepartamento">
+					Cadastrar Professor por Departamento </a></li>
 		</sec:authorize>
 	</h3>
 
@@ -66,6 +68,11 @@
 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao">
 						Realizar Inscriçôes</a></li>
 
+
+				<li><a
+					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizarProcessoIsencao">
+						Isenção de Disciplina </a></li>
+
 			</ul>
 		</sec:authorize>
 
@@ -88,6 +95,11 @@
 				<li><a
 					href="${pageContext.request.contextPath}/analiseAtividades/homeAnalise">
 						Análise de Registros de Atividade Complementar </a></li>
+
+				<li><a
+					href="${pageContext.request.contextPath}/isencaoDisciplina/professorView">
+						Isenção de Disciplina </a></li>
+
 			</ul>
 		</sec:authorize>
 
