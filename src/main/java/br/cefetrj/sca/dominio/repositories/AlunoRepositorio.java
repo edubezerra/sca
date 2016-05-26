@@ -18,4 +18,7 @@ public interface AlunoRepositorio extends JpaRepository<Aluno, Serializable> {
 	
 	@Query("from Aluno a where a.versaoCurso = ?1")
 	List<Aluno> findAllByVersaoCurso(VersaoCurso versaoCurso);	
+
+	@Query("SELECT a from Aluno a")
+	List<Aluno> getAllAlunos();
 }

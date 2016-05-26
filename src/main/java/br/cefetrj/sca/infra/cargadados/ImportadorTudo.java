@@ -39,14 +39,14 @@ public class ImportadorTudo {
 			new ImportadorDocentes().run();
 			new ImportadorDepartamentos().run();
 
-//			new ImportadorHistoricosEscolares().run();
+			new ImportadorHistoricosEscolares().run();
 			
 			new ImportadorTurmasComInscricoes().run();
 			new ImportadorAlocacoesProfessoresEmTurmas().run();
 			new ImportadorHabilitacoesParaProfessor().run();
 			
 			new ImportadorAlocacoesProfessoresEmDepartamentos().run();
-			
+		
 			new ImportadorAlocacoesDisciplinasEmDepartamentos().run();
 			
 		} catch (IllegalArgumentException | IllegalStateException ex) {
