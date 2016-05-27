@@ -31,6 +31,8 @@
 					Listar usuários </a></li>
 			<li><a href="${pageContext.request.contextPath}/usuarios/listProfessorDepartamento">
 					Cadastrar Professor por Departamento </a></li>
+			<li><a href="${pageContext.request.contextPath}/importacaoHistoricoEscolar/homeImportacaoHistoricoEscolar">
+				Importar Histórico Escolar</a></li>
 		</sec:authorize>
 	</h3>
 

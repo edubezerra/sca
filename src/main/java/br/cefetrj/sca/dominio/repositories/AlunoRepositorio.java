@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.EnumSituacaoAvaliacao;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.VersaoCurso;
 
 public interface AlunoRepositorio extends JpaRepository<Aluno, Serializable> {
@@ -21,4 +23,14 @@ public interface AlunoRepositorio extends JpaRepository<Aluno, Serializable> {
 
 	@Query("SELECT a from Aluno a")
 	List<Aluno> getAllAlunos();
+	
+	@Query("SELECT a from Aluno a JOIN a.historico h JOIN a.historico.itens i"
+			+ " WHERE a.matricula = ?1"
+			+ " AND i.periodoLetivo = ?2"
+			+ " AND i.situacao = ?3"
+			+ " AND i.disciplina.codigo = ?4"
+			+ " AND i.disciplina.versaoCurso.numero = ?5"
+			+ " AND i.disciplina.versaoCurso.curso.sigla = ?6")
+	Aluno getAlunoByInfoHistoricoEscolar(String matricula, PeriodoLetivo periodoLetivo, 
+			EnumSituacaoAvaliacao situacao, String codigoDisciplina, String numeroVersao, String codigoCurso);
 }
