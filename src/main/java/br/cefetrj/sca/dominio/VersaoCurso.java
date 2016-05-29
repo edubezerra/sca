@@ -3,6 +3,7 @@ package br.cefetrj.sca.dominio;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -37,8 +38,8 @@ public final class VersaoCurso {
 	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER)
 	List<Disciplina> disciplinas;
 	
-	@OneToMany(fetch=FetchType.EAGER)
-	List<TabelaEquivalencias> tabelasEquivalencias;
+	@OneToMany
+	Set<TabelaEquivalencias> tabelasEquivalencias;
 	
 	/**
 	 * Carga horária mínima de disciplinas optativas.
