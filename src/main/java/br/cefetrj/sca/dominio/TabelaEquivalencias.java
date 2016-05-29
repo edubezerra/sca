@@ -1,15 +1,26 @@
 package br.cefetrj.sca.dominio;
 
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.FetchType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+@Entity
 public class TabelaEquivalencias {
-	@OneToMany(fetch=FetchType.EAGER)
-	List<BlocoEquivalencia> blocosEquivalencia;
+
+	@Id
+	@GeneratedValue
+	Long id;
+	
+	@OneToMany
+	Set<BlocoEquivalencia> blocosEquivalencia;
 	
 	@ManyToOne
 	VersaoCurso versaoCursoCorrespondente;
+	
+	public TabelaEquivalencias() {
+	}
 }
