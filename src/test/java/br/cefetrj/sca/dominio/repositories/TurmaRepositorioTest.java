@@ -1,11 +1,11 @@
 package br.cefetrj.sca.dominio.repositories;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
-
-import javax.persistence.NonUniqueResultException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,12 +85,13 @@ public class TurmaRepositorioTest {
 
 		assertEquals(periodo, periodoLetivo);
 
-		Turma turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(
-				codigoTurma, periodo);
+		String codigoDisclina = "GEXT7501";
+
+		Turma turma = turmaRepositorio
+				.findTurmaByCodigoAndDisciplinaAndPeriodo(codigoTurma,
+						codigoDisclina, periodo);
 
 		assertNotNull(turma);
-
-		System.out.println(turma.getPeriodo());
 
 		assertEquals(turma.getPeriodo(), periodo);
 
@@ -135,20 +136,24 @@ public class TurmaRepositorioTest {
 		return false;
 	}
 
-	@Test(expected = NonUniqueResultException.class)
+	@Test
 	public void testObterTurmaExtraEmPeriodoLetivo() {
 
 		assertNotNull("Repositório não definido.", turmaRepositorio);
 
 		String codigoTurma = "EXTRA";
+
+		String codigoDisclina = "GCC1103";
+
 		PeriodoLetivo periodo = new PeriodoLetivo(2015, EnumPeriodo.SEGUNDO);
 
 		PeriodoLetivo periodoLetivo = new PeriodoLetivo(2015, 2);
 
 		assertEquals(periodo, periodoLetivo);
 
-		Turma turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(
-				codigoTurma, periodo);
+		Turma turma = turmaRepositorio
+				.findTurmaByCodigoAndDisciplinaAndPeriodo(codigoTurma,
+						codigoDisclina, periodo);
 
 		assertNotNull(turma);
 

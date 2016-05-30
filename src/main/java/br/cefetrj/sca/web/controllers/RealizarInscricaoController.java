@@ -69,11 +69,11 @@ public class RealizarInscricaoController {
 
 		try {
 			if (request.getParameterValues("checkbox") != null) {
-				List<String> turmasCodigos = Arrays.asList(request.getParameterValues("checkbox"));
+				List<String> turmasIds = Arrays.asList(request.getParameterValues("checkbox"));
 				List<Turma> turmas = new ArrayList<Turma>();
 				HashMap<Turma, String> turmasInscritas = new HashMap<Turma, String>();
-				for (String codigo : turmasCodigos) {
-					turmas.add(service.getTurmaPorCodigo(codigo));
+				for (String id : turmasIds) {
+					turmas.add(service.findTurmaById(Long.parseLong(id)));
 				}
 				for (Turma turma : turmas) {
 					String resultado = service.registrarInscricao(turma, aluno);

@@ -90,7 +90,22 @@ public class Inscricao {
 	}
 
 	public void lancarAvaliacao(ItemFicha item) {
-		// TODO Auto-generated method stub
-
+		avaliacao.setNotaP1(item.notaP1);
+		avaliacao.setNotaP2(item.notaP2);
+		avaliacao.setNotaP3(item.notaP3);
+		avaliacao.setFrequencia(item.getFrequencia());
 	}
+
+	private void verificarNota(BigDecimal nota, String nomeNota) {
+		if (nota == null || nota.compareTo(BigDecimal.ONE) == -1
+				|| nota.compareTo(BigDecimal.TEN) == 1) {
+			throw new IllegalArgumentException("Nota de " + nomeNota
+					+ " inválida");
+		}
+	}
+
+	public boolean alunoTemMatricula(String matriculaAluno) {
+		return getAluno().getMatricula().equals(matriculaAluno);
+	}
+
 }

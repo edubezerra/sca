@@ -22,7 +22,7 @@ import br.cefetrj.sca.dominio.Professor;
  *
  */
 
-public class ImportadorDocentes {
+public class ImportadorProfessores {
 
 	EntityManager em = ImportadorTudo.entityManager;
 
@@ -43,7 +43,7 @@ public class ImportadorDocentes {
 		System.out.println("ImportadorDocentes.main()");
 		try {
 			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.05 - Oferta de Disciplinas - Docentes x Cursos - 2015.2.xls";
-			ImportadorDocentes iim = new ImportadorDocentes();
+			ImportadorProfessores iim = new ImportadorProfessores();
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
