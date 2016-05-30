@@ -17,10 +17,10 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Turma {
-	/**
-	 * Quantidade de caracteres necessários no código de uma turma.
-	 */
-	// private static final int TAM_MAX_CODIGO = 6;
+
+	enum SituacaoTurma {
+		ABERTA_PARA_INSCRICAO, EM_ANDAMENTO, FECHADA_PARA_LANCAMENTO
+	};
 
 	private static final int CAPACIDADE_PRESUMIDA = 40;
 
@@ -101,10 +101,6 @@ public class Turma {
 			throw new IllegalArgumentException("Código da turma é obrigatório.");
 		}
 
-		// if (codigo.length() != TAM_MAX_CODIGO) {
-		// throw new IllegalArgumentException("Código da turma deve ter "
-		// + TAM_MAX_CODIGO + " caracteres necessariamente.");
-		// }
 		this.codigo = codigo;
 
 		this.periodo = PeriodoLetivo.PERIODO_CORRENTE;
@@ -127,7 +123,8 @@ public class Turma {
 	 * @param periodo
 	 *            período letivo em que a turma é ofertada
 	 */
-	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas, PeriodoLetivo periodo) {
+	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas,
+			PeriodoLetivo periodo) {
 
 		this(disciplina, codigo);
 
@@ -135,7 +132,8 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas indefinido!");
 		}
 		if (numeroVagas <= 0) {
-			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException(
+					"Número de vagas deve ser positivo.");
 		}
 		this.capacidadeMaxima = numeroVagas;
 
@@ -199,12 +197,15 @@ public class Turma {
 	public void inscreverAluno(Aluno aluno) {
 		if (inscricoes.size() + 1 > capacidadeMaxima) {
 			throw new IllegalStateException(
-					"Inscrição não realizada. Limite de vagas já alcançado (" + capacidadeMaxima + ")");
+					"Inscrição não realizada. Limite de vagas já alcançado ("
+							+ capacidadeMaxima + ")");
 		} else {
 			Inscricao inscricao = new Inscricao(aluno);
 			for (Inscricao umaInscricao : inscricoes) {
-				if (umaInscricao.getAluno().getMatricula().equals(aluno.getMatricula())) {
-					throw new IllegalArgumentException("Aluno já inscrito na turma.");
+				if (umaInscricao.getAluno().getMatricula()
+						.equals(aluno.getMatricula())) {
+					throw new IllegalArgumentException(
+							"Aluno já inscrito na turma.");
 				}
 			}
 			this.inscricoes.add(inscricao);
@@ -227,10 +228,12 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas é obrigatório.");
 		}
 		if (capacidadeMaxima <= 0) {
-			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException(
+					"Número de vagas deve ser positivo.");
 		}
 		if (capacidadeMaxima < inscricoes.size()) {
-			throw new IllegalArgumentException("Há mais inscritos do que a capacidade máxima fornecida.");
+			throw new IllegalArgumentException(
+					"Há mais inscritos do que a capacidade máxima fornecida.");
 		}
 		this.capacidadeMaxima = capacidadeMaxima;
 	}
@@ -263,8 +266,10 @@ public class Turma {
 		this.professor = professor;
 	}
 
-	public void adicionarAula(String diaSemana, String horarioInicio, String horarioTermino, LocalAula local) {
-		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio, horarioTermino, local);
+	public void adicionarAula(String diaSemana, String horarioInicio,
+			String horarioTermino, LocalAula local) {
+		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
+				horarioTermino, local);
 		this.aulas.add(a);
 	}
 
@@ -282,13 +287,23 @@ public class Turma {
 	public void lancarAvaliacao(FichaAvaliacoes.ItemFicha item) {
 		Inscricao inscricao = localizarInscricao(item.matriculaAluno);
 		if (inscricao != null) {
+			verificarFaltas(item.qtdFaltas);
 			inscricao.lancarAvaliacao(item);
 		}
+	}
 
+	private void verificarFaltas(int qtdFaltas) {
+		if (qtdFaltas < 0 || qtdFaltas > this.getQtdAulas()) {
+			throw new IllegalArgumentException("Quantidade de faltas inválida!");
+		}
 	}
 
 	private Inscricao localizarInscricao(String matriculaAluno) {
-		// TODO Auto-generated method stub
+		for (Inscricao i : inscricoes) {
+			if (i.alunoTemMatricula(matriculaAluno)) {
+				return i;
+			}
+		}
 		return null;
 	}
 
@@ -318,5 +333,9 @@ public class Turma {
 
 	public List<Aula> getAulas() {
 		return aulas;
+	}
+
+	public Integer getQtdAulas() {
+		return this.getDisciplina().getCargaHoraria();
 	}
 }
