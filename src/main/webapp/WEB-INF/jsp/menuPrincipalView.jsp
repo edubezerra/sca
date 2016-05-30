@@ -24,14 +24,7 @@
 		Matrícula:
 		<sec:authentication property="name" />
 	</h3>
-	<h3>
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<a href="${rootUrl}admin">Administration</a>
-			<li><a href="${pageContext.request.contextPath}/usuarios/list">
-					Listar usuários </a></li>
-		</sec:authorize>
-	</h3>
-
+	
 	<div class="container">
 		<div class="row">
 			<h1 class="text-center">Menu principal</h1>
@@ -66,6 +59,11 @@
 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao">
 						Realizar Inscriçôes</a></li>
 
+
+				<li><a
+					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizarProcessoIsencao">
+						Isenção de Disciplina </a></li>
+
 			</ul>
 		</sec:authorize>
 
@@ -79,6 +77,7 @@
 						(${requestScope.periodoLetivo})</a></li>
 			</ul>
 		</sec:authorize>
+		
 		<sec:authorize access="hasRole('ROLE_COORDENADOR_CURSO')">
 			<h3>Coordenador de Curso</h3>
 			<ul>
@@ -86,8 +85,33 @@
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
 						Análise de Matrículas Fora do Prazo</a></li>
 				<li><a
+					href="${pageContext.request.contextPath}/isencaoDisciplina/professorView">
+						Isenção de Disciplina </a></li>
+
+			</ul>
+		</sec:authorize>
+		
+		<sec:authorize access="hasRole('ROLE_COORDENADOR_ATIVIDADES')">
+			<h3>Coordenador de Atividades Complementares</h3>
+			<ul>
+				<li><a
 					href="${pageContext.request.contextPath}/analiseAtividades/homeAnalise">
 						Análise de Registros de Atividade Complementar </a></li>
+			</ul>
+		</sec:authorize>
+		
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<h3>Administrador</h3>
+			<a href="${rootUrl}admin">Administration</a>
+			<ul>				
+				<li><a href="${pageContext.request.contextPath}/usuarios/list">
+						Listar usuários </a></li>
+				<li><a href="${pageContext.request.contextPath}/usuarios/listProfessorDepartamento">
+						Cadastrar Professor por Departamento </a></li>
+				<li><a href="${pageContext.request.contextPath}/coordenacaoAtividades/homeAlocacaoCoordenadorAtividades">
+						Alocar Coordenadores de Atividades Complementares </a></li>
+				<li><a href="${pageContext.request.contextPath}/importacaoHistoricoEscolar/homeImportacaoHistoricoEscolar">
+					Importar Histórico Escolar</a></li>
 			</ul>
 		</sec:authorize>
 

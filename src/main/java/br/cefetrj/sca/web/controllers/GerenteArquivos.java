@@ -19,6 +19,18 @@ public class GerenteArquivos {
 		out.write(comprovante.getData());
 		out.flush();
 		out.close();
+	} 
+	
+	
+	public static void downloadFileNovo(Long solicitacaoId, HttpServletRequest request,
+			HttpServletResponse response, Comprovante comprovante) throws IOException {
+		response.setContentType(comprovante.getContentType());
+		response.setHeader("Content-Disposition", "attachment;filename=\"" + comprovante.getNome() + "\"");
+		OutputStream out = response.getOutputStream();
+		response.setContentType(comprovante.getContentType());
+		out.write(comprovante.getData());
+		out.flush();
+		out.close();
 	}
 	
 	public static void downloadFile(HttpServletResponse response, Comprovante comprovante) throws IOException {

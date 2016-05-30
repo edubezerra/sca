@@ -45,8 +45,11 @@ public class RequerimentoMatriculaForaPrazoService {
 
 	@Autowired
 	AlocacacaoDisciplinasEmDepartamentoRepositorio alocacaoRepositorio;
+	
+	private String matriculaAluno;
 
-	public Aluno findAlunoByMatricula(String matriculaAluno) {
+	public Aluno findAlunoByMatricula(String matriculaAluno2) {
+		matriculaAluno = matriculaAluno2;
 		return alunoRepositorio.findAlunoByMatricula(matriculaAluno);
 	}
 
@@ -105,6 +108,7 @@ public class RequerimentoMatriculaForaPrazoService {
 		return turmas;
 	}
 
+	//Fiz uma modificação nessa parte do código porque estava dando erro!!
 	public List<Turma> findTurmasByPeriodoLetivo(String matriculaAluno, PeriodoLetivo periodo) {
 		List<Turma> turmasDisponiveis = turmaRepositorio.findTurmasAbertasNoPeriodo(periodo);
 		List<Turma>  turmaCursadas = findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno, periodo);

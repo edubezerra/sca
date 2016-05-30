@@ -11,9 +11,6 @@ import br.cefetrj.sca.dominio.Turma;
 
 public interface TurmaRepositorio extends JpaRepository<Turma, Serializable> {
 
-	@Query("SELECT t from Turma t WHERE t.codigo = ?1 and t.periodo = ?2")
-	Turma findTurmaByCodigoAndPeriodoLetivo(String codigo, PeriodoLetivo periodo);
-
 	@Query("SELECT t from Turma t WHERE t.periodo = ?1")
 	List<Turma> findTurmasAbertasNoPeriodo(PeriodoLetivo periodo);
 
@@ -30,5 +27,5 @@ public interface TurmaRepositorio extends JpaRepository<Turma, Serializable> {
 	@Query("SELECT t from Turma t WHERE t.codigo = ?1 and t.disciplina.codigo = ?2 and t.periodo = ?3")
 	Turma findTurmaByCodigoAndDisciplinaAndPeriodo(String codigoTurma, String codigoDisciplina, PeriodoLetivo periodo);
 
-	Turma findTurmaByCodigo(String codigoTurma);
+	Turma findTurmaById(Long idTurma);
 }

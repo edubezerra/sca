@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
@@ -26,15 +25,15 @@ public class RealizarInscricaoService {
 		return alunoRepo.findAlunoByMatricula(matriculaAluno);
 	}
 
-	public Turma getTurmaPorCodigo(String codigoTurma) {
-		if (codigoTurma == null || codigoTurma.trim().equals("")) {
-			throw new IllegalArgumentException("Turma " + codigoTurma + " inválido");
+	public Turma findTurmaById(Long idTurma) {
+		if (idTurma == null) {
+			throw new IllegalArgumentException("Turma inexistente!");
 		}
 
 		Turma turma;
 
 		try {
-			turma = turmaRepositorio.findTurmaByCodigoAndPeriodoLetivo(codigoTurma, PeriodoLetivo.PERIODO_CORRENTE);
+			turma = turmaRepositorio.findTurmaById(idTurma);
 		} catch (Exception exc) {
 			turma = null;
 		}

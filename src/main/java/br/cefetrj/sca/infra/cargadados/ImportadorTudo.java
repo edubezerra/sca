@@ -36,17 +36,17 @@ public class ImportadorTudo {
 			new ImportadorPreReqs().run();
 			new ImportadorAtividadesComp().run();
 			new ImportadorAlunos().run();
-			new ImportadorDocentes().run();
+			new ImportadorProfessores().run();
 			new ImportadorDepartamentos().run();
 
-//			new ImportadorHistoricosEscolares().run();
+			new ImportadorHistoricosEscolares().run();
 			
 			new ImportadorTurmasComInscricoes().run();
 			new ImportadorAlocacoesProfessoresEmTurmas().run();
 			new ImportadorHabilitacoesParaProfessor().run();
 			
 			new ImportadorAlocacoesProfessoresEmDepartamentos().run();
-			
+		
 			new ImportadorAlocacoesDisciplinasEmDepartamentos().run();
 			
 		} catch (IllegalArgumentException | IllegalStateException ex) {

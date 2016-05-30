@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.config.AppConfig;
@@ -15,7 +14,6 @@ import br.cefetrj.sca.dominio.Professor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
-@TransactionConfiguration
 @Transactional(value = "transactionManager")
 public class RegistrarHabilitacoesTest {
 
