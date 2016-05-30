@@ -12,6 +12,9 @@ import br.cefetrj.sca.dominio.VersaoCurso;
 public interface CursoRepositorio extends JpaRepository<Curso, Serializable> {
 
 	Curso findCursoBySigla(String codigoSigla);
+	
+	@Query("FROM Curso c WHERE c.coordenadorAtividadesComplementares.matricula = ?1")
+	List<Curso> findAllCursoByCoordenadorAtividades(String matriculaCoordenador);
 
 	@Query("FROM VersaoCurso v WHERE v.curso.sigla = ?1 and v.numero = ?2")
 	VersaoCurso getVersaoCurso(String codigoSigla, String numeroVersao);

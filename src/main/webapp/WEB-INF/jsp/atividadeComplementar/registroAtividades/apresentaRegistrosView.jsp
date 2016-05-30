@@ -183,7 +183,7 @@
 		</c:if>
 		<c:if test="${requestScope.info != null}">
 			<div class="row">
-				<span class="label label-info">${requestScope.error}</span>
+				<span class="label label-info">${requestScope.info}</span>
 			</div>
 		</c:if>
 		

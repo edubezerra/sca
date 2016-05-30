@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -24,6 +25,9 @@ public class Curso {
 	
 	@OneToOne
 	Professor coordenador;
+	
+	@ManyToOne
+	Professor coordenadorAtividadesComplementares;
 
 	@SuppressWarnings("unused")
 	private Curso() {
@@ -78,5 +82,13 @@ public class Curso {
 
 	public void setCoordenador(Professor coordenador) {
 		this.coordenador = coordenador;
+	}
+
+	public Professor getCoordenadorAtividadesComplementares() {
+		return coordenadorAtividadesComplementares;
+	}
+
+	public void setCoordenadorAtividadesComplementares(Professor coordenadorAtividadesComplementares) {
+		this.coordenadorAtividadesComplementares = coordenadorAtividadesComplementares;
 	}
 }
