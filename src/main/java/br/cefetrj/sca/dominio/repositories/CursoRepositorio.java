@@ -15,6 +15,9 @@ public interface CursoRepositorio extends JpaRepository<Curso, Serializable> {
 	
 	@Query("FROM Curso c WHERE c.coordenadorAtividadesComplementares.matricula = ?1")
 	List<Curso> findAllCursoByCoordenadorAtividades(String matriculaCoordenador);
+	
+	@Query("FROM VersaoCurso v WHERE v.curso.coordenadorAtividadesComplementares.matricula = ?1")
+	List<VersaoCurso> findAllVersaoCursoByCoordenadorAtividades(String matriculaCoordenador);
 
 	@Query("FROM VersaoCurso v WHERE v.curso.sigla = ?1 and v.numero = ?2")
 	VersaoCurso getVersaoCurso(String codigoSigla, String numeroVersao);

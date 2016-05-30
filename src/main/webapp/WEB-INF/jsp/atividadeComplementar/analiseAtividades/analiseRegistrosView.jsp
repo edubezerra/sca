@@ -255,6 +255,7 @@
 		function atualizaStatusAtividade(idRegistro,matriculaAluno,novoStatus,justificativa) {
 			
 			var search = {}
+			search["matriculaProf"] = String("${requestScope.dadosAnaliseAtividades.matriculaProfessor}");
 			search["siglaCurso"] = String($("#siglaCurso").val());
 			search["numeroVersao"] = String($("#numeroVersao").val());
 			search["status"] = String($("#status").val());
@@ -294,6 +295,7 @@
 	
 		function searchRegistrosAtividade() {	
 			var search = {}
+			search["matriculaProf"] = String("${requestScope.dadosAnaliseAtividades.matriculaProfessor}");
 			search["siglaCurso"] = $("#siglaCurso").val();
 			search["numeroVersao"] = $("#numeroVersao").val();
 			search["status"] = $("#status").val();

@@ -67,9 +67,10 @@ public class AnaliseRegistrosAtividadeService {
 		return dadosAnaliseAtividades;
 	}
 	
-	public SolicitaRegistroAtividadesResponse listarRegistrosAtividade(String siglaCurso,
+	public SolicitaRegistroAtividadesResponse listarRegistrosAtividade(String matricula, String siglaCurso,
 			String numeroVersao, String status, String startDate, String endDate){
 		
+		Professor professor = getProfessorByMatricula(matricula);
 		List<Aluno> alunos = new ArrayList<>();
 		
 		if(!siglaCurso.equals("") && !numeroVersao.equals("")){
@@ -82,7 +83,7 @@ public class AnaliseRegistrosAtividadeService {
 			}
 		}
 		else if(siglaCurso.equals("") && numeroVersao.equals("")){			
-			for(VersaoCurso versaoCurso: cursoRepo.findAllVersaoCurso()){
+			for(VersaoCurso versaoCurso: cursoRepo.findAllVersaoCursoByCoordenadorAtividades(professor.getMatricula())){
 				alunos.addAll(alunoRepo.findAllByVersaoCurso(versaoCurso));
 			}
 		}

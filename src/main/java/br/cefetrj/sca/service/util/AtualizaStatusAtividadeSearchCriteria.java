@@ -2,6 +2,7 @@ package br.cefetrj.sca.service.util;
 
 public class AtualizaStatusAtividadeSearchCriteria {
 	
+	String matriculaProf;
 	String siglaCurso;
 	String numeroVersao;
 	String status;
@@ -65,5 +66,11 @@ public class AtualizaStatusAtividadeSearchCriteria {
 	}
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+	public String getMatriculaProf() {
+		return matriculaProf;
+	}
+	public void setMatriculaProf(String matriculaProf) {
+		this.matriculaProf = matriculaProf;
 	}
 }
