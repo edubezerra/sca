@@ -3,7 +3,7 @@ package br.cefetrj.sca.infra.email;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Email {
+public class MensagemEmail {
 	private String from;
 	private String[] to;
 	private String[] cc;
