@@ -32,7 +32,7 @@ public class EmailClient {
 				"NONONONONONO");
 
 		EmailService emailService = new EmailService(configuration);
-		Email email = new Email();
+		MensagemEmail email = new MensagemEmail();
 		email.setFrom("NONONO-FROM@gmail.com");
 		email.setTo("NONONO-TO@gmail.com");
 
