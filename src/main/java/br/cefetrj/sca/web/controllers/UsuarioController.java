@@ -50,12 +50,6 @@ public class UsuarioController {
 	MessageSource messageSource;
 
 	@Autowired
-	ProfessorRepositorio professorRepo;
-
-	@Autowired
-	DepartamentoRepositorio departamentoRepo;
-
-	@Autowired
 	public void setUserService(UsuarioService userService) {
 		UsuarioController.userService = userService;
 	}
@@ -81,88 +75,6 @@ public class UsuarioController {
 		model.addAttribute("users", users);
 
 		return "/usuarios/userslist";
-	}
-
-	@RequestMapping(value = { "/", "/listProfessorDepartamento" }, method = RequestMethod.GET)
-	public String listProfessorByDepartamento(ModelMap model) {
-
-		List<Professor> professores = professorRepo.findProfessores();
-		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
-		Map<String, String> mapProfDep = new HashMap<String, String>();
-
-		for (int i = 0; i < professores.size(); i++) {
-			Departamento dep = departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula());
-			
-			System.out.println("professor matricula -> " + professores.get(i).getMatricula() + " departamanto -> "
-					+ departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()));
-			
-			String nomeDep = null;
-			String matricula = null;
-			
-			if (departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()) != null) {
-				nomeDep = dep.getSigla();
-				matricula = professores.get(i).getMatricula();
-				
-				System.out.println("Adicionados no map: matricula "+matricula+" departamento: " + nomeDep);
-			} else{
-				matricula = professores.get(i).getMatricula();				
-			}		
-			
-			mapProfDep.put(matricula, nomeDep); // chave, value
-		}
-		
-		for(int i=0;i<mapProfDep.size();i++){
-			System.out.println("--------------------------Pecorrendo o map");
-			System.out.println("matricula : "+mapProfDep);
-		}
-
-		model.addAttribute("mapProfDep", mapProfDep);
-		model.addAttribute("departamentos", departamentos);
-		model.addAttribute("professores", professores);
-
-		return "/usuarios/cadastroProfessor/cadastroProfessorDepartamento";
-
-	}
-
-	/**
-	 * Esse método adiciona o Professor a um Departamento.
-	 */
-	@RequestMapping(value = { "/", "/setListProfessorDepartamento" }, method = RequestMethod.POST)
-	public String setListProfessorByDepartamento(Model model, HttpServletRequest request, HttpSession session,
-			@RequestParam("matricula") List<String> matriculas,
-			@RequestParam("departamento") List<String> departamentos) {
-
-		for (int j = 0; j < departamentos.size(); j++) {
-
-			int tracoDep = departamentos.get(j).indexOf("-");
-
-			tracoDep = tracoDep + 1;
-
-			Departamento d = departamentoRepo.findDepartamentoBySigla(departamentos.get(j).substring(0, tracoDep - 1));
-
-			for (int i = 0; i < matriculas.size(); i++) {
-				int tracoMat = matriculas.get(i).indexOf("-");
-
-				tracoMat = tracoMat + 1;
-
-				if (matriculas.get(i).substring(tracoMat).equals(departamentos.get(j).substring(tracoDep))) {
-					System.out.println("Substring Departamento : " + departamentos.get(j).substring(0, tracoDep - 1));
-					System.out.println("Nome do Departamento: " + d.getNome());
-					Professor p = professorRepo.findProfessorByMatricula(matriculas.get(i).substring(0, tracoMat - 1));
-					System.out.println("Substring Professor: " + matriculas.get(i).substring(0, tracoMat - 1));
-					System.out.println("Nome Professor: " + p.getNome());
-
-					d.addProfessor(p);
-
-				}
-
-				tracoMat = 0;
-			}
-			tracoDep = 0;
-			departamentoRepo.save(d);
-		}
-		System.out.println("salvar");
-		return "/usuarios/cadastroProfessor/sucesso";
 	}
 
 	/**
