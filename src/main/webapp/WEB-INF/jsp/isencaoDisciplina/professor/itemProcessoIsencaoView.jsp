@@ -61,41 +61,34 @@
 								type="hidden" />
 						<tr>
 							<td>${alunosItemIsencao.id}</td>
-							<td>${alunosItemIsencao.disciplina.codigo}</td>
+							<td>${alunosItemIsencao.disciplina.codigo}
+							</td>
 							<td>${alunosItemIsencao.disciplina.nome}</td>
 							<td>
-
+							
 							<c:if test="${alunosItemIsencao.situacao != null}">
-									<select disabled="true" name="radio" class="form-control ">
-										<option value="" selected disabled>${alunosItemIsencao.situacao}</option>
-									</select>
+									<c:if test="${alunosItemIsencao.situacao == 'deferir'}">
+										<h5>DEFERIDO</h5>
+									</c:if> 
+									<c:if test="${alunosItemIsencao.situacao == 'indeferir'}">
+										<h5>INDEFERIDO</h5>
+									</c:if> 		
 								</c:if> 
+
 								<c:if test="${alunosItemIsencao.situacao == null}">
-									<select name="radio" class="form-control ">
-										<option value="" label="Selecionar..." selected disabled>Selecionar</option>
-										<option value="deferir-${i.index}">DEFERIR</option>
-										<option value="indeferir-${i.index}">INDEFERIR</option>
-									</select>
+									<button class="btn btn-success custom-width" type="submit"
+										name="btAvaliador" value="deferir-${i.index}" >Deferir</button>
+									<button class="btn btn-danger custom-width" type="submit"
+										name="btAvaliador" value="indeferir-${i.index}">Indeferir</button>
 								</c:if>
 							</td>
-							<td>
-
-							
-							</td>
+							<c:if test="${alunosItemIsencao.situacao == 'indeferir'}">
+								<td>${alunosItemIsencao.motivo}</td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</tbody>
-
-			</table>
-			<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao == 'ANALISADO'}">
-				<button class="btn btn-success custom-width" type="submit"
-				name="matricula" disabled="true">Confirmar</button>
-			</c:if>
-			<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao != 'ANALISADO'}">
-				<button class="btn btn-success custom-width" type="submit"
-				name="matricula">Confirmar</button>
-			</c:if>
-			
+			</table>		
 		</div>
 	</form>
 	<a class="btn btn-default"

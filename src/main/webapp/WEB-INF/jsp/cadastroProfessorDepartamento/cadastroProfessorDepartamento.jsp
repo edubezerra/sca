@@ -25,7 +25,7 @@
 
 		<div class="panel panel-default" align="center">
 			<form
-				action="${pageContext.request.contextPath}/usuarios/setListProfessorDepartamento"
+				action="${pageContext.request.contextPath}/cadastroProfessorDepartamento/setListProfessorDepartamento"
 				method="POST">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
@@ -65,13 +65,6 @@
 												</c:if>
 											</c:if>
 										</c:forEach>
-										
-										
-
-										<!-- 
-										<option value="" class="form-control" label="Selecionar..."
-											selected disabled>Selecionar</option>																											
-										 -->
 										<c:forEach items="${departamentos}" var="departamento">
 											<option value="${departamento.sigla}-${i.index}">${departamento.sigla}</option>
 										</c:forEach>

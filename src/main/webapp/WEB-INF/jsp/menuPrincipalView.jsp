@@ -106,7 +106,7 @@
 			<ul>				
 				<li><a href="${pageContext.request.contextPath}/usuarios/list">
 						Listar usuários </a></li>
-				<li><a href="${pageContext.request.contextPath}/usuarios/listProfessorDepartamento">
+				<li><a href="${pageContext.request.contextPath}/cadastroProfessorDepartamento/listProfessorDepartamento">
 						Cadastrar Professor por Departamento </a></li>
 				<li><a href="${pageContext.request.contextPath}/coordenacaoAtividades/homeAlocacaoCoordenadorAtividades">
 						Alocar Coordenadores de Atividades Complementares </a></li>
