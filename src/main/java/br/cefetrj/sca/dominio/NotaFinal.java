@@ -9,6 +9,8 @@ import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import br.cefetrj.sca.dominio.FichaAvaliacoes.ItemFicha;
+
 @Entity
 public class NotaFinal {
 
@@ -25,7 +27,15 @@ public class NotaFinal {
 	@Autowired
 	private EstrategiaAvaliacaoAluno estrategia;
 
+	@SuppressWarnings("unused")
 	private NotaFinal() {
+	}
+
+	public NotaFinal(ItemFicha item) {
+		this.setNotaP1(item.notaP1);
+		this.setNotaP2(item.notaP2);
+		this.setNotaP3(item.notaP3);
+		this.setFrequencia(item.getFrequencia());
 	}
 
 	public Long getId() {
@@ -36,34 +46,33 @@ public class NotaFinal {
 		return notaP1;
 	}
 
-	public void setNotaP1(BigDecimal notaP1) {
-		if (notaP1 == null)
-			throw new IllegalArgumentException("Nota de P1 não pode ser nula.");
-		if (notaP1.doubleValue() < 0.0 || notaP1.doubleValue() > 10.0)
-			throw new IllegalArgumentException(
-					"Valor inválido para nota de P1.");
-		this.notaP1 = notaP1;
+	public void setNotaP1(BigDecimal nota) {
+		validarSeNaoNulo(nota, "P1");
+		this.notaP1 = nota;
+	}
+
+	private void validarSeNaoNulo(BigDecimal nota, String descritorNota) {
+		if (nota != null && (nota.doubleValue() < 0.0 || nota.doubleValue() > 10.0)) {
+			throw new IllegalArgumentException("Valor fornecido para " + descritorNota + " é inválido.");
+		}
 	}
 
 	public BigDecimal getNotaP2() {
 		return notaP2;
 	}
 
-	public void setNotaP2(BigDecimal notaP2) {
-		if (notaP2 == null)
-			throw new IllegalArgumentException("Nota de P2 não pode ser nula.");
-		if (notaP2.doubleValue() < 0.0 || notaP2.doubleValue() > 10.0)
-			throw new IllegalArgumentException(
-					"Valor inválido para nota de P1.");
-		this.notaP2 = notaP2;
+	public void setNotaP2(BigDecimal nota) {
+		validarSeNaoNulo(nota, "P2");
+		this.notaP2 = nota;
 	}
 
 	public BigDecimal getNotaP3() {
 		return notaP3;
 	}
 
-	public void setNotaP3(BigDecimal notaP3) {
-		this.notaP3 = notaP3;
+	public void setNotaP3(BigDecimal nota) {
+		validarSeNaoNulo(nota, "P3");
+		this.notaP3 = nota;
 	}
 
 	public BigDecimal getFrequencia() {
