@@ -43,7 +43,7 @@
 		src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.popconfirm.js"></script>
     
 	<!-- Include Date Range Picker -->
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/daterangepicker.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap/css/daterangepicker.css" />
 
