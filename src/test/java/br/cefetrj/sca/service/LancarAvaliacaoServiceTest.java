@@ -27,7 +27,7 @@ import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
 @Transactional
-public class RegistrarAvaliacaoServiceTest {
+public class LancarAvaliacaoServiceTest {
 
 	String matriculaProfessor = "1506449";
 	private Professor professor;

@@ -6,9 +6,5 @@ log
 .settings/*
 .project
 .classpath
-<<<<<<< HEAD
-app.txt
-=======
 app.log
 /bin/
->>>>>>> 10a48d3e2e42f7945febe3ec853de7101e39b974
