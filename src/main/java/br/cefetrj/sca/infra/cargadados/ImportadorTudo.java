@@ -3,8 +3,11 @@ package br.cefetrj.sca.infra.cargadados;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 
 @Component
 public class ImportadorTudo {
@@ -12,19 +15,24 @@ public class ImportadorTudo {
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 			StandalonePersistenceConfig.class);
 
-	private static EntityManagerFactory emf = (EntityManagerFactory) context
-			.getBean("entityManagerFactory");
+	private static EntityManagerFactory emf = (EntityManagerFactory) context.getBean("entityManagerFactory");
 
 	public static EntityManager entityManager = emf.createEntityManager();
 
-	public static void main(String[] args) {
-		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
-		
-		entityManager = emf.createEntityManager();
+	@Autowired
+	AlunoRepositorio alunoRepositorio;
 
-		importador.run();
-		entityManager.close();
-		emf.close();
+	public static void main(String[] args) {
+
+		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
+
+		System.out.println("# alunos = " + importador.alunoRepositorio.count());
+
+//		entityManager = emf.createEntityManager();
+//
+//		importador.run();
+//		entityManager.close();
+//		emf.close();
 	}
 
 	public void run() {
@@ -39,15 +47,15 @@ public class ImportadorTudo {
 			new ImportadorDepartamentos().run();
 
 			new ImportadorHistoricosEscolares().run();
-			
+
 			new ImportadorTurmasComInscricoes().run();
 			new ImportadorAlocacoesProfessoresEmTurmas().run();
 			new ImportadorHabilitacoesParaProfessor().run();
-			
+
 			new ImportadorAlocacoesProfessoresEmDepartamentos().run();
-		
+
 			new ImportadorAlocacoesDisciplinasEmDepartamentos().run();
-			
+
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());
 			System.exit(1);
