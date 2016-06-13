@@ -28,6 +28,11 @@ public class ImportadorHistoricosEscolares {
 
 	EntityManager em = ImportadorTudo.entityManager;
 
+	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
+		"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
+		"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
+		"CH_TOTAL", "CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
+
 	public void run() {
 		File folder = new File("./planilhas/historicos-escolares");
 		File[] listOfFiles = folder.listFiles();
@@ -35,10 +40,6 @@ public class ImportadorHistoricosEscolares {
 		Scanner in = new Scanner(System.in);
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
-				// System.out.println("Importar dados da planilha \""
-				// + listOfFiles[i].getName()
-				// + "\"? Sim = 1; Não: qq outro dígito.");
-				// int resposta = in.nextInt();
 				int resposta = 1;
 				if (resposta == 1) {
 					String arquivoPlanilha = "./planilhas/historicos-escolares/"
@@ -62,11 +63,6 @@ public class ImportadorHistoricosEscolares {
 		}
 		System.out.println("Feito!");
 	}
-
-	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
-			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
-			"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
-			"CH_TOTAL", "CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
 
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
