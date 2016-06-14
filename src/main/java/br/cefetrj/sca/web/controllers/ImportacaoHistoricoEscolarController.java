@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.cefetrj.sca.service.ImportacaoHistoricoEscolarService;
+import br.cefetrj.sca.service.ImportacaoHistoricosEscolaresService;
 
 @Controller
 @RequestMapping("/importacaoHistoricoEscolar")
 public class ImportacaoHistoricoEscolarController {
 	
 	@Autowired
-	private ImportacaoHistoricoEscolarService service;
+	private ImportacaoHistoricosEscolaresService service;
 
 	protected Logger logger = Logger
 			.getLogger(ImportacaoHistoricoEscolarController.class.getName());
