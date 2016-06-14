@@ -16,12 +16,19 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
-import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.VersaoCurso;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 
 /**
  * Esse importador faz a carga de objetos <code>Turma</code> e de seus
@@ -34,9 +41,22 @@ import br.cefetrj.sca.dominio.VersaoCurso;
  * @author Eduardo Bezerra
  *
  */
+@Component
 public class ImportadorTurmasComInscricoes {
 
-	EntityManager em = ImportadorTudo.entityManager;
+	// EntityManager em = ImportadorTudo.entityManager;
+
+	@Autowired
+	AlunoRepositorio alunoRepositorio;
+
+	@Autowired
+	DisciplinaRepositorio disciplinaRepositorio;
+
+	@Autowired
+	private CursoRepositorio cursoRepositorio;
+
+	@Autowired
+	private TurmaRepositorio turmaRepositorio;
 
 	private final String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
 			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
@@ -242,7 +262,10 @@ public class ImportadorTurmasComInscricoes {
 
 			String matricula_aluno = sheet.getCell(
 					colunasList.indexOf("MATR_ALUNO"), i).getContents();
-			if (obterAlunoPorMatricula(em, matricula_aluno) == null) {
+
+			Aluno aluno = alunoRepositorio
+					.findAlunoByMatricula(matricula_aluno);
+			if (aluno == null) {
 				String nome_aluno = sheet.getCell(
 						colunasList.indexOf("NOME_PESSOA"), i).getContents();
 				mapaAlunosNomes.put(matricula_aluno, nome_aluno);
@@ -257,7 +280,7 @@ public class ImportadorTurmasComInscricoes {
 
 	public void gravarDadosImportados() {
 
-		em.getTransaction().begin();
+		// em.getTransaction().begin();
 
 		/**
 		 * Realiza a persistência de objetos <code>Turma</code> e dos
@@ -277,8 +300,11 @@ public class ImportadorTurmasComInscricoes {
 			String codCurso = mapaTurmasCursos.get(chaveTurma);
 			String codTurma = mapaTurmasCodigos.get(chaveTurma);
 
-			Disciplina disciplina = obterDisciplina(em, codigoDisciplina,
-					codCurso, numeroVersaoCurso);
+			// Disciplina disciplina = obterDisciplina(em, codigoDisciplina,
+			// codCurso, numeroVersaoCurso);
+			Disciplina disciplina = disciplinaRepositorio
+					.findByCodigoEmVersaoCurso(codigoDisciplina, codCurso,
+							numeroVersaoCurso);
 
 			if (disciplina != null) {
 				int capacidadeMaxima = 80;
@@ -289,7 +315,9 @@ public class ImportadorTurmasComInscricoes {
 
 				if (matriculas != null) {
 					for (String matricula : matriculas) {
-						Aluno aluno = obterAlunoPorMatricula(em, matricula);
+						Aluno aluno = alunoRepositorio
+								.findAlunoByMatricula(matricula);
+						// Aluno aluno = obterAlunoPorMatricula(em, matricula);
 						if (aluno != null) {
 							try {
 								turma.inscreverAluno(aluno);
@@ -309,21 +337,22 @@ public class ImportadorTurmasComInscricoes {
 							String aluno_nome = mapaAlunosNomes.get(matricula);
 
 							aluno = criarAluno(aluno_nome, matricula,
-									aluno_cpf, codCurso, numeroVersaoCurso, em);
+									aluno_cpf, codCurso, numeroVersaoCurso);
 
-							em.persist(aluno);
+							alunoRepositorio.save(aluno);
+							// em.persist(aluno);
 							System.err.println("Aluno inserido com sucesso: "
 									+ aluno.toString());
 						}
 					}
 				}
 
-				em.persist(turma);
+				turmaRepositorio.save(turma);
 				qtdInscricoes += turma.getQtdInscritos();
 			}
 		}
 
-		em.getTransaction().commit();
+//		em.getTransaction().commit();
 
 		System.out.println("Foram importadas " + qtdTurmas + " turmas.");
 
@@ -333,14 +362,17 @@ public class ImportadorTurmasComInscricoes {
 	}
 
 	public Aluno criarAluno(String nomeAluno, String matriculaAluno,
-			String cpfAluno, String siglaCurso, String numeroVersaoCurso,
-			EntityManager em) {
+			String cpfAluno, String siglaCurso, String numeroVersaoCurso) {
 
-		String str = "FROM VersaoCurso v WHERE v.curso.sigla = ?1 and v.numero = ?2";
-		Query q = em.createQuery(str);
-		q.setParameter(1, siglaCurso);
-		q.setParameter(2, numeroVersaoCurso);
-		VersaoCurso versaoCurso = (VersaoCurso) q.getSingleResult();
+		// String str =
+		// "FROM VersaoCurso v WHERE v.curso.sigla = ?1 and v.numero = ?2";
+		// Query q = em.createQuery(str);
+		// q.setParameter(1, siglaCurso);
+		// q.setParameter(2, numeroVersaoCurso);
+		// VersaoCurso versaoCurso = (VersaoCurso) q.getSingleResult();
+		VersaoCurso versaoCurso = cursoRepositorio.getVersaoCurso(siglaCurso,
+				numeroVersaoCurso);
+
 		if (versaoCurso == null) {
 			throw new IllegalArgumentException(
 					"Versão do curso não encontrada. Sigla: " + siglaCurso

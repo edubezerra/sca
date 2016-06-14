@@ -11,12 +11,28 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.matriculaforaprazo.AlocacacaoDisciplinasEmDepartamento;
+import br.cefetrj.sca.dominio.repositories.AlocacacaoDisciplinasEmDepartamentoRepositorio;
+import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
+import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 
+@Component
 public class ImportadorAlocacoesDisciplinasEmDepartamentos {
+	@Autowired
+	private TurmaRepositorio turmaRepositorio;
+
+	@Autowired
+	private DepartamentoRepositorio departamentoRepositorio;
+
+	@Autowired
+	AlocacacaoDisciplinasEmDepartamentoRepositorio alocacacaoDisciplinasEmDepartamentoRepositorio;
+
 	public void run() {
 
 		Map<String, Set<String>> mapa = new HashMap<>();
@@ -38,18 +54,20 @@ public class ImportadorAlocacoesDisciplinasEmDepartamentos {
 		lista.add("GADM");
 		mapa.put("DEPEA", lista);
 
-		EntityManager em = ImportadorTudo.entityManager;
+		// EntityManager em = ImportadorTudo.entityManager;
 
-		em.getTransaction().begin();
+		// em.getTransaction().begin();
 
-		List<Turma> turmas = findTurmasByPeriodoLetivo(em,
-				PeriodoLetivo.PERIODO_CORRENTE);
+		List<Turma> turmas = turmaRepositorio
+				.findTurmasAbertasNoPeriodo(PeriodoLetivo.PERIODO_CORRENTE);
+		// findTurmasByPeriodoLetivo(em, PeriodoLetivo.PERIODO_CORRENTE);
 
 		if (turmas != null) {
 			Set<String> chaves = mapa.keySet();
 			for (String siglaDepto : chaves) {
-				Departamento departamento = obterDepartamentoPorSigla(em,
-						siglaDepto);
+				Departamento departamento = departamentoRepositorio
+						.findDepartamentoBySigla(siglaDepto);
+				// obterDepartamentoPorSigla(em,siglaDepto);
 				AlocacacaoDisciplinasEmDepartamento alocacao = new AlocacacaoDisciplinasEmDepartamento(
 						departamento);
 				lista = mapa.get(siglaDepto);
@@ -61,14 +79,15 @@ public class ImportadorAlocacoesDisciplinasEmDepartamentos {
 						}
 					}
 				}
-				em.persist(alocacao);
+				alocacacaoDisciplinasEmDepartamentoRepositorio.save(alocacao);
+				// em.persist(alocacao);
 
 				System.out.println("Foram alocadas "
 						+ alocacao.getDisciplinas().size()
 						+ " disciplina(s) no " + departamento.getNome());
 			}
 		}
-		em.getTransaction().commit();
+		// em.getTransaction().commit();
 	}
 
 	private List<Turma> findTurmasByPeriodoLetivo(EntityManager em,

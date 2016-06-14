@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
@@ -18,6 +20,8 @@ import jxl.read.biff.BiffException;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
+import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 
 /**
  * Esse importador realiza a carga de associações entre objetos
@@ -28,7 +32,13 @@ import br.cefetrj.sca.dominio.Turma;
  */
 public class ImportadorAlocacoesProfessoresEmTurmas {
 
-	EntityManager em = ImportadorTudo.entityManager;
+	@Autowired
+	private TurmaRepositorio turmaRepositorio;
+
+	@Autowired
+	ProfessorRepositorio professorRepositorio;
+
+//	EntityManager em = ImportadorTudo.entityManager;
 
 	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
 			"VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO", "HR_FIM",
@@ -86,34 +96,39 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 			PeriodoLetivo periodoLetivo = mapaTurmasParaPeriodos.get(chave);
 
 			try {
-				query = em
-						.createQuery("from Turma t where t.codigo = ? and t.disciplina.codigo = ? "
-								+ "and t.periodo.ano = ? and t.periodo.periodo = ?");
-				query.setParameter(1, codTurma);
-				query.setParameter(2, codDisciplina);
-				query.setParameter(3, periodoLetivo.getAno());
-				query.setParameter(4, periodoLetivo.getPeriodo());
-				turma = (Turma) query.getSingleResult();
+//				query = em
+//						.createQuery("from Turma t where t.codigo = ? and t.disciplina.codigo = ? "
+//								+ "and t.periodo.ano = ? and t.periodo.periodo = ?");
+//				query.setParameter(1, codTurma);
+//				query.setParameter(2, codDisciplina);
+//				query.setParameter(3, periodoLetivo.getAno());
+//				query.setParameter(4, periodoLetivo.getPeriodo());
+//				turma = (Turma) query.getSingleResult();
+				turma = turmaRepositorio.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma, codDisciplina, periodoLetivo);
 			} catch (NoResultException e) {
 				System.err.println("Turma não encontrada: (" + codTurma + ", "
 						+ codDisciplina + ")");
 				turma = null;
 			}
 			if (turma != null) {
-				query = em
-						.createQuery("from Professor p where p.matricula = ?");
-				query.setParameter(1, mapaTurmasParaProfessores.get(chave));
+//				query = em
+//						.createQuery("from Professor p where p.matricula = ?");
+//				query.setParameter(1, mapaTurmasParaProfessores.get(chave));
 
+				String matricula = mapaTurmasParaProfessores.get(chave);
+				
 				Professor professor = null;
 				try {
-					professor = (Professor) query.getSingleResult();
+//					professor = (Professor) query.getSingleResult();
+					professor = professorRepositorio.findProfessorByMatricula(matricula);
 				} catch (NoResultException e) {
 					System.err.println("Professor não encontrado: "
 							+ mapaTurmasParaProfessores.get(chave));
 				}
 				if (professor != null) {
 					turma.setProfessor(professor);
-					em.merge(turma);
+//					em.merge(turma);
+					turmaRepositorio.save(turma);
 					qtdAlocacoes++;
 				}
 			}

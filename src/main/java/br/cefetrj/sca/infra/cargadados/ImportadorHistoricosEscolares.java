@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -14,20 +13,33 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.EnumSituacaoAvaliacao;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 
 /**
  * @author Eduardo Bezerra
  *
  */
+@Component
 public class ImportadorHistoricosEscolares {
 
-	EntityManager em = ImportadorTudo.entityManager;
+//	EntityManager em = ImportadorTudo.entityManager;
 
+	@Autowired
+	DisciplinaRepositorio disciplinaRepositorio;
+	
+	@Autowired
+	AlunoRepositorio alunoRepositorio;
+	
 	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
 		"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
 		"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
@@ -82,7 +94,7 @@ public class ImportadorHistoricosEscolares {
 		w = Workbook.getWorkbook(inputWorkbook, ws);
 		Sheet sheet = w.getSheet(0);
 
-		em.getTransaction().begin();
+//		em.getTransaction().begin();
 
 		for (int i = 1; i < sheet.getRows(); i++) {
 
@@ -158,19 +170,20 @@ public class ImportadorHistoricosEscolares {
 				continue;
 			}
 
-			Query queryDisciplina;
-			queryDisciplina = em
-					.createQuery("from Disciplina a where a.codigo = :codDisciplina and "
-							+ "a.versaoCurso.numero = :numeroVersao and "
-							+ "a.versaoCurso.curso.sigla = :siglaCurso");
-
-			queryDisciplina.setParameter("codDisciplina", cod_disciplina);
-			queryDisciplina.setParameter("siglaCurso", cod_curso);
-			queryDisciplina.setParameter("numeroVersao", versao_curso);
+//			Query queryDisciplina;
+//			queryDisciplina = em
+//					.createQuery("from Disciplina a where a.codigo = :codDisciplina and "
+//							+ "a.versaoCurso.numero = :numeroVersao and "
+//							+ "a.versaoCurso.curso.sigla = :siglaCurso");
+//
+//			queryDisciplina.setParameter("codDisciplina", cod_disciplina);
+//			queryDisciplina.setParameter("siglaCurso", cod_curso);
+//			queryDisciplina.setParameter("numeroVersao", versao_curso);
 
 			Disciplina disciplina = null;
 			try {
-				disciplina = (Disciplina) queryDisciplina.getSingleResult();
+//				disciplina = (Disciplina) queryDisciplina.getSingleResult();
+				disciplina = disciplinaRepositorio.findByCodigoEmVersaoCurso(cod_disciplina, cod_curso, versao_curso);				
 			} catch (NoResultException e) {
 				System.err.println("Disciplina não encontrada (código): "
 						+ cod_disciplina);
@@ -179,11 +192,12 @@ public class ImportadorHistoricosEscolares {
 			if (disciplina != null) {
 				Aluno aluno = null;
 				try {
-					Query queryAluno;
-					queryAluno = em
-							.createQuery("from Aluno a where a.matricula = :matricula");
-					queryAluno.setParameter("matricula", aluno_matricula);
-					aluno = (Aluno) queryAluno.getSingleResult();
+//					Query queryAluno;
+//					queryAluno = em
+//							.createQuery("from Aluno a where a.matricula = :matricula");
+//					queryAluno.setParameter("matricula", aluno_matricula);
+//					aluno = (Aluno) queryAluno.getSingleResult();
+					aluno = alunoRepositorio.findAlunoByMatricula(aluno_matricula);
 				} catch (NoResultException e) {
 					System.err.println("Aluno não encontrado. Matrícula: "
 							+ aluno_matricula);
@@ -192,7 +206,8 @@ public class ImportadorHistoricosEscolares {
 				if (aluno != null) {
 					aluno.registrarNoHistoricoEscolar(disciplina,
 							situacaoFinal, semestre);
-					em.merge(aluno);
+//					em.merge(aluno);
+					alunoRepositorio.save(aluno);
 					System.out.println("Lançada disciplina "
 							+ disciplina.toString()
 							+ " no histórico escolar do aluno de matrícula "
@@ -202,7 +217,7 @@ public class ImportadorHistoricosEscolares {
 			}
 		}
 
-		em.getTransaction().commit();
+//		em.getTransaction().commit();
 
 		System.out.println("Importação de históricos finalizada.");
 	}

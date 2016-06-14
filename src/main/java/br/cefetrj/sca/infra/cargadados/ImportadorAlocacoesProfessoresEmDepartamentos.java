@@ -4,19 +4,31 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
 public class ImportadorAlocacoesProfessoresEmDepartamentos {
+	@Autowired
+	private DepartamentoRepositorio departamentoRepositorio;
+
+	@Autowired
+	ProfessorRepositorio professorRepositorio;
+
 	public void run() {
 
-		EntityManager em = ImportadorTudo.entityManager;
+		// EntityManager em = ImportadorTudo.entityManager;
 
-		em.getTransaction().begin();
-		Professor professor = obterProfessorPorMatricula(em, "1506449");
-		Departamento departamento = obterDepartamentoPorSigla(em, "DEPIN");
+		// em.getTransaction().begin();
+		Professor professor = professorRepositorio
+				.findProfessorByMatricula("1506449");
+		Departamento departamento = departamentoRepositorio
+				.findDepartamentoBySigla("DEPIN");
 		departamento.addProfessor(professor);
-		em.getTransaction().commit();
+		// em.getTransaction().commit();
 
 		System.out.println("Foram alocados "
 				+ departamento.getProfessores().size()
