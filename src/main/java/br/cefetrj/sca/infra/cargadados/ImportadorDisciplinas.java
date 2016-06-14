@@ -8,21 +8,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import br.cefetrj.sca.dominio.Curso;
+import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.VersaoCurso;
+import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.VersaoCursoRepositorio;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
-import br.cefetrj.sca.dominio.Curso;
-import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.VersaoCurso;
 
+@Component
 public class ImportadorDisciplinas {
 
-	EntityManager em = ImportadorTudo.entityManager;
-
+	@Autowired
+	DisciplinaRepositorio disciplinaRepositorio;
+	
+	@Autowired
+	CursoRepositorio cursoRepositorio;
+	
+	@Autowired
+	VersaoCursoRepositorio versaoCursoRepositorio;
+	
 	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA",
 			"NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA", "CH_TOTAL",
 			"CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO",
@@ -31,21 +42,23 @@ public class ImportadorDisciplinas {
 
 	private HashMap<String, Curso> cursos = new HashMap<>();
 	private HashMap<String, VersaoCurso> versoesCursos = new HashMap<>();
-
 	private List<Disciplina> disciplinas = new ArrayList<Disciplina>();
 
 	public void run() {
 		System.out.println("ImportadorGradesCurriculares.run()");
 		try {
-			ImportadorDisciplinas iim = new ImportadorDisciplinas();
 			String arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
 
-			iim = new ImportadorDisciplinas();
+			cursos.clear();
+			versoesCursos.clear();
+			disciplinas.clear();
+			
 			arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
+			
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -54,8 +67,6 @@ public class ImportadorDisciplinas {
 	}
 
 	private void gravarDadosImportados() {
-
-		em.getTransaction().begin();
 
 		/**
 		 * Realiza a persistência dos objetos Curso.
@@ -67,7 +78,7 @@ public class ImportadorDisciplinas {
 
 			Curso curso = cursos.get(codCurso);
 
-			em.persist(curso);
+			cursoRepositorio.save(curso);
 		}
 
 		/**
@@ -75,16 +86,14 @@ public class ImportadorDisciplinas {
 		 */
 		for (Disciplina disciplina : disciplinas) {
 			System.out.println("Gravando disciplina: " + disciplina);
-			em.persist(disciplina);
+			disciplinaRepositorio.save(disciplina);
 		}
-
-		em.getTransaction().commit();
 
 		System.out.println("Foram importadas " + disciplinas.size()
 				+ " disciplinas.");
 	}
 
-	public void importarPlanilha(String inputFile) throws BiffException,
+	private void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
 		File inputWorkbook = new File(inputFile);
 		importarPlanilha(inputWorkbook);
@@ -107,12 +116,7 @@ public class ImportadorDisciplinas {
 	}
 
 	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
-		Query query = em
-				.createQuery("from VersaoCurso versao "
-						+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");
-		query.setParameter("numeroVersao", numeroVersao);
-		query.setParameter("siglaCurso", siglaCurso);
-		return (VersaoCurso) query.getSingleResult();
+		return versaoCursoRepositorio.findByNumeroEmCurso(numeroVersao, siglaCurso);
 	}
 
 	private void importarVersoesCursos(List<String> colunasList, Sheet sheet) {

@@ -1,15 +1,23 @@
 package br.cefetrj.sca.infra.cargadados;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
+@Component
 public class ImportadorHabilitacoesParaProfessor {
 
-	EntityManager em = ImportadorTudo.entityManager;
+	@Autowired
+	ProfessorRepositorio professorRepositorio;
+
+	@Autowired
+	DisciplinaRepositorio disciplinaRepositorio;
 
 	public void run() {
 
@@ -17,9 +25,7 @@ public class ImportadorHabilitacoesParaProfessor {
 
 		Professor professor;
 		try {
-			Query qry = em.createQuery("from Professor a where a.matricula = :matricula");
-			qry.setParameter("matricula", matricula);
-			professor = (Professor) qry.getSingleResult();
+			professor = professorRepositorio.findProfessorByMatricula(matricula);
 		} catch (NoResultException e) {
 			professor = null;
 		}
@@ -34,9 +40,7 @@ public class ImportadorHabilitacoesParaProfessor {
 		d = findDisciplinaByCodigo("GCC1518");
 		professor.habilitarPara(d);
 
-		em.getTransaction().begin();
-		em.merge(professor);
-		em.getTransaction().commit();
+		professorRepositorio.save(professor);
 
 		System.out.println("Foram registradas 3 habilitações para o professor cuja matrícula é " + matricula);
 	}
@@ -44,9 +48,7 @@ public class ImportadorHabilitacoesParaProfessor {
 	private Disciplina findDisciplinaByCodigo(String codigo) {
 		Disciplina d;
 		try {
-			Query qry = em.createQuery("from Disciplina a where a.codigo = :codigo");
-			qry.setParameter("codigo", codigo);
-			d = (Disciplina) qry.getSingleResult();
+			d = disciplinaRepositorio.findDisciplinaByCodigo(codigo);
 		} catch (NoResultException e) {
 			d = null;
 		}

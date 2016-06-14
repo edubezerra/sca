@@ -7,31 +7,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
-import br.cefetrj.sca.dominio.Professor;
 
 /**
  * Este importador realiza a carga de objetos <code>Professor</code>.
  *
  */
 
+@Component
 public class ImportadorProfessores {
 
-	EntityManager em = ImportadorTudo.entityManager;
+	@Autowired
+	ProfessorRepositorio professorRepositorio;
 
-	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
-			"VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO", "HR_FIM",
-			"TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "ITEM_TABELA",
-			"PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
-			"DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
-			"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
+	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA",
+			"HR_INICIO", "HR_FIM", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "ITEM_TABELA", "PERIODO_ITEM", "ANO",
+			"DIA_SEMANA_ITEM", "PERIODO", "DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA", "NOME_DISCIPLINA_SUB",
+			"MATR_EXTERNA", "NOME_DOCENTE", "ID" };
 
 	/**
 	 * Dicionário de pares <matrícula, nome> de cada professor encontrado na
@@ -43,9 +45,8 @@ public class ImportadorProfessores {
 		System.out.println("ImportadorDocentes.main()");
 		try {
 			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.05 - Oferta de Disciplinas - Docentes x Cursos - 2015.2.xls";
-			ImportadorProfessores iim = new ImportadorProfessores();
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -55,42 +56,30 @@ public class ImportadorProfessores {
 
 	private void gravarDadosImportados() {
 
-		em.getTransaction().begin();
-
 		Set<String> profsIt = profs_nomes.keySet();
 		int adicionados = 0;
 		for (String matrProfessor : profsIt) {
 			Professor professor;
 			try {
-				Query queryProfessor;
-				queryProfessor = em
-						.createQuery("from Professor a where a.matricula = :matricula");
-				queryProfessor.setParameter("matricula", matrProfessor);
-				professor = (Professor) queryProfessor.getSingleResult();
+				professor = professorRepositorio.findProfessorByMatricula(matrProfessor);
 			} catch (NoResultException e) {
 				professor = null;
 			}
 
 			if (professor == null) {
-				em.persist(new Professor(matrProfessor, profs_nomes
-						.get(matrProfessor)));
+				professorRepositorio.save(new Professor(matrProfessor, profs_nomes.get(matrProfessor)));
 				adicionados++;
 			}
 		}
-		em.getTransaction().commit();
-
-		System.out.println(">>>Foram importados " + adicionados
-				+ " professores.");
+		System.out.println(">>>Foram importados " + adicionados + " professores.");
 	}
 
-	private void importarPlanilha(String arquivoPlanilha) throws BiffException,
-			IOException {
+	private void importarPlanilha(String arquivoPlanilha) throws BiffException, IOException {
 		File inputWorkbook = new File(arquivoPlanilha);
 		importarPlanilha(inputWorkbook);
 	}
 
-	private void importarPlanilha(File inputWorkbook) throws BiffException,
-			IOException {
+	private void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
@@ -106,20 +95,14 @@ public class ImportadorProfessores {
 			/**
 			 * Dados relativos aos docentes.
 			 */
-			String matriculaProfessor = sheet.getCell(
-					colunasList.indexOf("MATR_EXTERNA"), i).getContents();
-			String nomeProfessor = sheet.getCell(
-					colunasList.indexOf("NOME_DOCENTE"), i).getContents();
+			String matriculaProfessor = sheet.getCell(colunasList.indexOf("MATR_EXTERNA"), i).getContents();
+			String nomeProfessor = sheet.getCell(colunasList.indexOf("NOME_DOCENTE"), i).getContents();
 
 			if (nomeProfessor.isEmpty()) {
-				String nomeDisciplina = sheet.getCell(
-						colunasList.indexOf("NOME_DISCIPLINA"), i)
-						.getContents();
-				String codigoTurma = sheet.getCell(
-						colunasList.indexOf("COD_TURMA"), i).getContents();
+				String nomeDisciplina = sheet.getCell(colunasList.indexOf("NOME_DISCIPLINA"), i).getContents();
+				String codigoTurma = sheet.getCell(colunasList.indexOf("COD_TURMA"), i).getContents();
 
-				System.err.println("Turma sem professor alocado: " + nomeDisciplina
-						+ "(turma " + codigoTurma + ")");
+				System.err.println("Turma sem professor alocado: " + nomeDisciplina + "(turma " + codigoTurma + ")");
 			} else {
 				profs_nomes.put(matriculaProfessor, nomeProfessor);
 			}

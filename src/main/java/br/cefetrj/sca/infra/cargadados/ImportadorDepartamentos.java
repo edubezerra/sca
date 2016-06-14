@@ -1,16 +1,18 @@
 package br.cefetrj.sca.infra.cargadados;
 
-import javax.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Departamento;
+import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 
+@Component
 public class ImportadorDepartamentos {
 
+	@Autowired
+	DepartamentoRepositorio departamentoRepositorio;
+
 	public void run() {
-
-		EntityManager em = ImportadorTudo.entityManager;
-
-		em.getTransaction().begin();
 
 		Departamento dep1 = criar("DEMAT", "Departamento de Matemática");
 		Departamento dep2 = criar("DEPEA", "Departamento de Administração");
@@ -34,12 +36,10 @@ public class ImportadorDepartamentos {
 		for (Departamento departamento : departamentos) {
 			System.out.println("Importando departamento "
 					+ departamento.getSigla());
-			em.persist(departamento);
+			departamentoRepositorio.save(departamento);
 		}
 
-		em.getTransaction().commit();
-
-		System.out.println("Departamentos Importados com sucesso");
+		System.out.println("Departamentos importados com sucesso!");
 	}
 
 	private static Departamento criar(String sigla, String nome) {

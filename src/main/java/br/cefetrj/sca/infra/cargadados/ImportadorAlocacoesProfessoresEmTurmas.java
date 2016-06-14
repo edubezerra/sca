@@ -7,21 +7,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 /**
  * Esse importador realiza a carga de associações entre objetos
@@ -30,6 +29,7 @@ import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
  * <code>Professor</code> foram importados previamente.
  *
  */
+@Component
 public class ImportadorAlocacoesProfessoresEmTurmas {
 
 	@Autowired
@@ -37,8 +37,6 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 
 	@Autowired
 	ProfessorRepositorio professorRepositorio;
-
-//	EntityManager em = ImportadorTudo.entityManager;
 
 	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
 			"VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO", "HR_FIM",
@@ -70,9 +68,8 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 		System.out.println("ImportadorAlocacoesProfessoresEmTurmas.run()");
 		try {
 			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.05 - Oferta de Disciplinas - Docentes x Cursos - 2015.2.xls";
-			ImportadorAlocacoesProfessoresEmTurmas iim = new ImportadorAlocacoesProfessoresEmTurmas();
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -90,7 +87,6 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 			String codTurma = componentes[0];
 			String codDisciplina = componentes[1];
 			
-			Query query;
 			Turma turma = null;
 
 			PeriodoLetivo periodoLetivo = mapaTurmasParaPeriodos.get(chave);

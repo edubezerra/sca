@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.FormularioAvaliacao;
+import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
@@ -79,7 +79,7 @@ public class AvaliacaoTurmaService {
 					"Erro: turma já avaliada pelo aluno.");
 		}
 
-		FormularioAvaliacao form = formRepo
+		QuestionarioAvaliacaoDocente form = formRepo
 				.findFormularioAvaliacaoBySigla("Turma");
 		List<Quesito> quesitos = form.getQuesitos();
 		SolicitaAvaliacaoTurmaResponse response = new SolicitaAvaliacaoTurmaResponse(
@@ -112,7 +112,7 @@ public class AvaliacaoTurmaService {
 						"Erro: turma já avaliada pelo aluno.");
 			}
 
-			FormularioAvaliacao form = formRepo
+			QuestionarioAvaliacaoDocente form = formRepo
 					.findFormularioAvaliacaoBySigla("Turma");
 			List<Quesito> quesitos = form.getQuesitos();
 			int numRespostas = quesitos.size();

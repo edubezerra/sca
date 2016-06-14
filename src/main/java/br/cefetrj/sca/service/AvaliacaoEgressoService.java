@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.AvaliacaoEgresso;
-import br.cefetrj.sca.dominio.FormularioAvaliacao;
+import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.dominio.repositories.AlternativaRepositorio;
@@ -55,7 +55,7 @@ public class AvaliacaoEgressoService {
 	public void avaliaEgresso(String cpf, List<Integer> respostas, String especialidade, 
 			String questao10Outro, String questao15Area) {
 		
-		FormularioAvaliacao form = faRepo.findFormularioAvaliacaoBySigla("Egresso");
+		QuestionarioAvaliacaoDocente form = faRepo.findFormularioAvaliacaoBySigla("Egresso");
 		Aluno aluno = getAlunoPorCPF(cpf);
 		List<Alternativa> alternativas = new ArrayList<Alternativa>();
 		
@@ -85,7 +85,7 @@ public class AvaliacaoEgressoService {
 
 	public SolicitaAvaliacaoEgressoResponse retornaQuestoes() {
 		SolicitaAvaliacaoEgressoResponse response = new SolicitaAvaliacaoEgressoResponse();
-		FormularioAvaliacao form = faRepo.findFormularioAvaliacaoBySigla("Egresso");
+		QuestionarioAvaliacaoDocente form = faRepo.findFormularioAvaliacaoBySigla("Egresso");
 		List<Quesito> quesitos = form.getQuesitos();
 		List<AlternativaDto> alternativas;
 		if(quesitos == null || quesitos.size() == 0)

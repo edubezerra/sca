@@ -22,18 +22,17 @@ public class AtividadeComplementar {
 
 	@ManyToOne
 	private TipoAtividadeComplementar tipo;
-	
+
 	/**
 	 * Carga horária máxima da atividade complementar.
 	 */
 	private Duration cargaHorariaMax;
-	
+
 	/**
 	 * Carga horária mínima da atividade complementar.
 	 */
 	private Duration cargaHorariaMin;
-	
-	
+
 	@SuppressWarnings("unused")
 	private AtividadeComplementar() {
 	}
@@ -44,10 +43,12 @@ public class AtividadeComplementar {
 			throw new IllegalArgumentException("Tipo da atividade complementar é obrigatório.");
 		}
 		if (chMax == null || chMax.isZero() || chMax.isNegative()) {
-			throw new IllegalArgumentException("Carga horária máxima da atividade complementar é obrigatória e deve ser maior do que zero.");
+			throw new IllegalArgumentException(
+					"Carga horária máxima da atividade complementar é obrigatória e deve ser maior do que zero.");
 		}
 		if (chMin == null || chMin.isNegative()) {
-			throw new IllegalArgumentException("Carga horária mínima da atividade complementar é obrigatória e deve ser maior ou igual a zero.");
+			throw new IllegalArgumentException(
+					"Carga horária mínima da atividade complementar é obrigatória e deve ser maior ou igual a zero.");
 		}
 		this.tipo = tipo;
 		this.cargaHorariaMax = chMax;
@@ -57,11 +58,11 @@ public class AtividadeComplementar {
 	public Long getId() {
 		return id;
 	}
-	
+
 	public TipoAtividadeComplementar getTipo() {
 		return tipo;
 	}
-	
+
 	public Duration getCargaHorariaMax() {
 		return cargaHorariaMax;
 	}

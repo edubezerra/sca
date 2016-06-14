@@ -8,15 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +20,10 @@ import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 /**
  * Esse importador faz a carga de objetos <code>Turma</code> e de seus
@@ -43,8 +38,6 @@ import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
  */
 @Component
 public class ImportadorTurmasComInscricoes {
-
-	// EntityManager em = ImportadorTudo.entityManager;
 
 	@Autowired
 	AlunoRepositorio alunoRepositorio;
@@ -280,8 +273,6 @@ public class ImportadorTurmasComInscricoes {
 
 	public void gravarDadosImportados() {
 
-		// em.getTransaction().begin();
-
 		/**
 		 * Realiza a persistência de objetos <code>Turma</code> e dos
 		 * respectivos objetos <code>Inscricao</code>.
@@ -300,8 +291,6 @@ public class ImportadorTurmasComInscricoes {
 			String codCurso = mapaTurmasCursos.get(chaveTurma);
 			String codTurma = mapaTurmasCodigos.get(chaveTurma);
 
-			// Disciplina disciplina = obterDisciplina(em, codigoDisciplina,
-			// codCurso, numeroVersaoCurso);
 			Disciplina disciplina = disciplinaRepositorio
 					.findByCodigoEmVersaoCurso(codigoDisciplina, codCurso,
 							numeroVersaoCurso);
@@ -317,7 +306,6 @@ public class ImportadorTurmasComInscricoes {
 					for (String matricula : matriculas) {
 						Aluno aluno = alunoRepositorio
 								.findAlunoByMatricula(matricula);
-						// Aluno aluno = obterAlunoPorMatricula(em, matricula);
 						if (aluno != null) {
 							try {
 								turma.inscreverAluno(aluno);
@@ -340,7 +328,7 @@ public class ImportadorTurmasComInscricoes {
 									aluno_cpf, codCurso, numeroVersaoCurso);
 
 							alunoRepositorio.save(aluno);
-							// em.persist(aluno);
+
 							System.err.println("Aluno inserido com sucesso: "
 									+ aluno.toString());
 						}
@@ -352,8 +340,6 @@ public class ImportadorTurmasComInscricoes {
 			}
 		}
 
-//		em.getTransaction().commit();
-
 		System.out.println("Foram importadas " + qtdTurmas + " turmas.");
 
 		System.out
@@ -363,13 +349,6 @@ public class ImportadorTurmasComInscricoes {
 
 	public Aluno criarAluno(String nomeAluno, String matriculaAluno,
 			String cpfAluno, String siglaCurso, String numeroVersaoCurso) {
-
-		// String str =
-		// "FROM VersaoCurso v WHERE v.curso.sigla = ?1 and v.numero = ?2";
-		// Query q = em.createQuery(str);
-		// q.setParameter(1, siglaCurso);
-		// q.setParameter(2, numeroVersaoCurso);
-		// VersaoCurso versaoCurso = (VersaoCurso) q.getSingleResult();
 		VersaoCurso versaoCurso = cursoRepositorio.getVersaoCurso(siglaCurso,
 				numeroVersaoCurso);
 
@@ -382,36 +361,4 @@ public class ImportadorTurmasComInscricoes {
 				versaoCurso);
 		return aluno;
 	}
-
-	private Aluno obterAlunoPorMatricula(EntityManager em, String matricula) {
-		Query query = em
-				.createQuery("from Aluno a where a.matricula = :matricula");
-		query.setParameter("matricula", matricula);
-
-		try {
-			return (Aluno) query.getSingleResult();
-		} catch (NoResultException ex) {
-			return null;
-		}
-	}
-
-	private Disciplina obterDisciplina(EntityManager em,
-			String codigoDisciplina, String codCurso, String numeroVersaoCurso) {
-		Query query = em
-				.createQuery("from Disciplina d where d.codigo = :codigoDisciplina "
-						+ "and d.versaoCurso.numero = :numeroVersaoCurso and d.versaoCurso.curso.sigla = :codCurso");
-		query.setParameter("codigoDisciplina", codigoDisciplina);
-		query.setParameter("codCurso", codCurso);
-		query.setParameter("numeroVersaoCurso", numeroVersaoCurso);
-
-		Disciplina disciplina = null;
-		try {
-			disciplina = (Disciplina) query.getSingleResult();
-		} catch (NoResultException e) {
-			System.err.println("Disciplina não encontrada (código - versão): "
-					+ codigoDisciplina + " - " + numeroVersaoCurso);
-		}
-		return disciplina;
-	}
-
 }

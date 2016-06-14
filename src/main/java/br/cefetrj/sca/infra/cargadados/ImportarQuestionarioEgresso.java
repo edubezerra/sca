@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import br.cefetrj.sca.dominio.FormularioAvaliacao;
+import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
@@ -18,7 +18,7 @@ public class ImportarQuestionarioEgresso {
 
 		System.out.println("ImportadorQuestionarioEgresso.main()");
 
-		FormularioAvaliacao formGrad = new FormularioAvaliacao("Egresso",
+		QuestionarioAvaliacaoDocente formGrad = new QuestionarioAvaliacaoDocente("Egresso",
 				"Avaliação do Egresso");
 		Quesito q1 = new Quesito("Atualmente o(a) Sr.(a) está:");
 		q1.adicionarAlternativa(new Alternativa("Trabalhando (vá para 2)"));

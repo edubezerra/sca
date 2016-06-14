@@ -51,16 +51,15 @@ public class ImportadorCursos {
 	public void run() {
 		String planilhaCSTSI = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
 		String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
-		ImportadorCursos.run(planilhaCSTSI);
-		ImportadorCursos.run(planilhaBCC);
+		run(planilhaCSTSI);
+		run(planilhaBCC);
 	}
 
-	public static void run(String arquivoPlanilha) {
+	public void run(String arquivoPlanilha) {
 		System.out.println("ImportadorCursos.run()");
 		try {
-			ImportadorCursos iim = new ImportadorCursos();
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			importarPlanilha(arquivoPlanilha);
+			gravarDadosImportados();
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);

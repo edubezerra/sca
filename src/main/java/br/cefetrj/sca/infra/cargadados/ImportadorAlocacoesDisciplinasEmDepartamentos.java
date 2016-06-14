@@ -6,11 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,20 +49,14 @@ public class ImportadorAlocacoesDisciplinasEmDepartamentos {
 		lista.add("GADM");
 		mapa.put("DEPEA", lista);
 
-		// EntityManager em = ImportadorTudo.entityManager;
-
-		// em.getTransaction().begin();
-
 		List<Turma> turmas = turmaRepositorio
 				.findTurmasAbertasNoPeriodo(PeriodoLetivo.PERIODO_CORRENTE);
-		// findTurmasByPeriodoLetivo(em, PeriodoLetivo.PERIODO_CORRENTE);
 
 		if (turmas != null) {
 			Set<String> chaves = mapa.keySet();
 			for (String siglaDepto : chaves) {
 				Departamento departamento = departamentoRepositorio
 						.findDepartamentoBySigla(siglaDepto);
-				// obterDepartamentoPorSigla(em,siglaDepto);
 				AlocacacaoDisciplinasEmDepartamento alocacao = new AlocacacaoDisciplinasEmDepartamento(
 						departamento);
 				lista = mapa.get(siglaDepto);
@@ -80,41 +69,11 @@ public class ImportadorAlocacoesDisciplinasEmDepartamentos {
 					}
 				}
 				alocacacaoDisciplinasEmDepartamentoRepositorio.save(alocacao);
-				// em.persist(alocacao);
 
 				System.out.println("Foram alocadas "
 						+ alocacao.getDisciplinas().size()
 						+ " disciplina(s) no " + departamento.getNome());
 			}
-		}
-		// em.getTransaction().commit();
-	}
-
-	private List<Turma> findTurmasByPeriodoLetivo(EntityManager em,
-			PeriodoLetivo periodo) {
-		TypedQuery<Turma> query = em
-				.createQuery(
-						"SELECT t from Turma t WHERE t.periodo = :periodo",
-						Turma.class);
-		query.setParameter("periodo", periodo);
-
-		try {
-			return query.getResultList();
-		} catch (NoResultException ex) {
-			return null;
-		}
-	}
-
-	private Departamento obterDepartamentoPorSigla(EntityManager em,
-			String siglaDepartamento) {
-		Query query = em
-				.createQuery("from Departamento a where a.sigla = :siglaDepartamento");
-		query.setParameter("siglaDepartamento", siglaDepartamento);
-
-		try {
-			return (Departamento) query.getSingleResult();
-		} catch (NoResultException ex) {
-			return null;
 		}
 	}
 }

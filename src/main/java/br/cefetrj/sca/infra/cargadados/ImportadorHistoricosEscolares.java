@@ -7,12 +7,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
-
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +18,10 @@ import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 /**
  * @author Eduardo Bezerra

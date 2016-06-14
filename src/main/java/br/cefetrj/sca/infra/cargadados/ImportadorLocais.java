@@ -29,14 +29,14 @@ public class ImportadorLocais {
 
 	}
 
-	public static void main(String[] args) {
+	public void run() {
 		
 		String planilhaMatriculas = "./planilhas/GRADUACAO.SALAS.2014.2.MARACANA.xls";
-		ImportadorLocais.run(planilhaMatriculas);
+		this.run(planilhaMatriculas);
 		
 	}
 
-	public static void run(String arquivoPlanilha) {
+	public void run(String arquivoPlanilha) {
 		
 		System.out.println("ImportadorLocal.run()");
 		

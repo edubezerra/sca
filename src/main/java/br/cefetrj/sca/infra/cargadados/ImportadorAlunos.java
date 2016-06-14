@@ -8,12 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
-
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +15,10 @@ import org.springframework.stereotype.Component;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.AlunoFabrica;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 @Component
 public class ImportadorAlunos {
@@ -53,9 +51,8 @@ public class ImportadorAlunos {
 	public void run(String arquivoPlanilha) {
 		System.out.println("ImportadorDiscentes.run()");
 		try {
-			ImportadorAlunos iim = new ImportadorAlunos();
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
