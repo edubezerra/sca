@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,23 +22,19 @@ import br.cefetrj.sca.dominio.VersaoCurso;
 import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositories.VersaoCursoRepositorio;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 
 @Component
 public class ImportadorDisciplinas {
 
 	@Autowired
 	DisciplinaRepositorio disciplinaRepositorio;
-	
+
 	@Autowired
 	CursoRepositorio cursoRepositorio;
-	
+
 	@Autowired
 	VersaoCursoRepositorio versaoCursoRepositorio;
-	
+
 	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA",
 			"NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA", "CH_TOTAL",
 			"CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO",
@@ -49,16 +50,14 @@ public class ImportadorDisciplinas {
 		try {
 			String arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
 			this.importarPlanilha(arquivoPlanilha);
-			this.gravarDadosImportados();
 
 			cursos.clear();
 			versoesCursos.clear();
 			disciplinas.clear();
-			
+
 			arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
 			this.importarPlanilha(arquivoPlanilha);
-			this.gravarDadosImportados();
-			
+
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -66,7 +65,10 @@ public class ImportadorDisciplinas {
 		System.out.println("Feito!");
 	}
 
-	private void gravarDadosImportados() {
+	private StringBuilder gravarDadosImportados(StringBuilder response) {
+
+		int qtdCursos = 0;
+		int qtdDisciplinas = 0;
 
 		/**
 		 * Realiza a persistência dos objetos Curso.
@@ -78,7 +80,10 @@ public class ImportadorDisciplinas {
 
 			Curso curso = cursos.get(codCurso);
 
-			cursoRepositorio.save(curso);
+			if (cursoRepositorio.findCursoBySigla(codCurso) != null) {
+				cursoRepositorio.save(curso);
+				qtdCursos++;
+			}
 		}
 
 		/**
@@ -86,11 +91,19 @@ public class ImportadorDisciplinas {
 		 */
 		for (Disciplina disciplina : disciplinas) {
 			System.out.println("Gravando disciplina: " + disciplina);
-			disciplinaRepositorio.save(disciplina);
+
+			if (disciplinaRepositorio.findByCodigoEmVersaoCurso(
+					disciplina.getCodigo(), disciplina.getsiglaCurso,
+					numeroVersaoCurso) != null) {
+				disciplinaRepositorio.save(disciplina);
+				qtdDisciplinas++;
+			}
 		}
 
-		System.out.println("Foram importadas " + disciplinas.size()
-				+ " disciplinas.");
+		response.append("Foram importados " + qtdCursos + " cursos.");
+		response.append("Foram importadas " + qtdDisciplinas + " disciplinas.");
+
+		return response;
 	}
 
 	private void importarPlanilha(String inputFile) throws BiffException,
@@ -99,8 +112,10 @@ public class ImportadorDisciplinas {
 		importarPlanilha(inputWorkbook);
 	}
 
-	private void importarPlanilha(File arquivoPlanilha) throws BiffException,
+	public String importarPlanilha(File arquivoPlanilha) throws BiffException,
 			IOException {
+		StringBuilder response = new StringBuilder();
+
 		Workbook w;
 
 		System.err.println("Abrindo planilha " + arquivoPlanilha);
@@ -113,10 +128,15 @@ public class ImportadorDisciplinas {
 
 		importarVersoesCursos(colunasList, sheet);
 		importarDisciplinas(colunasList, sheet);
+
+		response = this.gravarDadosImportados(response);
+
+		return response.toString();
 	}
 
 	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
-		return versaoCursoRepositorio.findByNumeroEmCurso(numeroVersao, siglaCurso);
+		return versaoCursoRepositorio.findByNumeroEmCurso(numeroVersao,
+				siglaCurso);
 	}
 
 	private void importarVersoesCursos(List<String> colunasList, Sheet sheet) {

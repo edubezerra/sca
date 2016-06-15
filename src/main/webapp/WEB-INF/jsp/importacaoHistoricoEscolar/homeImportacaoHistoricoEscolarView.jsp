@@ -85,18 +85,18 @@
 			action="${pageContext.request.contextPath}/importacaoHistoricoEscolar/importacaoHistoricoEscolar"
 			method="post" enctype="multipart/form-data">
 
-			<br />
-			<br />
+			<br /> <br />
 			<div class="col-md-6 col-md-offset-2">
-				<label for="siglaDepartamento">Tipo importação:</label> <select
-					data-title="testando..." class="form-control"
-					name="tipoImportacao" id="tipoImportacao" required>
-					<option value="" label="Escolha o tipo de importação desejado" selected
-						disabled></option>
-					<c:forEach items="${sessionScope.ficha.departamentos}"
+				<label for="tipoImportacao">Tipo importação:</label> 
+				<select
+					data-title="testando..." class="form-control" name="tipoImportacao"
+					id="tipoImportacao" required>
+					<option value="" label="Escolha o tipo de importação desejado"
+						selected disabled></option>
+					<c:forEach items="${descritor.descritorImportadorMap}"
 						var="tipoImportacao">
-						<option value="${tipoImportacao.id}">
-							${tipoImportacao.descritor}</option>
+						<option value="${tipoImportacao.key}">
+							${tipoImportacao.value}</option>
 					</c:forEach>
 				</select>
 			</div>
@@ -108,8 +108,7 @@
 					id="historicoFile" type="file" class="upload" />
 			</div>
 
-			<br />
-			<br />
+			<br /> <br />
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Importar
 				Histórico</button>
 		</form>

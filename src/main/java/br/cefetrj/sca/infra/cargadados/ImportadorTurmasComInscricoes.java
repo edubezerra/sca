@@ -164,7 +164,7 @@ public class ImportadorTurmasComInscricoes {
 								+ listOfFiles[i].getName();
 
 						importarPlanilha(arquivoPlanilha);
-						gravarDadosImportados();
+						// gravarDadosImportados();
 					}
 				} else if (listOfFiles[i].isDirectory()) {
 					System.out
@@ -185,8 +185,9 @@ public class ImportadorTurmasComInscricoes {
 		importarPlanilha(inputWorkbook);
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException,
+	public String importarPlanilha(File inputWorkbook) throws BiffException,
 			IOException {
+		StringBuilder response = new StringBuilder();
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
@@ -269,10 +270,13 @@ public class ImportadorTurmasComInscricoes {
 			}
 
 		}
+
+		response = gravarDadosImportados(response);
+
+		return response.toString();
 	}
 
-	public void gravarDadosImportados() {
-
+	public StringBuilder gravarDadosImportados(StringBuilder response) {
 		/**
 		 * Realiza a persistência de objetos <code>Turma</code> e dos
 		 * respectivos objetos <code>Inscricao</code>.
@@ -283,8 +287,10 @@ public class ImportadorTurmasComInscricoes {
 
 		int qtdTurmas = 0;
 
+		int qtdAlunos = 0;
+
 		for (String chaveTurma : turmasIt) {
-			PeriodoLetivo semestre = mapaTurmasParaPeriodos.get(chaveTurma);
+			PeriodoLetivo periodo = mapaTurmasParaPeriodos.get(chaveTurma);
 			String codigoDisciplina = mapaTurmasDisciplinas.get(chaveTurma);
 			Set<String> matriculas = mapaTurmasAlunos.get(chaveTurma);
 			String numeroVersaoCurso = mapaTurmasVersoesCurso.get(chaveTurma);
@@ -297,10 +303,15 @@ public class ImportadorTurmasComInscricoes {
 
 			if (disciplina != null) {
 				int capacidadeMaxima = 80;
-				Turma turma = new Turma(disciplina, codTurma, capacidadeMaxima,
-						semestre);
 
-				qtdTurmas++;
+				Turma turma = turmaRepositorio
+						.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma,
+								codigoDisciplina, periodo);
+				if (turma == null) {
+					turma = new Turma(disciplina, codTurma, capacidadeMaxima,
+							periodo);
+					qtdTurmas++;
+				}
 
 				if (matriculas != null) {
 					for (String matricula : matriculas) {
@@ -308,7 +319,11 @@ public class ImportadorTurmasComInscricoes {
 								.findAlunoByMatricula(matricula);
 						if (aluno != null) {
 							try {
-								turma.inscreverAluno(aluno);
+								if (!turma.isAlunoInscrito(aluno)) {
+									turma.inscreverAluno(aluno);
+									System.out.println(aluno);
+									qtdInscricoes++;
+								}
 							} catch (IllegalStateException e) {
 								String erro = "Código turma/nome disciplina -->"
 										+ turma.getCodigo()
@@ -329,6 +344,8 @@ public class ImportadorTurmasComInscricoes {
 
 							alunoRepositorio.save(aluno);
 
+							qtdAlunos++;
+
 							System.err.println("Aluno inserido com sucesso: "
 									+ aluno.toString());
 						}
@@ -336,15 +353,16 @@ public class ImportadorTurmasComInscricoes {
 				}
 
 				turmaRepositorio.save(turma);
-				qtdInscricoes += turma.getQtdInscritos();
 			}
 		}
 
-		System.out.println("Foram importadas " + qtdTurmas + " turmas.");
+		response.append("Importação de turmas e matrículas finalizada.;");
+		response.append("Quantidade de turmas importadas: " + qtdTurmas + ";");
+		response.append("Quantidade de inscrições importadas: " + qtdInscricoes
+				+ ";");
+		response.append("Quantidade de alunos importados: " + qtdAlunos + ";");
 
-		System.out
-				.println("Foram importadas " + qtdInscricoes + " inscrições.");
-
+		return response;
 	}
 
 	public Aluno criarAluno(String nomeAluno, String matriculaAluno,

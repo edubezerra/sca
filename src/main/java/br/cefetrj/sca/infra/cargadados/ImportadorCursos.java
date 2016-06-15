@@ -59,7 +59,6 @@ public class ImportadorCursos {
 		System.out.println("ImportadorCursos.run()");
 		try {
 			importarPlanilha(arquivoPlanilha);
-			gravarDadosImportados();
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -67,11 +66,7 @@ public class ImportadorCursos {
 		System.out.println("Feito!");
 	}
 
-	public void gravarDadosImportados() {
-
-		// EntityManager em = ImportadorTudo.entityManager;
-
-		// em.getTransaction().begin();
+	public void gravarCursosMaisVersoes() {
 
 		/**
 		 * Realiza a persistência dos objetos Curso.
@@ -92,8 +87,6 @@ public class ImportadorCursos {
 			versaoCursoRepositorio.save(versoesCursos.get(numeroMaisSigla));
 		}
 
-//		em.getTransaction().commit();
-
 		System.out.println("Foram importados " + cursos.keySet().size()
 				+ " cursos.");
 		System.out.println("Foram importados " + versoesCursos.keySet().size()
@@ -103,10 +96,11 @@ public class ImportadorCursos {
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
 		File inputWorkbook = new File(inputFile);
-		importarPlanilha(inputWorkbook);
+		importarCursosMaisVersoes(inputWorkbook);
+		gravarCursosMaisVersoes();
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException,
+	public void importarCursosMaisVersoes(File inputWorkbook) throws BiffException,
 			IOException {
 		Workbook w;
 
