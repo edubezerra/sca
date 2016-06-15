@@ -15,11 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 import br.cefetrj.sca.service.ImportacaoDadosService;
 
 @Controller
-@RequestMapping("/importacaoHistoricoEscolar")
+@RequestMapping("/importacaoDados")
 public class ImportacaoDadosController {
 
 	@Autowired
 	private ImportacaoDadosService service;
+
+	DescritorImportacaoDados descritor = new DescritorImportacaoDados();
 
 	protected Logger logger = Logger.getLogger(ImportacaoDadosController.class
 			.getName());
@@ -30,13 +32,12 @@ public class ImportacaoDadosController {
 		return "/homeView";
 	}
 
-	@RequestMapping(value = "/homeImportacaoHistoricoEscolar", method = RequestMethod.GET)
-	public String homeImportacaoHistoricoEscolar(HttpServletRequest request,
+	@RequestMapping(value = "/homeImportacaoDados", method = RequestMethod.GET)
+	public String homeImportacaoDados(HttpServletRequest request,
 			Model model) {
 		try {
-			DescritorImportador descritor = new DescritorImportador();
 			model.addAttribute("descritor", descritor);
-			return "/importacaoHistoricoEscolar/homeImportacaoHistoricoEscolarView";
+			return "/importacaoDados/homeImportacaoDadosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "/homeView";
@@ -44,14 +45,15 @@ public class ImportacaoDadosController {
 
 	}
 
-	@RequestMapping(value = "/importacaoHistoricoEscolar", method = RequestMethod.POST)
-	public String importacaoHistoricoEscolar(HttpServletRequest request,
+	@RequestMapping(value = "/importacaoDados", method = RequestMethod.POST)
+	public String importacaoDados(HttpServletRequest request,
 			Model model, @RequestParam("historicoFile") MultipartFile file,
 			Long tipoImportacao) {
 		try {
 			String response = service.importar(file, tipoImportacao);
 			model.addAttribute("response", response);
-			return "/importacaoHistoricoEscolar/homeImportacaoHistoricoEscolarView";
+			model.addAttribute("descritor", descritor);
+			return "/importacaoDados/homeImportacaoDadosView";
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			model.addAttribute("error", exc.getMessage());

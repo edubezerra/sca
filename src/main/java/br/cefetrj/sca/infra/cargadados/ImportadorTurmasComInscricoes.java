@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
@@ -176,13 +177,13 @@ public class ImportadorTurmasComInscricoes {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Feito!");
 	}
 
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
 		File inputWorkbook = new File(inputFile);
-		importarPlanilha(inputWorkbook);
+		String mensagens = importarPlanilha(inputWorkbook);
+		System.out.println(mensagens);
 	}
 
 	public String importarPlanilha(File inputWorkbook) throws BiffException,
@@ -224,11 +225,11 @@ public class ImportadorTurmasComInscricoes {
 					semestre_ano, semestre_periodo);
 
 			/**
-			 * O código não é único dentro de um período letivo. Por exemplo,
-			 * pode haver várias turmas com código igual a "EXTRA" mas de
-			 * disciplinas diferentes. Por conta disso, tive que montar uma
-			 * chave para identificar unicamente uma turma dentro de um período
-			 * letivo, conforme atribuição a seguir.
+			 * O código associado a uma turma não é único dentro de um período
+			 * letivo. Por exemplo, pode haver várias turmas com código igual a
+			 * "EXTRA" mas de disciplinas diferentes. Por conta disso, tive que
+			 * montar uma chave para identificar unicamente uma turma dentro de
+			 * um período letivo, conforme atribuição a seguir.
 			 */
 			String chaveTurma = turma_codigo + " - " + disciplina_codigo;
 
@@ -302,7 +303,7 @@ public class ImportadorTurmasComInscricoes {
 							numeroVersaoCurso);
 
 			if (disciplina != null) {
-				int capacidadeMaxima = 80;
+				int capacidadeMaxima = 100;
 
 				Turma turma = turmaRepositorio
 						.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma,
@@ -317,25 +318,11 @@ public class ImportadorTurmasComInscricoes {
 					for (String matricula : matriculas) {
 						Aluno aluno = alunoRepositorio
 								.findAlunoByMatricula(matricula);
-						if (aluno != null) {
-							try {
-								if (!turma.isAlunoInscrito(aluno)) {
-									turma.inscreverAluno(aluno);
-									System.out.println(aluno);
-									qtdInscricoes++;
-								}
-							} catch (IllegalStateException e) {
-								String erro = "Código turma/nome disciplina -->"
-										+ turma.getCodigo()
-										+ "/"
-										+ turma.getNomeDisciplina();
-								throw new IllegalStateException(erro, e);
-							}
-						} else {
-							System.err
-									.println("Aluno não encontrado (matrícula): "
-											+ matricula
-											+ ". Inserindo aluno...");
+						if (aluno == null) {
+							// System.err
+							// .println("Aluno não encontrado (matrícula): "
+							// + matricula
+							// + ". Inserindo aluno...");
 							String aluno_cpf = mapaAlunosCPFs.get(matricula);
 							String aluno_nome = mapaAlunosNomes.get(matricula);
 
@@ -346,8 +333,21 @@ public class ImportadorTurmasComInscricoes {
 
 							qtdAlunos++;
 
-							System.err.println("Aluno inserido com sucesso: "
-									+ aluno.toString());
+							// System.err.println("Aluno inserido com sucesso: "
+							// + aluno.toString());
+						}
+						try {
+							if (!turma.isAlunoInscrito(aluno)) {
+								turma.inscreverAluno(aluno);
+								qtdInscricoes++;
+							}
+						} catch (IllegalStateException e) {
+							response.append("Importação não pode ser realizada!; ");
+							response.append("Código turma/nome disciplina -->"
+									+ turma.getCodigo() + "/"
+									+ turma.getNomeDisciplina() + ";");
+							response.append("Erro: " + e.getMessage());
+							return response;
 						}
 					}
 				}

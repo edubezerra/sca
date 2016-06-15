@@ -13,11 +13,11 @@ public class ImportadorTudo {
 
 	ImportadorQuestionarioAvaliacaoDocente importadorQuestionarioAvaliacaoDocente = new ImportadorQuestionarioAvaliacaoDocente();
 
-	@Autowired
-	ImportadorCursos importadorCursos;
+//	@Autowired
+//	ImportadorCursos importadorCursos;
 
 	@Autowired
-	ImportadorDisciplinas importadorDisciplinas;
+	ImportadorGradesCurriculares importadorGradesCurriculares;
 
 	@Autowired
 	ImportadorPreReqs importadorPreReqs;
@@ -60,25 +60,25 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
-			importadorQuestionarioAvaliacaoDocente.run();
+//			importadorQuestionarioAvaliacaoDocente.run();
 
-			importadorCursos.run();
-			importadorDisciplinas.run();
-			importadorPreReqs.run();
-			importadorAtividadesComp.run();
-			importadorAlunos.run();
-			importadorProfessores.run();
-			importadorDepartamentos.run();
-
-			importadorHistoricoEscolar.run();
-
+//			importadorCursos.run();
+			importadorGradesCurriculares.run();
+//			importadorPreReqs.run();
+//			importadorAtividadesComp.run();
+//			importadorAlunos.run();
+//			importadorProfessores.run();
+//			importadorDepartamentos.run();
+//
+//			importadorHistoricoEscolar.run();
+//
 			importadorTurmasComInscricoes.run();
-			importadorAlocacoesProfessoresEmTurmas.run();
-			importadorHabilitacoesParaProfessor.run();
-
-			importadorAlocacoesProfessoresEmDepartamentos.run();
-
-			importadorAlocacoesDisciplinasEmDepartamentos.run();
+//			importadorAlocacoesProfessoresEmTurmas.run();
+//			importadorHabilitacoesParaProfessor.run();
+//
+//			importadorAlocacoesProfessoresEmDepartamentos.run();
+//
+//			importadorAlocacoesDisciplinasEmDepartamentos.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

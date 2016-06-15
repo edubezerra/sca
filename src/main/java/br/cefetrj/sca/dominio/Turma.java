@@ -169,15 +169,6 @@ public class Turma {
 		return Collections.unmodifiableSet(this.inscricoes);
 	}
 
-	private Inscricao getInscricao(Aluno aluno) {
-		for (Inscricao inscricao : inscricoes) {
-			if (inscricao.getAluno() == aluno) {
-				return inscricao;
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Inscreve o aluno passado como parâmetro nesta turma.
 	 * 
@@ -244,6 +235,15 @@ public class Turma {
 		}
 
 		return getInscricao(aluno) != null;
+	}
+
+	private Inscricao getInscricao(Aluno aluno) {
+		for (Inscricao inscricao : inscricoes) {
+			if (inscricao.getAluno() == aluno) {
+				return inscricao;
+			}
+		}
+		return null;
 	}
 
 	public int getQtdInscritos() {

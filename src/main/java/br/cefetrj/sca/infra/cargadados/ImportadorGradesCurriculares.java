@@ -24,7 +24,7 @@ import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositories.VersaoCursoRepositorio;
 
 @Component
-public class ImportadorDisciplinas {
+public class ImportadorGradesCurriculares {
 
 	@Autowired
 	DisciplinaRepositorio disciplinaRepositorio;
@@ -46,7 +46,6 @@ public class ImportadorDisciplinas {
 	private List<Disciplina> disciplinas = new ArrayList<Disciplina>();
 
 	public void run() {
-		System.out.println("ImportadorGradesCurriculares.run()");
 		try {
 			String arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
 			this.importarPlanilha(arquivoPlanilha);
@@ -62,54 +61,13 @@ public class ImportadorDisciplinas {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Feito!");
-	}
-
-	private StringBuilder gravarDadosImportados(StringBuilder response) {
-
-		int qtdCursos = 0;
-		int qtdDisciplinas = 0;
-
-		/**
-		 * Realiza a persistência dos objetos Curso.
-		 */
-		Set<String> cursosIt = cursos.keySet();
-		for (String codCurso : cursosIt) {
-
-			System.out.println("Gravando curso " + codCurso);
-
-			Curso curso = cursos.get(codCurso);
-
-			if (cursoRepositorio.findCursoBySigla(codCurso) != null) {
-				cursoRepositorio.save(curso);
-				qtdCursos++;
-			}
-		}
-
-		/**
-		 * Realiza a persistência dos objetos Disciplina.
-		 */
-		for (Disciplina disciplina : disciplinas) {
-			System.out.println("Gravando disciplina: " + disciplina);
-
-			if (disciplinaRepositorio.findByCodigoEmVersaoCurso(
-					disciplina.getCodigo(), disciplina.getsiglaCurso,
-					numeroVersaoCurso) != null) {
-				disciplinaRepositorio.save(disciplina);
-				qtdDisciplinas++;
-			}
-		}
-
-		response.append("Foram importados " + qtdCursos + " cursos.");
-		response.append("Foram importadas " + qtdDisciplinas + " disciplinas.");
-
-		return response;
 	}
 
 	private void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
 		File inputWorkbook = new File(inputFile);
-		importarPlanilha(inputWorkbook);
+		String mensagens = importarPlanilha(inputWorkbook);
+		System.out.println(mensagens);
 	}
 
 	public String importarPlanilha(File arquivoPlanilha) throws BiffException,
@@ -118,7 +76,9 @@ public class ImportadorDisciplinas {
 
 		Workbook w;
 
-		System.err.println("Abrindo planilha " + arquivoPlanilha);
+		System.err
+				.println("Iniciando importação de grade curricular (curso, versões e disciplinas): "
+						+ arquivoPlanilha);
 
 		List<String> colunasList = Arrays.asList(colunas);
 		WorkbookSettings ws = new WorkbookSettings();
@@ -126,40 +86,37 @@ public class ImportadorDisciplinas {
 		w = Workbook.getWorkbook(arquivoPlanilha, ws);
 		Sheet sheet = w.getSheet(0);
 
-		importarVersoesCursos(colunasList, sheet);
-		importarDisciplinas(colunasList, sheet);
+		this.importarCursosComSuasVersoes(colunasList, sheet);
+		this.importarDisciplinas(colunasList, sheet);
 
 		response = this.gravarDadosImportados(response);
 
 		return response.toString();
 	}
 
-	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
-		return versaoCursoRepositorio.findByNumeroEmCurso(numeroVersao,
-				siglaCurso);
-	}
-
-	private void importarVersoesCursos(List<String> colunasList, Sheet sheet) {
-		System.out
-				.println("Iniciando importação de dados relativos a versões de cursos...");
+	private void importarCursosComSuasVersoes(List<String> colunasList, Sheet sheet) {
 		for (int i = 1; i < sheet.getRows(); i++) {
 			String codCurso = sheet
 					.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"),
 					i).getContents();
-			if (versoesCursos.get(codCurso + numVersao) == null) {
-				VersaoCurso versao = getVersaoCurso(codCurso, numVersao);
-				versoesCursos.put(codCurso + numVersao, versao);
+			String nomeCurso = sheet.getCell(
+					colunasList.indexOf("NOME_UNIDADE"), i).getContents();
+
+			Curso curso = cursos.get(codCurso);
+			if (curso == null) {
+				curso = new Curso(codCurso, nomeCurso);
+				cursos.put(codCurso, curso);
 			}
 
+			if (versoesCursos.get(codCurso + numVersao) == null) {
+				VersaoCurso versao = new VersaoCurso(numVersao, curso);
+				versoesCursos.put(codCurso + numVersao, versao);
+			}
 		}
-		System.out.println("Foram encontradas " + versoesCursos.size()
-				+ " versões de cursos.");
 	}
 
 	private void importarDisciplinas(List<String> colunasList, Sheet sheet) {
-		System.out
-				.println("Iniciando importação de dados relativos a disciplinas...");
 		for (int i = 1; i < sheet.getRows(); i++) {
 			String codigoDisciplina = sheet.getCell(
 					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
@@ -194,5 +151,62 @@ public class ImportadorDisciplinas {
 						+ codigoDisciplina);
 			}
 		}
+	}
+
+	private StringBuilder gravarDadosImportados(StringBuilder response) {
+
+		int qtdCursos = 0;
+		int qtdDisciplinas = 0;
+		int qtdVersoesCursos = 0;
+
+		/**
+		 * Realiza a persistência dos objetos <code>Curso</code>.
+		 */
+		Set<String> cursosIt = cursos.keySet();
+		for (String codCurso : cursosIt) {
+
+			Curso curso = cursos.get(codCurso);
+
+			if (cursoRepositorio.findCursoBySigla(codCurso) == null) {
+				System.out.println("Gravando curso " + codCurso);
+				cursoRepositorio.save(curso);
+				qtdCursos++;
+			}
+		}
+
+		/**
+		 * Realiza a persistência dos objetos <code>VersaoCurso</code>.
+		 */
+		Set<String> versoesIt = versoesCursos.keySet();
+		for (String numeroMaisSigla : versoesIt) {
+			VersaoCurso vc = versoesCursos.get(numeroMaisSigla);
+			if (versaoCursoRepositorio.findByNumeroEmCurso(vc.getNumero(), vc
+					.getCurso().getSigla()) == null) {
+				System.out.println("Gravando "
+						+ versoesCursos.get(numeroMaisSigla));
+				versaoCursoRepositorio.save(vc);
+				qtdVersoesCursos++;
+			}
+		}
+
+		/**
+		 * Realiza a persistência dos objetos <code>Disciplina</code>.
+		 */
+		for (Disciplina disciplina : disciplinas) {
+			if (disciplinaRepositorio.findByCodigoEmVersaoCurso(disciplina
+					.getCodigo(), disciplina.getVersaoCurso().getNumero()) == null) {
+				System.out.println("Gravando disciplina: " + disciplina);
+
+				disciplinaRepositorio.save(disciplina);
+				qtdDisciplinas++;
+			}
+		}
+
+		response.append("Foram importados " + qtdCursos + " cursos.; ");
+		response.append("Foram importadas " + qtdVersoesCursos
+				+ " versões de cursos.; ");
+		response.append("Foram importadas " + qtdDisciplinas + " disciplinas. ;");
+
+		return response;
 	}
 }

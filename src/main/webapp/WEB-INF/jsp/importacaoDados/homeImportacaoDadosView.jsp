@@ -14,7 +14,7 @@
 <script src="/sca/resources/jquery/jquery-1.10.2.js"></script>
 <script src="/sca/resources/jquery/jquery.validate.min.js"></script>
 <script src="/sca/resources/jquery/jquery.additional-methods.js"></script>
-<title>Importação do Histórico Escolar</title>
+<title>Importação de Dados</title>
 </head>
 
 <script type="text/javascript">
@@ -47,7 +47,7 @@
 <body>
 
 	<div class="content">
-		<h1 class="text-center">Importação do Histórico Escolar</h1>
+		<h1 class="text-center">Importação de Dados </h1>
 		<hr />
 		<br />
 
@@ -82,7 +82,7 @@
 		</div>
 
 		<form id="formHistorico"
-			action="${pageContext.request.contextPath}/importacaoHistoricoEscolar/importacaoHistoricoEscolar"
+			action="${pageContext.request.contextPath}/importacaoDados/importacaoDados"
 			method="post" enctype="multipart/form-data">
 
 			<br /> <br />

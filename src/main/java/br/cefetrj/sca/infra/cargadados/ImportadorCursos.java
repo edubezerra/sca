@@ -13,14 +13,13 @@ import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Curso;
 import br.cefetrj.sca.dominio.VersaoCurso;
 import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
 import br.cefetrj.sca.dominio.repositories.VersaoCursoRepositorio;
 
-@Component
+@Deprecated
 public class ImportadorCursos {
 
 	@Autowired
@@ -49,24 +48,25 @@ public class ImportadorCursos {
 	}
 
 	public void run() {
-		String planilhaCSTSI = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
-		String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
-		run(planilhaCSTSI);
-		run(planilhaBCC);
-	}
-
-	public void run(String arquivoPlanilha) {
 		System.out.println("ImportadorCursos.run()");
 		try {
-			importarPlanilha(arquivoPlanilha);
+			String planilhaCSTSI = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
+			String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
+
+			importarPlanilha(planilhaCSTSI);
+
+			cursos.clear();
+			versoesCursos.clear();
+
+			importarPlanilha(planilhaBCC);
+
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Feito!");
 	}
 
-	public void gravarCursosMaisVersoes() {
+	private void gravarCursosMaisVersoes() {
 
 		/**
 		 * Realiza a persistência dos objetos Curso.
@@ -96,16 +96,17 @@ public class ImportadorCursos {
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
 		File inputWorkbook = new File(inputFile);
+		System.out.println("Iniciando importação de cursos e suas versões...");
 		importarCursosMaisVersoes(inputWorkbook);
 		gravarCursosMaisVersoes();
+		System.out.println("Cursos e versões importados com sucesso!");
 	}
 
-	public void importarCursosMaisVersoes(File inputWorkbook) throws BiffException,
-			IOException {
+	private void importarCursosMaisVersoes(File inputWorkbook)
+			throws BiffException, IOException {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
-		System.out.println("Iniciando importação de cursos...");
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
