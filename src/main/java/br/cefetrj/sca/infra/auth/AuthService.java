@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class AuthService {
 
 	@Autowired
-	private IAuthDAO authDao;
+	private IAutenticador authDao;
 
 	public String getRemoteLoginResponse(String username,
 			String password) {

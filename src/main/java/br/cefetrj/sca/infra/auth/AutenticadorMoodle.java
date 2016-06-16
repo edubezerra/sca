@@ -13,17 +13,21 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthDAOMoodle implements IAuthDAO {
+public class AutenticadorMoodle implements IAutenticador {
 
-	protected Logger logger = Logger.getLogger(AuthDAOMoodle.class.getName());
+	protected Logger logger = Logger.getLogger(AutenticadorMoodle.class.getName());
 
-	// moodle.org valid username and pass is teste_login, teste_login
+	/**
+	 * moodle.org valid username and pass is teste_login, teste_login
+	 */
 	private String serviceURL = "http://eic.cefet-rj.br/moodle/login/auth.php";
 
 	@Override
 	public String getRemoteLoginResponse(String username, String password) {
 
-		// RemoteLoginResponse response;
+		/**
+		 * RemoteLoginResponse response;
+		 */
 		String responseMessage = null;
 
 		try {
