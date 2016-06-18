@@ -36,19 +36,14 @@ public class ImportadorAulas {
 
 	}
 
-	public static void main(String[] args) {
-		ImportadorAulas.run();
-	}
-
-	public static void run() {
+	public void run() {
 
 		System.out.println("ImportadorAula.run()");
 
 		try {
 			String planilhaAulas = "./planilhas/GRADUACAO.SALAS.2014.2.MARACANA.xls";
-			ImportadorAulas impAulas = new ImportadorAulas();
-			impAulas.importarPlanilha(planilhaAulas);
-			impAulas.gravarDadosImportados();
+			this.importarPlanilha(planilhaAulas);
+			this.gravarDadosImportados();
 
 		} catch (BiffException | IOException e) {
 

@@ -8,20 +8,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.VersaoCurso;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
-import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.PeriodoLetivo;
-import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
-import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.VersaoCurso;
 
 /**
  * Esse importador faz a carga de objetos <code>Turma</code> e de seus
@@ -34,9 +37,20 @@ import br.cefetrj.sca.dominio.VersaoCurso;
  * @author Eduardo Bezerra
  *
  */
+@Component
 public class ImportadorTurmasComInscricoes {
 
-	EntityManager em = ImportadorTudo.entityManager;
+	@Autowired
+	AlunoRepositorio alunoRepositorio;
+
+	@Autowired
+	DisciplinaRepositorio disciplinaRepositorio;
+
+	@Autowired
+	private CursoRepositorio cursoRepositorio;
+
+	@Autowired
+	private TurmaRepositorio turmaRepositorio;
 
 	private final String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
 			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
@@ -151,7 +165,7 @@ public class ImportadorTurmasComInscricoes {
 								+ listOfFiles[i].getName();
 
 						importarPlanilha(arquivoPlanilha);
-						gravarDadosImportados();
+						// gravarDadosImportados();
 					}
 				} else if (listOfFiles[i].isDirectory()) {
 					System.out
@@ -163,17 +177,18 @@ public class ImportadorTurmasComInscricoes {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Feito!");
 	}
 
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
 		File inputWorkbook = new File(inputFile);
-		importarPlanilha(inputWorkbook);
+		String mensagens = importarPlanilha(inputWorkbook);
+		System.out.println(mensagens);
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException,
+	public String importarPlanilha(File inputWorkbook) throws BiffException,
 			IOException {
+		StringBuilder response = new StringBuilder();
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
@@ -210,11 +225,11 @@ public class ImportadorTurmasComInscricoes {
 					semestre_ano, semestre_periodo);
 
 			/**
-			 * O código não é único dentro de um período letivo. Por exemplo,
-			 * pode haver várias turmas com código igual a "EXTRA" mas de
-			 * disciplinas diferentes. Por conta disso, tive que montar uma
-			 * chave para identificar unicamente uma turma dentro de um período
-			 * letivo, conforme atribuição a seguir.
+			 * O código associado a uma turma não é único dentro de um período
+			 * letivo. Por exemplo, pode haver várias turmas com código igual a
+			 * "EXTRA" mas de disciplinas diferentes. Por conta disso, tive que
+			 * montar uma chave para identificar unicamente uma turma dentro de
+			 * um período letivo, conforme atribuição a seguir.
 			 */
 			String chaveTurma = turma_codigo + " - " + disciplina_codigo;
 
@@ -242,7 +257,10 @@ public class ImportadorTurmasComInscricoes {
 
 			String matricula_aluno = sheet.getCell(
 					colunasList.indexOf("MATR_ALUNO"), i).getContents();
-			if (obterAlunoPorMatricula(em, matricula_aluno) == null) {
+
+			Aluno aluno = alunoRepositorio
+					.findAlunoByMatricula(matricula_aluno);
+			if (aluno == null) {
 				String nome_aluno = sheet.getCell(
 						colunasList.indexOf("NOME_PESSOA"), i).getContents();
 				mapaAlunosNomes.put(matricula_aluno, nome_aluno);
@@ -253,12 +271,13 @@ public class ImportadorTurmasComInscricoes {
 			}
 
 		}
+
+		response = gravarDadosImportados(response);
+
+		return response.toString();
 	}
 
-	public void gravarDadosImportados() {
-
-		em.getTransaction().begin();
-
+	public StringBuilder gravarDadosImportados(StringBuilder response) {
 		/**
 		 * Realiza a persistência de objetos <code>Turma</code> e dos
 		 * respectivos objetos <code>Inscricao</code>.
@@ -269,78 +288,88 @@ public class ImportadorTurmasComInscricoes {
 
 		int qtdTurmas = 0;
 
+		int qtdAlunos = 0;
+
 		for (String chaveTurma : turmasIt) {
-			PeriodoLetivo semestre = mapaTurmasParaPeriodos.get(chaveTurma);
+			PeriodoLetivo periodo = mapaTurmasParaPeriodos.get(chaveTurma);
 			String codigoDisciplina = mapaTurmasDisciplinas.get(chaveTurma);
 			Set<String> matriculas = mapaTurmasAlunos.get(chaveTurma);
 			String numeroVersaoCurso = mapaTurmasVersoesCurso.get(chaveTurma);
 			String codCurso = mapaTurmasCursos.get(chaveTurma);
 			String codTurma = mapaTurmasCodigos.get(chaveTurma);
 
-			Disciplina disciplina = obterDisciplina(em, codigoDisciplina,
-					codCurso, numeroVersaoCurso);
+			Disciplina disciplina = disciplinaRepositorio
+					.findByCodigoEmVersaoCurso(codigoDisciplina, codCurso,
+							numeroVersaoCurso);
 
 			if (disciplina != null) {
-				int capacidadeMaxima = 80;
-				Turma turma = new Turma(disciplina, codTurma, capacidadeMaxima,
-						semestre);
+				int capacidadeMaxima = 100;
 
-				qtdTurmas++;
+				Turma turma = turmaRepositorio
+						.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma,
+								codigoDisciplina, periodo);
+				if (turma == null) {
+					turma = new Turma(disciplina, codTurma, capacidadeMaxima,
+							periodo);
+					qtdTurmas++;
+				}
 
 				if (matriculas != null) {
 					for (String matricula : matriculas) {
-						Aluno aluno = obterAlunoPorMatricula(em, matricula);
-						if (aluno != null) {
-							try {
-								turma.inscreverAluno(aluno);
-							} catch (IllegalStateException e) {
-								String erro = "Código turma/nome disciplina -->"
-										+ turma.getCodigo()
-										+ "/"
-										+ turma.getNomeDisciplina();
-								throw new IllegalStateException(erro, e);
-							}
-						} else {
-							System.err
-									.println("Aluno não encontrado (matrícula): "
-											+ matricula
-											+ ". Inserindo aluno...");
+						Aluno aluno = alunoRepositorio
+								.findAlunoByMatricula(matricula);
+						if (aluno == null) {
+							// System.err
+							// .println("Aluno não encontrado (matrícula): "
+							// + matricula
+							// + ". Inserindo aluno...");
 							String aluno_cpf = mapaAlunosCPFs.get(matricula);
 							String aluno_nome = mapaAlunosNomes.get(matricula);
 
 							aluno = criarAluno(aluno_nome, matricula,
-									aluno_cpf, codCurso, numeroVersaoCurso, em);
+									aluno_cpf, codCurso, numeroVersaoCurso);
 
-							em.persist(aluno);
-							System.err.println("Aluno inserido com sucesso: "
-									+ aluno.toString());
+							alunoRepositorio.save(aluno);
+
+							qtdAlunos++;
+
+							// System.err.println("Aluno inserido com sucesso: "
+							// + aluno.toString());
+						}
+						try {
+							if (!turma.isAlunoInscrito(aluno)) {
+								turma.inscreverAluno(aluno);
+								qtdInscricoes++;
+							}
+						} catch (IllegalStateException e) {
+							response.append("Importação não pode ser realizada!; ");
+							response.append("Código turma/nome disciplina -->"
+									+ turma.getCodigo() + "/"
+									+ turma.getNomeDisciplina() + ";");
+							response.append("Erro: " + e.getMessage());
+							return response;
 						}
 					}
 				}
 
-				em.persist(turma);
-				qtdInscricoes += turma.getQtdInscritos();
+				turmaRepositorio.save(turma);
 			}
 		}
 
-		em.getTransaction().commit();
+		response.append("Importação de turmas e matrículas finalizada.;");
+		response.append("Quantidade de turmas importadas: " + qtdTurmas + ";");
+		response.append("Quantidade de inscrições importadas: " + qtdInscricoes
+				+ ";");
+		response.append("Quantidade de alunos importados: " + qtdAlunos + ";");
 
-		System.out.println("Foram importadas " + qtdTurmas + " turmas.");
-
-		System.out
-				.println("Foram importadas " + qtdInscricoes + " inscrições.");
-
+		return response;
 	}
 
 	public Aluno criarAluno(String nomeAluno, String matriculaAluno,
-			String cpfAluno, String siglaCurso, String numeroVersaoCurso,
-			EntityManager em) {
+			String cpfAluno, String siglaCurso, String numeroVersaoCurso) {
+		VersaoCurso versaoCurso = cursoRepositorio.getVersaoCurso(siglaCurso,
+				numeroVersaoCurso);
 
-		String str = "FROM VersaoCurso v WHERE v.curso.sigla = ?1 and v.numero = ?2";
-		Query q = em.createQuery(str);
-		q.setParameter(1, siglaCurso);
-		q.setParameter(2, numeroVersaoCurso);
-		VersaoCurso versaoCurso = (VersaoCurso) q.getSingleResult();
 		if (versaoCurso == null) {
 			throw new IllegalArgumentException(
 					"Versão do curso não encontrada. Sigla: " + siglaCurso
@@ -350,36 +379,4 @@ public class ImportadorTurmasComInscricoes {
 				versaoCurso);
 		return aluno;
 	}
-
-	private Aluno obterAlunoPorMatricula(EntityManager em, String matricula) {
-		Query query = em
-				.createQuery("from Aluno a where a.matricula = :matricula");
-		query.setParameter("matricula", matricula);
-
-		try {
-			return (Aluno) query.getSingleResult();
-		} catch (NoResultException ex) {
-			return null;
-		}
-	}
-
-	private Disciplina obterDisciplina(EntityManager em,
-			String codigoDisciplina, String codCurso, String numeroVersaoCurso) {
-		Query query = em
-				.createQuery("from Disciplina d where d.codigo = :codigoDisciplina "
-						+ "and d.versaoCurso.numero = :numeroVersaoCurso and d.versaoCurso.curso.sigla = :codCurso");
-		query.setParameter("codigoDisciplina", codigoDisciplina);
-		query.setParameter("codCurso", codCurso);
-		query.setParameter("numeroVersaoCurso", numeroVersaoCurso);
-
-		Disciplina disciplina = null;
-		try {
-			disciplina = (Disciplina) query.getSingleResult();
-		} catch (NoResultException e) {
-			System.err.println("Disciplina não encontrada (código - versão): "
-					+ codigoDisciplina + " - " + numeroVersaoCurso);
-		}
-		return disciplina;
-	}
-
 }

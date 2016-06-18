@@ -123,8 +123,7 @@ public class Turma {
 	 * @param periodo
 	 *            período letivo em que a turma é ofertada
 	 */
-	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas,
-			PeriodoLetivo periodo) {
+	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas, PeriodoLetivo periodo) {
 
 		this(disciplina, codigo);
 
@@ -132,8 +131,7 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas indefinido!");
 		}
 		if (numeroVagas <= 0) {
-			throw new IllegalArgumentException(
-					"Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
 		}
 		this.capacidadeMaxima = numeroVagas;
 
@@ -171,20 +169,6 @@ public class Turma {
 		return Collections.unmodifiableSet(this.inscricoes);
 	}
 
-	public void lancarAvaliacao(Aluno aluno, NotaFinal avaliacao) {
-		Inscricao inscricao = getInscricao(aluno);
-		inscricao.registrarAvaliacao(avaliacao);
-	}
-
-	private Inscricao getInscricao(Aluno aluno) {
-		for (Inscricao inscricao : inscricoes) {
-			if (inscricao.getAluno() == aluno) {
-				return inscricao;
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Inscreve o aluno passado como parâmetro nesta turma.
 	 * 
@@ -197,15 +181,12 @@ public class Turma {
 	public void inscreverAluno(Aluno aluno) {
 		if (inscricoes.size() + 1 > capacidadeMaxima) {
 			throw new IllegalStateException(
-					"Inscrição não realizada. Limite de vagas já alcançado ("
-							+ capacidadeMaxima + ")");
+					"Inscrição não realizada. Limite de vagas já alcançado (" + capacidadeMaxima + ")");
 		} else {
 			Inscricao inscricao = new Inscricao(aluno);
 			for (Inscricao umaInscricao : inscricoes) {
-				if (umaInscricao.getAluno().getMatricula()
-						.equals(aluno.getMatricula())) {
-					throw new IllegalArgumentException(
-							"Aluno já inscrito na turma.");
+				if (umaInscricao.getAluno().getMatricula().equals(aluno.getMatricula())) {
+					throw new IllegalArgumentException("Aluno já inscrito na turma.");
 				}
 			}
 			this.inscricoes.add(inscricao);
@@ -228,12 +209,10 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas é obrigatório.");
 		}
 		if (capacidadeMaxima <= 0) {
-			throw new IllegalArgumentException(
-					"Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
 		}
 		if (capacidadeMaxima < inscricoes.size()) {
-			throw new IllegalArgumentException(
-					"Há mais inscritos do que a capacidade máxima fornecida.");
+			throw new IllegalArgumentException("Há mais inscritos do que a capacidade máxima fornecida.");
 		}
 		this.capacidadeMaxima = capacidadeMaxima;
 	}
@@ -258,6 +237,15 @@ public class Turma {
 		return getInscricao(aluno) != null;
 	}
 
+	private Inscricao getInscricao(Aluno aluno) {
+		for (Inscricao inscricao : inscricoes) {
+			if (inscricao.getAluno() == aluno) {
+				return inscricao;
+			}
+		}
+		return null;
+	}
+
 	public int getQtdInscritos() {
 		return this.inscricoes.size();
 	}
@@ -266,10 +254,8 @@ public class Turma {
 		this.professor = professor;
 	}
 
-	public void adicionarAula(String diaSemana, String horarioInicio,
-			String horarioTermino, LocalAula local) {
-		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
-				horarioTermino, local);
+	public void adicionarAula(String diaSemana, String horarioInicio, String horarioTermino, LocalAula local) {
+		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio, horarioTermino, local);
 		this.aulas.add(a);
 	}
 
@@ -288,20 +274,25 @@ public class Turma {
 		Inscricao inscricao = localizarInscricao(item.matriculaAluno);
 		if (inscricao != null) {
 			verificarFaltas(item.qtdFaltas);
-			inscricao.lancarAvaliacao(item);
+			try {
+				inscricao.lancarAvaliacao(item);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(
+						"Lançamento inválido para aluno de matrícula " + item.matriculaAluno + ": " + e.getMessage());
+			}
 		}
 	}
 
-	private void verificarFaltas(int qtdFaltas) {
-		if (qtdFaltas < 0 || qtdFaltas > this.getQtdAulas()) {
+	private void verificarFaltas(Integer qtdFaltas) {
+		if (qtdFaltas != null && (qtdFaltas < 0 || qtdFaltas > this.getQtdAulas())) {
 			throw new IllegalArgumentException("Quantidade de faltas inválida!");
 		}
 	}
 
 	private Inscricao localizarInscricao(String matriculaAluno) {
-		for (Inscricao i : inscricoes) {
-			if (i.alunoTemMatricula(matriculaAluno)) {
-				return i;
+		for (Inscricao inscricao : inscricoes) {
+			if (inscricao.alunoTemMatricula(matriculaAluno)) {
+				return inscricao;
 			}
 		}
 		return null;

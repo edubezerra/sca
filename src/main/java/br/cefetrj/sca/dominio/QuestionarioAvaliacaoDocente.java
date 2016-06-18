@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
 @Entity
-public class FormularioAvaliacao {
+public class QuestionarioAvaliacaoDocente {
 
 	@Id
 	@GeneratedValue
@@ -31,11 +31,11 @@ public class FormularioAvaliacao {
 	@JoinColumn(name = "FORMULARIO_ID", referencedColumnName = "ID")
 	List<Quesito> quesitos;
 	
-	public FormularioAvaliacao(){
+	public QuestionarioAvaliacaoDocente(){
 	
 	}
 	
-	public FormularioAvaliacao(String sigla, String nome) {
+	public QuestionarioAvaliacaoDocente(String sigla, String nome) {
 		this.sigla = sigla;
 		this.nome = nome;
 	}
