@@ -127,6 +127,10 @@ public class Disciplina {
 		return id;
 	}
 
+	public VersaoCurso getVersaoCurso() {
+		return versaoCurso;
+	}
+
 	public void alocarEmVersao(VersaoCurso versaoCurso) {
 		this.versaoCurso = versaoCurso;
 	}

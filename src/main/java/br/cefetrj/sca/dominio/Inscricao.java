@@ -14,8 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.cefetrj.sca.dominio.FichaAvaliacoes.ItemFicha;
 
 /**
- * Representa a inscrição de um aluno em um turma em um determinado semestre
- * letivo.
+ * Representa a inscrição de um aluno em uma turma.
  * 
  * @author Eduardo
  * 
@@ -51,6 +50,10 @@ public class Inscricao {
 		this.aluno = aluno;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public Aluno getAluno() {
 		return aluno;
 	}
@@ -81,16 +84,12 @@ public class Inscricao {
 		}
 	}
 
-	public void registrarAvaliacao(NotaFinal avaliacao) {
-		this.avaliacao = avaliacao;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
 	public void lancarAvaliacao(ItemFicha item) {
-		// TODO Auto-generated method stub
-
+		this.avaliacao = new NotaFinal(item);
 	}
+
+	public boolean alunoTemMatricula(String matriculaAluno) {
+		return getAluno().getMatricula().equals(matriculaAluno);
+	}
+
 }

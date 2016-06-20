@@ -27,8 +27,6 @@
 	<br></br>
 
 </h4>
-	
-
 	<c:if test="${aluno.processoIsencao != null}">
 		<div class="table-responsive" >
 				<table class="table">
@@ -38,6 +36,7 @@
 							<th>Disciplina</th>
 							<th>Situação</th>
 							<th>Data Analise</th>
+							<th>Motivo</th>
 						</tr>
 					</thead>
 
@@ -45,11 +44,20 @@
 						<c:forEach items="${itemIsencaoByProcessoIsencao}"
 							var="itemIsencaoByProcessoIsencao">
 							<tr>
+								
 								<td>${itemIsencaoByProcessoIsencao.id}</td>
 								<td>${itemIsencaoByProcessoIsencao.disciplina.nome}</td>
-								<td>${itemIsencaoByProcessoIsencao.situacao}</td>
+								<td>
+								<c:if test="${itemIsencaoByProcessoIsencao.situacao == 'deferir'}">
+										DEFERIDO
+									</c:if> 
+									<c:if test="${itemIsencaoByProcessoIsencao.situacao == 'indeferir'}">
+										INDEFERIDO
+									</c:if> 
+								</td>
 								<td><fmt:formatDate pattern="dd/MM/yyyy" value="${itemIsencaoByProcessoIsencao.dataAnalise}" /></td>
-								
+								<td>${itemIsencaoByProcessoIsencao.motivo}</td>
+								<td>${itemIsencaoByProcessoIsencao.observacao}</td>
 							</tr>
 						</c:forEach>
 					</tbody>

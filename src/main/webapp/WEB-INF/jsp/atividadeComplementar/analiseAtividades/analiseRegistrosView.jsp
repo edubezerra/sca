@@ -43,7 +43,7 @@
 		src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.popconfirm.js"></script>
     
 	<!-- Include Date Range Picker -->
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/daterangepicker.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap/css/daterangepicker.css" />
 
@@ -255,6 +255,7 @@
 		function atualizaStatusAtividade(idRegistro,matriculaAluno,novoStatus,justificativa) {
 			
 			var search = {}
+			search["matriculaProf"] = String("${requestScope.dadosAnaliseAtividades.matriculaProfessor}");
 			search["siglaCurso"] = String($("#siglaCurso").val());
 			search["numeroVersao"] = String($("#numeroVersao").val());
 			search["status"] = String($("#status").val());
@@ -294,6 +295,7 @@
 	
 		function searchRegistrosAtividade() {	
 			var search = {}
+			search["matriculaProf"] = String("${requestScope.dadosAnaliseAtividades.matriculaProfessor}");
 			search["siglaCurso"] = $("#siglaCurso").val();
 			search["numeroVersao"] = $("#numeroVersao").val();
 			search["status"] = $("#status").val();
@@ -533,7 +535,7 @@
 		</c:if>
 		<c:if test="${requestScope.info != null}">
 			<div class="row">
-				<span class="label label-info">${requestScope.error}</span>
+				<span class="label label-info">${requestScope.info}</span>
 			</div>
 		</c:if>
 		

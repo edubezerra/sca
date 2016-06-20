@@ -34,7 +34,7 @@ public class EmailService {
 		return new SMTPAuthenticator(emailId, password);
 	}
 
-	public void sendEmail(Email email) {
+	public void sendEmail(MensagemEmail email) {
 		Session session = Session.getDefaultInstance(this.configuration.getProperties(), auth);
 		boolean debug = Boolean.valueOf(this.configuration.getProperty(EmailConfiguration.DEBUG));
 		session.setDebug(debug);
@@ -47,7 +47,7 @@ public class EmailService {
 		}
 	}
 
-	private Message buildEmailMessage(Session session, Email email) throws MessagingException {
+	private Message buildEmailMessage(Session session, MensagemEmail email) throws MessagingException {
 		Message msg = new MimeMessage(session);
 		msg.setSubject(email.getSubject());
 		this.addRecievers(msg, email);
@@ -58,7 +58,7 @@ public class EmailService {
 		return msg;
 	}
 
-	private void addRecievers(Message msg, Email email) throws MessagingException {
+	private void addRecievers(Message msg, MensagemEmail email) throws MessagingException {
 		InternetAddress from = new InternetAddress(email.getFrom());
 		msg.setFrom(from);
 
@@ -73,13 +73,13 @@ public class EmailService {
 
 	}
 
-	private void addMessageBodyPart(Multipart multipart, Email email) throws MessagingException {
+	private void addMessageBodyPart(Multipart multipart, MensagemEmail email) throws MessagingException {
 		BodyPart messageBodyPart = new MimeBodyPart();
 		messageBodyPart.setContent(email.getText(), email.getMimeType());
 		multipart.addBodyPart(messageBodyPart);
 	}
 
-	private void addAttachments(Multipart multipart, Email email) throws MessagingException {
+	private void addAttachments(Multipart multipart, MensagemEmail email) throws MessagingException {
 		List<Attachment> attachments = email.getAttachments();
 		if (attachments != null && attachments.size() > 0) {
 			for (Attachment attachment : attachments) {

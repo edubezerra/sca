@@ -7,61 +7,66 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.cefetrj.sca.dominio.Curso;
 import br.cefetrj.sca.dominio.VersaoCurso;
+import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
+import br.cefetrj.sca.dominio.repositories.VersaoCursoRepositorio;
 
+@Deprecated
 public class ImportadorCursos {
 
-	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA",
-			"CH_TOTAL", "CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO", "COD_ESTRUTURADO", "NOME_UNIDADE",
-			"SIGLA_UNIDADE", "COD_CURSO", "NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
+	@Autowired
+	private CursoRepositorio cursoRepositorio;
+
+	@Autowired
+	private VersaoCursoRepositorio versaoCursoRepositorio;
+
+	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA",
+			"NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA", "CH_TOTAL",
+			"CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO",
+			"COD_ESTRUTURADO", "NOME_UNIDADE", "SIGLA_UNIDADE", "COD_CURSO",
+			"NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
 
 	/**
-	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada
-	 * curso.
+	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada curso.
 	 */
 	private HashMap<String, VersaoCurso> versoesCursos = new HashMap<>();
 
 	/**
-	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada
-	 * curso.
+	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada curso.
 	 */
 	private HashMap<String, Curso> cursos = new HashMap<>();
 
 	public ImportadorCursos() {
 	}
-	
-	public void run() {
-		String planilhaCSTSI = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
-		String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
-		ImportadorCursos.run(planilhaCSTSI);
-		ImportadorCursos.run(planilhaBCC);
-	}
 
-	public static void run(String arquivoPlanilha) {
+	public void run() {
 		System.out.println("ImportadorCursos.run()");
 		try {
-			ImportadorCursos iim = new ImportadorCursos();
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			String planilhaCSTSI = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
+			String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
+
+			importarPlanilha(planilhaCSTSI);
+
+			cursos.clear();
+			versoesCursos.clear();
+
+			importarPlanilha(planilhaBCC);
+
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Feito!");
 	}
 
-	public void gravarDadosImportados() {
-
-		EntityManager em = ImportadorTudo.entityManager;
-
-		em.getTransaction().begin();
+	private void gravarCursosMaisVersoes() {
 
 		/**
 		 * Realiza a persistência dos objetos Curso.
@@ -69,7 +74,7 @@ public class ImportadorCursos {
 		Set<String> cursosIt = cursos.keySet();
 		for (String siglaCurso : cursosIt) {
 			System.out.println("Gravando " + cursos.get(siglaCurso));
-			em.persist(cursos.get(siglaCurso));
+			cursoRepositorio.save(cursos.get(siglaCurso));
 		}
 
 		/**
@@ -77,26 +82,31 @@ public class ImportadorCursos {
 		 */
 		Set<String> versoesIt = versoesCursos.keySet();
 		for (String numeroMaisSigla : versoesIt) {
-			System.out.println("Gravando " + versoesCursos.get(numeroMaisSigla));
-			em.persist(versoesCursos.get(numeroMaisSigla));
+			System.out
+					.println("Gravando " + versoesCursos.get(numeroMaisSigla));
+			versaoCursoRepositorio.save(versoesCursos.get(numeroMaisSigla));
 		}
 
-		em.getTransaction().commit();
-
-		System.out.println("Foram importados " + cursos.keySet().size() + " cursos.");
-		System.out.println("Foram importados " + versoesCursos.keySet().size() + " versões de cursos.");
+		System.out.println("Foram importados " + cursos.keySet().size()
+				+ " cursos.");
+		System.out.println("Foram importados " + versoesCursos.keySet().size()
+				+ " versões de cursos.");
 	}
 
-	public void importarPlanilha(String inputFile) throws BiffException, IOException {
+	public void importarPlanilha(String inputFile) throws BiffException,
+			IOException {
 		File inputWorkbook = new File(inputFile);
-		importarPlanilha(inputWorkbook);
+		System.out.println("Iniciando importação de cursos e suas versões...");
+		importarCursosMaisVersoes(inputWorkbook);
+		gravarCursosMaisVersoes();
+		System.out.println("Cursos e versões importados com sucesso!");
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
+	private void importarCursosMaisVersoes(File inputWorkbook)
+			throws BiffException, IOException {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
-		System.out.println("Iniciando importação de cursos...");
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
@@ -104,9 +114,12 @@ public class ImportadorCursos {
 		Sheet sheet = w.getSheet(0);
 
 		for (int i = 1; i < sheet.getRows(); i++) {
-			String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
-			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
-			String nomeCurso = sheet.getCell(colunasList.indexOf("NOME_UNIDADE"), i).getContents();
+			String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"),
+					i).getContents();
+			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"),
+					i).getContents();
+			String nomeCurso = sheet.getCell(
+					colunasList.indexOf("NOME_UNIDADE"), i).getContents();
 
 			if (cursos.get(siglaCurso) == null) {
 				Curso curso = new Curso(siglaCurso, nomeCurso);

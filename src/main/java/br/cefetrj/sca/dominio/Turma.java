@@ -17,10 +17,10 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Turma {
-	/**
-	 * Quantidade de caracteres necessários no código de uma turma.
-	 */
-	// private static final int TAM_MAX_CODIGO = 6;
+
+	enum SituacaoTurma {
+		ABERTA_PARA_INSCRICAO, EM_ANDAMENTO, FECHADA_PARA_LANCAMENTO
+	};
 
 	private static final int CAPACIDADE_PRESUMIDA = 40;
 
@@ -101,10 +101,6 @@ public class Turma {
 			throw new IllegalArgumentException("Código da turma é obrigatório.");
 		}
 
-		// if (codigo.length() != TAM_MAX_CODIGO) {
-		// throw new IllegalArgumentException("Código da turma deve ter "
-		// + TAM_MAX_CODIGO + " caracteres necessariamente.");
-		// }
 		this.codigo = codigo;
 
 		this.periodo = PeriodoLetivo.PERIODO_CORRENTE;
@@ -171,20 +167,6 @@ public class Turma {
 
 	public Set<Inscricao> getInscricoes() {
 		return Collections.unmodifiableSet(this.inscricoes);
-	}
-
-	public void lancarAvaliacao(Aluno aluno, NotaFinal avaliacao) {
-		Inscricao inscricao = getInscricao(aluno);
-		inscricao.registrarAvaliacao(avaliacao);
-	}
-
-	private Inscricao getInscricao(Aluno aluno) {
-		for (Inscricao inscricao : inscricoes) {
-			if (inscricao.getAluno() == aluno) {
-				return inscricao;
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -255,6 +237,15 @@ public class Turma {
 		return getInscricao(aluno) != null;
 	}
 
+	private Inscricao getInscricao(Aluno aluno) {
+		for (Inscricao inscricao : inscricoes) {
+			if (inscricao.getAluno() == aluno) {
+				return inscricao;
+			}
+		}
+		return null;
+	}
+
 	public int getQtdInscritos() {
 		return this.inscricoes.size();
 	}
@@ -282,13 +273,28 @@ public class Turma {
 	public void lancarAvaliacao(FichaAvaliacoes.ItemFicha item) {
 		Inscricao inscricao = localizarInscricao(item.matriculaAluno);
 		if (inscricao != null) {
-			inscricao.lancarAvaliacao(item);
+			verificarFaltas(item.qtdFaltas);
+			try {
+				inscricao.lancarAvaliacao(item);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(
+						"Lançamento inválido para aluno de matrícula " + item.matriculaAluno + ": " + e.getMessage());
+			}
 		}
+	}
 
+	private void verificarFaltas(Integer qtdFaltas) {
+		if (qtdFaltas != null && (qtdFaltas < 0 || qtdFaltas > this.getQtdAulas())) {
+			throw new IllegalArgumentException("Quantidade de faltas inválida!");
+		}
 	}
 
 	private Inscricao localizarInscricao(String matriculaAluno) {
-		// TODO Auto-generated method stub
+		for (Inscricao inscricao : inscricoes) {
+			if (inscricao.alunoTemMatricula(matriculaAluno)) {
+				return inscricao;
+			}
+		}
 		return null;
 	}
 
@@ -318,5 +324,9 @@ public class Turma {
 
 	public List<Aula> getAulas() {
 		return aulas;
+	}
+
+	public Integer getQtdAulas() {
+		return this.getDisciplina().getCargaHoraria();
 	}
 }

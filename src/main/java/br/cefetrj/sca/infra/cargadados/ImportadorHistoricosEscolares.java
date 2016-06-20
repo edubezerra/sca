@@ -6,27 +6,37 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.EnumSituacaoAvaliacao;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.PeriodoLetivo.EnumPeriodo;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 /**
  * @author Eduardo Bezerra
  *
  */
+@Component
 public class ImportadorHistoricosEscolares {
 
-	EntityManager em = ImportadorTudo.entityManager;
+	@Autowired
+	DisciplinaRepositorio disciplinaRepositorio;
+
+	@Autowired
+	AlunoRepositorio alunoRepositorio;
+
+	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF", "MATR_ALUNO", "NOME_PESSOA",
+			"FORMA_EVASAO", "COD_TURMA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO", "CH_TOTAL",
+			"CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
 
 	public void run() {
 		File folder = new File("./planilhas/historicos-escolares");
@@ -35,14 +45,9 @@ public class ImportadorHistoricosEscolares {
 		Scanner in = new Scanner(System.in);
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
-				// System.out.println("Importar dados da planilha \""
-				// + listOfFiles[i].getName()
-				// + "\"? Sim = 1; Não: qq outro dígito.");
-				// int resposta = in.nextInt();
 				int resposta = 1;
 				if (resposta == 1) {
-					String arquivoPlanilha = "./planilhas/historicos-escolares/"
-							+ listOfFiles[i].getName();
+					String arquivoPlanilha = "./planilhas/historicos-escolares/" + listOfFiles[i].getName();
 					run(arquivoPlanilha);
 				}
 			} else if (listOfFiles[i].isDirectory()) {
@@ -63,19 +68,15 @@ public class ImportadorHistoricosEscolares {
 		System.out.println("Feito!");
 	}
 
-	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
-			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
-			"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
-			"CH_TOTAL", "CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
-
-	public void importarPlanilha(String inputFile) throws BiffException,
-			IOException {
+	private void importarPlanilha(String inputFile) throws BiffException, IOException {
 		File inputWorkbook = new File(inputFile);
-		importarPlanilha(inputWorkbook);
+		String resultado = importarPlanilha(inputWorkbook);
+		System.out.println(resultado);
 	}
 
-	public void importarPlanilha(File inputWorkbook) throws BiffException,
-			IOException {
+	public String importarPlanilha(File inputWorkbook) throws BiffException, IOException {
+		StringBuilder response = new StringBuilder();
+		int repetido = 0, importado = 0, erro = 0, codigoTrancamento = 0;
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
@@ -86,27 +87,19 @@ public class ImportadorHistoricosEscolares {
 		w = Workbook.getWorkbook(inputWorkbook, ws);
 		Sheet sheet = w.getSheet(0);
 
-		em.getTransaction().begin();
-
 		for (int i = 1; i < sheet.getRows(); i++) {
 
-			String cod_curso = sheet.getCell(colunasList.indexOf("COD_CURSO"),
-					i).getContents();
+			String cod_curso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 
-			String versao_curso = sheet.getCell(
-					colunasList.indexOf("VERSAO_CURSO"), i).getContents();
+			String versao_curso = sheet.getCell(colunasList.indexOf("VERSAO_CURSO"), i).getContents();
 
-			String aluno_matricula = sheet.getCell(
-					colunasList.indexOf("MATR_ALUNO"), i).getContents();
+			String aluno_matricula = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
 
-			String cod_disciplina = sheet.getCell(
-					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
+			String cod_disciplina = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
 
-			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i)
-					.getContents();
+			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i).getContents();
 
-			String semestre_periodo = sheet.getCell(
-					colunasList.indexOf("PERIODO"), i).getContents();
+			String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
 
 			int ano = Integer.parseInt(semestre_ano);
 			PeriodoLetivo.EnumPeriodo periodo;
@@ -119,8 +112,7 @@ public class ImportadorHistoricosEscolares {
 
 			PeriodoLetivo semestre = new PeriodoLetivo(ano, periodo);
 
-			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i)
-					.getContents();
+			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i).getContents();
 
 			EnumSituacaoAvaliacao situacaoFinal = null;
 			if (situacao.equals("Aprovado")) {
@@ -146,13 +138,12 @@ public class ImportadorHistoricosEscolares {
 			} else if (situacao.equals("Isento")) {
 				situacaoFinal = EnumSituacaoAvaliacao.ISENTO;
 			} else {
-				System.err
-						.println("ERRO GRAVE: Valor inválido para a situação final de avaliação! "
-								+ situacao);
+				System.err.println("ERRO GRAVE: Valor inválido para a situação final de avaliação! " + situacao);
 				System.exit(1);
 			}
 
 			if (cod_disciplina.equals("TRT001")) {
+				codigoTrancamento++;
 				/**
 				 * Esse código representa trancamento do período.
 				 * 
@@ -162,53 +153,149 @@ public class ImportadorHistoricosEscolares {
 				continue;
 			}
 
-			Query queryDisciplina;
-			queryDisciplina = em
-					.createQuery("from Disciplina a where a.codigo = :codDisciplina and "
-							+ "a.versaoCurso.numero = :numeroVersao and "
-							+ "a.versaoCurso.curso.sigla = :siglaCurso");
+			Aluno aluno = alunoRepositorio.getAlunoByInfoHistoricoEscolar(aluno_matricula, semestre, situacaoFinal,
+					cod_disciplina, versao_curso, cod_curso);
 
-			queryDisciplina.setParameter("codDisciplina", cod_disciplina);
-			queryDisciplina.setParameter("siglaCurso", cod_curso);
-			queryDisciplina.setParameter("numeroVersao", versao_curso);
+			if (aluno != null) {
+				repetido++;
+				continue;
+			} else {
+				Disciplina disciplina = disciplinaRepositorio.findByCodigoEmVersaoCurso(cod_disciplina, cod_curso,
+						versao_curso);
 
-			Disciplina disciplina = null;
-			try {
-				disciplina = (Disciplina) queryDisciplina.getSingleResult();
-			} catch (NoResultException e) {
-				System.err.println("Disciplina não encontrada (código): "
-						+ cod_disciplina);
-			}
+				if (disciplina != null) {
+					aluno = alunoRepositorio.findAlunoByMatricula(aluno_matricula);
 
-			if (disciplina != null) {
-				Aluno aluno = null;
-				try {
-					Query queryAluno;
-					queryAluno = em
-							.createQuery("from Aluno a where a.matricula = :matricula");
-					queryAluno.setParameter("matricula", aluno_matricula);
-					aluno = (Aluno) queryAluno.getSingleResult();
-				} catch (NoResultException e) {
-					System.err.println("Aluno não encontrado. Matrícula: "
-							+ aluno_matricula);
+					if (aluno != null) {
+						importado++;
+						aluno.registrarNoHistoricoEscolar(disciplina, situacaoFinal, semestre);
+						alunoRepositorio.save(aluno);
+
+						System.out.println("Lançada disciplina " + disciplina.toString()
+								+ " no histórico escolar do aluno de matrícula " + aluno.getMatricula());
+					} else {
+						erro++;
+						System.err.println("Aluno não encontrado. Matrícula: " + aluno_matricula);
+					}
+				} else {
+					erro++;
+					System.err.println("Disciplina não encontrada (código): " + cod_disciplina);
 				}
-
-				if (aluno != null) {
-					aluno.registrarNoHistoricoEscolar(disciplina,
-							situacaoFinal, semestre);
-					em.merge(aluno);
-					System.out.println("Lançada disciplina "
-							+ disciplina.toString()
-							+ " no histórico escolar do aluno de matrícula "
-							+ aluno.getMatricula());
-				}
-
 			}
 		}
 
-		em.getTransaction().commit();
+		response.append("Importação de históricos finalizada.;");
+		response.append("Quantidade total de registros da planilha: " + (sheet.getRows() - 1) + ";");
+		response.append("Quantidade repetida: " + repetido + ";");
+		response.append("Quantidade importada: " + importado + ";");
+		response.append("Quantidade não importada por erros: " + erro + ";");
+		response.append("Quantidade de códigos de trancamento: " + codigoTrancamento);
 
-		System.out.println("Importação de históricos finalizada.");
+		return response.toString();
 	}
+
+//	public void importarPlanilha(File inputWorkbook) throws BiffException, IOException {
+//		Workbook w;
+//
+//		List<String> colunasList = Arrays.asList(colunas);
+//		System.out.println("Iniciando importação de históricos escolares...");
+//
+//		WorkbookSettings ws = new WorkbookSettings();
+//		ws.setEncoding("Cp1252");
+//		w = Workbook.getWorkbook(inputWorkbook, ws);
+//		Sheet sheet = w.getSheet(0);
+//
+//		for (int i = 1; i < sheet.getRows(); i++) {
+//
+//			String cod_curso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+//
+//			String versao_curso = sheet.getCell(colunasList.indexOf("VERSAO_CURSO"), i).getContents();
+//
+//			String aluno_matricula = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
+//
+//			String cod_disciplina = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
+//
+//			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i).getContents();
+//
+//			String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
+//
+//			int ano = Integer.parseInt(semestre_ano);
+//			PeriodoLetivo.EnumPeriodo periodo;
+//
+//			if (semestre_periodo.equals("1º Semestre")) {
+//				periodo = EnumPeriodo.PRIMEIRO;
+//			} else {
+//				periodo = EnumPeriodo.SEGUNDO;
+//			}
+//
+//			PeriodoLetivo semestre = new PeriodoLetivo(ano, periodo);
+//
+//			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i).getContents();
+//
+//			EnumSituacaoAvaliacao situacaoFinal = null;
+//			if (situacao.equals("Aprovado")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.APROVADO;
+//			} else if (situacao.equals("Reprovado")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.REPROVADO_POR_MEDIA;
+//			} else if (situacao.equals("Reprovado por Frequência")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.REPROVADO_POR_FALTAS;
+//			} else if (situacao.equals("Reprovado sem nota")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.REPROVADO_SEM_NOTA;
+//			} else if (situacao.equals("Trancamento de Disciplinas")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.TRANCAMENTO_DISCIPLINA;
+//			} else if (situacao.equals("Matrícula")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.INDEFINIDA;
+//			} else if (situacao.equals("Isento por Transferência")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.ISENTO_POR_TRANSFERENCIA;
+//			} else if (situacao.equals("Trancamento Total")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.TRANCAMENTO_TOTAL;
+//			} else if (situacao.equals("Aproveitamento por Estudos")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.APROVEITAMENTO_POR_ESTUDOS;
+//			} else if (situacao.equals("Aproveitamento de Créditos")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.APROVEITAMENTO_CREDITOS;
+//			} else if (situacao.equals("Isento")) {
+//				situacaoFinal = EnumSituacaoAvaliacao.ISENTO;
+//			} else {
+//				System.err.println("ERRO GRAVE: Valor inválido para a situação final de avaliação! " + situacao);
+//				System.exit(1);
+//			}
+//
+//			if (cod_disciplina.equals("TRT001")) {
+//				/**
+//				 * Esse código representa trancamento do período.
+//				 * 
+//				 * TODO: implementar o registro dessa situação no histórico
+//				 * escolar do aluno.
+//				 */
+//				continue;
+//			}
+//
+//			Disciplina disciplina = null;
+//			try {
+//				disciplina = disciplinaRepositorio.findByCodigoEmVersaoCurso(cod_disciplina, cod_curso, versao_curso);
+//			} catch (NoResultException e) {
+//				System.err.println("Disciplina não encontrada (código): " + cod_disciplina);
+//			}
+//
+//			if (disciplina != null) {
+//				Aluno aluno = null;
+//				try {
+//					aluno = alunoRepositorio.findAlunoByMatricula(aluno_matricula);
+//				} catch (NoResultException e) {
+//					System.err.println("Aluno não encontrado. Matrícula: " + aluno_matricula);
+//				}
+//
+//				if (aluno != null) {
+//					aluno.registrarNoHistoricoEscolar(disciplina, situacaoFinal, semestre);
+//					alunoRepositorio.save(aluno);
+//					System.out.println("Lançada disciplina " + disciplina.toString()
+//							+ " no histórico escolar do aluno de matrícula " + aluno.getMatricula());
+//				}
+//
+//			}
+//		}
+//
+//		System.out.println("Importação de históricos escolares realizada com sucesso!");
+//	}
 
 }

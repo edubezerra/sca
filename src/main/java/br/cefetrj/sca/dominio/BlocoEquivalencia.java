@@ -1,9 +1,25 @@
 package br.cefetrj.sca.dominio;
 
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class BlocoEquivalencia {
 
-	List<Disciplina> disciplinasOriginais;
-	List<Disciplina> disciplinasEquivalentes;
+	@Id
+	@GeneratedValue
+	Long id;
+
+	@OneToMany
+	Set<Disciplina> disciplinasOriginais;
+
+	@OneToMany
+	Set<Disciplina> disciplinasEquivalentes;
+
+	public BlocoEquivalencia() {
+	}
 }

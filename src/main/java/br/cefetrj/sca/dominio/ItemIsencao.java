@@ -17,13 +17,11 @@ public class ItemIsencao {
 	@Id
 	@GeneratedValue
 	private Long id;
-
-	public static String EM_ANALISE;
-	public static String DEFERIDO;
-	public static String INDEFERIDO;
 	
 	private String situacao;
 	private Date dataAnalise;
+	private String motivo;
+	private String observacao;
 
 	@ManyToOne
 	Disciplina disciplina;
@@ -69,6 +67,22 @@ public class ItemIsencao {
 
 	public void setComprovante(String contentType, byte[] data, String nome) {
 		this.comprovante = new Comprovante(contentType, data, nome);
+	}
+
+	public String getMotivo() {
+		return motivo;
+	}
+
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 }

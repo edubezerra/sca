@@ -7,23 +7,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
-
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.AlunoFabrica;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 @Component
 public class ImportadorAlunos {
+	
+	@Autowired
+	private AlunoRepositorio alunoRepositorio;
+
 
 	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
 			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
@@ -49,9 +51,8 @@ public class ImportadorAlunos {
 	public void run(String arquivoPlanilha) {
 		System.out.println("ImportadorDiscentes.run()");
 		try {
-			ImportadorAlunos iim = new ImportadorAlunos();
-			iim.importarPlanilha(arquivoPlanilha);
-			iim.gravarDadosImportados();
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -62,9 +63,9 @@ public class ImportadorAlunos {
 	public void gravarDadosImportados() {
 		System.out.println("Realizando a persistência de objetos Aluno...");
 
-		EntityManager em = ImportadorTudo.entityManager;
+//		EntityManager em = ImportadorTudo.entityManager;
 
-		em.getTransaction().begin();
+//		em.getTransaction().begin();
 
 		/**
 		 * Realiza a persistência dos objetos Aluno.
@@ -74,22 +75,24 @@ public class ImportadorAlunos {
 		for (String matricula : matriculas) {
 			Aluno aluno;
 			try {
-				Query queryAluno;
-				queryAluno = em
-						.createQuery("from Aluno a where a.matricula = :matricula");
-				queryAluno.setParameter("matricula", matricula);
-				aluno = (Aluno) queryAluno.getSingleResult();
+//				Query queryAluno;
+//				queryAluno = em
+//						.createQuery("from Aluno a where a.matricula = :matricula");
+//				queryAluno.setParameter("matricula", matricula);
+//				aluno = (Aluno) queryAluno.getSingleResult();
+				aluno = alunoRepositorio.findAlunoByMatricula(matricula);
 			} catch (NoResultException e) {
 				aluno = null;
 			}
 
 			if (aluno == null) {
-				em.persist(alunos_matriculas.get(matricula));
+//				em.persist(alunos_matriculas.get(matricula));
+				alunoRepositorio.save(alunos_matriculas.get(matricula));
 				adicionados++;
 			}
 		}
 
-		em.getTransaction().commit();
+//		em.getTransaction().commit();
 
 		System.out.println("Foram adicionados " + adicionados + " alunos.");
 	}

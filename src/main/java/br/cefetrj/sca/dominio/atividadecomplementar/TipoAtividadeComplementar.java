@@ -6,7 +6,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-
 /**
  * Representa um tipo (categoria) de atividade complementar.
  * 
@@ -19,15 +18,15 @@ public class TipoAtividadeComplementar {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	/**
 	 * Descrição da Atividade Complementar.
 	 */
 	private String descricao;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	EnumTipoAtividadeComplementar categoria;
-	
+
 	@SuppressWarnings("unused")
 	private TipoAtividadeComplementar() {
 	}
@@ -43,19 +42,19 @@ public class TipoAtividadeComplementar {
 		this.descricao = descr;
 		this.categoria = categoria;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public String getDescricao() {
 		return descricao;
 	}
-	
+
 	public EnumTipoAtividadeComplementar getCategoria() {
 		return categoria;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

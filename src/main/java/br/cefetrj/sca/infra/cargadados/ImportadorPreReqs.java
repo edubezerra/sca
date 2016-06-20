@@ -5,19 +5,23 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
-import br.cefetrj.sca.dominio.Disciplina;
 
+@Component
 public class ImportadorPreReqs {
 
-	EntityManager em = ImportadorTudo.entityManager;
+	@Autowired
+	DisciplinaRepositorio disciplinaRepositorio;
 
 	static String colunas[] = { "COD_CURSO", "NOME_UNIDADE", "NUM_VERSAO", "DESCR_ESTRUTURA", "COD_DISCIPLINA",
 			"NOME_DISCIPLINA", "COD_PRE_REQ", "NOME_PRE_REQ", "TIPO_REQUISITO", "NUM_REFERENCIA", "ITEM_TABELA",
@@ -26,21 +30,19 @@ public class ImportadorPreReqs {
 	public void run() {
 		System.out.println("ImportadorPreReqs.run()");
 		try {
-			ImportadorPreReqs iim = new ImportadorPreReqs();
 			String arquivoPlanilha = "./planilhas/grades-curriculares/PreReqsBCC.xls";
-			iim.importarPlanilha(arquivoPlanilha);
+			this.importarPlanilha(arquivoPlanilha);
 
-			iim = new ImportadorPreReqs();
 			arquivoPlanilha = "./planilhas/grades-curriculares/PreReqsCSTSI.xls";
-			iim.importarPlanilha(arquivoPlanilha);
+			this.importarPlanilha(arquivoPlanilha);
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		System.out.println("Feito!");
+		System.out.println("Importação de pré-requisitos de disciplinas realizada com sucesso!");
 	}
 
-	public void importarPlanilha(String inputFile) throws BiffException, IOException {
+	private void importarPlanilha(String inputFile) throws BiffException, IOException {
 		File inputWorkbook = new File(inputFile);
 		importarPlanilha(inputWorkbook);
 	}
@@ -62,11 +64,6 @@ public class ImportadorPreReqs {
 	private void importarPreReqs(List<String> colunasList, Sheet sheet) {
 		System.out.println("Iniciando importação de pré-requisitos de disciplinas...");
 
-		Query query = em.createQuery("from Disciplina d where d.codigo = :codigoDisciplina "
-				+ "and d.versaoCurso.numero = :numeroVersaoCurso and d.versaoCurso.curso.sigla = :codCurso");
-
-		em.getTransaction().begin();
-
 		for (int i = 1; i < sheet.getRows(); i++) {
 
 			String codCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
@@ -74,27 +71,26 @@ public class ImportadorPreReqs {
 			String codigoDisciplina = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
 			String codigoDisciplinaPreReq = sheet.getCell(colunasList.indexOf("COD_PRE_REQ"), i).getContents();
 
-			query.setParameter("codigoDisciplina", codigoDisciplina);
-			query.setParameter("codCurso", codCurso);
-			query.setParameter("numeroVersaoCurso", numeroVersaoCurso);
-			Disciplina disciplina = (Disciplina) query.getSingleResult();
-
-			query.setParameter("codigoDisciplina", codigoDisciplinaPreReq);
-			query.setParameter("codCurso", codCurso);
-			query.setParameter("numeroVersaoCurso", numeroVersaoCurso);
+			Disciplina disciplina = disciplinaRepositorio.findByCodigoEmVersaoCurso(codigoDisciplina, codCurso,
+					numeroVersaoCurso);
 
 			try {
-				Disciplina disciplinaPreReq = (Disciplina) query.getSingleResult();
-				disciplina.comPreRequisito(disciplinaPreReq);
-				System.out.println("Novo pré-requisito para disciplina " + disciplina.toString());
-				System.out.println("\t" + disciplinaPreReq.toString());
+				Disciplina disciplinaPreReq = disciplinaRepositorio.findByCodigoEmVersaoCurso(codigoDisciplinaPreReq,
+						codCurso, numeroVersaoCurso);
+
+				if (disciplinaPreReq != null) {
+					disciplina.comPreRequisito(disciplinaPreReq);
+					System.out.println(
+							"Novo pré-requisito: " + disciplina.toString() + " <-- " + disciplinaPreReq.toString());
+				} else {
+					System.err.println("Pré-requisito não encontrado: " + disciplina.toString() + " <-- "
+							+ codigoDisciplinaPreReq);
+				}
 			} catch (NoResultException e) {
 				System.err.println("Erro ao resgatar disciplina com código " + codigoDisciplinaPreReq);
 			}
 
-			em.merge(disciplina);
+			disciplinaRepositorio.save(disciplina);
 		}
-
-		em.getTransaction().commit();
 	}
 }
