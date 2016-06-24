@@ -172,9 +172,33 @@ public class IsencaoDisciplinaController {
 				processoIsencaoRepo.save(pi);
 			}
 			
+			model.addAttribute("aluno",aluno);
 			model.addAttribute("itemIsencaoByProcessoIsencao", aluno.getProcessoIsencao().getListaItenIsencao());
 			
+			return "/isencaoDisciplina/aluno/relacaoMateriaExterna";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/menuPrincipalView";
+		}
+	}
+	
+	@RequestMapping(value = "/relacaoMateriaExterna", method = RequestMethod.POST)
+	public String registroMateriaExterna(Model model, HttpServletRequest request, HttpSession session,
+			@RequestParam("aluno") String matricula,@RequestParam("itemIsencaoByProcessoIsencao") List<String> itemIsencao,
+			@RequestParam("disciplinaAssociada") List<String> disciplinaAssociada) {
+
+		try {
+
+			Aluno aluno = is.findAlunoByMatricula(matricula);
+			
+			for(int i=0;i<itemIsencao.size();i++){			
+				aluno.getProcessoIsencao().getListaItenIsencao().get(i).setDisciplinaAssociada(disciplinaAssociada.get(i));
+				
+				itemIsencaoRepo.save(aluno.getProcessoIsencao().getListaItenIsencao().get(i));
+			}			
+			
 			return visualizarProcessoIsencao(model, request, session);
+
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "/menuPrincipalView";
