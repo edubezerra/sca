@@ -22,6 +22,7 @@ public class ItemIsencao {
 	private Date dataAnalise;
 	private String motivo;
 	private String observacao;
+	private String disciplinaAssociada;
 
 	@ManyToOne
 	Disciplina disciplina;
@@ -83,6 +84,14 @@ public class ItemIsencao {
 
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
+	}
+	
+	public String getDisciplinaAssociada() {
+		return disciplinaAssociada;
+	}
+
+	public void setDisciplinaAssociada(String disciplinaAssociada) {
+		this.disciplinaAssociada = disciplinaAssociada;
 	}
 
 }

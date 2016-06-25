@@ -63,7 +63,14 @@
 							<td>${alunosItemIsencao.id}</td>
 							<td>${alunosItemIsencao.disciplina.codigo}
 							</td>
-							<td>${alunosItemIsencao.disciplina.nome}</td>
+							<td>${alunosItemIsencao.disciplina.nome}
+								<c:if test="${alunosItemIsencao.disciplinaAssociada != null}">
+									<div>
+										Disciplinas Associadas: <br>
+										${alunosItemIsencao.disciplinaAssociada}
+									</div>
+								</c:if>
+							</td>
 							<td>
 							
 							<c:if test="${alunosItemIsencao.situacao != null}">
