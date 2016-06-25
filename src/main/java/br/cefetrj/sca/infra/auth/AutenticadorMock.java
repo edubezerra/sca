@@ -1,11 +1,10 @@
 package br.cefetrj.sca.infra.auth;
 
-public class AuthDAOMock implements IAutenticador {
+public class AutenticadorMock implements IAutenticador {
 
 	@Override
 	public String getRemoteLoginResponse(String username, String password) {
-
-		return null;
+		return username;
 	}
 
 }

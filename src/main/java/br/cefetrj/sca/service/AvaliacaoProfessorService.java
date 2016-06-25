@@ -22,7 +22,7 @@ import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
 @Service
 @Transactional
-public class AvaliacaoTurmaService {
+public class AvaliacaoProfessorService {
 
 	@Autowired
 	private AlunoRepositorio alunoRepositorio;

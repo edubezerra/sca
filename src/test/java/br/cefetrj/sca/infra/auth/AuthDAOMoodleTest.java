@@ -1,5 +1,8 @@
 package br.cefetrj.sca.infra.auth;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,17 @@ public class AuthDAOMoodleTest {
 
 	@Autowired
 	AutenticadorMoodle autenticador;
-	
+
 	@Test
-	public void m() {
-		System.out.println(autenticador.getRemoteLoginResponse("ebezerra", ""));
+	public void deveAutenticarUsuarioValido() {
+		assertEquals("058842457-93", autenticador.getRemoteLoginResponse(
+				"058842457-93", "Aluno058842457-93"));
+	}
+
+	@Test
+	public void naoDeveAutenticarUsuarioInvalido() {
+		String resposta = autenticador.getRemoteLoginResponse("nonecziste", "");
+		System.out.println(resposta);
+		assertTrue(resposta.startsWith("\"error\""));
 	}
 }

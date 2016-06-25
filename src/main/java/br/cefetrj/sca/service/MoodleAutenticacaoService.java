@@ -65,13 +65,6 @@ public class MoodleAutenticacaoService implements AutenticacaoService {
 		}
 	}
 	
-	public static void main(String[] args) {
-		MoodleAutenticacaoService main = new MoodleAutenticacaoService();
-		main.authRepository = new AuthService();
-		main.autentica("usuarioeic", "usuario@EIC2010");
-		System.out.println("Done!");
-	}
-
 	@Override
 	public boolean autenticaUsuario(String login, String senha) {
 		return false;
