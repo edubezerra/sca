@@ -87,7 +87,15 @@
 				<li><a
 					href="${pageContext.request.contextPath}/isencaoDisciplina/professorView">
 						Isenção de Disciplina </a></li>
-
+						
+				<li><a href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">
+			        Relatório de Evasão</a></li>
+					        
+			     <li><a href="${pageContext.request.contextPath}/relatorioRetencao/homeRetencao">
+					        Relatório de Retenção</a></li>
+			     
+			     <li><a href="${pageContext.request.contextPath}/relatorioReprovacaoDisciplina/homeReprovacaoDisciplina">
+					        Relatório de Reprovação por Disciplina</a></li>
 			</ul>
 		</sec:authorize>
 		

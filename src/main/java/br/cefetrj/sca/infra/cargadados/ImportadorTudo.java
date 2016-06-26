@@ -13,6 +13,9 @@ public class ImportadorTudo {
 
 	ImportadorQuestionarioAvaliacaoDocente importadorQuestionarioAvaliacaoDocente = new ImportadorQuestionarioAvaliacaoDocente();
 
+	@Autowired
+	ImportadorPeriodoMinimoVersaoCurso importadorPerMinVersaoCurso;
+	
 //	@Autowired
 //	ImportadorCursos importadorCursos;
 
@@ -52,6 +55,9 @@ public class ImportadorTudo {
 	@Autowired
 	ImportadorAlocacoesDisciplinasEmDepartamentos importadorAlocacoesDisciplinasEmDepartamentos;
 
+	@Autowired
+	ImportadorEquivalenciaDisciplinas importadorEquivalenciaDisciplinas;
+	
 	public static void main(String[] args) {
 		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
 		importador.run();
@@ -61,9 +67,9 @@ public class ImportadorTudo {
 	public void run() {
 		try {
 //			importadorQuestionarioAvaliacaoDocente.run();
-
+//
 //			importadorCursos.run();
-			importadorGradesCurriculares.run();
+//			importadorGradesCurriculares.run();
 //			importadorPreReqs.run();
 //			importadorAtividadesComp.run();
 //			importadorAlunos.run();
@@ -72,13 +78,16 @@ public class ImportadorTudo {
 //
 //			importadorHistoricoEscolar.run();
 //
-			importadorTurmasComInscricoes.run();
+//			importadorTurmasComInscricoes.run();
 //			importadorAlocacoesProfessoresEmTurmas.run();
 //			importadorHabilitacoesParaProfessor.run();
+			importadorPerMinVersaoCurso.run();
 //
 //			importadorAlocacoesProfessoresEmDepartamentos.run();
 //
 //			importadorAlocacoesDisciplinasEmDepartamentos.run();
+//			
+//			importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

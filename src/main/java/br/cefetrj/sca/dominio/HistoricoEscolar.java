@@ -1,7 +1,6 @@
 package br.cefetrj.sca.dominio;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -169,5 +168,32 @@ public class HistoricoEscolar {
 	public void lancar(Disciplina disciplina, EnumSituacaoAvaliacao situacao, PeriodoLetivo periodo) {
 		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina, situacao, periodo);
 		this.itens.add(item);
+	}
+	
+	/**
+	 * Metodo para pegar os ItemHistoricoEsoclar de um historico escolar, dada uma disciplina
+	 * @param disciplina
+	 * @return
+	 */
+	public Set<ItemHistoricoEscolar> getItemHistoricoByDisciplina(Disciplina disciplina) {
+		Set<ItemHistoricoEscolar> set = new HashSet<>();
+		
+		for(ItemHistoricoEscolar item : itens) {
+			if(item.getDisciplina().equals(disciplina)) {
+				set.add(item);
+			}
+		}
+		
+		return set;
+	}
+	
+	public Set<PeriodoLetivo> getPeriodosLetivosByItemHistoricoEscolar() {
+		Set<PeriodoLetivo> set = new HashSet<>();
+		
+		for(ItemHistoricoEscolar item: itens) {
+			set.add(item.getPeriodoLetivo());
+		}
+		
+		return set;
 	}
 }

@@ -43,4 +43,12 @@ public interface DisciplinaRepositorio extends
 
 	@Query("from Disciplina d where d.versaoCurso.curso.sigla = ?1 ORDER BY d.nome ")
 	List<Disciplina> findBySigla(String siglaCurso);
+	
+	@Query("SELECT b.disciplinasEquivalentes from TabelaEquivalencias t JOIN t.blocosEquivalencia b JOIN b.disciplinasOriginais d"
+			+ " where d.codigo = ?1")
+	List<Disciplina> findDisciplinasEquivalentesByCodigo(String codigoDisciplina);
+	
+	@Query("SELECT b.disciplinasOriginais from TabelaEquivalencias t JOIN t.blocosEquivalencia b JOIN b.disciplinasEquivalentes d"
+			+ " where d.codigo = ?1")
+	List<Disciplina> findDisciplinasOriginaisByCodigo(String codigoDisciplina);
 }

@@ -2,6 +2,7 @@ package br.cefetrj.sca.dominio;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import br.cefetrj.sca.dominio.atividadecomplementar.AtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.TabelaAtividadesComplementares;
@@ -40,6 +42,14 @@ public final class VersaoCurso {
 	
 	@OneToMany
 	Set<TabelaEquivalencias> tabelasEquivalencias;
+	
+	/**
+	 * Inteiro contendo a quantidade de periodos minimos para um curso.
+	 */
+	private Integer qtdPeriodoMinimo;
+	
+	@Transient
+	private Integer periodoMaximo;
 	
 	/**
 	 * Carga horária mínima de disciplinas optativas.
@@ -102,6 +112,14 @@ public final class VersaoCurso {
 	}
 
 	/**
+	 * Adiciona uma tabela de equivalencia de disciplinas na versao do curso.
+	 * @param tabelasEquivalencias
+	 */
+	public void setTabelasEquivalencias(Set<TabelaEquivalencias> tabelasEquivalencias) {
+		this.tabelasEquivalencias = tabelasEquivalencias;
+	}
+
+	/**
 	 * Adiciona uma tabela de atividades complementares nesta grade.
 	 */
 	public void setTabelaAtividades(TabelaAtividadesComplementares tabelaAtiv) {
@@ -129,6 +147,13 @@ public final class VersaoCurso {
 					"Esta disciplina já está associada a esta grade.");
 		}
 		this.disciplinas.add(d);
+	}
+	
+	public void adicionarTabelaEquivalencia(TabelaEquivalencias t) {
+		if(this.tabelasEquivalencias == null) 
+			setTabelasEquivalencias(new HashSet<>());
+		
+		this.tabelasEquivalencias.add(t);
 	}
 		
 	public String getNumero() {
@@ -193,5 +218,21 @@ public final class VersaoCurso {
 		} else if (!numero.equals(other.numero))
 			return false;
 		return true;
+	}
+
+	public Integer getQtdPeriodoMinimo() {
+		return qtdPeriodoMinimo;
+	}
+
+	public Integer getPeriodoMaximo() {
+		return periodoMaximo;
+	}
+
+	public void setQtdPeriodoMinimo(Integer qtdPeriodoMinimo) {
+		if(qtdPeriodoMinimo == null || qtdPeriodoMinimo < 0)
+			throw new IllegalArgumentException("Valor invalido para o período mínimo de término de um curso.");
+		
+		this.qtdPeriodoMinimo = qtdPeriodoMinimo;
+		this.periodoMaximo = (2 * qtdPeriodoMinimo) - 1;
 	}
 }
