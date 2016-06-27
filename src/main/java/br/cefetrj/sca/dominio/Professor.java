@@ -15,11 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import br.cefetrj.sca.dominio.contas.Email;
 import br.cefetrj.sca.dominio.gradesdisponibilidade.GradeDisponibilidade;
-import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 
 @Entity
 public class Professor {
@@ -36,9 +33,7 @@ public class Professor {
 	private Set<GradeDisponibilidade> grades;
 
 	@ManyToMany(cascade = CascadeType.MERGE)
-	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = {
-			@JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
-					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
+	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = { @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
 	private Set<Disciplina> habilitacoes = new HashSet<>();
 
 	@Embedded
@@ -80,7 +75,8 @@ public class Professor {
 		// + TAMANHO_MATRICULA + ".");
 		// }
 		if (!contemApenasDigitos(matricula)) {
-			throw new IllegalArgumentException("Matrícula deve conter apenas dígitos: " + matricula + ".");
+			throw new IllegalArgumentException(
+					"Matrícula deve conter apenas dígitos: " + matricula + ".");
 		}
 		this.matricula = matricula;
 	}
@@ -124,11 +120,16 @@ public class Professor {
 	}
 
 	public void removerHabilitacoes(List<String> nomesDisciplinas) {
-		for (String nome : nomesDisciplinas) {
-
+		if(nomesDisciplinas == null){
+			throw new IllegalArgumentException("Lista de habilitações não fornecida!");
 		}
-		// TODO Auto-generated method stub
-
+		for (String nomeDisciplina : nomesDisciplinas) {
+			for (Disciplina d : habilitacoes) {
+				if (d.getNome().equals(nomeDisciplina))
+					habilitacoes.remove(d);
+				break;
+			}
+		}
 	}
 
 	public void habilitarPara(Disciplina d) {

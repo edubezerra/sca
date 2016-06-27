@@ -40,7 +40,7 @@ public class UserServiceTest {
 
 	@Test(expected = javax.validation.ConstraintViolationException.class)
 	public void createUser() {
-		Usuario user = new Usuario(0, "Eduardo Bezerra", "bezerra", "1506449",
+		Usuario user = new Usuario("Eduardo Bezerra", "bezerra", "1506449",
 				"edubezerra@gmail.com", new Date());
 		Usuario savedUser = userService.create(user);
 		Usuario newUser = userService.findUserById(savedUser.getId());

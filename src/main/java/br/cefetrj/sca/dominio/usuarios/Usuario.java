@@ -39,8 +39,8 @@ public class Usuario {
 	@JoinTable(name = "USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
 	private Set<PerfilUsuario> userProfiles = new HashSet<PerfilUsuario>();
 
-	@NotEmpty
-	@Column(name = "EMAIL", nullable = false)
+//	@NotEmpty
+//	@Column(name = "EMAIL", nullable = false)
 	private String email;
 
 	private String matricula;
@@ -48,9 +48,8 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(int id, String nome, String login, String matricula,
-			String email, Date dob) {
-		this.id = id;
+	public Usuario(String nome, String login, String matricula, String email,
+			Date dob) {
 		this.nome = nome;
 		this.login = login;
 		this.matricula = matricula;
