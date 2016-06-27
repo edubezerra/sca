@@ -68,13 +68,12 @@ public class ImportadorTudo {
 		try {
 			importadorQuestionarioAvaliacaoDocente.run();
 
-//			importadorCursos.run();
 			importadorGradesCurriculares.run();
 			importadorPreReqs.run();
 			importadorAtividadesComp.run();
 
 			importadorAlunos.run();
-			importadorUsuariosAlunos.run();
+//			importadorUsuariosAlunos.run();
 			
 			importadorProfessores.run();
 			importadorDepartamentos.run();

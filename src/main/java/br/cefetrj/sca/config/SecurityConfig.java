@@ -28,13 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomAuthenticationProvider authProvider;
 
-	// @Autowired
-	// private CustomUserDetailsService customUserDetailsService;
-
 	@Override
 	protected void configure(AuthenticationManagerBuilder registry)
 			throws Exception {
-//		registry.userDetailsService(customUserDetailsService);
 		registry.authenticationProvider(authProvider);
 	}
 
