@@ -11,7 +11,7 @@ public class ImportadorTudo {
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 			StandalonePersistenceConfig.class);
 
-	ImportadorQuestionarioAvaliacaoDocente importadorQuestionarioAvaliacaoDocente = new ImportadorQuestionarioAvaliacaoDocente();
+	ImportadorQuestionarioAvaliacaoProfessor importadorQuestionarioAvaliacaoDocente = new ImportadorQuestionarioAvaliacaoProfessor();
 
 	@Autowired
 	ImportadorPeriodoMinimoVersaoCurso importadorPerMinVersaoCurso;
@@ -56,7 +56,7 @@ public class ImportadorTudo {
 	ImportadorAlocacoesDisciplinasEmDepartamentos importadorAlocacoesDisciplinasEmDepartamentos;
 
 	@Autowired
-	ImportadorEquivalenciaDisciplinas importadorEquivalenciaDisciplinas;
+	ImportadorEquivalenciasDisciplinas importadorEquivalenciaDisciplinas;
 	
 	public static void main(String[] args) {
 		ImportadorTudo importador = context.getBean(ImportadorTudo.class);

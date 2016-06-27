@@ -25,7 +25,7 @@ import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
 @Component
-public class ImportadorEquivalenciaDisciplinas {
+public class ImportadorEquivalenciasDisciplinas {
 	
 	@Autowired
 	private VersaoCursoRepositorio versaoCursoRepositorio;
@@ -44,7 +44,7 @@ public class ImportadorEquivalenciaDisciplinas {
 			"BLOCO"};
 	
 	public void run() {
-		System.out.println("ImportadorEquivalenciaDisciplinas.run()");
+		System.out.println("ImportadorEquivalenciasDisciplinas.run()");
 		File folder = new File("./planilhas/equivalencia-disciplinas");
 		File[] listOfFiles = folder.listFiles();
 

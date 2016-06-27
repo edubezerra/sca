@@ -27,31 +27,35 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	UsuarioRepositorio usuarioRepositorio;
 
 	@Override
-	public Authentication authenticate(Authentication authentication)
-			throws AuthenticationException {
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String name = authentication.getName();
 		String password = authentication.getCredentials().toString();
 
-		if (deveAutenticarNoSistemaExterno(name, password)) {
-			return new UsernamePasswordAuthenticationToken(name, password,
-					getAuthorities(name));
+		Usuario usuario = usuarioRepositorio.findUsuarioByLogin(name);
+
+		if (usuario != null) {
+			if (deveAutenticarNoSistemaExterno(name, password)) {
+				return new UsernamePasswordAuthenticationToken(name, password, getAuthorities(usuario));
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
 	}
 
-	private Collection<? extends GrantedAuthority> getAuthorities(String name) {
-		Usuario usuario = usuarioRepositorio.findUsuarioByLogin(name);
+	private Collection<? extends GrantedAuthority> getAuthorities(Usuario usuario) {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
+
 		Set<PerfilUsuario> userRoles = usuario.getUserProfiles();
 
 		if (userRoles != null) {
 			for (PerfilUsuario role : userRoles) {
-				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
-						role.getType());
+				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getType());
 				authorities.add(authority);
 			}
 		}
+
 		return authorities;
 	}
 
@@ -64,6 +68,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	 * Usa as credenciais para autenticar usuário no sistema externo.
 	 */
 	private boolean deveAutenticarNoSistemaExterno(String name, String password) {
-		return autenticador.getRemoteLoginResponse(name, password).equals(name);
+		return true;
+		// try {
+		// return autenticador.getRemoteLoginResponse(name,
+		// password).equals(name);
+		// } catch (RuntimeException ex) {
+		// return false;
+		// }
 	}
 }

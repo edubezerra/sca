@@ -63,13 +63,13 @@ public class RequerimentoMatriculaForaPrazoController {
 	}
 
 	/**
-	 * Invocado quando o usuário (aluno) solicita iniciar o registro de um novo
+	 * Invocado quando o aluno solicita iniciar o registro de um novo
 	 * requerimento de matrícula fora do prazo.
 	 */
 	@RequestMapping(value = "/iniciarRegistroRequerimento", method = RequestMethod.POST)
 	public String iniciarRegistroRequerimento(Model model, HttpSession sessao) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matriculaAluno = usr.getLogin();
+		String matriculaAluno = usr.getMatricula();
 		try {
 			FichaMatriculaForaPrazo ficha = service.criarFichaSolicitacao(matriculaAluno);
 
@@ -89,9 +89,9 @@ public class RequerimentoMatriculaForaPrazoController {
 	}
 
 	/**
-	 * Método invocado quando o usuário (aluno) seleciona a opção (link) para
+	 * Método invocado quando o aluno seleciona a opção (link) para
 	 * realizar um requerimento. Esse método produz a lista de requerimentos
-	 * anteriores. A partir dessa lista, o usuário pode selecionar o
+	 * anteriores. A partir dessa lista, o aluno pode selecionar o
 	 * requerimento correspondente ao período letivo corrente para edição. Pode
 	 * também selecionar qualquer requerimento de períodos letivos anteriores
 	 * para visualização apenas.
@@ -99,13 +99,13 @@ public class RequerimentoMatriculaForaPrazoController {
 	@RequestMapping(value = "/visualizarRequerimentos", method = RequestMethod.GET)
 	public String visualizarRequerimentos(Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matriculaAluno = usr.getLogin();
+		String matriculaAluno = usr.getMatricula();
 		this.definirModelParaVisualizacaoRequerimentos(model, matriculaAluno);
 		return "/matriculaForaPrazo/requerimento/visualizarRequerimentosView";
 	}
 
 	/**
-	 * Método invocado quando o usuário submete dados para a adição de um novo
+	 * Método invocado quando o aluno submete dados para a adição de um novo
 	 * item (turma/disciplina) ao requerimento de matrícula fora do prazo.
 	 */
 	@RequestMapping(value = "/adicionarItem", method = RequestMethod.POST)
@@ -134,7 +134,7 @@ public class RequerimentoMatriculaForaPrazoController {
 	}
 
 	/**
-	 * Método invocado quando o usuário solicita que um item do requerimento
+	 * Método invocado quando o aluno solicita que um item do requerimento
 	 * seja removido. Esse item é identificado pelo ID da turma correspondente,
 	 * que é passado como parâmetro GET.
 	 */
@@ -149,7 +149,7 @@ public class RequerimentoMatriculaForaPrazoController {
 	}
 
 	/**
-	 * Método invocado quando o usuário confirma o registro dos itens de
+	 * Método invocado quando o aluno confirma o registro dos itens de
 	 * requerimento de matrícula fora do prazo.
 	 */
 	@RequestMapping(value = "/confirmarRegistroRequerimento", method = RequestMethod.POST)
@@ -159,7 +159,7 @@ public class RequerimentoMatriculaForaPrazoController {
 		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao.getAttribute("ficha");
 
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 
 		try {
 			service.confirmarRegistroRequerimento(ficha);
@@ -176,15 +176,15 @@ public class RequerimentoMatriculaForaPrazoController {
 	}
 
 	/**
-	 * Método invocado quando o usuário solicita visualizar os detalhes de um
-	 * requerimento.
+	 * Método invocado quando o aluno solicita visualizar os detalhes de um
+	 * requerimento que realizou anteriormente.
 	 */
 	@RequestMapping(value = "/visualizarDetalhesRequerimento", method = RequestMethod.POST)
 	public String visualizarDetalhesRequerimento(@RequestParam int ano, @RequestParam EnumPeriodo periodo,
 			Model model) {
 
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matriculaAluno = usr.getLogin();
+		String matriculaAluno = usr.getMatricula();
 
 		try {
 			MatriculaForaPrazo requerimento;

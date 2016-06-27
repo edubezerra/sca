@@ -38,16 +38,6 @@ public class AvaliacaoProfessoresController {
 		return "/homeView";
 	}
 
-	@RequestMapping(value = "/selecionaPlanilhaInscricoes", method = RequestMethod.GET)
-	public String selecionarPlanilhaInscricoes(HttpSession session, Model model) {
-		String matricula = (String) session.getAttribute("login");
-		if (matricula == null || !matricula.equals("usuarioeic")) {
-			return "/homeView";
-		} else {
-			return "/avaliacaoTurma/uploadView";
-		}
-	}
-
 	@RequestMapping(value = "/avaliacaoTurmas", method = RequestMethod.GET)
 	public String solicitaAvaliacao(HttpSession session, Model model) {
 		String matricula = UsuarioController.getCurrentUser().getMatricula();

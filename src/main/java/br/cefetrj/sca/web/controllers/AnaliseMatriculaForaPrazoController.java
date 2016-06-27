@@ -34,7 +34,7 @@ public class AnaliseMatriculaForaPrazoController {
 			HttpSession session, Model model) {
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matricula = usr.getLogin();
+			String matricula = usr.getMatricula();
 			
 			Professor professor = service.getProfessorByMatricula(matricula);
 
@@ -55,7 +55,7 @@ public class AnaliseMatriculaForaPrazoController {
 			@RequestParam EnumPeriodo periodo, Model model) {
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matriculaProfessor = usr.getLogin();
+			String matriculaProfessor = usr.getMatricula();
 
 			PeriodoLetivo periodoLetivo = new PeriodoLetivo(ano, periodo);
 			List<MatriculaForaPrazo> requerimentos = service
@@ -76,7 +76,7 @@ public class AnaliseMatriculaForaPrazoController {
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session, Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		if (matricula != null) {
 			return "/matriculaForaPrazo/analise/menuPrincipalProfessorView";
 		} else {
@@ -92,7 +92,7 @@ public class AnaliseMatriculaForaPrazoController {
 			@RequestParam EnumPeriodo periodo) {
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matriculaProfessor = usr.getLogin();
+			String matriculaProfessor = usr.getMatricula();
 			service.definirStatusSolicitacao(idSolicitacao, idItemSolicitacao,
 					status);
 
@@ -120,7 +120,7 @@ public class AnaliseMatriculaForaPrazoController {
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matricula = usr.getLogin();
+			String matricula = usr.getMatricula();
 			MatriculaForaPrazo requerimento = service
 					.getMatriculaForaPrazoById(solicitacaoId);
 			Comprovante comprovante = requerimento.getComprovante();
