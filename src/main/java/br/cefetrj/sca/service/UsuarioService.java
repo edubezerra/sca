@@ -3,21 +3,26 @@ package br.cefetrj.sca.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
-import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import br.cefetrj.sca.dominio.repositories.UsuarioRepositorio;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
+import br.cefetrj.sca.infra.auth.AutenticadorMoodle;
 
 @Service
 @Transactional
 public class UsuarioService {
 	@Autowired
 	private UsuarioRepositorio repositorio;
+
+	@Autowired
+	@Qualifier("mockAuth")
+	private AutenticacaoService authService;
+
+	@Autowired
+	AutenticadorMoodle autenticador;
 
 	public void saveUser(Usuario usr) {
 		repositorio.save(usr);
@@ -33,7 +38,7 @@ public class UsuarioService {
 		Usuario entity = repositorio.findOne(user.getId());
 		if (entity != null) {
 			entity.setLogin(user.getLogin());
-			entity.setPassword(user.getPassword());
+//			entity.setPassword(user.getPassword());
 			entity.setNome(user.getNome());
 			entity.setEmail(user.getEmail());
 			entity.setUserProfiles(user.getUserProfiles());
@@ -50,10 +55,6 @@ public class UsuarioService {
 
 	public Usuario findUserById(int id) {
 		return repositorio.findOne(id);
-	}
-
-	public Usuario login(String email, String password) {
-		return repositorio.findByLoginAndPassword(email, password);
 	}
 
 	public Usuario update(Usuario user) {

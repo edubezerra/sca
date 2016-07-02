@@ -329,4 +329,11 @@ public class Turma {
 	public Integer getQtdAulas() {
 		return this.getDisciplina().getCargaHoraria();
 	}
+
+	@Override
+	public String toString() {
+		return "Turma [codigo=" + codigo + ", disciplina=" + disciplina + ", periodo=" + periodo + "]";
+	}
+	
+	
 }

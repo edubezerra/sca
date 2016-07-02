@@ -20,12 +20,17 @@ import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
+/**
+ * Esse importador realiza a persistência dos objetos <code>Aluno</code>.
+ */
 @Component
 public class ImportadorAlunos {
-	
+
 	@Autowired
 	private AlunoRepositorio alunoRepositorio;
 
+	@Autowired
+	private AlunoFabrica alunoFabrica;
 
 	String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
 			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
@@ -36,9 +41,6 @@ public class ImportadorAlunos {
 	 * Dicionário de pares (matrícula, objeto da classe aluno) de cada aluno.
 	 */
 	private HashMap<String, Aluno> alunos_matriculas = new HashMap<>();
-
-	@Autowired
-	private AlunoFabrica alunoFabrica;
 
 	public ImportadorAlunos() {
 	}
@@ -63,36 +65,21 @@ public class ImportadorAlunos {
 	public void gravarDadosImportados() {
 		System.out.println("Realizando a persistência de objetos Aluno...");
 
-//		EntityManager em = ImportadorTudo.entityManager;
-
-//		em.getTransaction().begin();
-
-		/**
-		 * Realiza a persistência dos objetos Aluno.
-		 */
 		int adicionados = 0;
 		Set<String> matriculas = alunos_matriculas.keySet();
 		for (String matricula : matriculas) {
 			Aluno aluno;
 			try {
-//				Query queryAluno;
-//				queryAluno = em
-//						.createQuery("from Aluno a where a.matricula = :matricula");
-//				queryAluno.setParameter("matricula", matricula);
-//				aluno = (Aluno) queryAluno.getSingleResult();
 				aluno = alunoRepositorio.findAlunoByMatricula(matricula);
 			} catch (NoResultException e) {
 				aluno = null;
 			}
 
 			if (aluno == null) {
-//				em.persist(alunos_matriculas.get(matricula));
 				alunoRepositorio.save(alunos_matriculas.get(matricula));
 				adicionados++;
 			}
 		}
-
-//		em.getTransaction().commit();
 
 		System.out.println("Foram adicionados " + adicionados + " alunos.");
 	}
@@ -130,11 +117,11 @@ public class ImportadorAlunos {
 					.getContents();
 
 			if (aluno_cpf == null || aluno_cpf.isEmpty()) {
-				System.out
-						.println("CPF não fornecido para aluno " + aluno_nome);
+				System.out.println("Aluno sem CPF definido. Nome: " + aluno_nome
+						+ ", Matrícula: " + aluno_matricula);
 			} else {
-				alunoFabrica = (AlunoFabrica) ImportadorTudo.context
-						.getBean(AlunoFabrica.class);
+				// alunoFabrica = (AlunoFabrica) ImportadorTudo.context
+				// .getBean(AlunoFabrica.class);
 				Aluno aluno = alunoFabrica.criar(aluno_nome, aluno_matricula,
 						aluno_cpf, codigoCurso, numeroVersaoCurso);
 				alunos_matriculas.put(aluno_matricula, aluno);

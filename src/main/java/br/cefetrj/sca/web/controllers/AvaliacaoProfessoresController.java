@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,25 +17,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import br.cefetrj.sca.service.AutenticacaoService;
-import br.cefetrj.sca.service.AvaliacaoTurmaService;
+import br.cefetrj.sca.service.AvaliacaoProfessorService;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoResponse;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
 @Controller
 @SessionAttributes("matricula")
 @RequestMapping("/avaliacaoTurma")
-public class AvaliacaoTurmaController {
+public class AvaliacaoProfessoresController {
 
-	protected Logger logger = Logger.getLogger(AvaliacaoTurmaController.class
+	protected Logger logger = Logger.getLogger(AvaliacaoProfessoresController.class
 			.getName());
 
 	@Autowired
-	private AvaliacaoTurmaService service;
-
-	@Autowired
-	@Qualifier("mockAuth")
-	private AutenticacaoService authService;
+	private AvaliacaoProfessorService service;
 
 	@RequestMapping(value = "/{*}", method = RequestMethod.GET)
 	public String get(Model model) {
@@ -44,66 +38,9 @@ public class AvaliacaoTurmaController {
 		return "/homeView";
 	}
 
-	// @RequestMapping(value = "/importaQuestionario", method =
-	// RequestMethod.GET)
-	// public String importarQuestionario(HttpServletRequest request,
-	// HttpServletResponse response, Model model, HttpSession session) {
-	// try {
-	// String matricula = (String) session.getAttribute("login");
-	// if (matricula == null || !matricula.equals("usuarioeic")) {
-	// session.invalidate();
-	// return "/homeView";
-	// } else {
-	// ImportadorQuestionarioAvaliacaoTurmas.run();
-	// model.addAttribute("info", "Importação finalizada com sucesso.");
-	// return "/avaliacaoTurma/uploadView";
-	// }
-	// } catch (Exception e) {
-	// logger.log(Level.SEVERE, e.getMessage());
-	// model.addAttribute("error", e.getMessage());
-	// return "/avaliacaoTurma/uploadView";
-	// }
-	// }
-
-	@RequestMapping(value = "/selecionaPlanilhaInscricoes", method = RequestMethod.GET)
-	public String selecionarPlanilhaInscricoes(HttpSession session, Model model) {
-		String matricula = (String) session.getAttribute("login");
-		if (matricula == null || !matricula.equals("usuarioeic")) {
-			return "/homeView";
-		} else {
-			return "/avaliacaoTurma/uploadView";
-		}
-	}
-
-	// @RequestMapping(value = "/importaInscricoes", method =
-	// RequestMethod.POST)
-	// public String importarInscricoes(HttpServletRequest request,
-	// HttpServletResponse response, Model model, HttpSession session) {
-	// try {
-	// String matricula = (String) session.getAttribute("login");
-	// if (matricula == null || !matricula.equals("usuarioeic")) {
-	// return "/homeView";
-	// } else {
-	// UploadFile uploader = new UploadFile();
-	// File f = uploader.receberArquivo(request);
-	// String codigosCursos[] = { "BCC", "WEB" };
-	//
-	// ImportadorInscricoes importador = new ImportadorInscricoes(
-	// codigosCursos);
-	// importador.importarPlanilha(f);
-	// importador.gravarDadosImportados();
-	// model.addAttribute("info", "Importação finalizada com sucesso.");
-	// return "/avaliacaoTurma/uploadView";
-	// }
-	// } catch (Exception e) {
-	// model.addAttribute("error", e.getMessage());
-	// return "/avaliacaoTurma/uploadView";
-	// }
-	// }
-
 	@RequestMapping(value = "/avaliacaoTurmas", method = RequestMethod.GET)
 	public String solicitaAvaliacao(HttpSession session, Model model) {
-		String matricula = UsuarioController.getCurrentUser().getLogin();
+		String matricula = UsuarioController.getCurrentUser().getMatricula();
 		session.setAttribute("login", matricula);
 		try {
 			SolicitaAvaliacaoResponse turmasCursadas = service

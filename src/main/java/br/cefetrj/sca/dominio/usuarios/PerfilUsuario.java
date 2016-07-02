@@ -18,6 +18,14 @@ public class PerfilUsuario {
 	@Column(name = "TYPE", length = 30, unique = true, nullable = false)
 	private String type = TipoPerfilUsuario.ROLE_USER.getUserProfileType();
 
+	@SuppressWarnings("unused")
+	private PerfilUsuario() {
+	}
+
+	public PerfilUsuario(String roleAluno) {
+		this.setType(roleAluno);
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -67,7 +75,7 @@ public class PerfilUsuario {
 
 	@Override
 	public String toString() {
-		return "UserProfile [id=" + id + ", type=" + type + "]";
+		return "PerfilUsuario [id=" + id + ", type=" + type + "]";
 	}
 
 }

@@ -11,20 +11,21 @@ import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
 /**
- * Essa classe realiza a carga de cada item do questionário de avaliação, assim
- * como das alternativas de cada item.
+ * Essa classe realiza a carga de cada item do questionário de avaliação das
+ * atividades de um professor em um turma sob sua responsabilidae, assim como
+ * das alternativas de cada item.
  * 
  * @author Eduardo Bezerra
  *
  */
 @Component
-public class ImportadorQuestionarioAvaliacaoDocente {
+public class ImportadorQuestionarioAvaliacaoProfessor {
 
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 			StandalonePersistenceConfig.class);
 
-	static ImportadorQuestionarioAvaliacaoDocente importador = context
-			.getBean(ImportadorQuestionarioAvaliacaoDocente.class);
+	static ImportadorQuestionarioAvaliacaoProfessor importador = context
+			.getBean(ImportadorQuestionarioAvaliacaoProfessor.class);
 
 	private static EntityManagerFactory emf = (EntityManagerFactory) context.getBean("entityManagerFactory");
 
@@ -77,7 +78,8 @@ public class ImportadorQuestionarioAvaliacaoDocente {
 
 		Quesito[] questoes = new Quesito[] { quest1, quest2, quest3, quest4, quest5, quest6, quest7, quest8 };
 
-		QuestionarioAvaliacaoDocente form = new QuestionarioAvaliacaoDocente("Docente", "Avaliação de Docente");
+		QuestionarioAvaliacaoDocente form = new QuestionarioAvaliacaoDocente("AvaliacaoDocente",
+				"Avaliação de Docente");
 		for (Quesito quesito : questoes) {
 			form.adicionarQuesito(quesito);
 		}

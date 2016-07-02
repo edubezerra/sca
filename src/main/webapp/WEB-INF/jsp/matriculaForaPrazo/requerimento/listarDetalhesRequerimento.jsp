@@ -30,22 +30,6 @@
 				${requerimento.semestreLetivo}</h2>
 
 			<h3>Aluno: ${requerimento.aluno.nome} (matrícula ${requerimento.aluno.matricula})</h3>
-
-<!-- 			<h3> -->
-<%-- 				<c:if test="${requerimento.comprovante != null}"> --%>
-<!-- 					<form -->
-<%-- 						action="${pageContext.request.contextPath}/matriculaForaPrazo/downloadFile" --%>
-<!-- 						method="POST" target="_blank"> -->
-<!-- 						<input type="hidden" name="solicitacaoId" -->
-<%-- 							value="${requerimento.id}"> --%>
-<!-- 						<button type="submit" class="btn btn-link"> -->
-<!-- 							<i class="fa fa-download fa-2x"></i> -->
-<!-- 							<h4 class="comprovante">Comprovante da Matrícula no Período</h4> -->
-<!-- 						</button> -->
-<!-- 					</form> -->
-<%-- 				</c:if> --%>
-<!-- 			</h3> -->
-
 		</div>
 		<div class="row">
 			<c:forEach items="${requerimento.itens}"

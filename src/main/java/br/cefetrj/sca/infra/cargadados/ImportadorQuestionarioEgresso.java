@@ -12,7 +12,7 @@ import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
-public class ImportarQuestionarioEgresso {
+public class ImportadorQuestionarioEgresso {
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 			StandalonePersistenceConfig.class);
 

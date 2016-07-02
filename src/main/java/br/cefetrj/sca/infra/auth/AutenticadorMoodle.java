@@ -39,13 +39,11 @@ public class AutenticadorMoodle implements IAutenticador {
 
 			String urlParameters;
 
-			urlParameters = "username=" + URLEncoder.encode(username, "UTF-8")
-					+ "&password=" + URLEncoder.encode(password, "UTF-8")
-					+ "&service="
+			urlParameters = "username=" + URLEncoder.encode(username, "UTF-8") + "&password="
+					+ URLEncoder.encode(password, "UTF-8") + "&service="
 					+ URLEncoder.encode("moodle_mobile_app", "UTF-8");
 
-			HttpURLConnection con = (HttpURLConnection) new URL(serviceURL)
-					.openConnection();
+			HttpURLConnection con = (HttpURLConnection) new URL(serviceURL).openConnection();
 
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
@@ -54,8 +52,7 @@ public class AutenticadorMoodle implements IAutenticador {
 
 			// Send Request
 			{
-				DataOutputStream wr = new DataOutputStream(
-						con.getOutputStream());
+				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 				wr.writeBytes(urlParameters);
 				wr.flush();
 				wr.close();
@@ -64,16 +61,14 @@ public class AutenticadorMoodle implements IAutenticador {
 			// Get Response
 			{
 				InputStream is = con.getInputStream();
-				BufferedReader rd = new BufferedReader(
-						new InputStreamReader(is));
+				BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 				String line;
 
 				StringBuilder responseBuilder = new StringBuilder();
 				while ((line = rd.readLine()) != null) {
 					responseBuilder.append(line);
 					responseMessage = responseBuilder.toString();
-					responseMessage = responseMessage.substring(1,
-							responseBuilder.length() - 1);
+					responseMessage = responseMessage.substring(1, responseBuilder.length() - 1);
 				}
 
 				rd.close();
@@ -94,10 +89,12 @@ public class AutenticadorMoodle implements IAutenticador {
 			// + ex.getMessage());
 			// }
 
+		} catch (java.net.ConnectException ex) {
+			logger.log(Level.SEVERE, ex.getMessage(), ex);
+			throw new RuntimeException("servidor não responde.\nError message: " + ex.getMessage());
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, ex.getMessage(), ex);
-			throw new RuntimeException("HTTP request error.\nError message: "
-					+ ex.getMessage());
+			throw new RuntimeException("HTTP request error.\nError message: " + ex.getMessage());
 		}
 
 		return responseMessage;

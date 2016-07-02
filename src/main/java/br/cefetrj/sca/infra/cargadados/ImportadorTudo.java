@@ -11,11 +11,11 @@ public class ImportadorTudo {
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 			StandalonePersistenceConfig.class);
 
-	ImportadorQuestionarioAvaliacaoDocente importadorQuestionarioAvaliacaoDocente = new ImportadorQuestionarioAvaliacaoDocente();
+	ImportadorQuestionarioAvaliacaoProfessor importadorQuestionarioAvaliacaoDocente = new ImportadorQuestionarioAvaliacaoProfessor();
 
-//	@Autowired
-//	ImportadorCursos importadorCursos;
-
+	@Autowired
+	ImportadorPeriodoMinimoVersaoCurso importadorPerMinVersaoCurso;
+	
 	@Autowired
 	ImportadorGradesCurriculares importadorGradesCurriculares;
 
@@ -27,6 +27,9 @@ public class ImportadorTudo {
 
 	@Autowired
 	ImportadorAlunos importadorAlunos;
+
+	@Autowired
+	ImportadorUsuariosAlunos importadorUsuariosAlunos;
 
 	@Autowired
 	ImportadorProfessores importadorProfessores;
@@ -52,6 +55,9 @@ public class ImportadorTudo {
 	@Autowired
 	ImportadorAlocacoesDisciplinasEmDepartamentos importadorAlocacoesDisciplinasEmDepartamentos;
 
+	@Autowired
+	ImportadorEquivalenciasDisciplinas importadorEquivalenciaDisciplinas;
+	
 	public static void main(String[] args) {
 		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
 		importador.run();
@@ -60,25 +66,30 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
-//			importadorQuestionarioAvaliacaoDocente.run();
+			importadorQuestionarioAvaliacaoDocente.run();
 
-//			importadorCursos.run();
 			importadorGradesCurriculares.run();
-//			importadorPreReqs.run();
-//			importadorAtividadesComp.run();
-//			importadorAlunos.run();
-//			importadorProfessores.run();
-//			importadorDepartamentos.run();
-//
-//			importadorHistoricoEscolar.run();
-//
+			importadorPreReqs.run();
+			importadorAtividadesComp.run();
+
+			importadorAlunos.run();
+//			importadorUsuariosAlunos.run();
+			
+			importadorProfessores.run();
+			importadorDepartamentos.run();
+
+			importadorHistoricoEscolar.run();
+
 			importadorTurmasComInscricoes.run();
-//			importadorAlocacoesProfessoresEmTurmas.run();
-//			importadorHabilitacoesParaProfessor.run();
-//
-//			importadorAlocacoesProfessoresEmDepartamentos.run();
-//
-//			importadorAlocacoesDisciplinasEmDepartamentos.run();
+			importadorAlocacoesProfessoresEmTurmas.run();
+			importadorHabilitacoesParaProfessor.run();
+			importadorPerMinVersaoCurso.run();
+
+			importadorAlocacoesProfessoresEmDepartamentos.run();
+
+			importadorAlocacoesDisciplinasEmDepartamentos.run();
+			
+			importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

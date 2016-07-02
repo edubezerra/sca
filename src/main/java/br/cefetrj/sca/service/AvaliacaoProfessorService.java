@@ -22,7 +22,7 @@ import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
 @Service
 @Transactional
-public class AvaliacaoTurmaService {
+public class AvaliacaoProfessorService {
 
 	@Autowired
 	private AlunoRepositorio alunoRepositorio;
@@ -55,8 +55,7 @@ public class AvaliacaoTurmaService {
 
 		for (Turma turma : turmas) {
 
-			turmaAvaliada = avaliacaoRepo.getAvaliacaoTurma(turma.getId(),
-					matriculaAluno);
+			turmaAvaliada = avaliacaoRepo.getAvaliacaoTurma(turma.getId(), matriculaAluno);
 
 			response.add(turma, turmaAvaliada != null);
 		}
@@ -64,26 +63,28 @@ public class AvaliacaoTurmaService {
 		return response;
 	}
 
-	public SolicitaAvaliacaoTurmaResponse solicitaAvaliacaoTurma(
-			String matriculaAluno, Long idTurma) {
+	public SolicitaAvaliacaoTurmaResponse solicitaAvaliacaoTurma(String matriculaAluno, Long idTurma) {
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 		Turma turma = getTurmaPorId(idTurma);
 
 		if (!turma.isAlunoInscrito(aluno)) {
-			throw new IllegalArgumentException(
-					"Erro: aluno não inscrito na turma informada.");
+			throw new IllegalArgumentException("Erro: aluno não inscrito na turma informada.");
 		}
 
 		if (avaliacaoRepo.getAvaliacaoTurma(idTurma, matriculaAluno) != null) {
-			throw new IllegalArgumentException(
-					"Erro: turma já avaliada pelo aluno.");
+			throw new IllegalArgumentException("Erro: turma já avaliada pelo aluno.");
 		}
 
-		QuestionarioAvaliacaoDocente form = formRepo
-				.findFormularioAvaliacaoBySigla("Turma");
+		QuestionarioAvaliacaoDocente form = formRepo.findFormularioAvaliacaoBySigla("AvaliacaoDocente");
+
+		if (form == null) {
+			throw new RuntimeException(
+					"Erro: questionário não encontrado. Entre em contato com o administrador do sistema.");
+		}
+
 		List<Quesito> quesitos = form.getQuesitos();
-		SolicitaAvaliacaoTurmaResponse response = new SolicitaAvaliacaoTurmaResponse(
-				turma.getCodigo(), turma.getNomeDisciplina());
+		SolicitaAvaliacaoTurmaResponse response = new SolicitaAvaliacaoTurmaResponse(turma.getCodigo(),
+				turma.getNomeDisciplina());
 		List<String> alternativas;
 
 		for (Quesito quesito : quesitos) {
@@ -99,8 +100,7 @@ public class AvaliacaoTurmaService {
 		return response;
 	}
 
-	public void avaliaTurma(String matriculaAluno, Long idTurma,
-			List<Integer> respostas, String aspectosPositivos,
+	public void avaliaTurma(String matriculaAluno, Long idTurma, List<Integer> respostas, String aspectosPositivos,
 			String aspectosNegativos) {
 
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
@@ -108,19 +108,16 @@ public class AvaliacaoTurmaService {
 
 		if (aluno != null && turma != null) {
 			if (avaliacaoRepo.getAvaliacaoTurma(idTurma, matriculaAluno) != null) {
-				throw new IllegalArgumentException(
-						"Erro: turma já avaliada pelo aluno.");
+				throw new IllegalArgumentException("Erro: turma já avaliada pelo aluno.");
 			}
 
-			QuestionarioAvaliacaoDocente form = formRepo
-					.findFormularioAvaliacaoBySigla("Turma");
+			QuestionarioAvaliacaoDocente form = formRepo.findFormularioAvaliacaoBySigla("AvaliacaoDocente");
 			List<Quesito> quesitos = form.getQuesitos();
 			int numRespostas = quesitos.size();
 
 			if (respostas == null || respostas.size() != numRespostas) {
-				throw new IllegalArgumentException(
-						"Erro: número de respostas inválido. "
-								+ "Por favor, forneça respostas para todos os quesitos.");
+				throw new IllegalArgumentException("Erro: número de respostas inválido. "
+						+ "Por favor, forneça respostas para todos os quesitos.");
 			}
 
 			List<Alternativa> alternativas = new ArrayList<Alternativa>();
@@ -132,24 +129,19 @@ public class AvaliacaoTurmaService {
 				resposta = respostas.get(i);
 
 				if (resposta < 0 || resposta > quesito.getAlternativas().size()) {
-					throw new IllegalArgumentException(
-							"Erro: código de resposta inválido: " + resposta
-									+ ".");
+					throw new IllegalArgumentException("Erro: código de resposta inválido: " + resposta + ".");
 				}
 
 				alternativas.add(quesito.getAlternativas().get(resposta));
 			}
 
-			AvaliacaoTurma avaliacao = new AvaliacaoTurma(aluno, turma,
-					alternativas);
+			AvaliacaoTurma avaliacao = new AvaliacaoTurma(aluno, turma, alternativas);
 
-			if (aspectosPositivos != null
-					&& aspectosPositivos.trim().length() > 0) {
+			if (aspectosPositivos != null && aspectosPositivos.trim().length() > 0) {
 				avaliacao.setAspectosPositivos(aspectosPositivos);
 			}
 
-			if (aspectosNegativos != null
-					&& aspectosNegativos.trim().length() > 0) {
+			if (aspectosNegativos != null && aspectosNegativos.trim().length() > 0) {
 				avaliacao.setAspectosNegativos(aspectosNegativos);
 			}
 
@@ -167,8 +159,7 @@ public class AvaliacaoTurmaService {
 		try {
 			aluno = alunoRepositorio.findAlunoByMatricula(matriculaAluno);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Aluno não encontrado ("
-					+ matriculaAluno + ")", e);
+			throw new IllegalArgumentException("Aluno não encontrado (" + matriculaAluno + ")", e);
 		}
 
 		return aluno;

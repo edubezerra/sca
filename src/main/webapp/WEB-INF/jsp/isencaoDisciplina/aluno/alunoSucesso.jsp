@@ -46,7 +46,14 @@
 							<tr>
 								
 								<td>${itemIsencaoByProcessoIsencao.id}</td>
-								<td>${itemIsencaoByProcessoIsencao.disciplina.nome}</td>
+								<td>${itemIsencaoByProcessoIsencao.disciplina.nome}
+								<c:if test="${itemIsencaoByProcessoIsencao.disciplinaAssociada != null}">
+									<div>
+										Disciplinas Associadas: <br>
+										${itemIsencaoByProcessoIsencao.disciplinaAssociada}
+									</div>
+								</c:if>
+							</td>
 								<td>
 								<c:if test="${itemIsencaoByProcessoIsencao.situacao == 'deferir'}">
 										DEFERIDO

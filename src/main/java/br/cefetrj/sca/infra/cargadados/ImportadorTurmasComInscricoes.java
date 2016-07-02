@@ -8,31 +8,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.PeriodoLetivo;
-import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.VersaoCurso;
-import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
-import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
-import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
-import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.AlunoFabrica;
+import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
+
 /**
  * Esse importador faz a carga de objetos <code>Turma</code> e de seus
  * respectivos objetos <code>Inscricao</code> para o repositório de objetos.
  * 
- * Eventualmente esse importador também faz a carga de objetos
- * <code>Aluno</code> que estejam na planilha de entrada, mas que não ainda
- * constam no repositório de objetos.
+ * Esse importador também faz a carga de objetos <code>Aluno</code> que estejam
+ * na planilha de entrada, mas que não ainda constam no repositório de objetos.
  * 
  * @author Eduardo Bezerra
  *
@@ -51,6 +50,9 @@ public class ImportadorTurmasComInscricoes {
 
 	@Autowired
 	private TurmaRepositorio turmaRepositorio;
+
+	@Autowired
+	private AlunoFabrica alunoFabrica;
 
 	private final String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
 			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
@@ -165,7 +167,6 @@ public class ImportadorTurmasComInscricoes {
 								+ listOfFiles[i].getName();
 
 						importarPlanilha(arquivoPlanilha);
-						// gravarDadosImportados();
 					}
 				} else if (listOfFiles[i].isDirectory()) {
 					System.out
@@ -202,12 +203,6 @@ public class ImportadorTurmasComInscricoes {
 
 			String aluno_matricula = sheet.getCell(
 					colunasList.indexOf("MATR_ALUNO"), i).getContents();
-			/**
-			 * No Moodle, o CPF do aluno é armazenado sem os pontos separadores,
-			 * enquanto que os valores de CPFs provenientes do SIE possuem
-			 * pontos. A instrução a seguir tem o propósito de uniformizar a
-			 * representação.
-			 */
 
 			String disciplina_codigo = sheet.getCell(
 					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
@@ -319,22 +314,15 @@ public class ImportadorTurmasComInscricoes {
 						Aluno aluno = alunoRepositorio
 								.findAlunoByMatricula(matricula);
 						if (aluno == null) {
-							// System.err
-							// .println("Aluno não encontrado (matrícula): "
-							// + matricula
-							// + ". Inserindo aluno...");
 							String aluno_cpf = mapaAlunosCPFs.get(matricula);
 							String aluno_nome = mapaAlunosNomes.get(matricula);
 
-							aluno = criarAluno(aluno_nome, matricula,
+							aluno = alunoFabrica.criar(aluno_nome, matricula,
 									aluno_cpf, codCurso, numeroVersaoCurso);
 
 							alunoRepositorio.save(aluno);
 
 							qtdAlunos++;
-
-							// System.err.println("Aluno inserido com sucesso: "
-							// + aluno.toString());
 						}
 						try {
 							if (!turma.isAlunoInscrito(aluno)) {
@@ -365,18 +353,18 @@ public class ImportadorTurmasComInscricoes {
 		return response;
 	}
 
-	public Aluno criarAluno(String nomeAluno, String matriculaAluno,
-			String cpfAluno, String siglaCurso, String numeroVersaoCurso) {
-		VersaoCurso versaoCurso = cursoRepositorio.getVersaoCurso(siglaCurso,
-				numeroVersaoCurso);
-
-		if (versaoCurso == null) {
-			throw new IllegalArgumentException(
-					"Versão do curso não encontrada. Sigla: " + siglaCurso
-							+ "; Versão: " + numeroVersaoCurso);
-		}
-		Aluno aluno = new Aluno(nomeAluno, cpfAluno, matriculaAluno,
-				versaoCurso);
-		return aluno;
-	}
+	// public Aluno criarAluno(String nomeAluno, String matriculaAluno,
+	// String cpfAluno, String siglaCurso, String numeroVersaoCurso) {
+	// VersaoCurso versaoCurso = cursoRepositorio.getVersaoCurso(siglaCurso,
+	// numeroVersaoCurso);
+	//
+	// if (versaoCurso == null) {
+	// throw new IllegalArgumentException(
+	// "Versão do curso não encontrada. Sigla: " + siglaCurso
+	// + "; Versão: " + numeroVersaoCurso);
+	// }
+	// Aluno aluno = new Aluno(nomeAluno, cpfAluno, matriculaAluno,
+	// versaoCurso);
+	// return aluno;
+	// }
 }
