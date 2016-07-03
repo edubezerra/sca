@@ -41,7 +41,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session, Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		if (matricula != null) {
 			return "/menuPrincipalView";
 		} else {
@@ -53,7 +53,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	public String paginaInicialAnalise(HttpServletRequest request, HttpSession session, Model model){
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matricula = usr.getLogin();
+			String matricula = usr.getMatricula();
 			model.addAttribute("dadosAnaliseAtividades", 
 					service.homeAnaliseAtividades(matricula));				
 			return "/atividadeComplementar/analiseAtividades/analiseRegistrosView";
@@ -103,7 +103,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 			Model model){
 		
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matriculaProfessor = usr.getLogin();
+		String matriculaProfessor = usr.getMatricula();
 		
 		SolicitaRegistroAtividadesResponse registrosAtiv = null;
 		
@@ -123,7 +123,7 @@ public class AnaliseRegistrosAtividadeComplementarController {
 	public String solicitaNovamenteHomeAnalise(HttpServletRequest request, HttpSession session, Model model){
 		try {
 			Usuario usr = UsuarioController.getCurrentUser();
-			String matricula = usr.getLogin();
+			String matricula = usr.getMatricula();
 			model.addAttribute("dadosAnaliseAtividades", 
 					service.homeAnaliseAtividades(matricula));
 			return "/atividadeComplementar/analiseAtividades/analiseRegistrosView";

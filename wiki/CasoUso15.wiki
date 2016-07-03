@@ -1,0 +1,77 @@
+﻿#summary Cadastrar Atividade Complementar
+
+
+
+= Cadastrar Atividade Complementar = 
+
+
+
+Sumário: Aluno registra as atividades complementares cumpridas juntamente com os seus respectivos comprovantes para o somatório de carga horária necessária para a conclusão do curso de graduação.
+
+
+
+Ator Primário: Aluno
+
+
+
+Pré-condições: O Aluno está identificado pelo sistema.
+
+
+
+Fluxo Principal
+
+ # Aluno solicita acesso ao seu registro de atividades complementares no menu principal.
+
+ # Sistema apresenta a lista de atividades complementares já registradas pelo aluno assim como os seus status, e uma lista de todas as possíveis atividades complementares com suas respectivas cargas horárias máxima, mínima e cumprida.
+
+ # Aluno solicita Registro de uma Nova Atividade Complementar.
+
+ # Sistema apresenta formulário de registro de atividade complementar.
+
+ # Aluno informa (1) o tipo de atividade a ser registrada, (2) uma descrição informal da atividade, (3) a carga horária a ser somada e (4) um arquivo com o comprovante de cumprimento da atividade. 
+
+ # Aluno confirma o registro da atividade complementar.
+
+ # Sistema retorna à lista de atividades complementares já registradas que agora contém a atividade recém registrada e o caso de uso termina.
+
+
+
+Fluxo Alternativo (3): Cancelamento da submissão da Atividade Complementar (RN10)
+
+ * a. Aluno solicita cancelamento do registro de atividade complementar listado.
+
+ * b. Sistema exclui o registro da atividade complementar.
+
+ * c. Sistema apresenta a lista atualizada de atividades complementares já registradas que agora não mais contém a atividade recém excluída e o caso de uso termina.
+
+
+
+Fluxo Alternativo (3): Retorno ao Menu Principal
+
+ * a. Aluno solicita retorno ao Menu Principal.
+
+ * b. Sistema apresenta o Menu Principal e o caso de uso termina.
+ 
+
+
+Fluxo Alternativo (5): Retorno à Lista de Atividades Complementares
+
+ * a. Aluno solicita retorno à Lista de Atividades Complementares.
+
+ * b. Sistema apresenta a lista de atividades complementares já registradas e o caso de uso termina.
+
+
+
+Fluxo de Exceção (5): O Aluno não forneceu tipo/descrição/carga horária/comprovante da atividade complementar
+
+ * a. Sistema reporta o fato e o caso de uso continua a partir do passo 4.
+
+
+
+Fluxo de Exceção (5): O Aluno forneceu carga horária maior do que o máximo aceitável (RN08) 
+
+ * a. Sistema reporta o fato e o caso de uso continua a partir do passo 4.
+
+
+
+Pós-condições: o sistema registrou a atividade complementar do Aluno.

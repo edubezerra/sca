@@ -40,7 +40,7 @@ public class RegistrarAtividadeComplementarController {
 	public String menuPrincipal(HttpSession session,
 			Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		if (matricula != null) {
 			return "/menuPrincipalView";
 		} else {
@@ -51,7 +51,7 @@ public class RegistrarAtividadeComplementarController {
 	@RequestMapping(value = "/registroAtividades", method = RequestMethod.GET)
 	public String solicitaRegistroAtividades(HttpSession session, Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 
 		try {
 			model.addAttribute("dadosAluno",
@@ -75,7 +75,7 @@ public class RegistrarAtividadeComplementarController {
 			@RequestParam String idAtiv, Model model) {
 		
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		try {
 			model.addAttribute("dadosAluno",
 					service.obterSituacaAluno(matricula));
@@ -102,7 +102,7 @@ public class RegistrarAtividadeComplementarController {
 			Model model)  throws IOException {
 
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		try {
 			Long id = Long.parseLong(idAtiv);
 			service.registraAtividade(matricula, id, descricao, cargaHoraria, file);
@@ -122,7 +122,7 @@ public class RegistrarAtividadeComplementarController {
 			@RequestParam String idReg, Model model) {
 		
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		try {
 			Long id = Long.parseLong(idReg);
 			service.removeRegistroAtividade(matricula, id);
@@ -141,7 +141,7 @@ public class RegistrarAtividadeComplementarController {
 			Model model) {
 
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		try {
 			model.addAttribute("dadosAluno",
 					service.obterSituacaAluno(matricula));
@@ -167,7 +167,7 @@ public class RegistrarAtividadeComplementarController {
 			@RequestParam String IdReg, HttpServletResponse response) {
 		
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		try {
 			Long id = Long.parseLong(IdReg);
 			Comprovante comprovante = service.getComprovante(matricula,id);

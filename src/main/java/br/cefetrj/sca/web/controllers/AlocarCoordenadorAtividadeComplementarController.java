@@ -34,7 +34,7 @@ public class AlocarCoordenadorAtividadeComplementarController {
 	@RequestMapping(value = "/menuPrincipal")
 	public String menuPrincipal(HttpSession session, Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getLogin();
+		String matricula = usr.getMatricula();
 		if (matricula != null) {
 			return "/menuPrincipalView";
 		} else {
