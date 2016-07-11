@@ -84,7 +84,7 @@
 		           'Este Mês': [moment().startOf('month'), moment().endOf('month')],		           
 		           'Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		           'Este ano': [moment().startOf('year'), moment().endOf('year')],
-		           'Desde o início': [moment("00/00/00"),moment()],
+		           'Desde o início': [moment("01/01/2012"),moment()],
 		        }
 		    }, cb);
 		});
