@@ -274,11 +274,12 @@
 				timeout : 100000,
 				success : function(data) {
 					console.log("SUCCESS: ", data);
+					$("#statusError").html("");
 					display(data);},
 				error : function(e) {
 					console.log("ERROR: ", e);
-					$("#lista_registros").html(String("${requestScope.error}"));
-					$("#error").html("Registro de atividade complementar não pode ser deferido! Carga horária máxima atingida!");}
+					$("#statusError").html("Registro de atividade complementar não pode ser deferido! Carga horária máxima atingida!");
+					searchRegistrosAtividade();}
 			});	
 		}
 	</script>
@@ -531,7 +532,7 @@
 		</c:if>
 		<c:if test="${requestScope.error != null}">
 			<div class="row">
-				<span id="error" class="label label-danger">${requestScope.error}</span>
+				<span class="label label-danger">${requestScope.error}</span>
 			</div>
 		</c:if>
 		<c:if test="${requestScope.info != null}">
@@ -582,6 +583,10 @@
 	          		</tr>
           		</table>
 			</form>
+		</div>
+		
+		<div class="row">
+			<span id="statusError" class="label label-danger"></span>
 		</div>
 		
 		<div class="row">

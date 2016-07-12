@@ -115,12 +115,6 @@ public class AnaliseRegistrosAtividadeComplementarController {
 					search.getStartDate(),search.getEndDate());
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			try {
-				registrosAtiv = service.listarRegistrosAtividade(search.getMatriculaProf(),search.getSiglaCurso(),search.getNumeroVersao(),search.getStatus(),
-						search.getStartDate(),search.getEndDate());
-			} catch (Exception exc2) {
-				model.addAttribute("error", exc.getMessage()+exc2.getMessage());
-			}
 		}
 		return registrosAtiv;
 	}
