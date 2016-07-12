@@ -277,7 +277,8 @@
 					display(data);},
 				error : function(e) {
 					console.log("ERROR: ", e);
-					$("#lista_registros").html(JSON.stringify(e));}
+					$("#lista_registros").html(String("${requestScope.error}"));
+					$("#error").html("Registro de atividade complementar não pode ser deferido! Carga horária máxima atingida!");}
 			});	
 		}
 	</script>
@@ -530,7 +531,7 @@
 		</c:if>
 		<c:if test="${requestScope.error != null}">
 			<div class="row">
-				<span class="label label-danger">${requestScope.error}</span>
+				<span id="error" class="label label-danger">${requestScope.error}</span>
 			</div>
 		</c:if>
 		<c:if test="${requestScope.info != null}">

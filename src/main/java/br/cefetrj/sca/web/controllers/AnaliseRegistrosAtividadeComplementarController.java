@@ -108,13 +108,19 @@ public class AnaliseRegistrosAtividadeComplementarController {
 		SolicitaRegistroAtividadesResponse registrosAtiv = null;
 		
 		try {
-			Long idRegistro = Long.parseLong(search.getIdRegistro());
+			Long idRegistro = Long.parseLong(search.getIdRegistro());			
 			service.atualizaStatusRegistro(matriculaProfessor,search.getMatriculaAluno(),
 					idRegistro,search.getNovoStatus(), search.getJustificativa());
 			registrosAtiv = service.listarRegistrosAtividade(search.getMatriculaProf(),search.getSiglaCurso(),search.getNumeroVersao(),search.getStatus(),
 					search.getStartDate(),search.getEndDate());
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
+			try {
+				registrosAtiv = service.listarRegistrosAtividade(search.getMatriculaProf(),search.getSiglaCurso(),search.getNumeroVersao(),search.getStatus(),
+						search.getStartDate(),search.getEndDate());
+			} catch (Exception exc2) {
+				model.addAttribute("error", exc.getMessage()+exc2.getMessage());
+			}
 		}
 		return registrosAtiv;
 	}
