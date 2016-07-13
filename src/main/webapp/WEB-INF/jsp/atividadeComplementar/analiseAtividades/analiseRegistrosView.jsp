@@ -84,7 +84,7 @@
 		           'Este Mês': [moment().startOf('month'), moment().endOf('month')],		           
 		           'Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		           'Este ano': [moment().startOf('year'), moment().endOf('year')],
-		           'Desde o início': [moment("00/00/00"),moment()],
+		           'Desde o início': [moment("01/01/2012"),moment()],
 		        }
 		    }, cb);
 		});
@@ -274,10 +274,12 @@
 				timeout : 100000,
 				success : function(data) {
 					console.log("SUCCESS: ", data);
+					$("#statusError").html("");
 					display(data);},
 				error : function(e) {
 					console.log("ERROR: ", e);
-					$("#lista_registros").html(JSON.stringify(e));}
+					$("#statusError").html("Registro de atividade complementar não pode ser deferido! Carga horária máxima atingida!");
+					searchRegistrosAtividade();}
 			});	
 		}
 	</script>
@@ -581,6 +583,10 @@
 	          		</tr>
           		</table>
 			</form>
+		</div>
+		
+		<div class="row">
+			<span id="statusError" class="label label-danger"></span>
 		</div>
 		
 		<div class="row">

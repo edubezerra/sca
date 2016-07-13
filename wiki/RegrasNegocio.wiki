@@ -1,4 +1,4 @@
-= Regras do negócio do SCA = 
+﻿= Regras do negócio do SCA = 
 
 == !RegraNegocio00 ==
  * _*Nome*_: Choques de horários
@@ -35,3 +35,27 @@
 == !RegraNegocio07 ==
  * _*Nome*_: Prioridade em Listas de Espera
  * _*Descrição*_: Ao criar uma turma para inscrever alunos que estão em uma lista de espera, a ordem de entrada nesta lista deve ser respeitada (i.e., alunos esperando a mais tempo têm maior prioridade).
+
+== !RegraNegocio08 ==
+
+ * _*Nome*_: Permissão de Registro de Atividade Complementar
+
+ * _*Descrição*_: Não deve ser possível o registro de uma atividade complementar com carga horária que exceda o máximo aceitável conforme o regulamento de atividades complementares.
+
+ 
+
+== !RegraNegocio09 ==
+
+ * _*Nome*_: Política de Estados de Registros de Atividade Complementar
+
+ * _*Descrição*_: Após uma Atividade Complementar ser registrada pelo Aluno ela assume o estado de "submetido". 
+    * Após o coordenador solicitar análise do registro da atividade complementar, o estado da mesma se torna "em_análise".
+    * Após a análise do coordenador, o estado da atividade será "deferido" ou "indeferido" dependendo da conformidade com o regulamento de atividades complementares.
+
+
+
+== !RegraNegocio10 ==
+
+ * _*Nome*_: Permissão de Cancelamento de Atividade Complementar Registrada
+
+ * _*Descrição*_: O cancelamento/remoção de um registro de Atividade Complementar de um Aluno é permitido apenas se o estado do registro em questão for "submetido".

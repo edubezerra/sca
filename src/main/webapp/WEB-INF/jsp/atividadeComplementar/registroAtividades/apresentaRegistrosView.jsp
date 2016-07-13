@@ -157,7 +157,17 @@
 		  	  $("[data-toggle='confirmation']").popConfirm();
 		});
   	</script>
-
+	
+	<script>		
+		function downloadComprovante(IdReg) {			
+			var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/registroAtividades/downloadFile' method='POST' target='_blank'>");
+            form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
+            $('body').append(form);
+            form.submit();
+            $('body').remove('#downloadForm');
+		}
+	</script>
+	
 </head>
 <body>
 
@@ -200,7 +210,7 @@
 				</div>
 			</c:if>
 		</div>
-		
+				
 		<div class="row">
 			<h4><b>Registros de Atividades Complementares:</b></h4>
 			<c:choose>
@@ -240,12 +250,9 @@
 							          <td>${registro.cargaHoraria}</td>
 							          <td>
 							          	<c:if test="${registro.temDocumento}">
-											<form style="height:10px;" action="${pageContext.request.contextPath}/registroAtividades/downloadFile" method="POST" target="_blank">
-								          		<input type="hidden" name="IdReg" value="${registro.idRegistro}">
-												<button type="submit" class="btn btn-default" title="Download">
-													<i class="fa fa-download"></i>
-												</button>
-											</form>
+											<button class="btn btn-default" title="Download" onClick="downloadComprovante(${registro.idRegistro})">
+												<i class="fa fa-download"></i>
+											</button>
 										</c:if>
 							          </td>
 							          <td>${registro.dataSolicitacao}</td>

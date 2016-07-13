@@ -156,7 +156,18 @@ public class AnaliseRegistrosAtividadeService {
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 		RegistroAtividadeComplementar registroAtiv = regRepo.findRegistroAtividadeComplementarById(idRegistro);
 		
-		if(aluno.podeTerRegistroDeferido(registroAtiv)){
+		if(EnumEstadoAtividadeComplementar.findByText(status).equals(EnumEstadoAtividadeComplementar.DEFERIDO)){
+			if(aluno.podeTerRegistroDeferido(registroAtiv)){
+				registroAtiv.setEstado(EnumEstadoAtividadeComplementar.findByText(status));
+				registroAtiv.setDataAnalise(Calendar.getInstance().getTime());
+				registroAtiv.setAvaliador(professor);
+				registroAtiv.setJustificativa(justificativa);
+			}
+			else{
+				throw new IllegalArgumentException("Registro de atividade complementar não pode ser deferido! Carga horária máxima atingida!");
+			}
+		}
+		else{
 			registroAtiv.setEstado(EnumEstadoAtividadeComplementar.findByText(status));
 			registroAtiv.setDataAnalise(Calendar.getInstance().getTime());
 			registroAtiv.setAvaliador(professor);
