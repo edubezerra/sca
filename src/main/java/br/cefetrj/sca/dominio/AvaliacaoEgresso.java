@@ -31,7 +31,7 @@ public class AvaliacaoEgresso {
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private QuestionarioAvaliacaoDocente formAvaliacao;
+	private PesquisaAvaliacao formAvaliacao;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "RESPOSTA_Egresso", joinColumns = {
@@ -43,7 +43,7 @@ public class AvaliacaoEgresso {
 	private AvaliacaoEgresso() {
 	}
 
-	public AvaliacaoEgresso(Aluno aluno, List<Alternativa> alternativas, QuestionarioAvaliacaoDocente form) {
+	public AvaliacaoEgresso(Aluno aluno, List<Alternativa> alternativas, PesquisaAvaliacao form) {
 		if (aluno == null || alternativas == null || form == null) {
 			throw new IllegalArgumentException(
 					"Erro: argumentos inválidos para AvaliacaoEgresso().");

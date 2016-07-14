@@ -1,14 +1,12 @@
 package br.cefetrj.sca.infra.cargadados;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
+import br.cefetrj.sca.dominio.PesquisaAvaliacao;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
+import br.cefetrj.sca.dominio.repositories.PesquisaAvaliacaoRepositorio;
 
 /**
  * Essa classe realiza a carga de cada item do questionário de avaliação das
@@ -19,20 +17,14 @@ import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
  *
  */
 @Component
-public class ImportadorQuestionarioAvaliacaoProfessor {
+public class ImportadorPesquisaAvaliacaoProfessor {
 
-	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-			StandalonePersistenceConfig.class);
+	@Autowired
+	PesquisaAvaliacaoRepositorio pesquisaAvaliacaoRepositorio;
 
-	static ImportadorQuestionarioAvaliacaoProfessor importador = context
-			.getBean(ImportadorQuestionarioAvaliacaoProfessor.class);
+	public String run() {
 
-	private static EntityManagerFactory emf = (EntityManagerFactory) context.getBean("entityManagerFactory");
-
-	public static EntityManager em = emf.createEntityManager();
-
-	public void run() {
-		System.out.println("ImportadorQuestionarioAvaliacao.main()");
+		StringBuilder response = new StringBuilder();
 
 		Alternativa alternativa1 = new Alternativa("Insuficiente(s) ou Ruim(ns)");
 		Alternativa alternativa2 = new Alternativa("Suficiente(s) ou Regular(es)");
@@ -41,11 +33,9 @@ public class ImportadorQuestionarioAvaliacaoProfessor {
 
 		Alternativa[] alternativas = new Alternativa[] { alternativa1, alternativa2, alternativa3, alternativa4 };
 
-		em.getTransaction().begin();
-
-		for (Alternativa alternativa : alternativas) {
-			em.persist(alternativa);
-		}
+		// for (Alternativa alternativa : alternativas) {
+		// em.persist(alternativa);
+		// }
 
 		Quesito quest1 = criarQuestao("De forma geral, a apresentação do programa"
 				+ " e dos objetivos dessa disciplina ocorreu de maneira...", alternativas);
@@ -78,16 +68,16 @@ public class ImportadorQuestionarioAvaliacaoProfessor {
 
 		Quesito[] questoes = new Quesito[] { quest1, quest2, quest3, quest4, quest5, quest6, quest7, quest8 };
 
-		QuestionarioAvaliacaoDocente form = new QuestionarioAvaliacaoDocente("AvaliacaoDocente",
-				"Avaliação de Docente");
+		PesquisaAvaliacao form = new PesquisaAvaliacao("AvaliacaoDocente", "Avaliação de Docente");
 		for (Quesito quesito : questoes) {
 			form.adicionarQuesito(quesito);
 		}
-		em.persist(form);
 
-		em.getTransaction().commit();
+		pesquisaAvaliacaoRepositorio.save(form);
 
-		System.out.println("Questionário de avaliação docente importado com sucesso!");
+		response.append("Questionário de avaliação de professores importado com sucesso!");
+
+		return response.toString();
 	}
 
 	private static Quesito criarQuestao(String enunciado, Alternativa[] alternativas) {

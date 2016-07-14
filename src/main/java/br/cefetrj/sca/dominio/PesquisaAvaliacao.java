@@ -13,13 +13,13 @@ import javax.persistence.OneToMany;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
 @Entity
-public class QuestionarioAvaliacaoDocente {
+public class PesquisaAvaliacao {
 
 	@Id
 	@GeneratedValue
 	Long id;
 
-	String sigla;
+	String descritor;
 
 	String nome;
 
@@ -31,12 +31,12 @@ public class QuestionarioAvaliacaoDocente {
 	@JoinColumn(name = "FORMULARIO_ID", referencedColumnName = "ID")
 	List<Quesito> quesitos;
 	
-	public QuestionarioAvaliacaoDocente(){
+	public PesquisaAvaliacao(){
 	
 	}
 	
-	public QuestionarioAvaliacaoDocente(String sigla, String nome) {
-		this.sigla = sigla;
+	public PesquisaAvaliacao(String descritor, String nome) {
+		this.descritor = descritor;
 		this.nome = nome;
 	}
 
@@ -51,8 +51,8 @@ public class QuestionarioAvaliacaoDocente {
 		return nome;
 	}
 	
-	public String getSigla() {
-		return sigla;
+	public String getDescritor() {
+		return descritor;
 	}
 	
 	public List<Quesito> getQuesitos(){

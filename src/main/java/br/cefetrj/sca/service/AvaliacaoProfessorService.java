@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
+import br.cefetrj.sca.dominio.PesquisaAvaliacao;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.AvaliacaoTurmaRepositorio;
-import br.cefetrj.sca.dominio.repositories.FormularioAvaliacaoRepositorio;
+import br.cefetrj.sca.dominio.repositories.PesquisaAvaliacaoRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoResponse;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
@@ -34,7 +34,7 @@ public class AvaliacaoProfessorService {
 	private AvaliacaoTurmaRepositorio avaliacaoRepo;
 
 	@Autowired
-	private FormularioAvaliacaoRepositorio formRepo;
+	private PesquisaAvaliacaoRepositorio formRepo;
 
 	/**
 	 * Essa opsis é invocada quando um aluno solicita a avaliação de turmas.
@@ -75,7 +75,7 @@ public class AvaliacaoProfessorService {
 			throw new IllegalArgumentException("Erro: turma já avaliada pelo aluno.");
 		}
 
-		QuestionarioAvaliacaoDocente form = formRepo.findFormularioAvaliacaoBySigla("AvaliacaoDocente");
+		PesquisaAvaliacao form = formRepo.findByDescritor("AvaliacaoDocente");
 
 		if (form == null) {
 			throw new RuntimeException(
@@ -111,7 +111,7 @@ public class AvaliacaoProfessorService {
 				throw new IllegalArgumentException("Erro: turma já avaliada pelo aluno.");
 			}
 
-			QuestionarioAvaliacaoDocente form = formRepo.findFormularioAvaliacaoBySigla("AvaliacaoDocente");
+			PesquisaAvaliacao form = formRepo.findByDescritor("AvaliacaoDocente");
 			List<Quesito> quesitos = form.getQuesitos();
 			int numRespostas = quesitos.size();
 

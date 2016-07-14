@@ -3,26 +3,17 @@ package br.cefetrj.sca.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.dominio.repositories.UsuarioRepositorio;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
-import br.cefetrj.sca.infra.auth.AutenticadorMoodle;
 
 @Service
 @Transactional
 public class UsuarioService {
 	@Autowired
 	private UsuarioRepositorio repositorio;
-
-	@Autowired
-	@Qualifier("mockAuth")
-	private AutenticacaoService authService;
-
-	@Autowired
-	AutenticadorMoodle autenticador;
 
 	public void saveUser(Usuario usr) {
 		repositorio.save(usr);

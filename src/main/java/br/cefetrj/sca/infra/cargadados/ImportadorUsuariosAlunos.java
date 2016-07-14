@@ -24,12 +24,13 @@ public class ImportadorUsuariosAlunos {
 	@Autowired
 	private PerfilUsuarioRepositorio perfilUsuarioRepositorio;
 
-	public void run() {
+	public String run() {
+
+		StringBuilder response = new StringBuilder();
 
 		int qtdCriados = 0;
 		List<Aluno> alunos = alunoRepositorio.findAll();
-		PerfilUsuario perfil = perfilUsuarioRepositorio
-				.getPerfilUsuarioByNome("ROLE_ALUNO");
+		PerfilUsuario perfil = perfilUsuarioRepositorio.getPerfilUsuarioByNome("ROLE_ALUNO");
 		if (perfil == null) {
 			perfil = new PerfilUsuario("ROLE_ALUNO");
 			perfilUsuarioRepositorio.save(perfil);
@@ -38,15 +39,16 @@ public class ImportadorUsuariosAlunos {
 			String login = converterFormatosCPF(aluno.getCpf());
 			Usuario usuario = usuarioRepositorio.findUsuarioByLogin(login);
 			if (usuario == null) {
-				usuario = new Usuario(aluno.getNome(), login,
-						aluno.getMatricula(), aluno.getEmail(), new Date());
+				usuario = new Usuario(aluno.getNome(), login, aluno.getMatricula(), aluno.getEmail(), new Date());
 				usuario.getUserProfiles().add(perfil);
 				usuarioRepositorio.save(usuario);
 				qtdCriados++;
 			}
 		}
-		System.out.println("Foram criados " + qtdCriados
-				+ " usuário(s) com perfil de aluno.");
+
+		response.append("Foram criados " + qtdCriados + " usuário(s) com perfil de aluno.");
+
+		return response.toString();
 	}
 
 	/**

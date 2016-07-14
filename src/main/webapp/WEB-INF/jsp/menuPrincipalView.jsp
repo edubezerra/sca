@@ -45,24 +45,24 @@
 				<li><a
 					href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
 						Avaliação de Professores </a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/registroAtividades/registroAtividades">
-						Registro de Atividades Complementares </a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos">
-						Requerimento de Matrícula Fora de Prazo</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
-						Avaliação de Curso por Egresso</a></li>
+<!-- 				<li><a -->
+<%-- 					href="${pageContext.request.contextPath}/registroAtividades/registroAtividades"> --%>
+<!-- 						Registro de Atividades Complementares </a></li> -->
+<!-- 				<li><a -->
+<%-- 					href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos"> --%>
+<!-- 						Requerimento de Matrícula Fora de Prazo</a></li> -->
+<!-- 				<li><a -->
+<%-- 					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao"> --%>
+<!-- 						Avaliação de Curso por Egresso</a></li> -->
 
-				<li><a
-					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao">
-						Realizar Inscriçôes</a></li>
+<!-- 				<li><a -->
+<%-- 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao"> --%>
+<!-- 						Realizar Inscriçôes</a></li> -->
 
 
-				<li><a
-					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizarProcessoIsencao">
-						Isenção de Disciplina </a></li>
+<!-- 				<li><a -->
+<%-- 					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizarProcessoIsencao"> --%>
+<!-- 						Isenção de Disciplina </a></li> -->
 
 			</ul>
 		</sec:authorize>

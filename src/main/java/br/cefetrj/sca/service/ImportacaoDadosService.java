@@ -12,8 +12,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.infra.cargadados.ImportadorGradesCurriculares;
 import br.cefetrj.sca.infra.cargadados.ImportadorHistoricosEscolares;
+import br.cefetrj.sca.infra.cargadados.ImportadorPesquisaAvaliacaoProfessor;
 import br.cefetrj.sca.infra.cargadados.ImportadorTurmasComInscricoes;
+import br.cefetrj.sca.infra.cargadados.ImportadorUsuariosAlunos;
 
+/**
+ * 
+ * @author Eduardo Bezerra
+ * 
+ * @see <code>DescritorImportacaoDados</code>
+ *
+ */
 @Service
 public class ImportacaoDadosService {
 
@@ -25,6 +34,12 @@ public class ImportacaoDadosService {
 
 	@Autowired
 	ImportadorTurmasComInscricoes importadorTurmasComInscricoes;
+
+	@Autowired
+	ImportadorPesquisaAvaliacaoProfessor importadorPesquisaAvaliacaoProfessor;
+
+	@Autowired
+	ImportadorUsuariosAlunos importadorUsuariosAlunos;
 
 	@Transactional
 	public String importar(MultipartFile file, Long tipoImportacao) {
@@ -40,6 +55,10 @@ public class ImportacaoDadosService {
 				return importadorHistoricosEscolares.importarPlanilha(tempFile);
 			case 3:
 				return importadorTurmasComInscricoes.importarPlanilha(tempFile);
+			case 4:
+				return importadorPesquisaAvaliacaoProfessor.run();
+			case 5:
+				return importadorUsuariosAlunos.run();
 			}
 		} catch (IOException | BiffException e) {
 			e.printStackTrace();

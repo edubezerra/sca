@@ -11,7 +11,8 @@ public class ImportadorTudo {
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 			StandalonePersistenceConfig.class);
 
-	ImportadorQuestionarioAvaliacaoProfessor importadorQuestionarioAvaliacaoDocente = new ImportadorQuestionarioAvaliacaoProfessor();
+	@Autowired
+	ImportadorPesquisaAvaliacaoProfessor importadorQuestionarioAvaliacaoProfessores;
 
 	@Autowired
 	ImportadorPeriodoMinimoVersaoCurso importadorPerMinVersaoCurso;
@@ -66,14 +67,14 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
-			importadorQuestionarioAvaliacaoDocente.run();
+			importadorQuestionarioAvaliacaoProfessores.run();
 
 			importadorGradesCurriculares.run();
 			importadorPreReqs.run();
 			importadorAtividadesComp.run();
 
 			importadorAlunos.run();
-//			importadorUsuariosAlunos.run();
+			importadorUsuariosAlunos.run();
 			
 			importadorProfessores.run();
 			importadorDepartamentos.run();

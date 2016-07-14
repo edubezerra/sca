@@ -20,13 +20,13 @@
 
 	<c:if test="${requestScope.error != null}">
 		<div>
-			<p class="error">${requestScope.error}</p>
+			<p style="color:red;font-weight: bold;" class="error">${requestScope.error}</p>
 		</div>
 	</c:if>
 
 	<c:if test="${requestScope.info != null}">
 		<div>
-			<p class="info">${requestScope.info}</p>
+			<p style="color:blue;font-weight: bold;" class="info">${requestScope.info}</p>
 		</div>
 	</c:if>
 
@@ -84,7 +84,7 @@
 
 			<button type="submit" class="btn btn-default">Submeter</button>
 			<a class="btn btn-default"
-				href="${pageContext.request.contextPath}/avaliacaoTurma/solicitaNovamenteAvaliacaoMatricula">
+				href="${pageContext.request.contextPath}/avaliacaoTurma/solicitaNovamenteAvaliacaoTurma">
 				<input type="button" value="Voltar" />
 			</a>
 		</form>

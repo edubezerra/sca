@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.AvaliacaoEgresso;
-import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
+import br.cefetrj.sca.dominio.PesquisaAvaliacao;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 import br.cefetrj.sca.dominio.repositories.AlternativaRepositorio;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.AvaliacaoEgressoRepositorio;
-import br.cefetrj.sca.dominio.repositories.FormularioAvaliacaoRepositorio;
+import br.cefetrj.sca.dominio.repositories.PesquisaAvaliacaoRepositorio;
 import br.cefetrj.sca.web.controllers.SolicitaAvaliacaoEgressoResponse;
 import br.cefetrj.sca.web.controllers.SolicitaAvaliacaoEgressoResponse.AlternativaDto;
 
@@ -22,7 +22,7 @@ import br.cefetrj.sca.web.controllers.SolicitaAvaliacaoEgressoResponse.Alternati
 public class AvaliacaoEgressoService {
 	
 	@Autowired
-	private FormularioAvaliacaoRepositorio faRepo;
+	private PesquisaAvaliacaoRepositorio faRepo;
 	
 	@Autowired
 	private AlunoRepositorio alunoRepo;
@@ -55,7 +55,7 @@ public class AvaliacaoEgressoService {
 	public void avaliaEgresso(String cpf, List<Integer> respostas, String especialidade, 
 			String questao10Outro, String questao15Area) {
 		
-		QuestionarioAvaliacaoDocente form = faRepo.findFormularioAvaliacaoBySigla("Egresso");
+		PesquisaAvaliacao form = faRepo.findByDescritor("AvaliacaoEgresso");
 		Aluno aluno = getAlunoPorCPF(cpf);
 		List<Alternativa> alternativas = new ArrayList<Alternativa>();
 		
@@ -85,7 +85,7 @@ public class AvaliacaoEgressoService {
 
 	public SolicitaAvaliacaoEgressoResponse retornaQuestoes() {
 		SolicitaAvaliacaoEgressoResponse response = new SolicitaAvaliacaoEgressoResponse();
-		QuestionarioAvaliacaoDocente form = faRepo.findFormularioAvaliacaoBySigla("Egresso");
+		PesquisaAvaliacao form = faRepo.findByDescritor("AvaliacaoEgresso");
 		List<Quesito> quesitos = form.getQuesitos();
 		List<AlternativaDto> alternativas;
 		if(quesitos == null || quesitos.size() == 0)

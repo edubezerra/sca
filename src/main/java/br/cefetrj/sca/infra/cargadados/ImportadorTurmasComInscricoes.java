@@ -8,11 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +17,12 @@ import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
-import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 
 /**
  * Esse importador faz a carga de objetos <code>Turma</code> e de seus
@@ -44,9 +42,6 @@ public class ImportadorTurmasComInscricoes {
 
 	@Autowired
 	DisciplinaRepositorio disciplinaRepositorio;
-
-	@Autowired
-	private CursoRepositorio cursoRepositorio;
 
 	@Autowired
 	private TurmaRepositorio turmaRepositorio;

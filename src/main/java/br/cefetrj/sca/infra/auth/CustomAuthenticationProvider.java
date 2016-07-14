@@ -68,12 +68,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	 * Usa as credenciais para autenticar usuário no sistema externo.
 	 */
 	private boolean deveAutenticarNoSistemaExterno(String name, String password) {
-		return true;
-		// try {
-		// return autenticador.getRemoteLoginResponse(name,
-		// password).equals(name);
-		// } catch (RuntimeException ex) {
-		// return false;
-		// }
+		try {
+			return autenticador.getRemoteLoginResponse(name, password).equals(name);
+		} catch (RuntimeException ex) {
+			return false;
+		}
 	}
 }

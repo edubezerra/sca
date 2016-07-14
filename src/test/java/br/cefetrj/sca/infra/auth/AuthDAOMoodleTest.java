@@ -18,7 +18,7 @@ public class AuthDAOMoodleTest {
 	@Autowired
 	AutenticadorMoodle autenticador;
 
-	@Test
+	@Test(timeout=1000000)
 	public void deveAutenticarUsuarioValido() {
 		assertEquals("058842457-93", autenticador.getRemoteLoginResponse(
 				"058842457-93", "Aluno058842457-93"));

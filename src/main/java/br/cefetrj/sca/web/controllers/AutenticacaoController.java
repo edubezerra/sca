@@ -18,7 +18,7 @@ import br.cefetrj.sca.service.AutenticacaoService;
 public class AutenticacaoController {
 
 	@Autowired
-	@Qualifier("mockAuth")
+	@Qualifier("moodleAuth")
 	private AutenticacaoService authService;
 
 	@RequestMapping(value = "/menuPrincipal", method = RequestMethod.POST)

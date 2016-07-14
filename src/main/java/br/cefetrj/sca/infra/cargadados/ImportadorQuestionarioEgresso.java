@@ -8,7 +8,7 @@ import javax.persistence.EntityManagerFactory;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import br.cefetrj.sca.dominio.QuestionarioAvaliacaoDocente;
+import br.cefetrj.sca.dominio.PesquisaAvaliacao;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
 
@@ -24,7 +24,7 @@ public class ImportadorQuestionarioEgresso {
 
 		System.out.println("ImportadorQuestionarioEgresso.main()");
 
-		QuestionarioAvaliacaoDocente formGrad = new QuestionarioAvaliacaoDocente("Egresso", "Avaliação do Egresso");
+		PesquisaAvaliacao formGrad = new PesquisaAvaliacao("Egresso", "Avaliação do Egresso");
 		Quesito q1 = new Quesito("Atualmente o(a) Sr.(a) está:");
 		q1.adicionarAlternativa(new Alternativa("Trabalhando (vá para 2)"));
 		q1.adicionarAlternativa(new Alternativa("Trabalhando e estudando (vá para 2)"));
