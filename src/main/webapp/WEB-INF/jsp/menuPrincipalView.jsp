@@ -22,7 +22,8 @@
 	</h2>
 	<h3>
 		Matrícula:
-		<sec:authentication property="name" />
+		<%=UsuarioController.getCurrentUser().getMatricula()%>
+<%-- 		<sec:authentication property="name" /> --%>
 	</h3>
 
 	<div class="container">

@@ -17,20 +17,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import br.cefetrj.sca.service.AvaliacaoProfessorService;
+import br.cefetrj.sca.service.AvaliacaoTurmaService;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoResponse;
 import br.cefetrj.sca.service.util.SolicitaAvaliacaoTurmaResponse;
 
 @Controller
 @SessionAttributes("matricula")
 @RequestMapping("/avaliacaoTurma")
-public class AvaliacaoProfessoresController {
+public class AvaliacaoTurmaController {
 
-	protected Logger logger = Logger.getLogger(AvaliacaoProfessoresController.class
-			.getName());
+	protected Logger logger = Logger.getLogger(AvaliacaoTurmaController.class.getName());
 
 	@Autowired
-	private AvaliacaoProfessorService service;
+	private AvaliacaoTurmaService service;
 
 	@RequestMapping(value = "/{*}", method = RequestMethod.GET)
 	public String get(Model model) {
@@ -43,8 +42,7 @@ public class AvaliacaoProfessoresController {
 		String matricula = UsuarioController.getCurrentUser().getMatricula();
 		session.setAttribute("login", matricula);
 		try {
-			SolicitaAvaliacaoResponse turmasCursadas = service
-					.obterTurmasCursadas(matricula);
+			SolicitaAvaliacaoResponse turmasCursadas = service.obterTurmasCursadas(matricula);
 			model.addAttribute("turmasCursadas", turmasCursadas);
 			model.addAttribute("matricula", matricula);
 			return "/avaliacaoTurma/apresentaListagemTurmasView";
@@ -60,14 +58,12 @@ public class AvaliacaoProfessoresController {
 	}
 
 	@RequestMapping(value = "/solicitaAvaliacaoTurma", method = RequestMethod.POST)
-	public String solicitaAvaliacaoTurma(
-			@ModelAttribute("matricula") String matricula,
-			@RequestParam String idTurma, Model model) {
+	public String solicitaAvaliacaoTurma(@ModelAttribute("matricula") String matricula, @RequestParam String idTurma,
+			Model model) {
 
 		try {
 			Long id = Long.parseLong(idTurma);
-			SolicitaAvaliacaoTurmaResponse resp = service
-					.solicitaAvaliacaoTurma(matricula, id);
+			SolicitaAvaliacaoTurmaResponse resp = service.solicitaAvaliacaoTurma(matricula, id);
 			model.addAttribute("questoes", resp);
 			model.addAttribute("nomeDisciplina", resp.getNomeDisciplina());
 			model.addAttribute("codigoTurma", resp.getCodigoTurma());
@@ -82,10 +78,8 @@ public class AvaliacaoProfessoresController {
 	}
 
 	@RequestMapping(value = "/avaliaTurma", method = RequestMethod.POST)
-	public String avaliaTurma(@ModelAttribute("matricula") String matricula,
-			@RequestParam String idTurma,
-			@RequestParam String aspectosPositivos,
-			@RequestParam String aspectosNegativos, HttpServletRequest request,
+	public String avaliaTurma(@ModelAttribute("matricula") String matricula, @RequestParam String idTurma,
+			@RequestParam String aspectosPositivos, @RequestParam String aspectosNegativos, HttpServletRequest request,
 			Model model) {
 
 		Map<String, String[]> parameters = request.getParameterMap();
@@ -96,13 +90,11 @@ public class AvaliacaoProfessoresController {
 
 			// parameters must contain only sorted quesitoX parameters
 			while (parameters.containsKey("quesito" + i)) {
-				respostas
-						.add(Integer.parseInt(parameters.get("quesito" + i)[0]));
+				respostas.add(Integer.parseInt(parameters.get("quesito" + i)[0]));
 				++i;
 			}
 		} catch (Exception exc) {
-			model.addAttribute("error",
-					"Erro: Respostas com conteúdo inválido.");
+			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
 			model.addAttribute("idTurma", idTurma);
 
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
@@ -110,8 +102,8 @@ public class AvaliacaoProfessoresController {
 
 		try {
 			Long id = Long.parseLong(idTurma);
-			service.avaliaTurma(matricula, id, respostas, aspectosPositivos,
-					aspectosNegativos);
+			System.out.println("AvaliacaoTurmaController.avaliaTurma()");
+			service.avaliaTurma(matricula, id, respostas, aspectosPositivos, aspectosNegativos);
 			model.addAttribute("info", "Avaliação registrada.");
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -120,11 +112,15 @@ public class AvaliacaoProfessoresController {
 			int i = 0;
 
 			// parameters must contain only sorted quesitoX parameters
-			while (parameters.containsKey("quesito" + i)) {
-				model.addAttribute("oldQuesito" + i,
-						parameters.get("quesito" + i)[0]);
+			while (i < parameters.size()) {
+				if (parameters.get("quesito" + i) != null) {
+					model.addAttribute("oldQuesito" + i, parameters.get("quesito" + i)[0]);
+				}
 				++i;
 			}
+
+			model.addAttribute("aspectosPositivos", aspectosPositivos);
+			model.addAttribute("aspectosNegativos", aspectosNegativos);
 
 			return "forward:/avaliacaoTurma/solicitaAvaliacaoTurma";
 		}
@@ -133,12 +129,10 @@ public class AvaliacaoProfessoresController {
 	}
 
 	@RequestMapping(value = "/solicitaNovamenteAvaliacaoTurma")
-	public String solicitaNovamenteAvaliacaoTurma(
-			@ModelAttribute("matricula") String matricula, Model model) {
+	public String solicitaNovamenteAvaliacaoTurma(@ModelAttribute("matricula") String matricula, Model model) {
 
 		try {
-			model.addAttribute("turmasCursadas",
-					service.obterTurmasCursadas(matricula));
+			model.addAttribute("turmasCursadas", service.obterTurmasCursadas(matricula));
 
 			return "/avaliacaoTurma/apresentaListagemTurmasView";
 		} catch (Exception exc) {

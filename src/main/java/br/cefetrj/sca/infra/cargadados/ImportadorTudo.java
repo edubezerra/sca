@@ -12,7 +12,7 @@ public class ImportadorTudo {
 			StandalonePersistenceConfig.class);
 
 	@Autowired
-	ImportadorPesquisaAvaliacaoProfessor importadorQuestionarioAvaliacaoProfessores;
+	ImportadorPesquisaAvaliacaoProfessor importadorQuestionarioAvaliacaoTurmas;
 
 	@Autowired
 	ImportadorPeriodoMinimoVersaoCurso importadorPerMinVersaoCurso;
@@ -67,21 +67,21 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
-			importadorQuestionarioAvaliacaoProfessores.run();
-
+			importadorQuestionarioAvaliacaoTurmas.run();
 			importadorGradesCurriculares.run();
+			importadorTurmasComInscricoes.run();
+			importadorUsuariosAlunos.run();
+
 			importadorPreReqs.run();
 			importadorAtividadesComp.run();
 
 			importadorAlunos.run();
-			importadorUsuariosAlunos.run();
 			
 			importadorProfessores.run();
 			importadorDepartamentos.run();
 
 			importadorHistoricoEscolar.run();
 
-			importadorTurmasComInscricoes.run();
 			importadorAlocacoesProfessoresEmTurmas.run();
 			importadorHabilitacoesParaProfessor.run();
 			importadorPerMinVersaoCurso.run();

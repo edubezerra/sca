@@ -1,5 +1,5 @@
 package br.cefetrj.sca.infra.auth;
 
-public interface IAutenticador {
+public interface EstrategiaAutenticacao {
 	String getRemoteLoginResponse(String username, String password);
 }

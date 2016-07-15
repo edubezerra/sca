@@ -99,7 +99,7 @@ public class TurmaRepositorioTest {
 	}
 
 	@Test
-	public void testObterTurmasCursadas() {
+	public void testFindTurmasCursadas() {
 		String cpf = "148.323.947-03";
 		Aluno aluno = alunoRepo.findAlunoByCpf(cpf);
 
@@ -188,5 +188,13 @@ public class TurmaRepositorioTest {
 					.contains(turma.getNomeDisciplina()));
 		}
 
+	}
+	
+	@Test
+	public void teste() {
+		List<Turma> turmas = turmaRepositorio.findTurmasCursadasPorAluno("1311038BCC");
+		for (Turma turma : turmas) {
+			System.out.println(turma.getDisciplina().getNome() + "/" + turma.getPeriodo());
+		}
 	}
 }

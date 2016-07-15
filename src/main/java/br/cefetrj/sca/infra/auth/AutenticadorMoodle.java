@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AutenticadorMoodle implements IAutenticador {
+public class AutenticadorMoodle implements EstrategiaAutenticacao {
 
 	protected Logger logger = Logger.getLogger(AutenticadorMoodle.class.getName());
 

@@ -7,7 +7,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SCA - Avaliação</title>
+<title>SCA - Avaliação de Turmas</title>
 
 <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />

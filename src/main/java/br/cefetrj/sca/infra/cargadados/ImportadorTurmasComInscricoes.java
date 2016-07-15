@@ -145,14 +145,6 @@ public class ImportadorTurmasComInscricoes {
 			File[] listOfFiles = folder.listFiles();
 
 			for (int i = 0; i < listOfFiles.length; i++) {
-				mapaTurmasVersoesCurso.clear();
-				mapaTurmasCursos.clear();
-				mapaAlunosNomes.clear();
-				mapaAlunosCPFs.clear();
-				mapaTurmasParaPeriodos.clear();
-				mapaTurmasDisciplinas.clear();
-				mapaTurmasAlunos.clear();
-				mapaTurmasCodigos.clear();
 				if (listOfFiles[i].isFile()) {
 					if (!listOfFiles[i].getName().startsWith("_")) {
 						System.out
@@ -177,15 +169,31 @@ public class ImportadorTurmasComInscricoes {
 
 	public void importarPlanilha(String inputFile) throws BiffException,
 			IOException {
+
+		reiniciarEstruturasArmazenamento();
+		
 		File inputWorkbook = new File(inputFile);
 		String mensagens = importarPlanilha(inputWorkbook);
 		System.out.println(mensagens);
+	}
+
+	private void reiniciarEstruturasArmazenamento() {
+		mapaTurmasVersoesCurso.clear();
+		mapaTurmasCursos.clear();
+		mapaAlunosNomes.clear();
+		mapaAlunosCPFs.clear();
+		mapaTurmasParaPeriodos.clear();
+		mapaTurmasDisciplinas.clear();
+		mapaTurmasAlunos.clear();
+		mapaTurmasCodigos.clear();
 	}
 
 	public String importarPlanilha(File inputWorkbook) throws BiffException,
 			IOException {
 		StringBuilder response = new StringBuilder();
 		Workbook w;
+
+		reiniciarEstruturasArmazenamento();
 
 		List<String> colunasList = Arrays.asList(colunas);
 

@@ -59,10 +59,37 @@ public class PersistenceConfig {
 		factory.setPackagesToScan("br.cefetrj.sca.dominio");
 
 		Properties jpaProperties = new Properties();
+
 		jpaProperties.put("hibernate.dialect",
 				env.getProperty("hibernate.dialect"));
+		
 		jpaProperties.put("hibernate.hbm2ddl.auto",
 				env.getProperty("hibernate.hbm2ddl.auto"));
+		
+		jpaProperties.put("hibernate.c3p0.timeout",
+				env.getProperty("hibernate.c3p0.timeout"));
+		
+		jpaProperties.put("hibernate.c3p0.maxIdleTimeExcessConnections",
+				env.getProperty("hibernate.c3p0.maxIdleTimeExcessConnections"));
+		
+		jpaProperties.put("hibernate.c3p0.validate",
+				env.getProperty("hibernate.c3p0.validate"));
+		
+		jpaProperties.put("hibernate.c3p0.idle_test_period",
+				env.getProperty("hibernate.c3p0.idle_test_period"));
+		
+		jpaProperties.put("hibernate.c3p0.automaticTestTable",
+				env.getProperty("hibernate.c3p0.automaticTestTable"));
+		
+		jpaProperties.put("current_session_context_class",
+				env.getProperty("current_session_context_class"));
+		
+		jpaProperties.put("cache.provider_class",
+				env.getProperty("cache.provider_class"));
+		
+		jpaProperties.put("",
+				env.getProperty(""));
+		
 		factory.setJpaProperties(jpaProperties);
 
 		factory.afterPropertiesSet();
