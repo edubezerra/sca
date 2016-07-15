@@ -1,4 +1,10 @@
 language: java
 
+before_script:
+  - mysql -e 'create database SCABD;'
+
+services:
+  - mysql
+
 jdk:
   - oraclejdk8
