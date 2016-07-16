@@ -8,3 +8,4 @@ log
 .classpath
 app.log
 /bin/
+/props-files/

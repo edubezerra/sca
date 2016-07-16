@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderColumn;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Turma;
@@ -53,6 +54,7 @@ public class AvaliacaoTurma {
 	 * avaliação.
 	 */
 	@ManyToMany(fetch = FetchType.EAGER)
+	@OrderColumn
 	@JoinTable(name = "RESPOSTA", joinColumns = {
 			@JoinColumn(name = "AVALIACAOTURMA_ID", referencedColumnName = "ID", nullable = true) }, inverseJoinColumns = {
 					@JoinColumn(name = "ALTERNATIVA_ID", referencedColumnName = "ID", nullable = false) })

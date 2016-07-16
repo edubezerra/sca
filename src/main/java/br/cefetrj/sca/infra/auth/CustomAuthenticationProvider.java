@@ -27,15 +27,30 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	UsuarioRepositorio usuarioRepositorio;
 
 	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		String name = authentication.getName();
+	public Authentication authenticate(Authentication authentication)
+			throws AuthenticationException {
+		String login = authentication.getName();
 		String password = authentication.getCredentials().toString();
 
-		Usuario usuario = usuarioRepositorio.findUsuarioByLogin(name);
+		Usuario usuario = usuarioRepositorio.findUsuarioByLogin(login);
+
+		/**
+		 * Procura novamente, devido à existência de dois formatos para o login
+		 * no Moodle: um usuário com login 999.999.999/99 pode ter login
+		 * 99999999999 ou 999999999-99.
+		 * 
+		 * TODO: remover esse teste quando migrar para a autenticação pelo SIE.
+		 */
+		if (usuario == null) {
+			String loginModificado = login.substring(0, login.length() - 2)
+					+ "-" + login.substring(login.length() - 2);
+			usuario = usuarioRepositorio.findUsuarioByLogin(loginModificado);
+		}
 
 		if (usuario != null) {
-			if (deveAutenticarNoSistemaExterno(name, password)) {
-				return new UsernamePasswordAuthenticationToken(name, password, getAuthorities(usuario));
+			if (deveAutenticarNoSistemaExterno(login, password)) {
+				return new UsernamePasswordAuthenticationToken(login, password,
+						getAuthorities(usuario));
 			} else {
 				return null;
 			}
@@ -44,14 +59,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		}
 	}
 
-	private Collection<? extends GrantedAuthority> getAuthorities(Usuario usuario) {
+	private Collection<? extends GrantedAuthority> getAuthorities(
+			Usuario usuario) {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 
 		Set<PerfilUsuario> userRoles = usuario.getUserProfiles();
 
 		if (userRoles != null) {
 			for (PerfilUsuario role : userRoles) {
-				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getType());
+				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
+						role.getType());
 				authorities.add(authority);
 			}
 		}
@@ -68,15 +85,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	 * Usa as credenciais para autenticar usuário no sistema externo.
 	 */
 	private boolean deveAutenticarNoSistemaExterno(String login, String password) {
-		// return true;
 		try {
-			boolean primeiraTentativa = autenticador.getRemoteLoginResponse(login, password).equals(login);
-			if (!primeiraTentativa) {
-				String loginModificado = login.substring(0, login.length() - 2) + "-" + login.substring(login.length() - 2);
-				return autenticador.getRemoteLoginResponse(loginModificado, password).equals(loginModificado);
-			} else {
-				return true;
-			}
+			return autenticador.getRemoteLoginResponse(login, password).equals(
+					login);
 		} catch (RuntimeException ex) {
 			return false;
 		}
@@ -84,7 +95,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	public static void main(String[] args) {
 		String login = "02848884789";
-		String loginModificado = login.substring(0, login.length() - 2) + "-" + login.substring(login.length() - 2);
+		String loginModificado = login.substring(0, login.length() - 2) + "-"
+				+ login.substring(login.length() - 2);
 		System.out.println(loginModificado);
 	}
 }
