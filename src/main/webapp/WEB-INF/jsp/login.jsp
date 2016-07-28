@@ -24,7 +24,7 @@
             
      <div class="row">
 		<div class="col-md-6 col-md-offset-2">	
-			<h2>Sistema de Controle Acadêmico - Avaliação de Turmas</h2>
+			<h2>Sistema de Controle Acadêmico</h2>
 			<form:form id="loginForm" method="post" action="${rootURL}login" modelAttribute="user" 
 		class="form-horizontal" role="form" cssStyle="width: 800px; margin: 0 auto;">
 		  <div class="form-group">

@@ -75,6 +75,8 @@ public class RequerimentoMatriculaForaPrazoController {
 
 			sessao.setAttribute("ficha", ficha);
 
+			sessao.setAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
+
 			sessao.setAttribute("turmasCursadas",
 					service.findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno, PeriodoLetivo.PERIODO_CORRENTE));
 

@@ -86,7 +86,7 @@
 
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Turmas solicitadas pelo portal em 2016/1</h3>
+				<h3 class="panel-title">Turmas solicitadas pelo portal em ${sessionScope.periodoLetivo}</h3>
 			</div>
 			<div class="panel-body">
 				<c:if test="${not empty sessionScope.turmasCursadas}">
