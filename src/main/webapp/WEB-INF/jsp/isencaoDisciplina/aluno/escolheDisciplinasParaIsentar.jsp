@@ -67,18 +67,18 @@
 		<div class="row">
 			<h5>
 				<b>Aluno:</b>
-				<c:out value="${requestScope.dadosAluno.nomeAluno}"></c:out>
+				<c:out value="${requestScope.aluno.nome}"></c:out>
 				(Matrícula:
-				<c:out value="${requestScope.matricula}"></c:out>
+				<c:out value="${requestScope.aluno.matricula}"></c:out>
 				)
 			</h5>
 			<h5>
 				<b>Curso:</b>
-				<c:out value="${requestScope.dadosAluno.curso.sigla}"></c:out>
+				<c:out value="${requestScope.aluno.versaoCurso.curso.sigla}"></c:out>
 				-
-				<c:out value="${requestScope.dadosAluno.curso.nome}"></c:out>
+				<c:out value="${requestScope.aluno.versaoCurso.curso.nome}"></c:out>
 				(Grade:
-				<c:out value="${requestScope.dadosAluno.versaoCurso}"></c:out>
+				<c:out value="${requestScope.aluno.versaoCurso}"></c:out>
 				)
 			</h5>
 		</div>
@@ -99,90 +99,46 @@
 			</div>
 		</c:if>
 
-		<!-- <h4> -->
-		<%-- <b> Aluno: ${aluno.nome }</b> --%>
-		<!-- 	<br></br> -->
-		<%-- 	<b> Matrícula: ${aluno.matricula }</b> --%>
-		<!-- 	<br></br> -->
-		<%-- 	<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao != null}"> --%>
-		<%-- 	Situação: ${aluno.processoIsencao.situacaoProcessoIsencao} --%>
-		<%-- 	</c:if> --%>
-		<!-- 	<br></br> -->
-
-		<!-- </h4> -->
-
-		<c:if test="${aluno.processoIsencao != null}">
-			<div class="table-responsive">
+		<div class="table-responsive" align="center">
+			<form
+				action="${pageContext.request.contextPath}/isencaoDisciplina/validaComprovante"
+				enctype="multipart/form-data" method="POST">
+				<label for="inputFile">Anexe um arquivo compactado contendo
+					TODOS os planos de ensino de cada disciplina para a qual você
+					deseja solicitar isenção. matrícula do período atual (Formatos
+					aceitos: ZIP, RAR ou GZ. Tamanho máximo: 10mb)</label> <input type="file"
+					name="file" id="inputFile" required>
 				<table class="table">
 					<thead>
 						<tr>
-							<th>ID</th>
 							<th>Disciplina</th>
-							<th>Situação</th>
-							<th>Data Analise</th>
-							<th>Motivo</th>
+							<th>Selecionar</th>
+
 						</tr>
 					</thead>
 
 					<tbody>
-						<c:forEach items="${itemIsencaoByProcessoIsencao}"
-							var="itemIsencaoByProcessoIsencao">
-							<tr>
 
-								<td>${itemIsencaoByProcessoIsencao.id}</td>
-								<td>${itemIsencaoByProcessoIsencao.disciplina.nome}<c:if
-										test="${itemIsencaoByProcessoIsencao.disciplinaAssociada != null}">
-										<div>
-											Disciplinas Associadas: <br>
-											${itemIsencaoByProcessoIsencao.disciplinaAssociada}
-										</div>
-									</c:if>
-								</td>
-								<td><c:if
-										test="${itemIsencaoByProcessoIsencao.situacao == 'deferir'}">
-										DEFERIDO
-									</c:if> <c:if
-										test="${itemIsencaoByProcessoIsencao.situacao == 'indeferir'}">
-										INDEFERIDO
-									</c:if></td>
-								<td><fmt:formatDate pattern="dd/MM/yyyy"
-										value="${itemIsencaoByProcessoIsencao.dataAnalise}" /></td>
-								<td>${itemIsencaoByProcessoIsencao.motivo}</td>
-								<td>${itemIsencaoByProcessoIsencao.observacao}</td>
+						<c:forEach items="${disciplinas}" var="disciplina">
+							<tr>
+								<td>${disciplina.codigo}-${disciplina.nome}</td>
+
+								<td><input type="checkbox" name="choice"
+									value="${disciplina.id}"></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 
 				</table>
-			</div>
-			<div>
-				<c:if
-					test="${aluno.processoIsencao.situacaoProcessoIsencao == null }">
-					<a class="btn btn-success custom-width" type="submit"
-						href="${pageContext.request.contextPath}/isencaoDisciplina/alunoView">
-						<i class="fa fa-arrow-left"> </i> Criar Nova Isenção
-					</a>
-				</c:if>
 
-			</div>
-		</c:if>
-		<c:if test="${aluno.processoIsencao == null}">
-			<h5 align="center">Não existe Processo de Isenção em aberto</h5>
-			<br>
-			<div>
-				<a class="btn btn-success custom-width" type="submit"
-					href="${pageContext.request.contextPath}/isencaoDisciplina/alunoView">
-					<i class="fa fa-arrow-left"> </i> Criar Isenção
-				</a>
-			</div>
-		</c:if>
-
-
+				<button class="btn btn-success custom-width" type="submit"
+					name="matricula">Confirmar</button>
+			</form>
+		</div>
 		<a class="btn btn-default"
 			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
 			class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>
-
 </body>
 </html>

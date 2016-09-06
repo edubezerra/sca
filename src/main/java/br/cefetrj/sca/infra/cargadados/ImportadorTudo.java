@@ -67,30 +67,31 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
-//			importadorQuestionarioAvaliacaoTurmas.run();
-//			importadorGradesCurriculares.run();
-//			importadorTurmasComInscricoes.run();
+			importadorQuestionarioAvaliacaoTurmas.run();
+			importadorGradesCurriculares.run();
+			importadorTurmasComInscricoes.run();
+
+			importadorPreReqs.run();
+			importadorAtividadesComp.run();
+
+			importadorAlunos.run();
+
 			importadorUsuariosAlunos.run();
 
-//			importadorPreReqs.run();
-//			importadorAtividadesComp.run();
-//
-//			importadorAlunos.run();
-//
-//			importadorProfessores.run();
-//			importadorDepartamentos.run();
-//
-//			// importadorHistoricoEscolar.run();
-//
-//			importadorAlocacoesProfessoresEmTurmas.run();
-//			importadorHabilitacoesParaProfessor.run();
-//			importadorPerMinVersaoCurso.run();
-//
-//			importadorAlocacoesProfessoresEmDepartamentos.run();
-//
-//			importadorAlocacoesDisciplinasEmDepartamentos.run();
-//
-//			importadorEquivalenciaDisciplinas.run();
+			importadorProfessores.run();
+			importadorDepartamentos.run();
+
+			// importadorHistoricoEscolar.run();
+
+			importadorAlocacoesProfessoresEmTurmas.run();
+			importadorHabilitacoesParaProfessor.run();
+			importadorPerMinVersaoCurso.run();
+
+			importadorAlocacoesProfessoresEmDepartamentos.run();
+
+			importadorAlocacoesDisciplinasEmDepartamentos.run();
+
+			importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

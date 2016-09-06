@@ -1,4 +1,4 @@
-package br.cefetrj.sca.dominio;
+package br.cefetrj.sca.dominio.isencoes;
 
 import java.util.Date;
 
@@ -9,15 +9,33 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 @Entity
-public class ItemIsencao {
+public class ItemIsencaoDisciplina {
+	public enum SituacaoItem {
+		INDEFINIDO("INDEFINIDO"), DEFERIDO("DEFERIDO"), INDEFERIDO("INDEFERIDO");
+
+		private String value;
+
+		private SituacaoItem(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+	}
 
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String situacao;
 	private Date dataAnalise;
 	private String motivo;
@@ -26,9 +44,17 @@ public class ItemIsencao {
 
 	@ManyToOne
 	Disciplina disciplina;
-	
-	@OneToOne(cascade = {CascadeType.ALL})
+
+	@OneToOne(cascade = { CascadeType.ALL })
 	Comprovante comprovante;
+
+	@SuppressWarnings("unused")
+	private ItemIsencaoDisciplina() {
+	}
+
+	public ItemIsencaoDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
+	}
 
 	public String getSituacao() {
 		return situacao;
@@ -85,7 +111,7 @@ public class ItemIsencao {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-	
+
 	public String getDisciplinaAssociada() {
 		return disciplinaAssociada;
 	}

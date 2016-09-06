@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.Curso;
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.ItemIsencao;
-import br.cefetrj.sca.dominio.ProcessoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.isencoes.ItemIsencaoDisciplina;
+import br.cefetrj.sca.dominio.isencoes.ProcessoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
-import br.cefetrj.sca.dominio.repositories.ItemIsencaoRepositorio;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import br.cefetrj.sca.dominio.repositories.CursoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProcessoIsencaoRepositorio;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.IsencaoDisciplinaService;
@@ -38,58 +40,42 @@ public class RegistrarIsencaoDisciplinaController {
 	IsencaoDisciplinaService is;
 
 	@Autowired
-	ItemIsencaoRepositorio itemIsencaoRepo;
-
-	@Autowired
 	ProcessoIsencaoRepositorio processoIsencaoRepo;
 
+	@Autowired
+	CursoRepositorio cursoRepositorio;
+
+	@Autowired
+	AlunoRepositorio alunoRepositorio;
+
 	@RequestMapping(value = "/visualizarProcessoIsencao", method = RequestMethod.GET)
-	public String visualizarProcessoIsencao(Model model,
-			HttpServletRequest request, HttpSession session) {
+	public String visualizarProcessoIsencao(Model model, HttpServletRequest request, HttpSession session) {
 
-		String matricula = UsuarioController.getCurrentUser().getLogin();
+		System.out.println("RegistrarIsencaoDisciplinaController.visualizarProcessoIsencao()");
+
 		try {
+			String matricula = UsuarioController.getCurrentUser().getLogin();
 			Aluno aluno = is.findAlunoByMatricula(matricula);
-			List<ItemIsencao> it = new ArrayList<>();
-			int contadorItemIsencao = 0;
-			String situacaoNome = null;
+			ProcessoIsencaoDisciplinas processo = processoIsencaoRepo.findByAluno(aluno);
 
-			ProcessoIsencaoDisciplinas pi = processoIsencaoRepositorio.findByMatriculaAluno(aluno);
-			
-			if (pi != null) {
-				for (int i = 0; i < pi
-						.getListaItenIsencao().size(); i++) {
-					it.add(aluno.getProcessoIsencao().getListaItenIsencao()
-							.get(i));
-					if (aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-							.getSituacao() != null) {
-						contadorItemIsencao = contadorItemIsencao + 1;
-						if (aluno.getProcessoIsencao().getListaItenIsencao()
-								.size() == contadorItemIsencao) {
-							aluno.getProcessoIsencao()
-									.setSituacaoProcessoIsencao("ANALISADO");
-						} else {
-							aluno.getProcessoIsencao()
-									.setSituacaoProcessoIsencao("EM ANALISE");
-						}
-					}
-				}
-
-				model.addAttribute("itemIsencaoByProcessoIsencao", it);
-				model.addAttribute("situacaoNome", situacaoNome);
+			if (processo != null) {
+				model.addAttribute("processo", processo);
+				model.addAttribute("itensProcesso", processo.getItens());
+				model.addAttribute("situacaoNome", processo.getSituacao());
 			}
 			model.addAttribute("aluno", aluno);
 
-			return "/isencaoDisciplina/aluno/alunoSucesso";
+			return "/isencaoDisciplina/aluno/novoProcessoIsencao";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 			return "/menuPrincipalView";
 		}
 	}
 
-	@RequestMapping(value = "/alunoView", method = RequestMethod.GET)
-	public String isencaoDisciplina(Model model, HttpServletRequest request,
-			HttpSession session) {
+	@RequestMapping(value = "/criaProcessoIsencao", method = RequestMethod.GET)
+	public String criarProcessoIsencao(Model model, HttpServletRequest request, HttpSession session) {
+
+		System.out.println("RegistrarIsencaoDisciplinaController.isencaoDisciplina()");
 
 		String matricula = UsuarioController.getCurrentUser().getLogin();
 		session.setAttribute("login", matricula);
@@ -103,7 +89,7 @@ public class RegistrarIsencaoDisciplinaController {
 			model.addAttribute("aluno", aluno);
 			model.addAttribute("disciplinas", disciplinas);
 
-			return "/isencaoDisciplina/aluno/alunoView";
+			return "/isencaoDisciplina/aluno/escolheDisciplinasParaIsentar";
 
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -112,8 +98,11 @@ public class RegistrarIsencaoDisciplinaController {
 	}
 
 	@RequestMapping(value = "/validaComprovante", method = RequestMethod.POST)
-	public String validaComprovante(Model model, HttpServletRequest request,
-			HttpSession session, @RequestParam("file") MultipartFile file) {
+	public String validaComprovante(Model model, HttpServletRequest request, HttpSession session,
+			@RequestParam("file") MultipartFile file) {
+
+		System.out.println("RegistrarIsencaoDisciplinaController.validaComprovante()");
+
 		try {
 			String matricula = (String) session.getAttribute("login");
 			Aluno aluno = is.findAlunoByMatricula(matricula);
@@ -124,72 +113,36 @@ public class RegistrarIsencaoDisciplinaController {
 			for (int i = 0; i < auxcheckboxes.length; i++) {
 				checkBoxes[i] = Long.parseLong(auxcheckboxes[i]);
 			}
-			ProcessoIsencaoDisciplinas pi = null;
-			ItemIsencao itemIsencao = null;
+			ProcessoIsencaoDisciplinas processo = processoIsencaoRepo.findByAluno(aluno);
 
-			if (aluno.getProcessoIsencao() != null) {
-				aluno.getProcessoIsencao()
-						.getListaItenIsencao()
-						.removeAll(
-								aluno.getProcessoIsencao()
-										.getListaItenIsencao());
-				pi = aluno.getProcessoIsencao();
+			if (processo != null) {
+				processo.getItens().removeAll(processo.getItens());
 
-				for (int i = 0; i < aluno.getProcessoIsencao()
-						.getListaItenIsencao().size(); i++) {
-					aluno.getProcessoIsencao()
-							.getListaItenIsencao()
-							.removeAll(
-									aluno.getProcessoIsencao()
-											.getListaItenIsencao());
+				for (int i = 0; i < processo.getItens().size(); i++) {
+					processo.getItens().removeAll(processo.getItens());
 				}
 				for (int i = 0; i < checkBoxes.length; i++) {
-					itemIsencao = new ItemIsencao();
-
-					itemIsencao.setDisciplina(is
-							.getDisciplinaPorId(checkBoxes[i]));
-
-					aluno.getProcessoIsencao().getListaItenIsencao()
-							.add(itemIsencao);
-
-					itemIsencaoRepo.save(itemIsencao);
+					processo.comMaisUmItem(is.getDisciplinaPorId(checkBoxes[i]));
 				}
-
-				processoIsencaoRepo.save(pi);
-
+				processoIsencaoRepo.save(processo);
 			} else {
-				List<ItemIsencao> listaIsen = new ArrayList<>();
-
-				pi = new ProcessoIsencaoDisciplinas();
-
+				processo = new ProcessoIsencaoDisciplinas(aluno);
 				for (int i = 0; i < checkBoxes.length; i++) {
-					itemIsencao = new ItemIsencao();
-
-					itemIsencao.setDisciplina(is
-							.getDisciplinaPorId(checkBoxes[i]));
-					listaIsen.add(itemIsencao);
-
-					itemIsencao.setComprovante(file.getContentType(),
-							file.getBytes(), file.getOriginalFilename());
-
-					itemIsencaoRepo.save(itemIsencao);
-
+					processo.comMaisUmItem(is.getDisciplinaPorId(checkBoxes[i]));
+//					item.setComprovante(file.getContentType(), file.getBytes(), file.getOriginalFilename());
 				}
-				pi.setListaItenIsencao(listaIsen);
 
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date data = new Date();
 				Date dataAtual = sdf.parse(sdf.format(data));
 
-				pi.setDataRegistro(dataAtual);
-				aluno.setProcessoIsencao(pi);
+				processo.setDataRegistro(dataAtual);
 
-				processoIsencaoRepo.save(pi);
+				processoIsencaoRepo.save(processo);
 			}
 
 			model.addAttribute("aluno", aluno);
-			model.addAttribute("itemIsencaoByProcessoIsencao", aluno
-					.getProcessoIsencao().getListaItenIsencao());
+			model.addAttribute("itemIsencaoByProcessoIsencao", processo.getItens());
 
 			return "/isencaoDisciplina/aluno/relacaoMateriaExterna";
 		} catch (Exception exc) {
@@ -199,25 +152,22 @@ public class RegistrarIsencaoDisciplinaController {
 	}
 
 	@RequestMapping(value = "/relacaoMateriaExterna", method = RequestMethod.POST)
-	public String registroMateriaExterna(
-			Model model,
-			HttpServletRequest request,
-			HttpSession session,
+	public String registroMateriaExterna(Model model, HttpServletRequest request, HttpSession session,
 			@RequestParam("aluno") String matricula,
 			@RequestParam("itemIsencaoByProcessoIsencao") List<String> itemIsencao,
 			@RequestParam("disciplinaAssociada") List<String> disciplinaAssociada) {
 
-		try {
+		System.out.println("RegistrarIsencaoDisciplinaController.registroMateriaExterna()");
 
+		try {
 			Aluno aluno = is.findAlunoByMatricula(matricula);
+			ProcessoIsencaoDisciplinas processo = processoIsencaoRepo.findByAluno(aluno);
 
 			for (int i = 0; i < itemIsencao.size(); i++) {
-				aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-						.setDisciplinaAssociada(disciplinaAssociada.get(i));
-
-				itemIsencaoRepo.save(aluno.getProcessoIsencao()
-						.getListaItenIsencao().get(i));
+				processo.getItens().get(i).setDisciplinaAssociada(disciplinaAssociada.get(i));
 			}
+
+			processoIsencaoRepo.save(processo);
 
 			return visualizarProcessoIsencao(model, request, session);
 
@@ -227,12 +177,18 @@ public class RegistrarIsencaoDisciplinaController {
 		}
 	}
 
-	// //////////////////////////////////// PROFESSOR
-	// ///////////////////////////////////// ////////////////////////////
+	/***
+	 * 
+	 * 
+	 * PROFESSOR
+	 * 
+	 * 
+	 */
 
 	@RequestMapping(value = "/professorView", method = RequestMethod.GET)
-	public String isencaoDisciplinaProfessor(Model model,
-			HttpServletRequest request, HttpSession session) {
+	public String isencaoDisciplinaProfessor(Model model, HttpServletRequest request, HttpSession session) {
+
+		System.out.println("RegistrarIsencaoDisciplinaController.isencaoDisciplinaProfessor()");
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
@@ -244,13 +200,14 @@ public class RegistrarIsencaoDisciplinaController {
 				return "forward:/isencaoDisciplina/menuPrincipal";
 			}
 
-			List<Aluno> alunos = is.getTodosOsAlunos();
+			Curso curso = cursoRepositorio.findByCoordenador(professor);
+
+			List<ProcessoIsencaoDisciplinas> processos = processoIsencaoRepo.findByCurso(curso);
+
 			List<Aluno> alunosProcessoIsencao = new ArrayList<>();
 
-			for (int i = 0; i < alunos.size(); i++) {
-				if (alunos.get(i).getProcessoIsencao() != null) {
-					alunosProcessoIsencao.add(alunos.get(i));
-				}
+			for (int i = 0; i < processos.size(); i++) {
+				alunosProcessoIsencao.add(processos.get(i).getAluno());
 			}
 
 			model.addAttribute("professor", professor);
@@ -265,36 +222,30 @@ public class RegistrarIsencaoDisciplinaController {
 	}
 
 	@RequestMapping(value = { "/", "/itemProcessoIsencaoView" }, method = RequestMethod.POST)
-	public String itensProcessoIsencaoProfessor(Model model,
-			HttpServletRequest request, HttpSession session,
+	public String itensProcessoIsencaoProfessor(Model model, HttpServletRequest request,
 			@RequestParam("matricula") List<String> matriculas) {
 
+		System.out.println("RegistrarIsencaoDisciplinaController.itensProcessoIsencaoProfessor()");
+
 		String matricula = UsuarioController.getCurrentUser().getLogin();
-		session.setAttribute("login", matricula);
 
 		try {
 			Professor professor = is.findProfessorByMatricula(matricula);
 			Aluno aluno = null;
 
-			List<Aluno> alunoIsencao = is.getTodosOsAlunos();
-			List<ItemIsencao> alunosItemIsencao = new ArrayList<>();
+			List<Aluno> alunos = alunoRepositorio.findByMatriculas(matriculas);
 
-			for (int j = 0; j < matriculas.size(); j++) {
+			List<ItemIsencaoDisciplina> itensIsencao = new ArrayList<>();
 
-				for (int i = 0; i < alunoIsencao.size(); i++) {
-					if (alunoIsencao.get(i).getMatricula()
-							.equals(matriculas.get(j))) {
-						alunosItemIsencao.addAll(alunoIsencao.get(i)
-								.getProcessoIsencao().getListaItenIsencao());
-						aluno = is.findAlunoByMatricula(alunoIsencao.get(i)
-								.getMatricula());
-					}
-				}
+			for (int i = 0; i < alunos.size(); i++) {
+				ProcessoIsencaoDisciplinas processo = processoIsencaoRepo.findByAluno(aluno);
+				itensIsencao.addAll(processo.getItens());
+				aluno = is.findAlunoByMatricula(alunos.get(i).getMatricula());
 			}
 
 			model.addAttribute("professor", professor);
 			model.addAttribute("aluno", aluno);
-			model.addAttribute("alunosItemIsencao", alunosItemIsencao);
+			model.addAttribute("alunosItemIsencao", itensIsencao);
 
 			return "/isencaoDisciplina/professor/itemProcessoIsencaoView";
 
@@ -305,14 +256,15 @@ public class RegistrarIsencaoDisciplinaController {
 	}
 
 	@RequestMapping(value = { "/", "/professorSucesso" }, method = RequestMethod.POST)
-	public String confirmacaoProcessoIsencao(Model model,
-			HttpServletRequest request, HttpSession session,
-			@RequestParam("btAvaliador") String btAvaliador,
-			@RequestParam("alunosItemIsencao") List<String> item,
+	public String confirmacaoProcessoIsencao(Model model, HttpServletRequest request, HttpSession session,
+			@RequestParam("btAvaliador") String btAvaliador, @RequestParam("alunosItemIsencao") List<String> item,
 			@RequestParam("aluno") String matriculaAluno) {
+
+		System.out.println("RegistrarIsencaoDisciplinaController.confirmacaoProcessoIsencao()");
 
 		try {
 			Aluno aluno = is.findAlunoByMatricula(matriculaAluno);
+			ProcessoIsencaoDisciplinas processo = processoIsencaoRepo.findByAluno(aluno);
 
 			for (int i = 0; i < item.size(); i++) {
 
@@ -326,8 +278,7 @@ public class RegistrarIsencaoDisciplinaController {
 
 				if (botaoTraco.equals(itemTraco)) {
 					if (btAvaliador.contains("indeferir")) {
-						String valorSalvo = btAvaliador.substring(0,
-								btAvaliador.indexOf("-"));
+						String valorSalvo = btAvaliador.substring(0, btAvaliador.indexOf("-"));
 
 						model.addAttribute("codigoDisciplina", item.get(i));
 						model.addAttribute("alunosItemIsencao", item.get(i));
@@ -337,17 +288,13 @@ public class RegistrarIsencaoDisciplinaController {
 						return "/isencaoDisciplina/professor/motivoProcessoIsencaoView";
 
 					} else {
-						String valorSalvo = btAvaliador.substring(0,
-								btAvaliador.indexOf("-"));
+						String valorSalvo = btAvaliador.substring(0, btAvaliador.indexOf("-"));
 
-						aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-								.setSituacao(valorSalvo);
+						processo.getItens().get(i).setSituacao(valorSalvo);
 						Date date = new Date();
-						aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-								.setDataAnalise(date);
+						processo.getItens().get(i).setDataAnalise(date);
 
-						itemIsencaoRepo.save(aluno.getProcessoIsencao()
-								.getListaItenIsencao().get(i));
+						processoIsencaoRepo.save(processo);
 
 						return "/menuPrincipalView";
 					}
@@ -362,41 +309,34 @@ public class RegistrarIsencaoDisciplinaController {
 	}
 
 	@RequestMapping(value = { "/", "/motivoProcessoIsencao" }, method = RequestMethod.POST)
-	public String motivoProcessoIsencaoProfessor(Model model,
-			HttpServletRequest request, HttpSession session,
-			@RequestParam("motivos") String motivos,
-			@RequestParam("codigoDisciplina") String codigoDisciplina,
-			@RequestParam("situacao") String situacao,
-			@RequestParam("observacao") String observacao,
+	public String motivoProcessoIsencaoProfessor(Model model, HttpServletRequest request, HttpSession session,
+			@RequestParam("motivos") String motivos, @RequestParam("codigoDisciplina") String codigoDisciplina,
+			@RequestParam("situacao") String situacao, @RequestParam("observacao") String observacao,
 			@RequestParam("aluno") String matriculaAluno) {
+
+		System.out.println("RegistrarIsencaoDisciplinaController.motivoProcessoIsencaoProfessor()");
 
 		try {
 			Aluno aluno = is.findAlunoByMatricula(matriculaAluno);
-			List<ItemIsencao> lista = aluno.getProcessoIsencao()
-					.getListaItenIsencao();
+			ProcessoIsencaoDisciplinas processo = processoIsencaoRepo.findByAluno(aluno);
 
-			String valor = codigoDisciplina.substring(0,
-					codigoDisciplina.indexOf("-"));
+			List<ItemIsencaoDisciplina> lista = processo.getItens();
+
+			String valor = codigoDisciplina.substring(0, codigoDisciplina.indexOf("-"));
 
 			for (int i = 0; i < lista.size(); i++) {
 				if (lista.get(i).getDisciplina().getCodigo().equals(valor)) {
-					aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-							.setMotivo(motivos);
-					aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-							.setSituacao(situacao);
+					processo.getItens().get(i).setMotivo(motivos);
+					processo.getItens().get(i).setSituacao(situacao);
 					if (motivos.equals("Outros")) {
-						aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-								.setObservacao(observacao);
+						processo.getItens().get(i).setObservacao(observacao);
 					}
-
 					Date date = new Date();
-					aluno.getProcessoIsencao().getListaItenIsencao().get(i)
-							.setDataAnalise(date);
-
-					itemIsencaoRepo.save(aluno.getProcessoIsencao()
-							.getListaItenIsencao().get(i));
+					processo.getItens().get(i).setDataAnalise(date);
 				}
 			}
+
+			processoIsencaoRepo.save(processo);
 
 			return "/menuPrincipalView";
 
@@ -407,23 +347,20 @@ public class RegistrarIsencaoDisciplinaController {
 	}
 
 	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
-	public void downloadFile(
-			@RequestParam("comprovanteProcIsencao") long idProcIsencao,
-			HttpServletRequest request, HttpServletResponse response,
-			HttpSession sessao) {
+	public void downloadFile(@RequestParam("comprovanteProcIsencao") long idProcIsencao, HttpServletRequest request,
+			HttpServletResponse response, HttpSession sessao) {
+
+		System.out.println("RegistrarIsencaoDisciplinaController.downloadFile()");
 
 		try {
-			List<ItemIsencao> listIten = processoIsencaoRepo
-					.findItemIsencaoByProcessoIsencao(idProcIsencao);
+			List<ItemIsencaoDisciplina> listIten = processoIsencaoRepo.findItemIsencaoByProcessoIsencao(idProcIsencao);
 			long idQualquerItemIsencao = 0;
 			for (int i = 0; i < listIten.size(); i++) {
 				idQualquerItemIsencao = listIten.get(0).getId();
 			}
-			ItemIsencao requerimento = is
-					.findItemIsencaoById(idQualquerItemIsencao);
+			ItemIsencaoDisciplina requerimento = is.findItemIsencaoById(idQualquerItemIsencao);
 			Comprovante comprovante = requerimento.getComprovante();
-			GerenteArquivos.downloadFileNovo(idQualquerItemIsencao, request,
-					response, comprovante);
+			GerenteArquivos.downloadFileNovo(idQualquerItemIsencao, request, response, comprovante);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

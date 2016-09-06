@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.cefetrj.sca.dominio.Curso;
+import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.VersaoCurso;
 
 public interface CursoRepositorio extends JpaRepository<Curso, Serializable> {
@@ -27,4 +28,7 @@ public interface CursoRepositorio extends JpaRepository<Curso, Serializable> {
 	
 	@Query("FROM VersaoCurso v")
 	List<VersaoCurso> findAllVersaoCurso();
+
+	@Query("FROM Curso c WHERE c.coordenador = ?1")
+	Curso findByCoordenador(Professor professor);
 }
