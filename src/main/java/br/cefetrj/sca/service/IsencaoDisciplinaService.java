@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.ItemIsencao;
-import br.cefetrj.sca.dominio.ProcessoIsencao;
+import br.cefetrj.sca.dominio.ProcessoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
@@ -62,8 +62,8 @@ public class IsencaoDisciplinaService {
 			return disciplinas;
 	}
 
-	public List<ProcessoIsencao> findProcessosIsencao() {
-		List<ProcessoIsencao> pi = procIsencaoRepo.findProcessoIsencao();
+	public List<ProcessoIsencaoDisciplinas> findProcessosIsencao() {
+		List<ProcessoIsencaoDisciplinas> pi = procIsencaoRepo.findProcessoIsencao();
 		if (pi.isEmpty()) {
 			System.out
 					.println("IsencaoDisciplinaService  Lista de processos está vazia!");

@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.ItemIsencao;
-import br.cefetrj.sca.dominio.ProcessoIsencao;
+import br.cefetrj.sca.dominio.ProcessoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.repositories.ItemIsencaoRepositorio;
@@ -48,16 +48,16 @@ public class RegistrarIsencaoDisciplinaController {
 			HttpServletRequest request, HttpSession session) {
 
 		String matricula = UsuarioController.getCurrentUser().getLogin();
-		session.setAttribute("login", matricula);
 		try {
-
 			Aluno aluno = is.findAlunoByMatricula(matricula);
 			List<ItemIsencao> it = new ArrayList<>();
 			int contadorItemIsencao = 0;
 			String situacaoNome = null;
 
-			if (aluno.getProcessoIsencao() != null) {
-				for (int i = 0; i < aluno.getProcessoIsencao()
+			ProcessoIsencaoDisciplinas pi = processoIsencaoRepositorio.findByMatriculaAluno(aluno);
+			
+			if (pi != null) {
+				for (int i = 0; i < pi
 						.getListaItenIsencao().size(); i++) {
 					it.add(aluno.getProcessoIsencao().getListaItenIsencao()
 							.get(i));
@@ -124,7 +124,7 @@ public class RegistrarIsencaoDisciplinaController {
 			for (int i = 0; i < auxcheckboxes.length; i++) {
 				checkBoxes[i] = Long.parseLong(auxcheckboxes[i]);
 			}
-			ProcessoIsencao pi = null;
+			ProcessoIsencaoDisciplinas pi = null;
 			ItemIsencao itemIsencao = null;
 
 			if (aluno.getProcessoIsencao() != null) {
@@ -160,7 +160,7 @@ public class RegistrarIsencaoDisciplinaController {
 			} else {
 				List<ItemIsencao> listaIsen = new ArrayList<>();
 
-				pi = new ProcessoIsencao();
+				pi = new ProcessoIsencaoDisciplinas();
 
 				for (int i = 0; i < checkBoxes.length; i++) {
 					itemIsencao = new ItemIsencao();

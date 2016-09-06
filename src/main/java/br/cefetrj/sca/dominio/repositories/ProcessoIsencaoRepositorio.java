@@ -7,14 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.cefetrj.sca.dominio.ItemIsencao;
-import br.cefetrj.sca.dominio.ProcessoIsencao;
+import br.cefetrj.sca.dominio.ProcessoIsencaoDisciplinas;
 
-public interface ProcessoIsencaoRepositorio extends JpaRepository<ProcessoIsencao, Serializable> {
+public interface ProcessoIsencaoRepositorio extends JpaRepository<ProcessoIsencaoDisciplinas, Serializable> {
 	
 	@Query("SELECT pi from ProcessoIsencao pi")
-	List<ProcessoIsencao> findProcessoIsencao();
+	List<ProcessoIsencaoDisciplinas> findProcessoIsencao();
 	
-	ProcessoIsencao findProcessoIsencaoById(Long id);
+	ProcessoIsencaoDisciplinas findProcessoIsencaoById(Long id);
 	
 	@Query("SELECT i FROM ProcessoIsencao pi JOIN pi.listaItenIsencao i WHERE pi.id = ?")
 	List<ItemIsencao> findItemIsencaoByProcessoIsencao(long idProcIsencao);

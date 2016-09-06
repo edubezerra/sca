@@ -7,12 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
-public class ProcessoIsencao {
+public class ProcessoIsencaoDisciplinas {
 	@Id
 	@GeneratedValue
 	private Long id;
+
+	@OneToOne
+	Aluno solicitante;
+
 	private String situacaoProcessoIsencao;
 
 	private Date dataRegistro;
@@ -51,5 +56,8 @@ public class ProcessoIsencao {
 	public void setSituacaoProcessoIsencao(String situacaoProcessoIsencao) {
 		this.situacaoProcessoIsencao = situacaoProcessoIsencao;
 	}
-	
+
+	public Aluno getSolicitante() {
+		return solicitante;
+	}
 }
