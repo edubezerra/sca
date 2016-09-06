@@ -26,10 +26,10 @@ public class IsencaoDisciplinaService {
 
 	@Autowired
 	private DisciplinaRepositorio disciplinaRepo;
-	
+
 	@Autowired
 	private ProcessoIsencaoRepositorio procIsencaoRepo;
-	
+
 	@Autowired
 	private ItemIsencaoRepositorio itemIsencaoRepo;
 
@@ -39,17 +39,13 @@ public class IsencaoDisciplinaService {
 		if (aluno != null)
 			return aluno;
 		else
-			System.out.println("IsencaoDisciplinaService - Aluno não encontrado!");
+			System.out
+					.println("IsencaoDisciplinaService - Aluno não encontrado!");
 		return null;
 	}
 
 	public Professor findProfessorByMatricula(String matricula) {
-		Professor professor = professorRepo.findProfessorByMatricula(matricula);
-		if (professor != null)
-			return professor;
-		else
-			System.out.println("IsencaoDisciplinaService - Professor não encontrado!");
-		return null;
+		return professorRepo.findProfessorByMatricula(matricula);
 	}
 
 	public Disciplina getDisciplinaPorId(Long idDisciplina) {
@@ -59,34 +55,37 @@ public class IsencaoDisciplinaService {
 	public List<Disciplina> findDisciplinas(String siglaCurso) {
 		List<Disciplina> disciplinas = disciplinaRepo.findBySigla(siglaCurso);
 		if (disciplinas.isEmpty()) {
-			System.out.println("IsencaoDisciplinaService  Lista de disciplinas está vazia!");
+			System.out
+					.println("IsencaoDisciplinaService  Lista de disciplinas está vazia!");
 			return null;
 		} else
 			return disciplinas;
 	}
-	
+
 	public List<ProcessoIsencao> findProcessosIsencao() {
 		List<ProcessoIsencao> pi = procIsencaoRepo.findProcessoIsencao();
-		if(pi.isEmpty()){
-			System.out.println("IsencaoDisciplinaService  Lista de processos está vazia!");
+		if (pi.isEmpty()) {
+			System.out
+					.println("IsencaoDisciplinaService  Lista de processos está vazia!");
 			return null;
-		} else{
+		} else {
 			return pi;
-		}	
+		}
 	}
-	
+
 	public List<Aluno> getTodosOsAlunos() {
-		List<Aluno> a = alunoRepo.getAllAlunos();
-		if(a.isEmpty()){
-			System.out.println("IsencaoDisciplinaService  Lista de processos está vazia!");
+		List<Aluno> a = alunoRepo.findAll();
+		if (a.isEmpty()) {
+			System.out
+					.println("IsencaoDisciplinaService  Lista de processos está vazia!");
 			return null;
-		} else{
+		} else {
 			return a;
-		}	
+		}
 	}
-	
+
 	public ItemIsencao findItemIsencaoById(Long solicitacaoId) {
 		return itemIsencaoRepo.findItemIsencaoById(solicitacaoId);
 	}
-	
+
 }

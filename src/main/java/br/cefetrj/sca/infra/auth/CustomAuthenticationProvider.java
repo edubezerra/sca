@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +22,8 @@ import br.cefetrj.sca.dominio.usuarios.Usuario;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	AutenticadorMoodle autenticador;
+	@Qualifier("mockAuth")
+	EstrategiaAutenticacao autenticador;
 
 	@Autowired
 	UsuarioRepositorio usuarioRepositorio;
@@ -29,23 +31,26 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication)
 			throws AuthenticationException {
+		
+		System.out.println("CustomAuthenticationProvider.authenticate()");
+		
 		String login = authentication.getName();
 		String password = authentication.getCredentials().toString();
 
 		Usuario usuario = usuarioRepositorio.findUsuarioByLogin(login);
 
-		/**
-		 * Procura novamente, devido à existência de dois formatos para o login
-		 * no Moodle: um usuário com login 999.999.999/99 pode ter login
-		 * 99999999999 ou 999999999-99.
-		 * 
-		 * TODO: remover esse teste quando migrar para a autenticação pelo SIE.
-		 */
-		if (usuario == null) {
-			String loginModificado = login.substring(0, login.length() - 2)
-					+ "-" + login.substring(login.length() - 2);
-			usuario = usuarioRepositorio.findUsuarioByLogin(loginModificado);
-		}
+//		/**
+//		 * Procura novamente, devido à existência de dois formatos para o login
+//		 * no Moodle: um usuário com login 999.999.999/99 pode ter login
+//		 * 99999999999 ou 999999999-99.
+//		 * 
+//		 * TODO: remover esse teste quando migrar para a autenticação pelo SIE.
+//		 */
+//		if (usuario == null) {
+//			String loginModificado = login.substring(0, login.length() - 2)
+//					+ "-" + login.substring(login.length() - 2);
+//			usuario = usuarioRepositorio.findUsuarioByLogin(loginModificado);
+//		}
 
 		if (usuario != null) {
 			if (deveAutenticarNoSistemaExterno(login, password)) {

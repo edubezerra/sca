@@ -1,31 +1,61 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<title>Isenção de Disciplina</title>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		
+	<title>SCA - IsenÃ§Ã£o de Disciplinas</title>
+	
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
+		media="screen" rel="stylesheet" type="text/css" />	
+	<link
+		href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-select.css"
+		media="screen" rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-select.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vendor/font-awesome/css/font-awesome.min.css">
+	
+	<!-- Required for tablesorter and jquery.popconfirm-->
+    <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+    
+    <!-- Bootstrap stylesheet -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/bootstrap.min.css">
+	<!-- bootstrap widget theme -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/theme.bootstrap_2.css">
+	<!-- tablesorter plugin -->
+	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.js"></script>
+	<!-- tablesorter widget file - loaded after the plugin -->
+	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.widgets.js"></script>
+	<!-- pager plugin -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/tablesorter/css/jquery.tablesorter.pager.css">
+	<script src="${pageContext.request.contextPath}/resources/tablesorter/js/jquery.tablesorter.pager.js"></script>
+	
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" 
+		src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.popconfirm.js"></script>
 </head>
 <body>
 	<b>   Aluno: ${aluno.nome }</b>
 	<br></br>
-	<b>   Matrícula: ${aluno.matricula }</b>
+	<b>   MatrÃ­cula: ${aluno.matricula }</b>
 	<br></br>
 	<br></br>
 
 	<div class="table-responsive" align="center">
 		<form action="${pageContext.request.contextPath}/isencaoDisciplina/validaComprovante"  enctype="multipart/form-data" method="POST">
-		 <label for="inputFile">Anexar comprovante de solicitação
-								de matrícula do período atual (Formatos aceitos: PDF, JPEG ou
-								PNG. Tamanho Máximo: 10mb)</label>
+		 <label for="inputFile">Anexar comprovante de solicitaÃ§Ã£o
+								de matrÃ­cula do perÃ­odo atual (Formatos aceitos: PDF, JPEG ou
+								PNG. Tamanho MÃ¡ximo: 10mb)</label>
 							<input type="file" name="file" id="inputFile" required>
 		<table class="table">
 			<thead>

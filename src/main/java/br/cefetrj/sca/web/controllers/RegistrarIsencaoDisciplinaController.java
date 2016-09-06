@@ -26,12 +26,13 @@ import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.repositories.ItemIsencaoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProcessoIsencaoRepositorio;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.IsencaoDisciplinaService;
 
 @Controller
 @SessionAttributes("login")
 @RequestMapping("/isencaoDisciplina")
-public class IsencaoDisciplinaController {
+public class RegistrarIsencaoDisciplinaController {
 
 	@Autowired
 	IsencaoDisciplinaService is;
@@ -233,11 +234,15 @@ public class IsencaoDisciplinaController {
 	public String isencaoDisciplinaProfessor(Model model,
 			HttpServletRequest request, HttpSession session) {
 
-		String matricula = UsuarioController.getCurrentUser().getLogin();
-		session.setAttribute("login", matricula);
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matricula = usr.getMatricula();
 		try {
 
 			Professor professor = is.findProfessorByMatricula(matricula);
+			if (professor == null) {
+				model.addAttribute("error", "Professor não encontrado!");
+				return "forward:/isencaoDisciplina/menuPrincipal";
+			}
 
 			List<Aluno> alunos = is.getTodosOsAlunos();
 			List<Aluno> alunosProcessoIsencao = new ArrayList<>();

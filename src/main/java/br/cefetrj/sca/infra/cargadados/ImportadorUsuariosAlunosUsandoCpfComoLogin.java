@@ -14,7 +14,7 @@ import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 
 @Component
-public class ImportadorUsuariosAlunos {
+public class ImportadorUsuariosAlunosUsandoCpfComoLogin {
 	@Autowired
 	private AlunoRepositorio alunoRepositorio;
 

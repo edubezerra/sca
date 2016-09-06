@@ -14,7 +14,7 @@ import br.cefetrj.sca.infra.cargadados.ImportadorGradesCurriculares;
 import br.cefetrj.sca.infra.cargadados.ImportadorHistoricosEscolares;
 import br.cefetrj.sca.infra.cargadados.ImportadorPesquisaAvaliacaoProfessor;
 import br.cefetrj.sca.infra.cargadados.ImportadorTurmasComInscricoes;
-import br.cefetrj.sca.infra.cargadados.ImportadorUsuariosAlunos;
+import br.cefetrj.sca.infra.cargadados.ImportadorUsuariosAlunosUsandoCpfComoLogin;
 
 /**
  * 
@@ -39,7 +39,7 @@ public class ImportacaoDadosService {
 	ImportadorPesquisaAvaliacaoProfessor importadorPesquisaAvaliacaoProfessor;
 
 	@Autowired
-	ImportadorUsuariosAlunos importadorUsuariosAlunos;
+	ImportadorUsuariosAlunosUsandoCpfComoLogin importadorUsuariosAlunos;
 
 	@Transactional
 	public String importar(MultipartFile file, Long tipoImportacao) {

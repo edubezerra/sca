@@ -56,15 +56,6 @@ public class AnaliseMatriculaForaPrazoService {
 						departamento);
 
 		return requerimentos;
-		// for (MatriculaForaPrazo requerimento : requerimentos) {
-		// Iterator<ItemMatriculaForaPrazo> it = requerimento
-		// .getItens().iterator();
-		// while (it.hasNext()) {
-		// if (!it.next().getDepartamento().getId().equals(departamentoId)) {
-		// it.remove();
-		// }
-		// }
-		// }
 	}
 
 	public Professor getProfessorByMatricula(String matricula) {

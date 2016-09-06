@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 
 import org.springframework.stereotype.Component;
 
-@Component
-public class AutenticadorMoodle implements EstrategiaAutenticacao {
+@Component("moodleAuth")
+public class EstrategiaAutenticacaoMoodle implements EstrategiaAutenticacao {
 
-	protected Logger logger = Logger.getLogger(AutenticadorMoodle.class.getName());
+	protected Logger logger = Logger.getLogger(EstrategiaAutenticacaoMoodle.class.getName());
 
 	/**
 	 * moodle.org valid username and pass is teste_login, teste_login

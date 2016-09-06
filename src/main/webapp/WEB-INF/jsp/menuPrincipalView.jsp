@@ -58,12 +58,12 @@
 
 				<li><a
 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao">
-						Realizar Inscriçôes</a></li>
+						Realização de Inscriçôes</a></li>
 
 
 				<li><a
 					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizarProcessoIsencao">
-						Isenção de Disciplina </a></li>
+						Requerimento de Isenção de Disciplinas </a></li>
 
 			</ul>
 		</sec:authorize>

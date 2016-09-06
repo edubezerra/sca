@@ -16,7 +16,7 @@ import br.cefetrj.sca.config.AppConfig;
 public class AuthDAOMoodleTest {
 
 	@Autowired
-	AutenticadorMoodle autenticador;
+	EstrategiaAutenticacaoMoodle autenticador;
 
 	@Test(timeout=1000000)
 	public void deveAutenticarUsuarioValido() {
