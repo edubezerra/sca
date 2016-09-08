@@ -19,5 +19,4 @@ public interface DepartamentoRepositorio extends JpaRepository<Departamento, Ser
 
 	@Query("SELECT d from Departamento d")
 	List<Departamento> findDepartamentos();
-	
 }

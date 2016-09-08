@@ -31,14 +31,7 @@ public class IsencaoDisciplinaService {
 	private ProcessoIsencaoRepositorio processoIsencaoDisciplinasRepo;
 
 	public Aluno findAlunoByMatricula(String matricula) {
-
-		Aluno aluno = alunoRepo.findAlunoByMatricula(matricula);
-		if (aluno != null)
-			return aluno;
-		else
-			System.out
-					.println("IsencaoDisciplinaService - Aluno não encontrado!");
-		return null;
+		return alunoRepo.findAlunoByMatricula(matricula);
 	}
 
 	public Professor findProfessorByMatricula(String matricula) {
@@ -50,24 +43,11 @@ public class IsencaoDisciplinaService {
 	}
 
 	public List<Disciplina> findDisciplinas(String siglaCurso) {
-		List<Disciplina> disciplinas = disciplinaRepo.findBySigla(siglaCurso);
-		if (disciplinas.isEmpty()) {
-			System.out
-					.println("IsencaoDisciplinaService  Lista de disciplinas está vazia!");
-			return null;
-		} else
-			return disciplinas;
+		return disciplinaRepo.findBySigla(siglaCurso);
 	}
 
 	public List<ProcessoIsencaoDisciplinas> findProcessosIsencao() {
-		List<ProcessoIsencaoDisciplinas> pi = processoIsencaoDisciplinasRepo.findAll();
-		if (pi.isEmpty()) {
-			System.out
-					.println("IsencaoDisciplinaService  Lista de processos está vazia!");
-			return null;
-		} else {
-			return pi;
-		}
+		return processoIsencaoDisciplinasRepo.findAll();
 	}
 
 	public List<Aluno> getTodosOsAlunos() {
@@ -75,6 +55,7 @@ public class IsencaoDisciplinaService {
 	}
 
 	public ItemIsencaoDisciplina findItemIsencaoById(Long solicitacaoId) {
-		return processoIsencaoDisciplinasRepo.findItemIsencaoById(solicitacaoId);
+		return processoIsencaoDisciplinasRepo
+				.findItemIsencaoById(solicitacaoId);
 	}
 }

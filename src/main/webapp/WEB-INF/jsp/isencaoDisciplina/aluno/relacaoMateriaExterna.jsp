@@ -59,18 +59,18 @@
 		<div class="row">
 			<h5>
 				<b>Aluno:</b>
-				<c:out value="${requestScope.dadosAluno.nomeAluno}"></c:out>
+				<c:out value="${requestScope.aluno.nome}"></c:out>
 				(Matrícula:
-				<c:out value="${requestScope.matricula}"></c:out>
+				<c:out value="${requestScope.aluno.matricula}"></c:out>
 				)
 			</h5>
 			<h5>
 				<b>Curso:</b>
-				<c:out value="${requestScope.dadosAluno.curso.sigla}"></c:out>
+				<c:out value="${requestScope.aluno.versaoCurso.curso.sigla}"></c:out>
 				-
-				<c:out value="${requestScope.dadosAluno.curso.nome}"></c:out>
+				<c:out value="${requestScope.aluno.versaoCurso.curso.nome}"></c:out>
 				(Grade:
-				<c:out value="${requestScope.dadosAluno.versaoCurso}"></c:out>
+				<c:out value="${requestScope.aluno.versaoCurso}"></c:out>
 				)
 			</h5>
 		</div>

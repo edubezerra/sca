@@ -63,7 +63,7 @@ public class RelatorioReprovacaoDisciplinaService {
 		todasDisciplinas.add(disciplinaOriginal);
 		
 		/* busca os alunos que cursaram as disciplinas */
-		alunoList = alunoRepo.getAlunosByDisciplinaCursadaList(codigosDisciplina);
+		alunoList = alunoRepo.findAlunosByDisciplinaCursadaList(codigosDisciplina);
 		
 		/* para cada aluno, se ele possui um item de historico escolar para aquela disciplina, com a situacao de reprovado, 
 		 * 	adiciona na lista de alunos reprovados*/

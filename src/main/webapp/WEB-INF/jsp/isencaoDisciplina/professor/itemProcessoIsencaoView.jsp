@@ -33,11 +33,11 @@
 
 	<div>
 		<form action="${pageContext.request.contextPath}/isencaoDisciplina/downloadFile" method="POST" target="_blank">
-		<input type="hidden" name="comprovanteProcIsencao" value="${aluno.processoIsencao.id}">
-			<button type="submit" class="btn btn-link">
-				<i class="fa fa-download fa-2x"></i>
-				<h4 class="comprovante">Comprovante</h4>
-			</button>
+<%-- 		<input type="hidden" name="comprovanteProcIsencao" value="${aluno.processoIsencao.id}"> --%>
+<!-- 			<button type="submit" class="btn btn-link"> -->
+<!-- 				<i class="fa fa-download fa-2x"></i> -->
+<!-- 				<h4 class="comprovante">Comprovante</h4> -->
+<!-- 			</button> -->
 		</form>
 	</div>
 
@@ -74,22 +74,22 @@
 							<td>
 							
 							<c:if test="${alunosItemIsencao.situacao != null}">
-									<c:if test="${alunosItemIsencao.situacao == 'deferir'}">
+									<c:if test="${alunosItemIsencao.situacao == 'DEFERIDO'}">
 										<h5>DEFERIDO</h5>
 									</c:if> 
-									<c:if test="${alunosItemIsencao.situacao == 'indeferir'}">
+									<c:if test="${alunosItemIsencao.situacao == 'INDEFERIDO'}">
 										<h5>INDEFERIDO</h5>
 									</c:if> 		
 								</c:if> 
 
-								<c:if test="${alunosItemIsencao.situacao == null}">
+								<c:if test="${alunosItemIsencao.situacao == 'INDEFINIDO'}">
 									<button class="btn btn-success custom-width" type="submit"
 										name="btAvaliador" value="deferir-${i.index}" >Deferir</button>
 									<button class="btn btn-danger custom-width" type="submit"
 										name="btAvaliador" value="indeferir-${i.index}">Indeferir</button>
 								</c:if>
 							</td>
-							<c:if test="${alunosItemIsencao.situacao == 'indeferir'}">
+							<c:if test="${alunosItemIsencao.situacao == 'INDEFERIDO'}">
 								<td>${alunosItemIsencao.motivo}</td>
 							</c:if>
 						</tr>

@@ -104,8 +104,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Disciplina</th>
+							<th>Isenção Solicitada</th>
 							<th>Situação</th>
 							<th>Data Análise</th>
 							<th>Motivo</th>
@@ -113,27 +112,26 @@
 					</thead>
 
 					<tbody>
-						<c:forEach items="${itensProcesso}" var="itensProcesso">
+						<c:forEach items="${itensProcesso}" var="item">
 							<tr>
-
-								<td>${itensProcesso.id}</td>
-								<td>${itensProcesso.disciplina.nome}<c:if
-										test="${itensProcesso.disciplinaAssociada != null}">
+								<td>${item.disciplina.codigo}&nbsp; ${item.disciplina.nome}<c:if
+										test="${item.disciplinaAssociada != null}">
 										<div>
-											Disciplinas Associadas: <br>
-											${itensProcesso.disciplinaAssociada}
+											Disciplinas Associadas: <br> ${item.disciplinaAssociada}
 										</div>
 									</c:if>
 								</td>
-								<td><c:if test="${itensProcesso.situacao == 'deferir'}">
+								<td><c:if test="${item.situacao == 'DEFERIDO'}">
 										DEFERIDO
-									</c:if> <c:if test="${itensProcesso.situacao == 'indeferir'}">
+									</c:if> <c:if test="${item.situacao == 'INDEFERIDO'}">
 										INDEFERIDO
+									</c:if> <c:if test="${item.situacao == 'INDEFINIDO'}">
+										EM ANÁLISE
 									</c:if></td>
 								<td><fmt:formatDate pattern="dd/MM/yyyy"
-										value="${itensProcesso.dataAnalise}" /></td>
-								<td>${itensProcesso.motivo}</td>
-								<td>${itensProcesso.observacao}</td>
+										value="${item.dataAnalise}" /></td>
+								<td>${item.motivo}</td>
+								<td>${item.observacao}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -141,8 +139,7 @@
 				</table>
 			</div>
 			<div>
-				<c:if
-					test="${requestScope.processo.situacao == null }">
+				<c:if test="${requestScope.processo.situacao == null }">
 					<a class="btn btn-success custom-width" type="submit"
 						href="${pageContext.request.contextPath}/isencaoDisciplina/criaProcessoIsencao">
 						<i class="fa fa-arrow-left"> </i> Criar Nova Isenção

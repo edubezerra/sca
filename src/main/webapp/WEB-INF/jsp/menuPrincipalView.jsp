@@ -87,7 +87,7 @@
 						Análise de Matrículas Fora do Prazo</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/isencaoDisciplina/professorView">
-						Isenção de Disciplina </a></li>
+						Análise de Isenção de Disciplinas </a></li>
 
 				<li><a
 					href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">
@@ -119,8 +119,11 @@
 				<li><a href="${pageContext.request.contextPath}/usuarios/list">
 						Listar usuários </a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/cadastroProfessorDepartamento/listProfessorDepartamento">
-						Cadastrar Professor por Departamento </a></li>
+					href="${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/homeAlocacaoDisciplinas">
+						Alocar Disciplinas a Departamentos</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/alocacaoProfessorDepartamento/homeAlocacaoProfessores">
+						Alocar Professores a Departamentos</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/coordenacaoAtividades/homeAlocacaoCoordenadorAtividades">
 						Alocar Coordenadores de Atividades Complementares </a></li>
