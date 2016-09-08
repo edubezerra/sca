@@ -33,11 +33,11 @@
 
 	<div>
 		<form action="${pageContext.request.contextPath}/isencaoDisciplina/downloadFile" method="POST" target="_blank">
-<%-- 		<input type="hidden" name="comprovanteProcIsencao" value="${aluno.processoIsencao.id}"> --%>
-<!-- 			<button type="submit" class="btn btn-link"> -->
-<!-- 				<i class="fa fa-download fa-2x"></i> -->
-<!-- 				<h4 class="comprovante">Comprovante</h4> -->
-<!-- 			</button> -->
+		<input type="hidden" name="comprovanteProcIsencao" value="${aluno.processoIsencao.id}">
+			<button type="submit" class="btn btn-link">
+				<i class="fa fa-download fa-2x"></i>
+				<h4 class="comprovante">Comprovante</h4>
+			</button>
 		</form>
 	</div>
 
@@ -56,46 +56,44 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach varStatus="i" items="${alunosItemIsencao}" var="alunosItemIsencao" >
-					<input name="alunosItemIsencao" value="${alunosItemIsencao.disciplina.codigo}-${i.index}"
+					<c:forEach varStatus="i" items="${itensIsencaoAluno}" var="itemIsencao" >
+					<input name="itemIsencao" value="${itemIsencao.disciplina.codigo}-${i.index}"
 								type="hidden" />
 						<tr>
-							<td>${alunosItemIsencao.id}</td>
-							<td>${alunosItemIsencao.disciplina.codigo}
-							</td>
-							<td>${alunosItemIsencao.disciplina.nome}
-								<c:if test="${alunosItemIsencao.disciplinaAssociada != null}">
-									<div>
-										Disciplinas Associadas: <br>
-										${alunosItemIsencao.disciplinaAssociada}
-									</div>
+							<td>${itemIsencao.id}</td>
+							<td>${itemIsencao.disciplina.codigo}</td>
+							<td>${itemIsencao.disciplina.nome}</td>
+							<td>
+
+							<c:if test="${itemIsencao.situacao != null}">
+									<select disabled="true" name="radio" class="form-control ">
+										<option value="" selected disabled>${itemIsencao.situacao}</option>
+									</select>
+								</c:if> 
+								<c:if test="${itemIsencao.situacao == null}">
+									<select name="radio" class="form-control ">
+										<option value="" label="Selecionar..." selected disabled>Selecionar</option>
+										<option value="deferir-${i.index}">DEFERIR</option>
+										<option value="indeferir-${i.index}">INDEFERIR</option>
+									</select>
 								</c:if>
 							</td>
 							<td>
-							
-							<c:if test="${alunosItemIsencao.situacao != null}">
-									<c:if test="${alunosItemIsencao.situacao == 'DEFERIDO'}">
-										<h5>DEFERIDO</h5>
-									</c:if> 
-									<c:if test="${alunosItemIsencao.situacao == 'INDEFERIDO'}">
-										<h5>INDEFERIDO</h5>
-									</c:if> 		
-								</c:if> 
 
-								<c:if test="${alunosItemIsencao.situacao == 'INDEFINIDO'}">
-									<button class="btn btn-success custom-width" type="submit"
-										name="btAvaliador" value="deferir-${i.index}" >Deferir</button>
-									<button class="btn btn-danger custom-width" type="submit"
-										name="btAvaliador" value="indeferir-${i.index}">Indeferir</button>
-								</c:if>
+							
 							</td>
-							<c:if test="${alunosItemIsencao.situacao == 'INDEFERIDO'}">
-								<td>${alunosItemIsencao.motivo}</td>
-							</c:if>
 						</tr>
 					</c:forEach>
 				</tbody>
-			</table>		
+			</table>
+<%-- 			<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao == 'ANALISADO'}"> --%>
+<!-- 				<button class="btn btn-success custom-width" type="submit" -->
+<!-- 				name="matricula" disabled="true">Confirmar</button> -->
+<%-- 			</c:if> --%>
+<%-- 			<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao != 'ANALISADO'}"> --%>
+<!-- 				<button class="btn btn-success custom-width" type="submit" -->
+<!-- 				name="matricula">Confirmar</button> -->
+<%-- 			</c:if> --%>
 		</div>
 	</form>
 	<a class="btn btn-default"
