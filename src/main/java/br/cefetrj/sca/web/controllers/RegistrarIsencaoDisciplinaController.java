@@ -203,11 +203,10 @@ public class RegistrarIsencaoDisciplinaController {
 	 */
 
 	@RequestMapping(value = "/visualizaAlunosSolicitantes", method = RequestMethod.GET)
-	public String isencaoDisciplinaProfessor(Model model,
-			HttpServletRequest request) {
+	public String visualizaAlunosSolicitantes(Model model) {
 
 		System.out
-				.println("RegistrarIsencaoDisciplinaController.listaAlunosSolicitantes()");
+				.println("RegistrarIsencaoDisciplinaController.visualizaAlunosSolicitantes()");
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
@@ -237,14 +236,14 @@ public class RegistrarIsencaoDisciplinaController {
 		}
 	}
 
-	@RequestMapping(value = { "/", "/visualizaItensIsencao" }, method = RequestMethod.POST)
-	public String itensProcessoIsencaoProfessor(Model model,
+	@RequestMapping(value = { "/", "/analisaItensPedidoIsencao" }, method = RequestMethod.POST)
+	public String analisaItensPedidoIsencao(Model model,
 			HttpServletRequest request,
 			@RequestParam("idDepartamento") Long idDepartamento,
 			@RequestParam("matriculaAluno") String matriculaAluno) {
 
 		System.out
-				.println("RegistrarIsencaoDisciplinaController.visualizaItensIsencao()");
+				.println("RegistrarIsencaoDisciplinaController.analisaItensIsencao()");
 
 		String matriculaProfessor = UsuarioController.getCurrentUser()
 				.getLogin();
@@ -265,7 +264,7 @@ public class RegistrarIsencaoDisciplinaController {
 			model.addAttribute("aluno", aluno);
 			model.addAttribute("itensPedidoIsencao", itensIsencao);
 
-			return "/isencaoDisciplina/professor/visualizaItensPedidoIsencaoView";
+			return "/isencaoDisciplina/professor/analisaItensPedidoIsencaoView";
 
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -286,11 +285,11 @@ public class RegistrarIsencaoDisciplinaController {
 			String matriculaProfessor = params.get("matriculaProfessor");
 			String idItemPedidoIsencao = params.get("idItemPedidoIsencao");
 			String novaSituacao = params.get("novaSituacao");
-			String justificativa = params.get("justificativa");
+			String motivoIndeferimento = params.get("motivoIndeferimento");
 
 			service.registrarRespostaParaItem(idItemPedidoIsencao,
 					matriculaAluno, matriculaProfessor, novaSituacao,
-					justificativa);
+					motivoIndeferimento);
 
 			String mapAsJson;
 			try {

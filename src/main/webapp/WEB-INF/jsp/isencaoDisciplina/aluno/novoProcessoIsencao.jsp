@@ -115,9 +115,9 @@
 						<c:forEach items="${itensProcesso}" var="item">
 							<tr>
 								<td>${item.disciplina.codigo}&nbsp; ${item.disciplina.nome}<c:if
-										test="${item.disciplinaAssociada != null}">
+										test="${item.descritorDisciplinaExterna != null}">
 										<div>
-											Disciplinas Associadas: <br> ${item.disciplinaAssociada}
+											Disciplinas externas: <br> ${item.descritorDisciplinaExterna}
 										</div>
 									</c:if>
 								</td>

@@ -197,38 +197,6 @@
 
 		<hr />
 
-		<%-- 		<c:if test="${sessionScope.fase eq 'uploadComprovante'}"> --%>
-		<%-- 			<form role="form" --%>
-		<%-- 				action="${pageContext.request.contextPath}/matriculaForaPrazo/definirComprovante" --%>
-		<%-- 				method="post" enctype="multipart/form-data" --%>
-		<%-- 				id="formularioDefinicaoComprovante"> --%>
-
-		<!-- 				<label for="inputFile">Anexe o comprovante de solicitação de -->
-		<!-- 					matrícula do período atual (Formatos aceitos: PDF, JPEG ou PNG. -->
-		<!-- 					Tamanho Máximo: 10mb)</label> <input type="file" name="file" id="inputFile" -->
-		<!-- 					required> <span -->
-		<!-- 					class="label label-danger" id="tamanhoGrande" -->
-		<!-- 					style="display: none;"> </span> -->
-
-		<!-- 				<hr /> -->
-		<!-- 				<div class="row checkbox"> -->
-		<!-- 					<label> <input type="checkbox" value="" required> -->
-		<!-- 						Estou ciente de que o presente requerimento <b>não garante a -->
-		<!-- 							matrícula na disciplina solicitada</b> e de que posso verificar se a -->
-		<!-- 						inscrição foi efetivada, ou não, por meio de consulta ao meu -->
-		<!-- 						histórico escolar, disponível no portal do aluno. -->
-		<!-- 					</label> -->
-		<!-- 				</div> -->
-
-		<!-- 				<hr /> -->
-		<!-- 				<div class=text-center> -->
-		<!-- 					<button type="submit" name="submit" -->
-		<!-- 						class="btn btn-primary btn-lg text-center">Confirmar -->
-		<!-- 						Requerimento</button> -->
-		<!-- 				</div> -->
-		<%-- 			</form> --%>
-		<%-- 		</c:if> --%>
-
 		<a class="btn btn-default"
 			href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos">
 			<i class="fa fa-arrow-left"> </i> Voltar

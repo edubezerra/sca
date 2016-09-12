@@ -84,6 +84,8 @@ public class ItemPedidoIsencaoDisciplina {
 	@OneToOne(cascade = { CascadeType.ALL })
 	Comprovante comprovante;
 
+	private String motivoIndeferimento;
+
 	@SuppressWarnings("unused")
 	private ItemPedidoIsencaoDisciplina() {
 	}
@@ -109,7 +111,7 @@ public class ItemPedidoIsencaoDisciplina {
 		this.situacao = "DEFERIDO";
 	}
 
-	public void indeferir(Professor professor, String observacao) {
+	public void indeferir(Professor professor, String motivoIndeferimento) {
 		if (professor == null) {
 			throw new IllegalArgumentException(
 					"Professor responsável pela análise deve ser informado!");
@@ -119,7 +121,7 @@ public class ItemPedidoIsencaoDisciplina {
 					"Apenas itens não analisados podem ser indeferidos.");
 		this.professor = professor;
 		this.situacao = "INDEFERIDO";
-		this.observacao = observacao;
+		this.motivoIndeferimento = motivoIndeferimento;
 	}
 
 	// public void setSituacao(String situacao) {
@@ -178,16 +180,20 @@ public class ItemPedidoIsencaoDisciplina {
 		this.descritorDisciplinaExterna = descritor;
 	}
 
-	public void analisar(Professor professor, String valor, String observacao) {
+	public void analisar(Professor professor, String valor, String motivoIndeferimento) {
 		if (valor.equals("DEFERIDO")) {
 			this.deferir(professor);
 		} else if (valor.equals("INDEFERIDO")) {
-			this.indeferir(professor, observacao);
+			this.indeferir(professor, motivoIndeferimento);
 		}
 		this.dataAnalise = new Date();
 	}
 
 	Professor getProfessorResponsavel() {
 		return professor;
+	}
+	
+	public String getMotivoIndeferimento() {
+		return motivoIndeferimento;
 	}
 }

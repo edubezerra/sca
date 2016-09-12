@@ -1,69 +1,89 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" pageEncoding="UTF-8"
+	contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<title>SCA - IsenÃ§Ã£o de Disciplinas</title>
+
+<link
+	href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+	rel="stylesheet">
+
 <link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<title>Isenção de Disciplina</title>
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script
+	src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.popconfirm.js"></script>
+<title>IsenÃ§Ã£o de Disciplinas</title>
 </head>
 <body>
-	<h4 align="center">
-		<b> Professor: ${professor.nome }</b> <br></br> <b> Matrícula:
-			${professor.matricula }</b>
-	</h4>
-	<br></br>
-	<h3 align="center">Pedidos de Isenção com Análise Pendente</h3>
-	<br></br>
-	<div class="panel panel-default">
-		<form
-			action="${pageContext.request.contextPath}/isencaoDisciplina/visualizaItensIsencao"
-			method="POST">
 
-			<input type="hidden" name="idDepartamento" value="${idDepartamento}">
+	<div class="container">
 
-			<div class="table-responsive" align="center">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Matrícula</th>
-							<th>Nome</th>
-							<th></th>
+		<div class="row text-center">
+			<h2>Pedidos de IsenÃ§Ã£o com AnÃ¡lise Pendente</h2>
+			<h4>Professor avaliador: ${requestScope.professor.nome}
+				(MatrÃ­cula ${professor.matricula})</h4>
+		</div>
 
-						</tr>
-					</thead>
+		<div>
+			<form
+				action="${pageContext.request.contextPath}/isencaoDisciplina/analisaItensPedidoIsencao"
+				method="POST">
 
-					<tbody>
+				<input type="hidden" name="idDepartamento" value="${idDepartamento}">
 
-						<c:forEach items="${alunosSolicitantes}" var="aluno">
+				<div class="table-responsive" align="center">
+					<table class="table">
 
+						<caption>Pedidos de IsenÃ§Ã£o com AnÃ¡lise Pendente</caption>
+
+						<thead>
 							<tr>
-								<td>${aluno.matricula}</td>
-								<td>${aluno.nome}</td>
-								<td>
-									<button class="btn btn-info btn-sm custom-width" type="submit"
-										value="${aluno.matricula}" name="matriculaAluno">Visualizar
-										Pedido</button>
-								</td>
+								<th>MatrÃ­cula</th>
+								<th>Nome</th>
+								<th></th>
+
 							</tr>
-						</c:forEach>
-					</tbody>
+						</thead>
 
-				</table>
-			</div>
+						<tbody>
 
-		</form>
+							<c:forEach items="${alunosSolicitantes}" var="aluno">
+
+								<tr>
+									<td style="vertical-align:middle">${aluno.matricula}</td>
+									<td style="vertical-align:middle">${aluno.nome}</td>
+									<td style="vertical-align:middle">
+										<button class="btn btn-primary text-center" type="submit"
+											value="${aluno.matricula}" name="matriculaAluno">Visualizar
+											Pedido</button>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+
+					</table>
+				</div>
+
+			</form>
+		</div>
+		<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
+			class="fa fa-arrow-left"> </i> Voltar
+		</a>
 	</div>
-	<a class="btn btn-default"
-		href="${pageContext.request.contextPath}/menuPrincipalView"> <i
-		class="fa fa-arrow-left"> </i> Voltar
-	</a>
 </body>
 </html>
