@@ -4,7 +4,7 @@ delete from USER_PROFILE;
 
 INSERT INTO USERS (id, dob, login, nome, matricula, email) VALUES 
  (1,NULL,'admin','Administrador','adminXPTO!2016', 'admin@email.com'),
- (2,NULL,'ebezerra','EDUARDO BEZERRA','1506449', 'edubezerra@gmail.com'),
+ (2,NULL,'1506449','EDUARDO BEZERRA','1506449', 'edubezerra@gmail.com'),
  (6,NULL,'1111111','BELMIRO FILHO','1111111', 'belmiro@cefet-rj.br'),
  (7,NULL,'1311057BCC','JONATHAN CHRISTIAN SILVA IQUEDA','1311057BCC', 'jonathaniqueda@me.com'),
  (8,NULL,'gguedes','GUSTAVO GUEDES','1821071', 'gpgs1978@gmail.com');

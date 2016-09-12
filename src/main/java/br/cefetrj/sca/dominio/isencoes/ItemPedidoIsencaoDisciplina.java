@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 /**
@@ -26,7 +27,7 @@ import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
  *
  */
 @Entity
-public class ItemIsencaoDisciplina {
+public class ItemPedidoIsencaoDisciplina {
 	public enum SituacaoItem {
 		INDEFINIDO("INDEFINIDO"), DEFERIDO("DEFERIDO"), INDEFERIDO("INDEFERIDO");
 
@@ -49,23 +50,45 @@ public class ItemIsencaoDisciplina {
 	@GeneratedValue
 	private Long id;
 
+	/**
+	 * Situação em que se encontra este item.
+	 */
 	private String situacao;
+
+	/*
+	 * Data em que este item foi respondido.
+	 */
 	private Date dataAnalise;
+
 	private String motivo;
 	private String observacao;
-	private String disciplinaAssociada;
 
+	/**
+	 * Descritor da disciplina externa proposta pelo aluno para usar neste item
+	 * do pedido de isenção.
+	 */
+	private String descritorDisciplinaExterna;
+
+	/**
+	 * Disciplina do curso para a qual o aluno deseja obter isenção.
+	 */
 	@ManyToOne
 	Disciplina disciplina;
+
+	/**
+	 * Professor responsável pela análise deste item de isenção.
+	 */
+	@ManyToOne
+	Professor professor;
 
 	@OneToOne(cascade = { CascadeType.ALL })
 	Comprovante comprovante;
 
 	@SuppressWarnings("unused")
-	private ItemIsencaoDisciplina() {
+	private ItemPedidoIsencaoDisciplina() {
 	}
 
-	public ItemIsencaoDisciplina(Disciplina disciplina) {
+	public ItemPedidoIsencaoDisciplina(Disciplina disciplina) {
 		this.disciplina = disciplina;
 		this.situacao = "INDEFINIDO";
 	}
@@ -74,15 +97,27 @@ public class ItemIsencaoDisciplina {
 		return situacao;
 	}
 
-	public void deferir() {
+	public void deferir(Professor professor) {
+		if (professor == null) {
+			throw new IllegalArgumentException(
+					"Professor responsável pela análise deve ser informado!");
+		}
 		if (!this.situacao.equals("INDEFINIDO"))
-			throw new IllegalStateException("Apenas itens nã analisados podem ser deferidos.");
+			throw new IllegalStateException(
+					"Apenas itens não analisados podem ser deferidos.");
+		this.professor = professor;
 		this.situacao = "DEFERIDO";
 	}
 
-	public void indeferir(String observacao) {
+	public void indeferir(Professor professor, String observacao) {
+		if (professor == null) {
+			throw new IllegalArgumentException(
+					"Professor responsável pela análise deve ser informado!");
+		}
 		if (!this.situacao.equals("INDEFINIDO"))
-			throw new IllegalStateException("Apenas itens nã analisados podem ser deferidos.");
+			throw new IllegalStateException(
+					"Apenas itens não analisados podem ser indeferidos.");
+		this.professor = professor;
 		this.situacao = "INDEFERIDO";
 		this.observacao = observacao;
 	}
@@ -95,9 +130,9 @@ public class ItemIsencaoDisciplina {
 		return dataAnalise;
 	}
 
-//	public void setDataAnalise(Date dataAnalise) {
-//		this.dataAnalise = dataAnalise;
-//	}
+	// public void setDataAnalise(Date dataAnalise) {
+	// this.dataAnalise = dataAnalise;
+	// }
 
 	public Disciplina getDisciplina() {
 		return disciplina;
@@ -131,25 +166,28 @@ public class ItemIsencaoDisciplina {
 		return observacao;
 	}
 
-//	public void setObservacao(String observacao) {
-//		this.observacao = observacao;
-//	}
+	// public void setObservacao(String observacao) {
+	// this.observacao = observacao;
+	// }
 
-	public String getDisciplinaAssociada() {
-		return disciplinaAssociada;
+	public String getDescritorDisciplinaExterna() {
+		return descritorDisciplinaExterna;
 	}
 
-	public void setDisciplinaAssociada(String disciplinaAssociada) {
-		this.disciplinaAssociada = disciplinaAssociada;
+	public void setDescritorDisciplinaExterna(String descritor) {
+		this.descritorDisciplinaExterna = descritor;
 	}
 
-	public void analisar(String valor, String observacao) {
-		if(valor.equals("DEFERIDO")) {
-			this.deferir();
-		} else if(valor.equals("INDEFERIDO")) {
-			this.indeferir(observacao);
+	public void analisar(Professor professor, String valor, String observacao) {
+		if (valor.equals("DEFERIDO")) {
+			this.deferir(professor);
+		} else if (valor.equals("INDEFERIDO")) {
+			this.indeferir(professor, observacao);
 		}
 		this.dataAnalise = new Date();
 	}
 
+	Professor getProfessorResponsavel() {
+		return professor;
+	}
 }

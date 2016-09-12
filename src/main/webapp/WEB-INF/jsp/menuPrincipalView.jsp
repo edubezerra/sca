@@ -84,10 +84,10 @@
 			<ul>
 				<li><a
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
-						Análise de Matrículas Fora do Prazo</a></li>
+						Pedidos de Matrículas Fora do Prazo</a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/isencaoDisciplina/professorView">
-						Análise de Isenção de Disciplinas </a></li>
+					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizaAlunosSolicitantes">
+						Pedidos de Isenção de Disciplinas </a></li>
 
 				<li><a
 					href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">

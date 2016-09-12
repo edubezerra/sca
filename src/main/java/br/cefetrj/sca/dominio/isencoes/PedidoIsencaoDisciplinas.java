@@ -15,9 +15,10 @@ import javax.persistence.OneToOne;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.Professor;
 
 @Entity
-public class ProcessoIsencaoDisciplinas {
+public class PedidoIsencaoDisciplinas {
 	public enum Situacao {
 		EM_PREPARACAO("EM PREPARAÇÃO"), SUBMETIDO("SUBMETIDO"), ANALISADO(
 				"ANALISADO");
@@ -52,13 +53,13 @@ public class ProcessoIsencaoDisciplinas {
 	private Date dataRegistro;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	List<ItemIsencaoDisciplina> itens = new ArrayList<>();
+	List<ItemPedidoIsencaoDisciplina> itens = new ArrayList<>();
 
 	@SuppressWarnings("unused")
-	private ProcessoIsencaoDisciplinas() {
+	private PedidoIsencaoDisciplinas() {
 	}
 
-	public ProcessoIsencaoDisciplinas(Aluno aluno) {
+	public PedidoIsencaoDisciplinas(Aluno aluno) {
 		this.aluno = aluno;
 		this.situacao = "EM PREPARAÇÃO";
 	}
@@ -75,11 +76,11 @@ public class ProcessoIsencaoDisciplinas {
 		return dataRegistro;
 	}
 
-//	public void setDataRegistro(Date dataRegistro) {
-//		this.dataRegistro = dataRegistro;
-//	}
+	// public void setDataRegistro(Date dataRegistro) {
+	// this.dataRegistro = dataRegistro;
+	// }
 
-	public List<ItemIsencaoDisciplina> getItens() {
+	public List<ItemPedidoIsencaoDisciplina> getItens() {
 		return itens;
 	}
 
@@ -100,13 +101,14 @@ public class ProcessoIsencaoDisciplinas {
 		return "ANALISADO";
 	}
 
-//	public void setSituacao(String situacao) {
-//		this.situacao = situacao;
-//	}
+	// public void setSituacao(String situacao) {
+	// this.situacao = situacao;
+	// }
 
 	public void submeterParaAnalise() {
 		if (!this.situacao.equals("EM PREPARAÇÃO"))
-			throw new IllegalStateException("Apenas pedidos em preparação podem ser submetidos para análise.");
+			throw new IllegalStateException(
+					"Apenas pedidos em preparação podem ser submetidos para análise.");
 		this.situacao = "SUBMETIDO";
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -122,23 +124,53 @@ public class ProcessoIsencaoDisciplinas {
 	}
 
 	public void comMaisUmItem(Disciplina disciplina) {
-		ItemIsencaoDisciplina item = new ItemIsencaoDisciplina(disciplina);
+		ItemPedidoIsencaoDisciplina item = new ItemPedidoIsencaoDisciplina(
+				disciplina);
 		this.itens.add(item);
 	}
-	
-	public void deferirItem(Disciplina disciplina) {
+
+	public void deferirItem(Long idItem, Professor professor) {
 		for (int i = 0; i < this.getItens().size(); i++) {
-			if (this.getItens().get(i).getDisciplina().equals(disciplina)) {
-				this.getItens().get(i).deferir();
+			if (this.getItens().get(i).getId().equals(idItem)) {
+				this.getItens().get(i).deferir(professor);
+				return;
 			}
 		}
 	}
-	
-	public void indeferirItem(Disciplina disciplina, String observacao) {
+
+	public void indeferirItem(Long idItem, Professor professor,
+			String observacao) {
 		for (int i = 0; i < this.getItens().size(); i++) {
-			if (this.getItens().get(i).getDisciplina().equals(disciplina)) {
-				this.getItens().get(i).indeferir(observacao);
+			if (this.getItens().get(i).getId().equals(idItem)) {
+				this.getItens().get(i).indeferir(professor, observacao);
+				return;
 			}
+		}
+	}
+
+	public void analisarItem(String idItemPedidoIsencao,
+			Professor professorResponsavel, String novaSituacao,
+			String observacao) {
+		if (novaSituacao == null || novaSituacao.isEmpty()) {
+			throw new IllegalArgumentException(
+					"Nova situação do item de isenção deve ser informada.");
+		}
+		if (idItemPedidoIsencao == null || idItemPedidoIsencao.isEmpty()) {
+			throw new IllegalArgumentException(
+					"Idenfiticação do item de isenção deve ser informada.");
+		}
+		if (professorResponsavel == null) {
+			throw new IllegalArgumentException(
+					"Professor responsável pela análise deve ser informado.");
+		}
+		Long idItem = Long.parseLong(idItemPedidoIsencao);
+		if (novaSituacao.equals("DEFERIDO")) {
+			this.deferirItem(idItem, professorResponsavel);
+		} else if (novaSituacao.equals("INDEFERIDO")) {
+			this.indeferirItem(idItem, professorResponsavel, observacao);
+		} else {
+			throw new IllegalArgumentException(
+					"Valor inválido para nova situação do item de isenção.");
 		}
 	}
 }
