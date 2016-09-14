@@ -150,14 +150,31 @@
 </head>
 <body class="lista-solicitacoes">
 	<div class="container">
-		<div class="row text-center">
-			<h2>Itens do Pedido de Isenção de Disciplinas</h2>
-			<h4>Professor avaliador: ${requestScope.professor.nome}
-				(Matrícula ${professor.matricula})</h4>
-			<h4>Aluno solicitante: ${aluno.nome} (Matrícula
-				${aluno.matricula})</h4>
-		</div>
 
+		<div class="row text-center">
+			<h3>Isenção de Disciplinas</h3>
+		</div>
+		<hr />
+		<div class="row">
+			<h5>
+				<b>Aluno:</b>
+				<c:out value="${requestScope.aluno.nome}"></c:out>
+				(Matrícula:
+				<c:out value="${requestScope.aluno.matricula}"></c:out>
+				)
+			</h5>
+			<h5>
+				<b>Curso:</b>
+				<c:out value="${requestScope.aluno.versaoCurso.curso.sigla}"></c:out>
+				-
+				<c:out value="${requestScope.aluno.versaoCurso.curso.nome}"></c:out>
+				(Grade:
+				<c:out value="${requestScope.aluno.versaoCurso}"></c:out>
+				)
+			</h5>
+		</div>
+		<br />
+		
 		<c:if test="${requestScope.sucesso != null}">
 			<div class="row text-center">
 				<span class="label label-success">${requestScope.sucesso}</span>
@@ -216,6 +233,11 @@
 									<p class="${classeStatus}">
 										<b>${item.situacao}</b>
 									</p>
+									<c:if test="${item.situacao == 'INDEFERIDO'}">
+										<p>
+											<b>Motivo do indeferimento: </b> ${item.motivoIndeferimento}
+										</p>
+									</c:if>
 								</c:otherwise>
 							</c:choose>
 						</div>

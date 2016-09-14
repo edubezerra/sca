@@ -101,42 +101,45 @@
 
 		<c:if test="${requestScope.processo != null}">
 			<div class="table-responsive">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Isenção Solicitada</th>
-							<th>Situação</th>
-							<th>Data Análise</th>
-							<th>Motivo</th>
-						</tr>
-					</thead>
 
-					<tbody>
-						<c:forEach items="${itensProcesso}" var="item">
-							<tr>
-								<td>${item.disciplina.codigo}&nbsp; ${item.disciplina.nome}<c:if
-										test="${item.descritorDisciplinaExterna != null}">
-										<div>
-											Disciplinas externas: <br> ${item.descritorDisciplinaExterna}
-										</div>
-									</c:if>
-								</td>
-								<td><c:if test="${item.situacao == 'DEFERIDO'}">
-										DEFERIDO
-									</c:if> <c:if test="${item.situacao == 'INDEFERIDO'}">
-										INDEFERIDO
-									</c:if> <c:if test="${item.situacao == 'INDEFINIDO'}">
-										EM ANÁLISE
-									</c:if></td>
-								<td><fmt:formatDate pattern="dd/MM/yyyy"
-										value="${item.dataAnalise}" /></td>
-								<td>${item.motivo}</td>
-								<td>${item.observacao}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
+				<c:forEach items="${itensProcesso}" var="item">
+					<div class="well">
+						<div class="dados-aluno">
+							<p>
+								<b>Disciplina solicitada:</b> ${item.disciplina.codigo} -
+								${item.disciplina.nome}
+							</p>
+							<p>
+								<b>Disciplina externa:</b> ${item.descritorDisciplinaExterna}
+							</p>
+							<p>
+								<b>Observações do solicitante:</b> ${item.observacao}
+							</p>
+						</div>
 
-				</table>
+						<div id="${item.id}" class="status text-center">
+							<c:set var="classeStatus" scope="page">
+								<c:choose>
+									<c:when test="${item.situacao eq 'INDEFERIDO'}">
+												text-danger
+											</c:when>
+									<c:when test="${item.situacao eq 'DEFERIDO'}">
+												text-success
+											</c:when>
+								</c:choose>
+							</c:set>
+							<p class="${classeStatus}">
+								<b>${item.situacao}</b>
+							</p>
+							<c:if test="${item.situacao == 'INDEFERIDO'}">
+								<p>
+									<b>Motivo do indeferimento: </b> ${item.motivoIndeferimento}
+								</p>
+							</c:if>
+						</div>
+					</div>
+				</c:forEach>
+
 			</div>
 			<div>
 				<c:if test="${requestScope.processo.situacao == null }">
