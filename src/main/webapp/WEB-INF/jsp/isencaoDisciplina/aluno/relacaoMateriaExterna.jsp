@@ -53,7 +53,7 @@
 <body>
 	<div class="container">
 		<div class="row text-center">
-			<h3 align="center">Relação de Matérias Externas</h3>
+			<h3 align="center">Relação de Disciplinas Externas</h3>
 		</div>
 		<hr />
 		<div class="row">
@@ -87,7 +87,7 @@
 						<tr>
 							<th>Código</th>
 							<th>Disciplina</th>
-							<th>Matéria Externa</th>
+							<th>Disciplina Externa</th>
 
 						</tr>
 					</thead>

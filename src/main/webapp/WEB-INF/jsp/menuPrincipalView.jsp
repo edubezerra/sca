@@ -23,7 +23,7 @@
 	<h3>
 		Matrícula:
 		<%=UsuarioController.getCurrentUser().getMatricula()%>
-<%-- 		<sec:authentication property="name" /> --%>
+		<%-- 		<sec:authentication property="name" /> --%>
 	</h3>
 
 	<div class="container">
@@ -48,23 +48,19 @@
 						Avaliação de Professores </a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/registroAtividades/registroAtividades">
-						Registro de Atividades Complementares </a></li>
+						Atividades Complementares </a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos">
-						Requerimento de Matrícula Fora de Prazo</a></li>
+						Matrícula Fora de Prazo</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
 						Avaliação de Curso por Egresso</a></li>
-
 				<li><a
 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao">
 						Realização de Inscriçôes</a></li>
-
-
 				<li><a
 					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizarProcessoIsencao">
-						Requerimento de Isenção de Disciplinas </a></li>
-
+						Isenção de Disciplinas </a></li>
 			</ul>
 		</sec:authorize>
 
@@ -84,10 +80,10 @@
 			<ul>
 				<li><a
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
-						Pedidos de Matrículas Fora do Prazo</a></li>
+						Matrícula Fora do Prazo</a></li>
 				<li><a
 					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizaAlunosSolicitantes">
-						Pedidos de Isenção de Disciplinas </a></li>
+						Isenção de Disciplinas </a></li>
 
 				<li><a
 					href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">

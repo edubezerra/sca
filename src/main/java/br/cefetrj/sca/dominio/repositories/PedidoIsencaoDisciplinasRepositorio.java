@@ -43,4 +43,7 @@ public interface PedidoIsencaoDisciplinasRepositorio extends
 			+ "WHERE d IN (SELECT disc FROM Departamento depto JOIN depto.disciplinas disc WHERE depto = ? ORDER BY pi.aluno.pessoa.nome)")
 	List<Aluno> findAlunosSolicitantesByDepartamento(Departamento departamento);
 
+	@Query("SELECT DISTINCT i FROM PedidoIsencaoDisciplinas pi JOIN pi.itens i JOIN i.disciplina d "
+			+ "WHERE pi.aluno = ?2 AND d IN (SELECT disc FROM Departamento depto JOIN depto.disciplinas disc WHERE depto = ?1)")
+	List<ItemPedidoIsencaoDisciplina> findItensByDepartamentoAndAluno(Departamento departamento, Aluno aluno);
 }

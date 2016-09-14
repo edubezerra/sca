@@ -4,10 +4,11 @@ delete from USER_PROFILE;
 
 INSERT INTO USERS (id, dob, login, nome, matricula, email) VALUES 
  (1,NULL,'admin','Administrador','adminXPTO!2016', 'admin@email.com'),
- (2,NULL,'1506449','EDUARDO BEZERRA','1506449', 'edubezerra@gmail.com'),
- (6,NULL,'1111111','BELMIRO FILHO','1111111', 'belmiro@cefet-rj.br'),
- (7,NULL,'1311057BCC','JONATHAN CHRISTIAN SILVA IQUEDA','1311057BCC', 'jonathaniqueda@me.com'),
- (8,NULL,'gguedes','GUSTAVO GUEDES','1821071', 'gpgs1978@gmail.com');
+ (2,NULL,'1506449','Eduardo Bezerra da Silva','1506449', 'edubezerra@gmail.com'),
+ (3,NULL,'1328864','Natalia Pujol Pacheco Silveira','1328864', 'natalia@email.com.br'),
+ (6,NULL,'1111111','Belmiro Filho','1111111', 'belmiro@cefet-rj.br'),
+ (7,NULL,'1311057BCC','Jonathan Christian Silva Iqueda','1311057BCC', 'jonathaniqueda@me.com'),
+ (8,NULL,'1821071','Gustavo Paiva Guedes e Silva','1821071', 'gpgs1978@gmail.com');
  
 /* Popula a tabela USER_PROFILE */
 INSERT INTO USER_PROFILE(id, type) VALUES (1, 'ROLE_USER');
@@ -24,6 +25,9 @@ INSERT INTO USER_USER_PROFILE VALUES(2, 2);
 INSERT INTO USER_USER_PROFILE VALUES(2, 3);
 INSERT INTO USER_USER_PROFILE VALUES(2, 4);
 INSERT INTO USER_USER_PROFILE VALUES(2, 7);
+
+INSERT INTO USER_USER_PROFILE VALUES(3, 3);
+INSERT INTO USER_USER_PROFILE VALUES(3, 4);
 
 INSERT INTO USER_USER_PROFILE VALUES(8, 2);
 INSERT INTO USER_USER_PROFILE VALUES(8, 3);
