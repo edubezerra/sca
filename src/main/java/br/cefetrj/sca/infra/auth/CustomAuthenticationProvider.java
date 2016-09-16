@@ -20,8 +20,10 @@ import br.cefetrj.sca.dominio.usuarios.Usuario;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-	@Autowired
-	AutenticadorMoodle autenticador;
+	//@Autowired
+	//AutenticadorMoodle autenticador;
+
+	AutenticadorMock autenticador = new AutenticadorMock();
 
 	@Autowired
 	UsuarioRepositorio usuarioRepositorio;
