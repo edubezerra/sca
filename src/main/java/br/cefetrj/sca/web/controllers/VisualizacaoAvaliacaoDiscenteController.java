@@ -19,31 +19,25 @@ import br.cefetrj.sca.service.VisualizacaoAvaliacaoDiscenteService;
 public class VisualizacaoAvaliacaoDiscenteController {
 	@Autowired
 	private VisualizacaoAvaliacaoDiscenteService discenteService;
-	
+
 	@Autowired
 	private ProfessorRepositorio repositorio;
-	
+
 	@RequestMapping("/turma")
-	public void ApresentarTurma(){
+	public List<AvaliacaoTurma> ApresentarTurma() {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
-		
+
 		Professor professor = repositorio.findProfessorByMatricula(matricula);
-		
-		List<AvaliacaoTurma> at =discenteService.listarTurmaLecionadas(professor,PeriodoLetivo.PERIODO_CORRENTE);
-		System.out.println("Controller" +at.size());
-		/*for (int i = 0; i < at.size(); i++) {
-			System.out.println(at.get(i).getRespostas());
-			
-		}*/
-		
-//		try {
-//			discenteService.conversaoRespospa(at.get(1));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+
+		List<AvaliacaoTurma> at = discenteService.listarTurmaLecionadas(professor, PeriodoLetivo.PERIODO_CORRENTE);
+
+		return at;
+
 	}
-	
-	
+
+	public void EscolhaTurma(AvaliacaoTurma t) {
+
+	}
 
 }

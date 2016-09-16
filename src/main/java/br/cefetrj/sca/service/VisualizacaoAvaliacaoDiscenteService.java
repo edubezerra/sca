@@ -29,17 +29,10 @@ public class VisualizacaoAvaliacaoDiscenteService {
 
 	public List<AvaliacaoTurma> listarTurmaLecionadas(Professor p, PeriodoLetivo pl) {
 		List<Turma> t = repositorio.findTurmasLecionadasPorProfessorEmPeriodo(p.getMatricula(), pl);
-		System.out.println(pl);
 
 		// listaAvaliacoes = new ArrayList<>();
 		listaAvaliacoes = repositorio2.findAll();
-		System.out.println(listaAvaliacoes.get(0).getTurmaAvaliada().getPeriodo() + "t0");
-		System.out.println(listaAvaliacoes.get(1).getTurmaAvaliada().getPeriodo() + "t1");
-		System.out.println(listaAvaliacoes.get(2).getTurmaAvaliada().getPeriodo() + "t2");
-		// for (AvaliacaoTurma turma : listaAvaliacoes) {
-		// System.out.println(turma.toString());
-		//
-		// }
+
 		int i = 1;
 		for (Turma turma : t) {
 			// System.out.println(turma.getDisciplina() + "-" +
@@ -48,25 +41,15 @@ public class VisualizacaoAvaliacaoDiscenteService {
 			AvaliacaoTurma a = repositorio2.findAvaliacoesTurma(turma.getId());
 			System.out.println(a);
 			List<AvaliacaoTurma> a1 = repositorio2.findAvaliacoesTurmaLista(turma.getId());
-			System.out.println(a1.size());
-			System.out.println(turma.getId() + "---" + listaAvaliacoes.get(i).getTurmaAvaliada().getId());
-			System.out
-					.println(turma.getDisciplina() + "---" + listaAvaliacoes.get(i).getTurmaAvaliada().getDisciplina());
-			System.out.println(turma.getPeriodo() + "---" + listaAvaliacoes.get(i).getTurmaAvaliada().getPeriodo());
-			if (turma.getId() == listaAvaliacoes.get(i).getTurmaAvaliada().getId()) {
-				i++;
-				System.out.println(turma.toString());
-
-			}
 
 			// listaAvaliacoes.add(a);
-			// System.out.println(a);
+
 		}
 		return listaAvaliacoes;
 
 	}
 
-	public AvaliacaoTurma selecionarTurma(Turma t) {
+	public AvaliacaoTurma selecionarTurma(AvaliacaoTurma t) {
 		for (AvaliacaoTurma avaliacaoTurma : listaAvaliacoes) {
 			if (avaliacaoTurma.getId() == t.getId()) {
 				return avaliacaoTurma;
