@@ -30,6 +30,12 @@
 
 		lotacao[idDisciplina] = siglaDepto;
 	}
+
+	function listarDisciplinas(select) {
+		var optionSelected = $(select).find("option:selected");
+		var idVersaoCurso = optionSelected.val();
+		alert(idVersaoCurso);
+	}
 </script>
 
 <script>
@@ -104,6 +110,22 @@
 		</c:if>
 
 		<div id="feedback" class="row label-success text-center"></div>
+
+		<div class="row">
+			<form id="formSelecaoVersaoCurso">
+				<select name="versoesCurso" class="form-control input" id="versoesCurso"
+					onchange="listarDisciplinas(this)">
+					<option value="" class="form-control"
+						label="Selecionar versão de curso..." selected disabled>Selecionar
+						versão de curso</option>
+					<option value="123" class="form-control" label="BCC (2012)">BCC
+						(2012)</option>
+					<c:forEach items="${versoesCurso}" var="versaoCurso">
+						<option value="${versaoCurso.id}">${versaoCurso}</option>
+					</c:forEach>
+				</select>
+			</form>
+		</div>
 
 		<div class="row">
 			<form id="formLotacaoDisciplina">
