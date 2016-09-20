@@ -153,7 +153,7 @@ public class ImportadorHistoricosEscolares {
 				continue;
 			}
 
-			Aluno aluno = alunoRepositorio.getAlunoByInfoHistoricoEscolar(aluno_matricula, semestre, situacaoFinal,
+			Aluno aluno = alunoRepositorio.findAlunoByInfoHistoricoEscolar(aluno_matricula, semestre, situacaoFinal,
 					cod_disciplina, versao_curso, cod_curso);
 
 			if (aluno != null) {

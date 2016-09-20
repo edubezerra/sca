@@ -26,7 +26,7 @@ public interface AlunoRepositorio extends JpaRepository<Aluno, Serializable> {
 	List<Aluno> findAlunosByCursoEPeriodo(String siglaCurso, String periodo);
 
 	@Query("SELECT distinct a from Aluno a JOIN a.historico h JOIN a.historico.itens i WHERE i.disciplina.codigo = ?1")
-	List<Aluno> getAlunosByDisciplinasCursadas(String codigoDisciplina);
+	List<Aluno> findAlunosByDisciplinasCursadas(String codigoDisciplina);
 
 	@Query("SELECT distinct a from Aluno a JOIN a.historico h JOIN a.historico.itens i WHERE i.disciplina.codigo IN ?1")
 	List<Aluno> findAlunosByDisciplinaCursadaList(List<String> codigosDisciplina);
@@ -34,7 +34,7 @@ public interface AlunoRepositorio extends JpaRepository<Aluno, Serializable> {
 	@Query("SELECT a from Aluno a JOIN a.historico h JOIN a.historico.itens i" + " WHERE a.matricula = ?1"
 			+ " AND i.periodoLetivo = ?2" + " AND i.situacao = ?3" + " AND i.disciplina.codigo = ?4"
 			+ " AND i.disciplina.versaoCurso.numero = ?5" + " AND i.disciplina.versaoCurso.curso.sigla = ?6")
-	Aluno getAlunoByInfoHistoricoEscolar(String matricula, PeriodoLetivo periodoLetivo, EnumSituacaoAvaliacao situacao,
+	Aluno findAlunoByInfoHistoricoEscolar(String matricula, PeriodoLetivo periodoLetivo, EnumSituacaoAvaliacao situacao,
 			String codigoDisciplina, String numeroVersao, String codigoCurso);
 
 	@Query("SELECT a from Aluno a WHERE a.matricula IN ?")

@@ -35,6 +35,33 @@
 		var optionSelected = $(select).find("option:selected");
 		var idVersaoCurso = optionSelected.val();
 		alert(idVersaoCurso);
+
+		$
+		.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url : "${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/filtraDisciplinas",
+			data : JSON.stringify(lotacao),
+			dataType : 'text',
+			timeout : 100000,
+			success : function(data) {
+				console.log("SUCCESS");
+				$("#feedback").html("<b>" + data + "</b>");
+				setTimeout(function() {
+					window.location.reload(true);
+				}, 2000);
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$("#feedback").html(JSON.stringify(e));
+			},
+			done : function(e) {
+				console.log("DONE");
+				enableSearchButton(false);
+			}
+		});
+		
 	}
 </script>
 
