@@ -3,13 +3,11 @@ package br.cefetrj.sca.service;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
@@ -25,37 +23,27 @@ public class VisualizacaoAvaliacaoDiscenteService {
 	@Autowired
 	private AvaliacaoTurmaRepositorio repositorio2;
 
-	private List<AvaliacaoTurma> listaAvaliacoes;
+	public List<Turma> listarTurmaLecionadas(Professor p) {
+		List<Turma> t = repositorio.findTurmasLecionadasPorProfessor(p.getMatricula());
 
-	public List<AvaliacaoTurma> listarTurmaLecionadas(Professor p, PeriodoLetivo pl) {
-		List<Turma> t = repositorio.findTurmasLecionadasPorProfessorEmPeriodo(p.getMatricula(), pl);
+		System.out.println(t.size());
 
-		// listaAvaliacoes = new ArrayList<>();
-		listaAvaliacoes = repositorio2.findAll();
+		// listaAvaliacoes = repositorio2.findAll();
 
-		int i = 1;
 		for (Turma turma : t) {
-			// System.out.println(turma.getDisciplina() + "-" +
-			// turma.getCodigo());
-
-			AvaliacaoTurma a = repositorio2.findAvaliacoesTurma(turma.getId());
-			System.out.println(a);
-			List<AvaliacaoTurma> a1 = repositorio2.findAvaliacoesTurmaLista(turma.getId());
-
-			// listaAvaliacoes.add(a);
+			System.out.println(turma.getDisciplina() + "-" + turma.getCodigo() + " - " + turma.getPeriodo());
+			/*List<AvaliacaoTurma> a = repositorio2.findAvaliacoesTurmaLista(turma.getId());
+			if (a.size() == 0) {
+				t.remove(turma);
+			}*/
 
 		}
-		return listaAvaliacoes;
+		return t;
 
 	}
 
-	public AvaliacaoTurma selecionarTurma(AvaliacaoTurma t) {
-		for (AvaliacaoTurma avaliacaoTurma : listaAvaliacoes) {
-			if (avaliacaoTurma.getId() == t.getId()) {
-				return avaliacaoTurma;
-			}
-		}
-		return null;
+	public List<AvaliacaoTurma> selecionarTurma(Turma t) {
+		return repositorio2.findAvaliacoesTurmaLista(t.getId());
 	}
 
 	public void conversaoRespospa(AvaliacaoTurma avaliacaoTurma) throws IOException {
