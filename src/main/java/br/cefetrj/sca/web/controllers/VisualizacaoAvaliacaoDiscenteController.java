@@ -1,5 +1,6 @@
 package br.cefetrj.sca.web.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,12 @@ public class VisualizacaoAvaliacaoDiscenteController {
 		Turma t = turmaRepositorio.findTurmaById(cod);
 		
 		List<AvaliacaoTurma> at = discenteService.selecionarTurma(t);
+		System.out.println(at.size());
+		try {
+			discenteService.conversaoRespospa(at);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
