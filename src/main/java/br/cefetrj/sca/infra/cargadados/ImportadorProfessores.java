@@ -22,10 +22,10 @@ import jxl.read.biff.BiffException;
 /**
  * Este importador realiza a carga de objetos <code>Professor</code>.
  * 
- * Se algum professor existente na planilha de entrada já tiver sido
- * importado, essa classe ainda sim tenta solicita ao mecamismo de
- * armazenamento o atualização desse professor. Isso porque algum dado
- * adicional sobre o professor pode ter sido definido na planilha.
+ * Se algum professor existente na planilha de entrada já tiver sido importado,
+ * essa classe ainda sim tenta solicita ao mecamismo de armazenamento o
+ * atualização desse professor. Isso porque algum dado adicional sobre o
+ * professor pode ter sido definido na planilha.
  *
  */
 
@@ -51,9 +51,16 @@ public class ImportadorProfessores {
 	public void run() {
 		System.out.println("ImportadorDocentes.main()");
 		try {
-			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.05 - Oferta de Disciplinas - Docentes x Cursos - 2015.2.xls";
+			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
+
+			profs_nomes.clear();
+
+			arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
+
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -99,7 +106,7 @@ public class ImportadorProfessores {
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
-		System.out.println("Iniciando importação de docentes...");
+		System.out.println("Iniciando importação de professores...");
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
@@ -123,8 +130,15 @@ public class ImportadorProfessores {
 				String codigoTurma = sheet.getCell(
 						colunasList.indexOf("COD_TURMA"), i).getContents();
 
+				String ano = sheet.getCell(colunasList.indexOf("ANO"), i)
+						.getContents();
+
+				String periodo = sheet.getCell(colunasList.indexOf("PERIODO"),
+						i).getContents();
+
 				System.err.println("Turma sem professor alocado: "
-						+ nomeDisciplina + "(turma " + codigoTurma + ")");
+						+ codigoTurma + "(" + nomeDisciplina + ", " + ano
+						+ " - " + periodo + ")");
 			} else {
 				profs_nomes.put(matriculaProfessor, nomeProfessor);
 			}

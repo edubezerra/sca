@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.VersaoCurso;
 import br.cefetrj.sca.dominio.isencoes.ItemPedidoIsencaoDisciplina;
 import br.cefetrj.sca.dominio.isencoes.PedidoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
@@ -43,8 +44,8 @@ public class IsencaoDisciplinaService {
 		return disciplinaRepo.findDisciplinaById(idDisciplina);
 	}
 
-	public List<Disciplina> findDisciplinas(String siglaCurso) {
-		return disciplinaRepo.findBySigla(siglaCurso);
+	public List<Disciplina> findDisciplinas(VersaoCurso versaoCurso) {
+		return disciplinaRepo.findAllEmVersaoCurso(versaoCurso);
 	}
 
 	public List<PedidoIsencaoDisciplinas> findProcessosIsencao() {

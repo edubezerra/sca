@@ -87,9 +87,8 @@ public class RegistrarIsencaoDisciplinaController {
 
 			Aluno aluno = service.findAlunoByMatricula(matricula);
 
-			String siglaCurso = aluno.getVersaoCurso().getCurso().getSigla();
-
-			List<Disciplina> disciplinas = service.findDisciplinas(siglaCurso);
+			List<Disciplina> disciplinas = service.findDisciplinas(aluno
+					.getVersaoCurso());
 			model.addAttribute("aluno", aluno);
 			model.addAttribute("disciplinas", disciplinas);
 

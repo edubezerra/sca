@@ -84,14 +84,14 @@ public class ImportadorTudo {
 			// importadorHistoricoEscolar.run();
 
 			importadorAlocacoesProfessoresEmTurmas.run();
-			importadorHabilitacoesParaProfessor.run();
-			importadorPerMinVersaoCurso.run();
-
-			importadorAlocacoesProfessoresEmDepartamentos.run();
-
-			importadorAlocacoesDisciplinasEmDepartamentos.run();
-
-			importadorEquivalenciaDisciplinas.run();
+//			importadorHabilitacoesParaProfessor.run();
+//			importadorPerMinVersaoCurso.run();
+//
+//			importadorAlocacoesProfessoresEmDepartamentos.run();
+//
+//			importadorAlocacoesDisciplinasEmDepartamentos.run();
+//
+//			importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

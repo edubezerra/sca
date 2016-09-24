@@ -28,10 +28,6 @@ public interface DisciplinaRepositorio extends
 	Disciplina findByCodigoEmVersaoCurso(String codigoDisciplina,
 			VersaoCurso versaoCurso);
 
-	@Query("from Disciplina d where d.codigo = ?1 and d.versaoCurso.numero = ?2")
-	Disciplina findByCodigoEmVersaoCurso(String codigoDisciplina,
-			String numeroVersaoCurso);
-
 	@Query("from Disciplina d where d.nome = ?1 "
 			+ "and d.versaoCurso.curso.sigla = ?2"
 			+ " and d.versaoCurso.numero = ?3")
@@ -41,9 +37,6 @@ public interface DisciplinaRepositorio extends
 	@Query("from Disciplina d where d.versaoCurso = ?1")
 	List<Disciplina> findAllEmVersaoCurso(VersaoCurso versaoCurso);
 
-	@Query("from Disciplina d where d.versaoCurso.curso.sigla = ?1 ORDER BY d.nome ")
-	List<Disciplina> findBySigla(String siglaCurso);
-	
 	@Query("SELECT b.disciplinasEquivalentes from TabelaEquivalencias t JOIN t.blocosEquivalencia b JOIN b.disciplinasOriginais d"
 			+ " where d.codigo = ?1")
 	List<Disciplina> findDisciplinasEquivalentesByCodigo(String codigoDisciplina);

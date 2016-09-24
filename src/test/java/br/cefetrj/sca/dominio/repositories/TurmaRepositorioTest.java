@@ -85,11 +85,12 @@ public class TurmaRepositorioTest {
 
 		assertEquals(periodo, periodoLetivo);
 
-		String codigoDisclina = "GEXT7501";
-
+		String codigoDisciplina = "GEXT7501";
+		Disciplina disciplina = disciplinaRepo.findByCodigoEmVersaoCurso(
+				codigoDisciplina, "BCC", "2012");
 		Turma turma = turmaRepositorio
 				.findTurmaByCodigoAndDisciplinaAndPeriodo(codigoTurma,
-						codigoDisclina, periodo);
+						disciplina, periodo);
 
 		assertNotNull(turma);
 
@@ -143,7 +144,7 @@ public class TurmaRepositorioTest {
 
 		String codigoTurma = "EXTRA";
 
-		String codigoDisclina = "GCC1103";
+		String codigoDisciplina = "GCC1103";
 
 		PeriodoLetivo periodo = new PeriodoLetivo(2015, EnumPeriodo.SEGUNDO);
 
@@ -151,9 +152,12 @@ public class TurmaRepositorioTest {
 
 		assertEquals(periodo, periodoLetivo);
 
+		Disciplina disciplina = disciplinaRepo.findByCodigoEmVersaoCurso(
+				codigoDisciplina, "BCC", "2012");
+
 		Turma turma = turmaRepositorio
 				.findTurmaByCodigoAndDisciplinaAndPeriodo(codigoTurma,
-						codigoDisclina, periodo);
+						disciplina, periodo);
 
 		assertNotNull(turma);
 
@@ -189,12 +193,14 @@ public class TurmaRepositorioTest {
 		}
 
 	}
-	
+
 	@Test
 	public void teste() {
-		List<Turma> turmas = turmaRepositorio.findTurmasCursadasPorAluno("1311038BCC");
+		List<Turma> turmas = turmaRepositorio
+				.findTurmasCursadasPorAluno("1311038BCC");
 		for (Turma turma : turmas) {
-			System.out.println(turma.getDisciplina().getNome() + "/" + turma.getPeriodo());
+			System.out.println(turma.getDisciplina().getNome() + "/"
+					+ turma.getPeriodo());
 		}
 	}
 }

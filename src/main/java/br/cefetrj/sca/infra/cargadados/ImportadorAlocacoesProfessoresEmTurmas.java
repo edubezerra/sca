@@ -9,18 +9,21 @@ import java.util.Set;
 
 import javax.persistence.NoResultException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import br.cefetrj.sca.dominio.PeriodoLetivo;
-import br.cefetrj.sca.dominio.Professor;
-import br.cefetrj.sca.dominio.Turma;
-import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
-import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.PeriodoLetivo;
+import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
+import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 
 /**
  * Esse importador realiza a carga de associações entre objetos
@@ -33,15 +36,18 @@ import jxl.read.biff.BiffException;
 public class ImportadorAlocacoesProfessoresEmTurmas {
 
 	@Autowired
-	private TurmaRepositorio turmaRepositorio;
+	private DisciplinaRepositorio disciplinaRepositorio;
 
 	@Autowired
 	ProfessorRepositorio professorRepositorio;
 
-	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
-			"VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO", "HR_FIM",
-			"TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "ITEM_TABELA",
-			"PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
+	@Autowired
+	private TurmaRepositorio turmaRepositorio;
+
+	static String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA",
+			"COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO",
+			"HR_FIM", "TIPO_AULA", "COD_CURSO", "NUM_VERSAO", "NOME_UNIDADE",
+			"ITEM_TABELA", "PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
 			"DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
 			"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
 
@@ -51,7 +57,8 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 	private HashMap<String, String> mapaMatriculasParaNomes = new HashMap<>();
 
 	/**
-	 * Mapeamento de pares (código da turma, matrícula do professor responsável).
+	 * Mapeamento de pares (código da turma, matrícula do professor
+	 * responsável).
 	 */
 	private HashMap<String, String> mapaTurmasParaProfessores = new HashMap<>();
 
@@ -67,9 +74,18 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 	public void run() {
 		System.out.println("ImportadorAlocacoesProfessoresEmTurmas.run()");
 		try {
-			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.05 - Oferta de Disciplinas - Docentes x Cursos - 2015.2.xls";
+			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
+
+			mapaMatriculasParaNomes.clear();
+			mapaTurmasParaProfessores.clear();
+			mapaTurmasParaPeriodos.clear();
+
+			arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
+			this.importarPlanilha(arquivoPlanilha);
+			this.gravarDadosImportados();
+
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -85,45 +101,39 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 
 			String[] componentes = chave.split(";");
 			String codTurma = componentes[0];
-			String codDisciplina = componentes[1];
-			
+			String codigoDisciplina = componentes[1];
+			String siglaCurso = componentes[2];
+			String numeroVersaoCurso = componentes[3];
+
 			Turma turma = null;
 
 			PeriodoLetivo periodoLetivo = mapaTurmasParaPeriodos.get(chave);
 
 			try {
-//				query = em
-//						.createQuery("from Turma t where t.codigo = ? and t.disciplina.codigo = ? "
-//								+ "and t.periodo.ano = ? and t.periodo.periodo = ?");
-//				query.setParameter(1, codTurma);
-//				query.setParameter(2, codDisciplina);
-//				query.setParameter(3, periodoLetivo.getAno());
-//				query.setParameter(4, periodoLetivo.getPeriodo());
-//				turma = (Turma) query.getSingleResult();
-				turma = turmaRepositorio.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma, codDisciplina, periodoLetivo);
+				Disciplina disciplina = disciplinaRepositorio
+						.findByCodigoEmVersaoCurso(codigoDisciplina,
+								siglaCurso, numeroVersaoCurso);
+				turma = turmaRepositorio
+						.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma,
+								disciplina, periodoLetivo);
 			} catch (NoResultException e) {
 				System.err.println("Turma não encontrada: (" + codTurma + ", "
-						+ codDisciplina + ")");
+						+ codigoDisciplina + ")");
 				turma = null;
 			}
 			if (turma != null) {
-//				query = em
-//						.createQuery("from Professor p where p.matricula = ?");
-//				query.setParameter(1, mapaTurmasParaProfessores.get(chave));
-
 				String matricula = mapaTurmasParaProfessores.get(chave);
-				
+
 				Professor professor = null;
 				try {
-//					professor = (Professor) query.getSingleResult();
-					professor = professorRepositorio.findProfessorByMatricula(matricula);
+					professor = professorRepositorio
+							.findProfessorByMatricula(matricula);
 				} catch (NoResultException e) {
 					System.err.println("Professor não encontrado: "
 							+ mapaTurmasParaProfessores.get(chave));
 				}
 				if (professor != null) {
 					turma.setProfessor(professor);
-//					em.merge(turma);
 					turmaRepositorio.save(turma);
 					qtdAlocacoes++;
 				}
@@ -146,7 +156,7 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 
 		List<String> colunasList = Arrays.asList(colunas);
 		System.out
-				.println("Iniciando importação de dados relativos alocações de professores a turmas...");
+				.println("Iniciando importação de alocações de professores a turmas...");
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
@@ -185,7 +195,14 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 			String codigoDisciplina = sheet.getCell(
 					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
 
-			String chave = codigoTurma + ";" + codigoDisciplina;
+			String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"),
+					i).getContents();
+
+			String numeroVersaoCurso = sheet.getCell(
+					colunasList.indexOf("NUM_VERSAO"), i).getContents();
+
+			String chave = codigoTurma + ";" + codigoDisciplina + ";"
+					+ siglaCurso + ";" + numeroVersaoCurso;
 
 			mapaTurmasParaProfessores.put(chave, matriculaProfessor);
 

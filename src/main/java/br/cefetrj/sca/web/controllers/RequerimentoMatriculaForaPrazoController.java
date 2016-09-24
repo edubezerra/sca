@@ -51,7 +51,8 @@ import br.cefetrj.sca.service.util.FichaMatriculaForaPrazo;
 @RequestMapping("/matriculaForaPrazo/requerimento")
 public class RequerimentoMatriculaForaPrazoController {
 
-	protected Logger logger = Logger.getLogger(RequerimentoMatriculaForaPrazoController.class.getName());
+	protected Logger logger = Logger
+			.getLogger(RequerimentoMatriculaForaPrazoController.class.getName());
 
 	@Autowired
 	private RequerimentoMatriculaForaPrazoService service;
@@ -71,17 +72,20 @@ public class RequerimentoMatriculaForaPrazoController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matriculaAluno = usr.getMatricula();
 		try {
-			FichaMatriculaForaPrazo ficha = service.criarFichaSolicitacao(matriculaAluno);
+			FichaMatriculaForaPrazo ficha = service
+					.criarFichaSolicitacao(matriculaAluno);
 
 			sessao.setAttribute("ficha", ficha);
 
 			sessao.setAttribute("periodoLetivo", PeriodoLetivo.PERIODO_CORRENTE);
 
-			sessao.setAttribute("turmasCursadas",
-					service.findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno, PeriodoLetivo.PERIODO_CORRENTE));
+			sessao.setAttribute("turmasCursadas", service
+					.findTurmasCursadasPorAlunoNoPeriodo(matriculaAluno,
+							PeriodoLetivo.PERIODO_CORRENTE));
 
-			sessao.setAttribute("turmasDisponiveis",
-					service.findTurmasByPeriodoLetivo(matriculaAluno, PeriodoLetivo.PERIODO_CORRENTE));
+			sessao.setAttribute("turmasDisponiveis", service
+					.findTurmasByPeriodoLetivo(matriculaAluno,
+							PeriodoLetivo.PERIODO_CORRENTE));
 
 			return "/matriculaForaPrazo/requerimento/registrarRequerimentoView";
 		} catch (Exception exc) {
@@ -91,12 +95,11 @@ public class RequerimentoMatriculaForaPrazoController {
 	}
 
 	/**
-	 * Método invocado quando o aluno seleciona a opção (link) para
-	 * realizar um requerimento. Esse método produz a lista de requerimentos
-	 * anteriores. A partir dessa lista, o aluno pode selecionar o
-	 * requerimento correspondente ao período letivo corrente para edição. Pode
-	 * também selecionar qualquer requerimento de períodos letivos anteriores
-	 * para visualização apenas.
+	 * Método invocado quando o aluno seleciona a opção (link) para realizar um
+	 * requerimento. Esse método produz a lista de requerimentos anteriores. A
+	 * partir dessa lista, o aluno pode selecionar o requerimento correspondente
+	 * ao período letivo corrente para edição. Pode também selecionar qualquer
+	 * requerimento de períodos letivos anteriores para visualização apenas.
 	 */
 	@RequestMapping(value = "/visualizarRequerimentos", method = RequestMethod.GET)
 	public String visualizarRequerimentos(Model model) {
@@ -111,39 +114,46 @@ public class RequerimentoMatriculaForaPrazoController {
 	 * item (turma/disciplina) ao requerimento de matrícula fora do prazo.
 	 */
 	@RequestMapping(value = "/adicionarItem", method = RequestMethod.POST)
-	public String adicionarItemEmRequerimento(@RequestParam String siglaDepartamento, @RequestParam Long idTurma,
-			@RequestParam int opcao, @RequestParam String observacao, Model model, HttpSession sessao)
-					throws IOException {
+	public String adicionarItemEmRequerimento(
+			@RequestParam String siglaDepartamento, @RequestParam Long idTurma,
+			@RequestParam int opcao, @RequestParam String observacao,
+			Model model, HttpSession sessao) throws IOException {
 
-		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao.getAttribute("ficha");
+		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao
+				.getAttribute("ficha");
 
 		if (ficha.getItensRequerimento().size() < MatriculaForaPrazo.QTD_MAXIMA_ITENS) {
 
 			try {
 
 				Turma turma = service.findTurmaById(idTurma);
-				ficha.adicionarItemRequerimento(turma.getId(), turma.getCodigo(), turma.getDisciplina().getCodigo(),
-						turma.getNomeDisciplina(), siglaDepartamento, opcao, observacao);
-				model.addAttribute("sucesso", "Item foi corretamente adicionado ao requerimento.");
+				ficha.adicionarItemRequerimento(turma.getId(),
+						turma.getCodigo(), turma.getDisciplina(),
+						siglaDepartamento, opcao, observacao);
+				model.addAttribute("sucesso",
+						"Item foi corretamente adicionado ao requerimento.");
 			} catch (Exception e) {
 				model.addAttribute("error", e.getMessage());
 			}
 		} else {
-			model.addAttribute("error", "A quantidade máxima possível de itens neste requerimento é "
-					+ MatriculaForaPrazo.QTD_MAXIMA_ITENS);
+			model.addAttribute("error",
+					"A quantidade máxima possível de itens neste requerimento é "
+							+ MatriculaForaPrazo.QTD_MAXIMA_ITENS);
 		}
 		return "/matriculaForaPrazo/requerimento/registrarRequerimentoView";
 	}
 
 	/**
-	 * Método invocado quando o aluno solicita que um item do requerimento
-	 * seja removido. Esse item é identificado pelo ID da turma correspondente,
-	 * que é passado como parâmetro GET.
+	 * Método invocado quando o aluno solicita que um item do requerimento seja
+	 * removido. Esse item é identificado pelo ID da turma correspondente, que é
+	 * passado como parâmetro GET.
 	 */
 	@RequestMapping("/item/remove/{idTurma}")
-	public String removerItem(@PathVariable int idTurma, Model model, HttpSession sessao) {
+	public String removerItem(@PathVariable int idTurma, Model model,
+			HttpSession sessao) {
 
-		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao.getAttribute("ficha");
+		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao
+				.getAttribute("ficha");
 
 		ficha.removerItemRequerimento(idTurma);
 
@@ -158,7 +168,8 @@ public class RequerimentoMatriculaForaPrazoController {
 	public String definirComprovante(// @RequestParam MultipartFile file,
 			HttpServletRequest request, Model model, HttpSession sessao) {
 
-		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao.getAttribute("ficha");
+		FichaMatriculaForaPrazo ficha = (FichaMatriculaForaPrazo) sessao
+				.getAttribute("ficha");
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
@@ -182,36 +193,40 @@ public class RequerimentoMatriculaForaPrazoController {
 	 * requerimento que realizou anteriormente.
 	 */
 	@RequestMapping(value = "/visualizarDetalhesRequerimento", method = RequestMethod.POST)
-	public String visualizarDetalhesRequerimento(@RequestParam int ano, @RequestParam EnumPeriodo periodo,
-			Model model) {
+	public String visualizarDetalhesRequerimento(@RequestParam int ano,
+			@RequestParam EnumPeriodo periodo, Model model) {
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matriculaAluno = usr.getMatricula();
 
 		try {
 			MatriculaForaPrazo requerimento;
-			requerimento = service.findMatriculaForaPrazoByAlunoAndPeriodo(matriculaAluno,
-					new PeriodoLetivo(ano, periodo));
+			requerimento = service.findMatriculaForaPrazoByAlunoAndPeriodo(
+					matriculaAluno, new PeriodoLetivo(ano, periodo));
 
 			model.addAttribute("requerimento", requerimento);
 
 			return "/matriculaForaPrazo/requerimento/listarDetalhesRequerimento";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			this.definirModelParaVisualizacaoRequerimentos(model, matriculaAluno);
+			this.definirModelParaVisualizacaoRequerimentos(model,
+					matriculaAluno);
 			return "/matriculaForaPrazo/requerimento/visualizarRequerimentosView";
 		}
 	}
 
-	private void definirModelParaVisualizacaoRequerimentos(Model model, String matriculaAluno) {
+	private void definirModelParaVisualizacaoRequerimentos(Model model,
+			String matriculaAluno) {
 		Aluno aluno = service.findAlunoByMatricula(matriculaAluno);
 
-		SortedMap<PeriodoLetivo, MatriculaForaPrazo> mapa = service.findMatriculasForaPrazoByAluno(aluno.getId());
+		SortedMap<PeriodoLetivo, MatriculaForaPrazo> mapa = service
+				.findMatriculasForaPrazoByAluno(aluno.getId());
 
 		model.addAttribute("listaPeriodosLetivos", mapa.keySet());
 
 		if (mapa.get(PeriodoLetivo.PERIODO_CORRENTE) != null) {
-			model.addAttribute("periodoLetivoCorrente", PeriodoLetivo.PERIODO_CORRENTE);
+			model.addAttribute("periodoLetivoCorrente",
+					PeriodoLetivo.PERIODO_CORRENTE);
 		}
 
 		model.addAttribute("aluno", aluno);
