@@ -12,10 +12,6 @@ import br.cefetrj.sca.dominio.VersaoCurso;
 public interface DisciplinaRepositorio extends
 		JpaRepository<Disciplina, Serializable> {
 
-	Disciplina findDisciplinaByNome(String nomeDisciplina);
-
-	Disciplina findDisciplinaByCodigo(String codigoDisciplina);
-
 	Disciplina findDisciplinaById(Long idDisciplina);
 
 	@Query("from Disciplina d where d.codigo = ?1 "

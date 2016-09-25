@@ -44,13 +44,13 @@ public class RelatorioReprovacaoDisciplinaController {
 
 	@RequestMapping(value = "/relatorioReprovacaoDisciplina", method = RequestMethod.POST)
 	public String relatorioReprovacaoDisciplina(HttpServletRequest request, Model model,
-			@RequestParam String disciplina) {
+			@RequestParam String idDisciplina) {
 		try {
 
-			String response = service.createDataResponse(disciplina);
+			String response = service.createDataResponse(idDisciplina);
 
 			model.addAttribute("response", response);
-			model.addAttribute("disciplina", disciplina);
+			model.addAttribute("idDisciplina", idDisciplina);
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
 		}

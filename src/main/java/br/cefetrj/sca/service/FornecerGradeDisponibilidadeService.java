@@ -36,8 +36,8 @@ public class FornecerGradeDisponibilidadeService {
 		return null;
 	}
 
-	public void adicionarDisciplina(String codigoDisciplina) {
-		Disciplina d = disciplinaRepositorio.findDisciplinaByCodigo(codigoDisciplina);
+	public void adicionarDisciplina(String idDisciplina) {
+		Disciplina d = disciplinaRepositorio.findDisciplinaById(Long.parseLong(idDisciplina));
 		gradeDisponibilidade.adicionarDisciplina(d);
 	}
 
