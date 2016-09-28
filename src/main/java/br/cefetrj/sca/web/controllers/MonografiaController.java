@@ -64,28 +64,5 @@ public class MonografiaController {
         }
     }
 
-    @RequestMapping(value = "/nova/", method = RequestMethod.POST)
-    public String formNovaMonografiaPost(HttpServletRequest request, @ModelAttribute("form") ArquivosMultipart arquivos, Model model) {
-        try {
-            List<String> autores = Arrays.asList(request.getParameter("autores").split("\n"));
-            String titulo = request.getParameter("titulo");
-            String _abstract = request.getParameter("abstract");
-            String resumo = request.getParameter("resumo");
-
-            Monografia monografia = new Monografia(autores, titulo, _abstract, resumo);
-            monografia.adicionarArquivos(arquivos);
-
-            monografia.salvar();
-
-            model.addAttribute("message", "Envio concluído com sucesso");
-            return "/monografias";
-
-        } catch (Exception exc) {
-
-            model.addAttribute("error", exc.getMessage());
-            return "/monografias/nova";
-
-        }
-    }
 
 }
