@@ -76,6 +76,9 @@
 					href="${pageContext.request.contextPath}//visualizacaoAvaliacaoDiscente/turma">
 						Selecao da Turma
 						(${requestScope.periodoLetivo})</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/pastaProfessor/dashboard">
+						Pasta Virtual</a></li>
 			</ul>
 		</sec:authorize>
 

@@ -81,9 +81,9 @@ public class ImportadorTudo {
 			importadorProfessores.run();
 			importadorDepartamentos.run();
 
-			// importadorHistoricoEscolar.run();
+//			 importadorHistoricoEscolar.run();
 
-			importadorAlocacoesProfessoresEmTurmas.run();
+//			importadorAlocacoesProfessoresEmTurmas.run();
 //			importadorHabilitacoesParaProfessor.run();
 //			importadorPerMinVersaoCurso.run();
 //
