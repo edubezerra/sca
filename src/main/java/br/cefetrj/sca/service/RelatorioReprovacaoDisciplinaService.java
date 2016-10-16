@@ -28,7 +28,7 @@ public class RelatorioReprovacaoDisciplinaService {
 	
 	private HashMap<PeriodoLetivo, List<Aluno>> alunosPorSemestre = new HashMap<>();
 	
-	public String createDataResponse(String codigoDisciplina){
+	public String createDataResponse(String idDisciplina){
 		alunosPorSemestre.clear();
 		/* lista contendo os codigos das disciplina de pesquisa e suas equivalentes*/
 		List<String> codigosDisciplina = new ArrayList<>();
@@ -42,15 +42,15 @@ public class RelatorioReprovacaoDisciplinaService {
 		List<Aluno> alunoList;
 		
 		/* busca a disciplina enviada como parametro */
-		disciplinaOriginal = disciplinaRepo.findDisciplinaByCodigo(codigoDisciplina);
+		disciplinaOriginal = disciplinaRepo.findDisciplinaById(Long.parseLong(idDisciplina));
 		
 		if(disciplinaOriginal == null) 
 		{
-			throw new IllegalArgumentException("O código " + codigoDisciplina + " não pertence a nenhuma disciplina cadastrada.");
+			throw new IllegalArgumentException("O id " + idDisciplina + " não pertence a nenhuma disciplina cadastrada.");
 		}
 		
 		/* busca as disciplinas equivalentes àquela disciplina de parametro */
-		dEquivalentes = disciplinaRepo.findDisciplinasEquivalentesByCodigo(codigoDisciplina);
+		dEquivalentes = disciplinaRepo.findDisciplinasEquivalentesByCodigo(idDisciplina);
 		
 		/* armazena na lista de codigos de disciplina*/
 		for(Disciplina disc: dEquivalentes) {
