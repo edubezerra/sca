@@ -27,14 +27,15 @@
 
 		<link href="${rootURL}resources/bootstrap/css/bootstrap.css"
 			media="screen" rel="stylesheet" type="text/css" />
-			<link href="${rootURL}resources/navbar/navbar.css"
-			media="screen" rel="stylesheet" type="text/css" />
 		<script type="text/javascript"
 			src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
 		<script type="text/javascript"
 			src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
 		
 		<script type="text/javascript" src="${rootURL}resources/util/util.js"></script>
+
+		<link href="${rootURL}resources/navbar/navbar.css"
+			media="screen" rel="stylesheet" type="text/css" />
 
         <style>
             body {
@@ -47,7 +48,7 @@
     </head>
     <body>
         <!--[if lt IE 8]> <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p> <![endif]-->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
