@@ -36,4 +36,16 @@ public class DocumentoProfessorService {
 		repositorio.save(documentoProfessor);
 	}
 	
+	public void deleteDocumentoProfessor(Long id) throws Exception {
+		this.deleteDocumentoProfessor(repositorio.findDocumentoProfessorById(id));
+	}
+	
+	public void deleteDocumentoProfessor(DocumentoProfessor doc) throws Exception {
+		
+		if(doc == null)
+			throw new Exception("Documento não encontrado!");
+	
+		doc.setProfessor(null);
+		repositorio.delete(doc);
+	}
 }

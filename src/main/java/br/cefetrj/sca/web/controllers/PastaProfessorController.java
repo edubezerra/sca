@@ -99,4 +99,21 @@ public class PastaProfessorController {
 		
 	}
 	
+	@RequestMapping(value = "/excluirDocumento/{documentId}", method = RequestMethod.GET)
+	public String excluirDocumento(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(value="documentId") long idDocumento,
+			final RedirectAttributes redirectAttributes) {
+		try {
+			documentoService.deleteDocumentoProfessor(idDocumento);
+			
+			redirectAttributes.addFlashAttribute("info", "Documento excluído!.");
+		}
+		catch(Exception ex)
+		{
+			redirectAttributes.addFlashAttribute("error", ex.getMessage());
+		}
+		
+		return "redirect:/pastaProfessor/dashboard";
+	}
+	
 }

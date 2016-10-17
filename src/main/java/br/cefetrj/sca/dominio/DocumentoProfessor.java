@@ -43,7 +43,7 @@ public class DocumentoProfessor {
 	@OneToOne(cascade = CascadeType.ALL)
 	Comprovante documento;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Professor professor;
 	
 	
