@@ -52,9 +52,7 @@ public class DocumentoProfessorService {
 	public void saveDocumentoProfessor(String nome, String categoria, MultipartFile file, Professor professor) throws IOException, IllegalArgumentException {
 		
 		if (file == null || file.isEmpty() || !this.isTypeAllowed(file)) {
-			throw new IllegalArgumentException(
-					"Erro: Comprovante não encontrado. "
-							+ "Por favor, forneça um documento válido.");
+			throw new IllegalArgumentException("Erro: Documento inválido.");
 		}
 		
 		Comprovante doc = new Comprovante(file.getContentType(),
