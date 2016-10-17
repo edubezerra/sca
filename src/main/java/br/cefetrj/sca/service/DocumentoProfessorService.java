@@ -2,7 +2,6 @@ package br.cefetrj.sca.service;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,42 @@ import br.cefetrj.sca.dominio.repositories.DocumentoProfessorRepositorio;
 @Service
 @Transactional
 public class DocumentoProfessorService {
+	
+	protected static String allowedTypes[] = {
+		// Plaintext
+		"text/plain",
+		// Images
+		"image/jpeg",
+		"image/jpg",
+		"image/png",
+		// PDF
+		"application/pdf",
+		// Word
+		"application/msword",
+		"application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+		"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	};
+	
+	
 	@Autowired
 	private DocumentoProfessorRepositorio repositorio;
 
+	protected boolean isTypeAllowed(MultipartFile file) {
+		
+		String type = file.getContentType();
+		
+		for(String allowedType : allowedTypes) {
+			if(type.equals(allowedType))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	
 	public void saveDocumentoProfessor(String nome, String categoria, MultipartFile file, Professor professor) throws IOException, IllegalArgumentException {
 		
-		if (file == null || file.isEmpty()) {
+		if (file == null || file.isEmpty() || !this.isTypeAllowed(file)) {
 			throw new IllegalArgumentException(
 					"Erro: Comprovante não encontrado. "
 							+ "Por favor, forneça um documento válido.");
