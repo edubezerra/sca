@@ -1,0 +1,63 @@
+/* Login Style */
+body {
+	background-color: #E0F2F1;
+}
+
+
+.login-container {
+	padding-top: 10%;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto !important;
+}
+
+.login-box {
+	color: #000;
+	background-color: #FFF;
+	border-radius: .4em;
+	margin: auto;
+	width: 50%;
+}
+
+@media(max-width: 724px){
+	.login-box {
+		width: 90%;
+	}
+}
+
+.login-box .login-header {
+	padding: .5em 0;
+	border-radius: .4em .4em 0 0;
+	border-bottom: 1px solid #E1F5FE;
+	background-color: #1A237E;
+}
+
+.login-box .login-header h2 {
+	color: #FFF;
+	text-align: center;
+	font-size: 1.5em;
+}
+
+.login-box .login-body {
+	padding: 1.5em;
+}
+
+.login-box .alert {
+	text-align: center;
+}
+
+.login-box .form-group {
+	padding: 0 1.2em;
+}
+
+.login-box label {
+	font-size: 1.12em;
+}
+
+.login-box input {
+	margin: .5em 0;
+}
+
+.btn-center {
+	text-align: center;
+}
