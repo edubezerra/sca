@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.cefetrj.sca.infra.cargadados.ImportadorAtividadesComplementares;
 import br.cefetrj.sca.infra.cargadados.ImportadorGradesCurriculares;
 import br.cefetrj.sca.infra.cargadados.ImportadorHistoricosEscolares;
 import br.cefetrj.sca.infra.cargadados.ImportadorPesquisaAvaliacaoProfessor;
@@ -41,6 +42,9 @@ public class ImportacaoDadosService {
 	@Autowired
 	ImportadorUsuariosAlunosUsandoCpfComoLogin importadorUsuariosAlunos;
 
+	@Autowired
+	ImportadorAtividadesComplementares importadorAC;
+
 	@Transactional
 	public String importar(MultipartFile file, Long tipoImportacao) {
 		try {
@@ -59,6 +63,8 @@ public class ImportacaoDadosService {
 				return importadorPesquisaAvaliacaoProfessor.run();
 			case 5:
 				return importadorUsuariosAlunos.run();
+			case 6:
+				return importadorAC.importarPlanilha(tempFile);
 			}
 		} catch (IOException | BiffException e) {
 			e.printStackTrace();
