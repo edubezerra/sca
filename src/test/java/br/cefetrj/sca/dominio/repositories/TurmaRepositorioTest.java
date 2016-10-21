@@ -202,7 +202,6 @@ public class TurmaRepositorioTest {
 		}
 		System.out.println(turmas.size());
 	}
-
 	
 	@Test
 	public void teste() {

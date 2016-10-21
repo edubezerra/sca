@@ -5,11 +5,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.cefetrj.sca.config.PersistenceConfig;
+
 @Component
 public class ImportadorTudo {
 
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-			StandalonePersistenceConfig.class);
+			PersistenceConfig.class);
 
 	@Autowired
 	ImportadorPesquisaAvaliacaoProfessor importadorQuestionarioAvaliacaoTurmas;
