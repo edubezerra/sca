@@ -29,17 +29,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "br.cefetrj.sca.dominio", "br.cefetrj.sca.infra.cargadados",
-		"br.cefetrj.sca.dominio.repositories" }, includeFilters = {
-				@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = br.cefetrj.sca.dominio.AlunoFabrica.class) })
+@ComponentScan(basePackages = { "br.cefetrj.sca.dominio",
+		"br.cefetrj.sca.infra.cargadados",
+		"br.cefetrj.sca.dominio.repositories" }, includeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = br.cefetrj.sca.dominio.AlunoFabrica.class) })
 @EnableJpaRepositories(basePackages = "br.cefetrj.sca.dominio.repositories")
 public class PersistenceConfig {
 
 	@Value("${init-db:false}")
 	private String initDatabase;
 
-//	@Autowired
-//	private Environment env;
+	// @Autowired
+	// private Environment env;
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {
@@ -58,17 +58,18 @@ public class PersistenceConfig {
 		factory.setJpaVendorAdapter(vendorAdapter);
 		factory.setPackagesToScan("br.cefetrj.sca.dominio");
 
-		Properties properties = new Properties();
-		Hashtable<String, String> mymap = new Hashtable<String, String>();
+		Properties env = new Properties();
+		// Hashtable<String, String> mymap = new Hashtable<String, String>();
 		try {
-			InputStream propertiesInputStream = Thread.currentThread().getContextClassLoader()
+			InputStream propertiesInputStream = Thread.currentThread()
+					.getContextClassLoader()
 					.getResourceAsStream("application.properties");
-			properties.load(propertiesInputStream);
+			env.load(propertiesInputStream);
 
-			for (String key : properties.stringPropertyNames()) {
-				String value = properties.getProperty(key);
-				mymap.put(key, value);
-			}
+			// for (String key : properties.stringPropertyNames()) {
+			// String value = properties.getProperty(key);
+			// mymap.put(key, value);
+			// }
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -77,12 +78,46 @@ public class PersistenceConfig {
 		vendorAdapter.setShowSql(Boolean.FALSE);
 
 		Properties jpaProperties = new Properties();
-		jpaProperties.put("hibernate.dialect", properties.getProperty("hibernate.dialect"));
-		jpaProperties.put("hibernate.hbm2ddl.auto", properties.getProperty("hibernate.hbm2ddl.auto"));
+		jpaProperties.put("hibernate.dialect",
+				env.getProperty("hibernate.dialect"));
+		jpaProperties.put("hibernate.hbm2ddl.auto",
+				env.getProperty("hibernate.hbm2ddl.auto"));
 
-		vendorAdapter.setShowSql(Boolean.parseBoolean(properties.getProperty("hibernate.show_sql")));
-		
-		jpaProperties.put("javax.persistence.schema-generation.database.action", "drop-and-create");
+		vendorAdapter.setShowSql(Boolean.parseBoolean(env
+				.getProperty("hibernate.show_sql")));
+
+		jpaProperties.put(
+				"javax.persistence.schema-generation.database.action",
+				"drop-and-create");
+
+		jpaProperties.put("hibernate.dialect",
+				env.getProperty("hibernate.dialect"));
+
+		jpaProperties.put("hibernate.hbm2ddl.auto",
+				env.getProperty("hibernate.hbm2ddl.auto"));
+
+		jpaProperties.put("hibernate.c3p0.timeout",
+				env.getProperty("hibernate.c3p0.timeout"));
+
+		jpaProperties.put("hibernate.c3p0.maxIdleTimeExcessConnections",
+				env.getProperty("hibernate.c3p0.maxIdleTimeExcessConnections"));
+
+		jpaProperties.put("hibernate.c3p0.validate",
+				env.getProperty("hibernate.c3p0.validate"));
+
+		jpaProperties.put("hibernate.c3p0.idle_test_period",
+				env.getProperty("hibernate.c3p0.idle_test_period"));
+
+		jpaProperties.put("hibernate.c3p0.automaticTestTable",
+				env.getProperty("hibernate.c3p0.automaticTestTable"));
+
+//		jpaProperties.put("current_session_context_class",
+//				env.getProperty("current_session_context_class"));
+
+		jpaProperties.put("cache.provider_class",
+				env.getProperty("cache.provider_class"));
+
+//		jpaProperties.put("", env.getProperty(""));
 
 		factory.setJpaProperties(jpaProperties);
 
@@ -91,7 +126,6 @@ public class PersistenceConfig {
 		return factory.getObject();
 	}
 
-	
 	//
 	// @Bean(name = "entityManagerFactory")
 	// public EntityManagerFactory entityManagerFactory() {
@@ -163,7 +197,8 @@ public class PersistenceConfig {
 		Properties properties = new Properties();
 		Hashtable<String, String> mymap = new Hashtable<String, String>();
 		try {
-			InputStream propertiesInputStream = Thread.currentThread().getContextClassLoader()
+			InputStream propertiesInputStream = Thread.currentThread()
+					.getContextClassLoader()
 					.getResourceAsStream("application.properties");
 			properties.load(propertiesInputStream);
 			for (String key : properties.stringPropertyNames()) {
@@ -175,7 +210,8 @@ public class PersistenceConfig {
 			return null;
 		}
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName(properties.getProperty("jdbc.driverClassName"));
+		dataSource.setDriverClassName(properties
+				.getProperty("jdbc.driverClassName"));
 		dataSource.setUrl(properties.getProperty("jdbc.url"));
 		dataSource.setUsername(properties.getProperty("jdbc.username"));
 		dataSource.setPassword(properties.getProperty("jdbc.password"));
