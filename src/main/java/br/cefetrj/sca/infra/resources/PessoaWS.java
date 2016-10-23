@@ -3,14 +3,14 @@ package br.cefetrj.sca.infra.resources;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ProfessorWS {
+public class PessoaWS {
 	
 	private Long id;
 	private String matricula;
 	private String nome;
 
 	@JsonCreator
-	public ProfessorWS(Long id, String matricula,  String nome) {
+	public PessoaWS(Long id, String matricula,  String nome) {
 		super();
 		this.id = id;
 		this.matricula = matricula;

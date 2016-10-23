@@ -21,10 +21,10 @@ public class ProfessorResource {
 	@RequestMapping(value = "/getProfessor/{matriculaProfessor}", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
 	public String getProfessor(@PathVariable String matriculaProfessor) {
 		Professor prof = profRepo.findProfessorByMatricula(matriculaProfessor);
-		ProfessorWS pws = new ProfessorWS(prof.getId(), prof.getMatricula(), prof.getNome());
+		PessoaWS u = new PessoaWS(prof.getId(), prof.getMatricula(), prof.getNome());
         String mapAsJson;
 		try {
-			mapAsJson = new ObjectMapper().writeValueAsString(pws);
+			mapAsJson = new ObjectMapper().writeValueAsString(u);
 			return mapAsJson;
 		} catch (JsonProcessingException e) {
 			return null;

@@ -75,15 +75,15 @@ public class  ImportadorAlocacoesProfessoresEmTurmas {
 	public void run() {
 		System.out.println("ImportadorAlocacoesProfessoresEmTurmas.run()");
 		try {
-			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
+			/*String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
 
 			mapaMatriculasParaNomes.clear();
 			mapaTurmasParaProfessores.clear();
-			mapaTurmasParaPeriodos.clear();
+			mapaTurmasParaPeriodos.clear();*/
 
-			arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
+			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
 

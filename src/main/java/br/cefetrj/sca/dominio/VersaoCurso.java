@@ -69,7 +69,7 @@ public final class VersaoCurso {
 	/**
 	 * Tabela de Atividades Complementares exigidas nesta grade.
 	 */
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private TabelaAtividadesComplementares atividades = null;
 	
 	

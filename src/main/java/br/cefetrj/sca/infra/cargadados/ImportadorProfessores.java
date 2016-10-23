@@ -51,13 +51,13 @@ public class ImportadorProfessores {
 	public void run() {
 		System.out.println("ImportadorDocentes.main()");
 		try {
-			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
+			/*String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
 
-			profs_nomes.clear();
+			profs_nomes.clear();*/
 
-			arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
+			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
 
