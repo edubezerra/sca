@@ -29,12 +29,9 @@ public class TurmaResource {
 	@RequestMapping(value = "/getTurmasProfessor/{matriculaProfessor}", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
 	public String getTurmasProfessor(@PathVariable String matriculaProfessor) {
 
-		/*
-		 * List<Turma> turmas =
-		 * turmaRepo.findTurmasLecionadasPorProfessorEmPeriodo(
-		 * matriculaProfessor, PeriodoLetivo.PERIODO_CORRENTE);
-		 */
-		List<Turma> turmas = turmaRepo.findAll();
+		 List<Turma> turmas =
+		 turmaRepo.findTurmasLecionadasPorProfessorEmPeriodo(matriculaProfessor, PeriodoLetivo.PERIODO_CORRENTE);
+		
 
 		List<TurmaWS> turmasJSON = new ArrayList<TurmaWS>();
 		for (Turma turma : turmas) {
@@ -42,7 +39,7 @@ public class TurmaResource {
 			DisciplinaWS dws = new DisciplinaWS(d.getId(), d.getCodigo(),
 					d.getNome());
 			TurmaWS tws = new TurmaWS(turma.getId(), turma.getCodigo(), dws);
-			Set<Inscricao> inscricoes = turma.getInscricoes();
+			Set<Inscricao> inscricoes = (Set<Inscricao>) turma.getInscricoes();
 			if (inscricoes != null) {
 				for (Inscricao inscricao : inscricoes) {
 					Aluno a = inscricao.getAluno();
