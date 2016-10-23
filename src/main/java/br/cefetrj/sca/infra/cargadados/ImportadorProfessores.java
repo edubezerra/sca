@@ -35,10 +35,10 @@ public class ImportadorProfessores {
 	@Autowired
 	ProfessorRepositorio professorRepositorio;
 
-	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA",
-			"VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO", "HR_FIM",
-			"TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "ANO", "ITEM_TABELA",
-			"PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
+	String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA",
+			"COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO",
+			"HR_FIM", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "NUM_VERSAO", 
+			"ITEM_TABELA", "PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
 			"DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
 			"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
 
@@ -51,13 +51,12 @@ public class ImportadorProfessores {
 	public void run() {
 		System.out.println("ImportadorDocentes.main()");
 		try {
-			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
+			/*String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
+			profs_nomes.clear();*/
 
-			profs_nomes.clear();
-
-			arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
+			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
 			this.importarPlanilha(arquivoPlanilha);
 			this.gravarDadosImportados();
 
