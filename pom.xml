@@ -279,16 +279,30 @@
 
 		<!-- http://mvnrepository.com/artifact/org.springframework.integration/spring-integration-core -->
 		<dependency>
-		    <groupId>org.springframework.integration</groupId>
-		    <artifactId>spring-integration-core</artifactId>
-		    <version>4.2.6.RELEASE</version>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-core</artifactId>
+			<version>4.2.6.RELEASE</version>
 		</dependency>
 
 		<!-- http://mvnrepository.com/artifact/org.springframework.integration/spring-integration-java-dsl -->
 		<dependency>
-    	<groupId>org.springframework.integration</groupId>
-		    <artifactId>spring-integration-java-dsl</artifactId>
-		    <version>1.1.2.RELEASE</version>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-java-dsl</artifactId>
+			<version>1.1.2.RELEASE</version>
+		</dependency>
+
+		<!-- Driver JDBC do DB2 -->
+		<dependency>
+			<groupId>com.db2jcc4</groupId>
+			<artifactId>db2jcc4</artifactId>
+			<version>4.0</version>
+		</dependency>
+
+		<!-- Biblioteca de criptografia da AVMB -->
+		<dependency>
+			<groupId>br.com.avmb</groupId>
+			<artifactId>libsilegacy-crypto</artifactId>
+			<version>1.0</version>
 		</dependency>
 
 	</dependencies>

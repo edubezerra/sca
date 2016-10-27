@@ -58,6 +58,21 @@ public class ImportacaoDadosController {
 		}
 	}
 
+	@RequestMapping(value = "/importacaoProfessores", method = RequestMethod.POST)
+	public String importacaoProfessores(HttpServletRequest request, Model model,
+			@RequestParam("professorFile") MultipartFile file) {
+		try {
+			String response = service.importar(file, 7L);
+			model.addAttribute("response", response);
+			model.addAttribute("descritor", descritor);
+			return "/importacaoDados/homeImportacaoDadosView";
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
 	@RequestMapping(value = "/importacaoDados", method = RequestMethod.POST)
 	public String importacaoDados(HttpServletRequest request, Model model,
 			@RequestParam("historicoFile") MultipartFile file, Long tipoImportacao) {

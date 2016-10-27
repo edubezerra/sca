@@ -3,8 +3,6 @@ package br.cefetrj.sca.service;
 import java.io.File;
 import java.io.IOException;
 
-import jxl.read.biff.BiffException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +12,10 @@ import br.cefetrj.sca.infra.cargadados.ImportadorAtividadesComplementares;
 import br.cefetrj.sca.infra.cargadados.ImportadorGradesCurriculares;
 import br.cefetrj.sca.infra.cargadados.ImportadorHistoricosEscolares;
 import br.cefetrj.sca.infra.cargadados.ImportadorPesquisaAvaliacaoProfessor;
+import br.cefetrj.sca.infra.cargadados.ImportadorProfessores;
 import br.cefetrj.sca.infra.cargadados.ImportadorTurmasComInscricoes;
-import br.cefetrj.sca.infra.cargadados.ImportadorUsuariosAlunosUsandoCpfComoLogin;
+import br.cefetrj.sca.infra.cargadados.ImportadorUsuariosAlunosUsandoMatriculaComoLogin;
+import jxl.read.biff.BiffException;
 
 /**
  * 
@@ -40,16 +40,18 @@ public class ImportacaoDadosService {
 	ImportadorPesquisaAvaliacaoProfessor importadorPesquisaAvaliacaoProfessor;
 
 	@Autowired
-	ImportadorUsuariosAlunosUsandoCpfComoLogin importadorUsuariosAlunos;
+	ImportadorUsuariosAlunosUsandoMatriculaComoLogin importadorUsuariosAlunos;
 
 	@Autowired
 	ImportadorAtividadesComplementares importadorAC;
 
+	@Autowired
+	ImportadorProfessores importadorProfessores;
+
 	@Transactional
 	public String importar(MultipartFile file, Long tipoImportacao) {
 		try {
-			File tempFile = File.createTempFile("import-planilha",
-					"");
+			File tempFile = File.createTempFile("import-planilha", "");
 			file.transferTo(tempFile);
 
 			switch (tipoImportacao.intValue()) {
@@ -65,7 +67,11 @@ public class ImportacaoDadosService {
 				return importadorUsuariosAlunos.run();
 			case 6:
 				return importadorAC.importarPlanilha(tempFile);
+			case 7:
+				return importadorProfessores.importarPlanilha(tempFile);
 			}
+		} catch (java.lang.IllegalArgumentException e) {
+			return e.getMessage();
 		} catch (IOException | BiffException e) {
 			e.printStackTrace();
 			return "Erro ao importar a planilha.";
