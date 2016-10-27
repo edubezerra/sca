@@ -3,8 +3,6 @@ package br.cefetrj.sca.dominio.repositories;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.config.AppConfig;
 import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.dominio.Professor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
