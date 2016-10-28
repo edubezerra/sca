@@ -5,11 +5,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.cefetrj.sca.config.PersistenceConfig;
+
 @Component
 public class ImportadorTudo {
 
 	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-			StandalonePersistenceConfig.class);
+			PersistenceConfig.class);
 
 	@Autowired
 	ImportadorPesquisaAvaliacaoProfessor importadorQuestionarioAvaliacaoTurmas;
@@ -72,7 +74,6 @@ public class ImportadorTudo {
 			importadorTurmasComInscricoes.run();
 
 			importadorPreReqs.run();
-			importadorAtividadesComp.run();
 
 			importadorAlunos.run();
 
@@ -81,17 +82,20 @@ public class ImportadorTudo {
 			importadorProfessores.run();
 			importadorDepartamentos.run();
 
-//			 importadorHistoricoEscolar.run();
+			// Agora essa importação é feita pela aplicação WEB.
+			//			 importadorAtividadesComp.run();
 
-//			importadorAlocacoesProfessoresEmTurmas.run();
-//			importadorHabilitacoesParaProfessor.run();
-//			importadorPerMinVersaoCurso.run();
-//
-//			importadorAlocacoesProfessoresEmDepartamentos.run();
-//
-//			importadorAlocacoesDisciplinasEmDepartamentos.run();
-//
-//			importadorEquivalenciaDisciplinas.run();
+			 importadorHistoricoEscolar.run();
+
+			 importadorAlocacoesProfessoresEmTurmas.run();
+			 importadorHabilitacoesParaProfessor.run();
+			 importadorPerMinVersaoCurso.run();
+			
+			 importadorAlocacoesProfessoresEmDepartamentos.run();
+			
+			 importadorAlocacoesDisciplinasEmDepartamentos.run();
+			
+			 importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

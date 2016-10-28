@@ -13,13 +13,13 @@ public class DescritorImportacaoDados {
 		descritorImportadorMap.put(i++, "Turmas (com alunos e inscrições)");
 		descritorImportadorMap.put(i++, "Questionário de Avaliação de Professores");
 		descritorImportadorMap.put(i++, "Usuários com perfil de aluno");
+		descritorImportadorMap.put(i++, "AtividadesComp");
 
 		/**
 		 * N.B.: Importadores abaixo ainda não foram migrados para a plataforma
 		 * WEB.
 		 */
 		descritorImportadorMap.put(i++, "PreReqs");
-		descritorImportadorMap.put(i++, "AtividadesComp");
 		descritorImportadorMap.put(i++, "Alunos");
 		descritorImportadorMap.put(i++, "Professores");
 		descritorImportadorMap.put(i++, "Departamentos");

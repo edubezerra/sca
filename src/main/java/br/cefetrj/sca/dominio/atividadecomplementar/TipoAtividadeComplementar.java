@@ -82,4 +82,10 @@ public class TipoAtividadeComplementar {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "TipoAtividadeComplementar [descricao=" + descricao + ", categoria=" + categoria + "]";
+	}
+
 }
