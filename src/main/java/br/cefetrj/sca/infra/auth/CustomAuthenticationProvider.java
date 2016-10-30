@@ -22,7 +22,7 @@ import br.cefetrj.sca.dominio.usuarios.Usuario;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	@Qualifier("sieAuth")
+	@Qualifier("sieMock")
 	EstrategiaAutenticacao autenticador;
 
 	@Autowired

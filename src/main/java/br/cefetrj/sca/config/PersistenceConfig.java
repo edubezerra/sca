@@ -80,6 +80,9 @@ public class PersistenceConfig {
 		jpaProperties.put("hibernate.hbm2ddl.auto",
 				env.getProperty("hibernate.hbm2ddl.auto"));
 
+		jpaProperties.put("connection.provider_class",
+				env.getProperty("connection.provider_class"));
+		
 		jpaProperties.put("hibernate.c3p0.timeout",
 				env.getProperty("hibernate.c3p0.timeout"));
 
