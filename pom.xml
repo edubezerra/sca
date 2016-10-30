@@ -293,6 +293,8 @@
 
 		<!-- Driver JDBC do DB2 -->
 		<dependency>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs-3os/db2jcc4.jar</systemPath>
 			<groupId>com.db2jcc4</groupId>
 			<artifactId>db2jcc4</artifactId>
 			<version>4.0</version>
@@ -300,6 +302,8 @@
 
 		<!-- Biblioteca de criptografia da AVMB -->
 		<dependency>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs-3os/libsilegacy-crypto-1.0.jar</systemPath>
 			<groupId>br.com.avmb</groupId>
 			<artifactId>libsilegacy-crypto</artifactId>
 			<version>1.0</version>
