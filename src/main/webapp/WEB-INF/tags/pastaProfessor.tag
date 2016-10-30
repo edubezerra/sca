@@ -67,6 +67,11 @@
                         <li>
                             <a href="${contextPath}/pastaProfessor/dashboard">Dashboard</a>
                         </li>
+                        <sec:authorize access="hasRole('ROLE_COORDENADOR_CURSO')">
+	                        <li>
+	                            <a href="${contextPath}/pastaProfessor/professores">Professores</a>
+	                        </li>
+                        </sec:authorize>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -105,6 +110,7 @@
 			<jsp:invoke fragment="content"></jsp:invoke>
 
             <footer>
+            	<hr>
                 <p>&copy; Cefet-RJ 2016</p>
             </footer>
         </div>
