@@ -23,8 +23,8 @@ public class ItemHorario {
 	private ItemHorario() {
 	}
 
-	public ItemHorario(EnumDiaSemana dia, String fim, String inicio) {
-		tempoAula = new IntervaloTemporal(inicio, fim);
+	public ItemHorario(EnumDiaSemana dia, IntervaloTemporal tempoAula) {
+		this.tempoAula = tempoAula;
 		this.dia = dia;
 	}
 

@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
-import br.cefetrj.sca.service.RegistrarAtividadesService;
+import br.cefetrj.sca.service.RegistrarAtividadesComplementaresService;
 
 @Controller
 @SessionAttributes("login")
@@ -28,7 +28,7 @@ public class RegistrarAtividadeComplementarController {
 			.getName());
 
 	@Autowired
-	private RegistrarAtividadesService service;
+	private RegistrarAtividadesComplementaresService service;
 
 	@RequestMapping(value = "/{*}", method = RequestMethod.GET)
 	public String get(Model model) {
