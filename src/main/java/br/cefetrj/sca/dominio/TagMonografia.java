@@ -1,10 +1,19 @@
 package br.cefetrj.sca.dominio;
 
+import br.cefetrj.sca.infra.ElasticSearchClientFactory;
+import com.google.common.util.concurrent.SettableFuture;
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 import org.springframework.security.access.method.P;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -35,6 +44,74 @@ public class TagMonografia implements Comparable {
         } else {
             return 1;
         }
+    }
+
+    static public String[] getBlacklist(){
+        return new String[]{"a"};
+    }
+
+    static public List<TagMonografia> getTopTags(String[] blacklist) throws IOException {
+        return getTopTags(50, blacklist);
+    }
+
+    static public List<TagMonografia> getTopTags(int amount, String[] blacklist) throws IOException{
+        SettableFuture<List<TagMonografia>> future = SettableFuture.create();
+
+        TransportClient client = ElasticSearchClientFactory.createClient();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch("monografias");
+        searchRequestBuilder.addFields();
+
+        TermsBuilder aggregationBuilder = new TermsBuilder("tags");
+        aggregationBuilder.field("textoPuro");
+
+        aggregationBuilder.exclude(blacklist);
+
+        aggregationBuilder.size(amount);
+
+        searchRequestBuilder.addAggregation(aggregationBuilder);
+
+        searchRequestBuilder.execute(new ActionListener<SearchResponse>() {
+            @Override
+            public void onResponse(SearchResponse searchResponse) {
+                Terms tags = searchResponse.getAggregations().get("tags");
+                List<Terms.Bucket> buckets = tags.getBuckets();
+                List<TagMonografia> results = new ArrayList<>(buckets.size());
+
+                for(Terms.Bucket bucket : buckets){
+                    String tag = bucket.getKeyAsString();
+                    long ocorrencias = bucket.getDocCount();
+                    results.add(new TagMonografia(tag, ocorrencias));
+                }
+
+                synchronized (future){
+                    future.set(results);
+                    future.notifyAll();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                synchronized (future) {
+                    future.setException(e);
+                    future.notifyAll();
+                }
+            }
+        });
+
+        List<TagMonografia> response;
+
+        try {
+            synchronized (future) {
+                future.wait();
+                response = future.get();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException(e);
+        }
+
+        client.close();
+        return response;
     }
 
     @Override

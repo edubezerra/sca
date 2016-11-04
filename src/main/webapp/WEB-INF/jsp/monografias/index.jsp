@@ -20,9 +20,41 @@
 				<span class="lead">Monografias</span>
 			</div>
 		</div>
+		<div style="padding: 0 20px 0 20px; max-width: 800px;">
+			<form id="form" method="GET" action="/monografias/">
+				<div class="form-group">
+					<input type="text" name="q" id="q" value="${q}">
+					<input type="submit" value="Buscar">
+				</div>
+			</form>
+		</div>
+        <c:if test="${queryResults != null}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>Título</td>
+                        <td>Autor</td>
+                        <td>Orientador</td>
+                        <td>Resumo em língua estrangeira</td>
+                        <td>Resumo em Português</td>
+                    </tr>
+                </thead>
+                <c:forEach var="monografia" items="${queryResults}">
+                    <tr>
+                        <td><a href="/monografias/visualizar/?id=${monografia.id}">${monografia.titulo}</a></td>
+                        <td>${monografia.autor}</td>
+                        <td>${monografia.orientador}</td>
+                        <td>${monografia.resumoLinguaEstrangeira}</td>
+                        <td>${monografia.resumoPortugues}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </c:if>
+		<c:if test="${tags != null}">
 
+		</c:if>
 		<div class="well">
-			<a href="<c:url value='/monografias/nova/' />">Enviar nova monografia</a>
+			<a href="<c:url value='/monografias/minhas/' />">Minhas monografias</a>
 		</div>
 	</div>
 </body>

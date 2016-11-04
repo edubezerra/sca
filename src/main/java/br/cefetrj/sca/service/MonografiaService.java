@@ -1,8 +1,11 @@
 package br.cefetrj.sca.service;
 
 import br.cefetrj.sca.dominio.ArquivosMultipart;
+import br.cefetrj.sca.dominio.BlacklistTagMonografia;
 import br.cefetrj.sca.dominio.TagMonografia;
 import br.cefetrj.sca.dominio.Monografia;
+import br.cefetrj.sca.dominio.repositories.BlacklistTagMonografiaRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -18,15 +21,23 @@ import java.util.Set;
  */
 @Service
 public class MonografiaService{
-    public Collection<TagMonografia> obterTags(){
-        throw new NotImplementedException();
+    @Autowired
+    BlacklistTagMonografiaRepositorio blacklistTagMonografiaRepositorio;
+
+    public Collection<TagMonografia> obterTags() throws IOException {
+        BlacklistTagMonografia blacklistTagMonografia = new BlacklistTagMonografia();
+        blacklistTagMonografia.setBlacklistItems(new String[]{ "a", "e" });
+        blacklistTagMonografiaRepositorio.save(blacklistTagMonografia);
+
+        String[] blacklist = blacklistTagMonografiaRepositorio.findBlacklistTagMonografiaById(1L).getBlacklistItems();
+        return TagMonografia.getTopTags(blacklist);
     }
 
     public List<Monografia> buscarMonografias(String query) throws IOException {
         return Monografia.buscar(query);
     }
 
-    public void salvarMonografia(String id, Long idAutor, String autor, String orientador, String presidenteBanca, String[] membrosBanca, String titulo, String resumoLinguaEstrangeira, String resumoPortugues) throws IOException {
+    public Monografia obterMonografia(String id, Long idAutor, String autor, String orientador, String presidenteBanca, String[] membrosBanca, String titulo, String resumoLinguaEstrangeira, String resumoPortugues) throws IOException {
         Monografia monografia = new Monografia(
                 id,
                 idAutor,
@@ -38,7 +49,7 @@ public class MonografiaService{
                 resumoLinguaEstrangeira,
                 resumoPortugues
         );
-        monografia.salvar();
+        return monografia;
     }
 
     public void adicionarArquivos(String id, ArquivosMultipart arquivos) throws IOException {
