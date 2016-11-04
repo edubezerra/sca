@@ -73,7 +73,7 @@
 						Fornecimento de Grade de Disponibilidades
 						(${requestScope.periodoLetivo})</a></li>
 				<li><a
-					href="${pageContext.request.contextPath}//visualizacaoAvaliacaoDiscente/turma">
+					href="${pageContext.request.contextPath}/visualizacaoAvaliacaoDiscente/turma">
 						Selecao da Turma
 						(${requestScope.periodoLetivo})</a></li>
 			</ul>

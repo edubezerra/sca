@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
@@ -31,20 +32,13 @@ public class VisualizacaoAvaliacaoDiscenteService {
 		List<Turma> t = repositorio.findTurmasLecionadasPorProfessor(p.getMatricula());
 		List<Turma> turmasAvaliadas = new ArrayList<>();
 
-		// listaAvaliacoes = repositorio2.findAll();
-
 		for (Turma turma : t) {
-			System.out.println(turma.getDisciplina() + "-" + turma.getCodigo() + " - " + turma.getPeriodo());
 			List<AvaliacaoTurma> a = repositorio2.findAvaliacoesTurmaLista(turma.getId());
 			if (a.size() != 0) {
-				System.out.println("service" + a.size());
 				turmasAvaliadas.add(turma);
 			}
-
 		}
-
 		return turmasAvaliadas;
-
 	}
 
 	public List<AvaliacaoTurma> selecionarTurma(Turma t) {
@@ -53,8 +47,10 @@ public class VisualizacaoAvaliacaoDiscenteService {
 		return tAvaliadas;
 	}
 
-	public void conversaoRespospa(List<AvaliacaoTurma> avaliacaoTurma) throws IOException {
-		BufferedWriter strW = new BufferedWriter(new FileWriter("C:/Users/Joao/git/sca/tabela.csv"));
+	public void conversaoRespospa(List<AvaliacaoTurma> avaliacaoTurma) throws IOException {	
+		
+		String arquivoCSV = "C:/Users/Joao/git/sca/src/main/webapp/data.csv";
+		BufferedWriter strW = new BufferedWriter(new FileWriter(arquivoCSV));
 		strW.write(
 				"Pergunta,Insuficiente(s) ou Ruim(ns),Suficiente(s) ou Regular(es),Bom(ns) ou Boa(s),Otimo(s) ou Otima(s)\n");
 		List<Alternativa> resp = new ArrayList<>();
@@ -69,21 +65,17 @@ public class VisualizacaoAvaliacaoDiscenteService {
 		int posicao = 0;
 		int posicaoPerg = 0;
 		for (int i = 0; i < resp.size(); i++) {
-			int valorResp = 0;
+			int valorResp = 1;
 			if (resp.get(posicao).getDescritor().equals("Insuficiente(s) ou Ruim(ns)")) {
-				valorResp = 1;
 				valorRespostas[3] += valorResp;
 			}
 			if (resp.get(posicao).getDescritor().equals("Suficiente(s) ou Regular(es)")) {
-				valorResp = 2;
 				valorRespostas[2] += valorResp;
 			}
 			if (resp.get(posicao).getDescritor().equals("Bom(ns) ou Boa(s)")) {
-				valorResp = 3;
 				valorRespostas[1] += valorResp;
 			}
 			if (resp.get(posicao).getDescritor().equals("Ótimo(s) ou Ótima(s)")) {
-				valorResp = 4;
 				valorRespostas[0] += valorResp;
 			}
 			posicao += 8;

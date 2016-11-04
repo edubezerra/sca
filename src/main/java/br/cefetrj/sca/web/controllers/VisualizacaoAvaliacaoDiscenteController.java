@@ -36,7 +36,6 @@ public class VisualizacaoAvaliacaoDiscenteController {
 		String matricula = usr.getMatricula();
 
 		Professor professor = repositorio.findProfessorByMatricula(matricula);
-		System.out.println(professor.getNome());
 
 		List<Turma> t = discenteService.listarTurmaLecionadas(professor);
 		System.out.println(t.size());
@@ -47,16 +46,21 @@ public class VisualizacaoAvaliacaoDiscenteController {
 	}
 
 	@RequestMapping("/Escolhaturma")
-	public void EscolhaTurma(@RequestParam Long cod) {
+	public ModelAndView EscolhaTurma(@RequestParam Long cod) {
+		ModelAndView mv = new ModelAndView("visualizarAvaliacoesDocentes/GraficoAvaliacoes");
 		Turma t = turmaRepositorio.findTurmaById(cod);
-		
+
 		List<AvaliacaoTurma> at = discenteService.selecionarTurma(t);
 		System.out.println(at.size());
 		try {
 			discenteService.conversaoRespospa(at);
+			mv.addObject("turma", t);
+			return mv;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return new ModelAndView("/menuPrincipalView");
+		
 
 	}
 
