@@ -83,19 +83,19 @@ public class ImportadorTudo {
 			importadorDepartamentos.run();
 
 			// Agora essa importação é feita pela aplicação WEB.
-			// importadorAtividadesComp.run();
+			//			 importadorAtividadesComp.run();
 
-			// importadorHistoricoEscolar.run();
+			 importadorHistoricoEscolar.run();
 
 			 importadorAlocacoesProfessoresEmTurmas.run();
 			 importadorHabilitacoesParaProfessor.run();
-//			 importadorPerMinVersaoCurso.run();
-//			
-//			 importadorAlocacoesProfessoresEmDepartamentos.run();
-//			
-//			 importadorAlocacoesDisciplinasEmDepartamentos.run();
-//			
-//			 importadorEquivalenciaDisciplinas.run();
+			 importadorPerMinVersaoCurso.run();
+			
+			 importadorAlocacoesProfessoresEmDepartamentos.run();
+			
+			 importadorAlocacoesDisciplinasEmDepartamentos.run();
+			
+			 importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

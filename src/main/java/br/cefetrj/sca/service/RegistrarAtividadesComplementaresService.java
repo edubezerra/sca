@@ -23,7 +23,7 @@ import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
 import br.cefetrj.sca.service.util.SolicitaSituacaoAtividadesResponse;
 
 @Component
-public class RegistrarAtividadesService {
+public class RegistrarAtividadesComplementaresService {
 	
 	private static final int TAMANHO_MAXIMO_COMPROVANTE = 10000000;
 

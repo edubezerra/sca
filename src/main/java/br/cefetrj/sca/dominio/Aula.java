@@ -28,10 +28,14 @@ public class Aula {
 	private Aula() {
 	}
 
-	public Aula(EnumDiaSemana dia, String strInicio, String strFim, LocalAula local) {
+	public Aula(EnumDiaSemana dia, String strInicio, String strFim,
+			LocalAula local) {
 		super();
 		this.dia = dia;
-		this.intervalo = new IntervaloTemporal(strInicio, strFim);
+		this.intervalo = GradeHorarios.getItem(strInicio, strFim);
+		if (this.intervalo == null) {
+			throw new IllegalArgumentException("Horário incompatível com os tempos de aula existentes!");
+		}
 		this.local = local;
 	}
 

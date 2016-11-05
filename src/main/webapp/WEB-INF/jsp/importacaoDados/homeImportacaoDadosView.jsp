@@ -67,6 +67,31 @@
 		});
 
 	});
+
+	$(document).ready(function() {
+		$("#formProfessor").validate({
+			rules : {
+				professorFile : {
+					required : true,
+					extension : "xls"
+				}
+			},
+			messages : {
+				professorFile : {
+					required : "Escolha um arquivo.",
+					extension : "É necessário que o formato seja xls."
+				}
+			},
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+
+		$("#professorFile").change(function() {
+			$("#uploadFileProfessor").val($("#professorFile").prop('files')[0]['name']);
+		});
+
+	});
 </script>
 
 <body>
@@ -158,6 +183,29 @@
 			<div class="fileUpload btn btn-primary">
 				<span>Procurar...</span> <input name="tabAtividadeComplementarFile"
 					id="tabAtividadeComplementarFile" type="file" class="upload" />
+			</div>
+
+			<br /> <br />
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Importar</button>
+		</form>
+	</div>
+
+	<hr />
+
+	<div class="content">
+		<h2 class="text-center">Importação de Professores</h2>
+
+		<form id="formProfessor"
+			action="${pageContext.request.contextPath}/importacaoDados/importacaoProfessores"
+			method="post" enctype="multipart/form-data">
+
+			<input type="hidden" name="tipoImportacao" value="7"> <br />
+			<br /> <input id="uploadFileProfessor"
+				value="Nenhum arquivo selecionado..." disabled="disabled"
+				class="uploadedFile" />
+			<div class="fileUpload btn btn-primary">
+				<span>Procurar...</span> <input name="professorFile"
+					id="professorFile" type="file" class="upload" />
 			</div>
 
 			<br /> <br />

@@ -3,18 +3,25 @@
 <%@ include file="../taglib.jsp" %>
 
 <template:pastaProfessor rootURL="${rootURL}" username="<%=UsuarioController.getCurrentUser().getNome()%>"
-	contextPath="${pageContext.request.contextPath}" title="Dashboard">
+	contextPath="${pageContext.request.contextPath}" title="Detalhes do Professor">
 	
 	<jsp:attribute name="content">
 		
-		<sec:authorize access="hasRole('ROLE_PROFESSOR')">
+		<sec:authorize access="hasRole('ROLE_COORDENADOR_CURSO')">
 			<div class="row">
 	
+					<div class="col-xs-12">
+						<a class="btn btn-sm btn-default"
+							href="${pageContext.request.contextPath}/pastaProfessor/professores">Voltar</a>
+							
+						<hr>
+					</div>
+					
 	                <div class="col-xs-12">
 	                	
 	                    <div class="panel panel-default">
 	                        <div class="panel-heading">
-	                            <h3 class="panel-title">Documentos</h3>
+	                            <h3 class="panel-title">Detalhes de ${professor.getPessoa().getNome() }</h3>
 	                        </div>
 	                        <div class="panel-body">
 	                            <div class="form-group">
@@ -42,7 +49,7 @@
 			                                        </td>
 			                                        <td>
 			                                        	<a href="#" class="btn btn-md btn-danger"
-			                                        		onclick="Utility.confirm('${pageContext.request.contextPath}/pastaProfessor/excluirDocumento/${doc.getId()}')">
+			                                        		onclick="Utility.confirm('${pageContext.request.contextPath}/pastaProfessor/detalhesProfessor/${professor.getId()}/excluirDocumento/${doc.getId()}')">
 			                                        		Excluir
 		                                        		</a>
 			                                        </td>
@@ -68,7 +75,7 @@
 				        <button type="button" class="close" data-dismiss="modal">&times;</button>
 				        <h4 class="modal-title">Novo Documento</h4>
 				      </div>
-				      <form action="${pageContext.request.contextPath}/pastaProfessor/registrarDocumento" method="POST"
+				      <form action="${pageContext.request.contextPath}/pastaProfessor/detalhesProfessor/${professor.getId()}/registrarDocumento" method="POST"
 				      	enctype="multipart/form-data">
 				      	
 						<div class="modal-body">

@@ -15,7 +15,7 @@ public interface DocumentoProfessorRepositorio extends JpaRepository<DocumentoPr
 	@Query("SELECT dp from DocumentoProfessor dp WHERE dp.professor.matricula = ?1")
 	DocumentoProfessor findDocumentoProfessorByMatricula(String matricula);
 
-	@Query("from DocumentoProfessor dp where dp.professor.matricula = ?1")
+	@Query("from DocumentoProfessor dp where dp.professor.matricula = ?1 order by dp.nome asc")
 	List<DocumentoProfessor> findAllByMatricula(String matricula);
 
 }

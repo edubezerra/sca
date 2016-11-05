@@ -3,7 +3,7 @@ delete from USERS;
 delete from USER_PROFILE;
 
 INSERT INTO USERS (id, dob, login, nome, matricula, email) VALUES 
- (1,NULL,'admin','Administrador','adminXPTO!2016', 'admin@email.com'),
+ (1,NULL,'01604711','Rafael Castaneda Ribeiro','01604711', 'admin@email.com'),
  (2,NULL,'1506449','Eduardo Bezerra da Silva','1506449', 'edubezerra@gmail.com'),
  (3,NULL,'1328864','Natalia Pujol Pacheco Silveira','1328864', 'natalia@email.com.br'),
  (6,NULL,'1111111','Belmiro Filho','1111111', 'belmiro@cefet-rj.br'),
@@ -20,6 +20,7 @@ INSERT INTO USER_PROFILE(id, type) VALUES (6, 'ROLE_SECAD');
 INSERT INTO USER_PROFILE(id, type) VALUES (7, 'ROLE_COORDENADOR_ATIVIDADES');
 
 INSERT INTO USER_USER_PROFILE VALUES(1, 2);
+INSERT INTO USER_USER_PROFILE VALUES(1, 3);
 
 INSERT INTO USER_USER_PROFILE VALUES(2, 2);
 INSERT INTO USER_USER_PROFILE VALUES(2, 3);
