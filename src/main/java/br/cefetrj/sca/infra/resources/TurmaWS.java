@@ -3,8 +3,6 @@ package br.cefetrj.sca.infra.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.cefetrj.sca.dominio.Aluno;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -39,9 +37,13 @@ public class TurmaWS {
 		return disciplina;
 	}	
 	
-	@JsonProperty("alunos")
 	public void adicionarAluno(PessoaWS a){
 		this.alunos.add(a);
+	}
+	
+	@JsonProperty("alunos")
+	public List<PessoaWS> getAlunos(){
+		return alunos;
 	}
 	
 }
