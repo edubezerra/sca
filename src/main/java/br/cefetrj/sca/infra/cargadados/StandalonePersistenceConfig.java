@@ -25,12 +25,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-//@Configuration
-//@EnableTransactionManagement
-//@ComponentScan(basePackages = { "br.cefetrj.sca.dominio",
-//		"br.cefetrj.sca.infra.cargadados",
-//		"br.cefetrj.sca.dominio.repositories" }, includeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = br.cefetrj.sca.dominio.AlunoFabrica.class) })
-//@EnableJpaRepositories(basePackages = "br.cefetrj.sca.dominio.repositories")
+@Configuration
+@EnableTransactionManagement
+@ComponentScan(basePackages = { "br.cefetrj.sca.dominio",
+		"br.cefetrj.sca.infra.cargadados",
+		"br.cefetrj.sca.dominio.repositories"}, includeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = br.cefetrj.sca.dominio.AlunoFabrica.class) })
+@EnableJpaRepositories(basePackages = "br.cefetrj.sca.dominio.repositories")
 public class StandalonePersistenceConfig {
 
 	@Value("${init-db:false}")
