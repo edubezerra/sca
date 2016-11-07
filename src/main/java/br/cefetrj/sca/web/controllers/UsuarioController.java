@@ -30,7 +30,7 @@ import br.cefetrj.sca.service.UsuarioService;
 public class UsuarioController {
 
 	@Autowired
-	private static UsuarioService userService;
+	private static UsuarioService usuarioService;
 
 	@Autowired
 	UserProfileService userProfileService;
@@ -40,15 +40,14 @@ public class UsuarioController {
 
 	@Autowired
 	public void setUserService(UsuarioService userService) {
-		UsuarioController.userService = userService;
+		UsuarioController.usuarioService = userService;
 	}
 
 	public static Usuario getCurrentUser() {
 
-		Authentication authentication = SecurityContextHolder.getContext()
-				.getAuthentication();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String login = authentication.getName();
-		Usuario usuario = userService.findUserByLogin(login);
+		Usuario usuario = usuarioService.findUsuarioByLogin(login);
 		return usuario;
 	}
 
@@ -58,7 +57,7 @@ public class UsuarioController {
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
-		List<Usuario> users = userService.findAll();
+		List<Usuario> users = usuarioService.findAll();
 		model.addAttribute("users", users);
 
 		return "/usuarios/userslist";
@@ -80,27 +79,23 @@ public class UsuarioController {
 	 * saving user in database. It also validates the user input
 	 */
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.POST)
-	public String saveUser(@Valid Usuario user, BindingResult result,
-			ModelMap model) {
+	public String saveUser(@Valid Usuario user, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("user", user);
 			return "/usuarios/registration";
 		}
 
-		if (!userService.isLoginJaExistente(user.getId(), user.getLogin())) {
-			FieldError loginError = new FieldError("user", "login",
-					messageSource.getMessage("non.unique.login",
-							new String[] { user.getLogin() },
-							Locale.getDefault()));
+		if (!usuarioService.isLoginJaExistente(user.getId(), user.getLogin())) {
+			FieldError loginError = new FieldError("user", "login", messageSource.getMessage("non.unique.login",
+					new String[] { user.getLogin() }, Locale.getDefault()));
 			result.addError(loginError);
 			return "/usuarios/registration";
 		}
 
-		userService.saveUser(user);
+		usuarioService.adicionarUsuario(user);
 
-		model.addAttribute("success", "Usuário " + user.getNome()
-				+ " registrado com sucesso");
+		model.addAttribute("success", "Usuário " + user.getNome() + " registrado com sucesso");
 
 		return "/usuarios/registrationsuccess";
 	}
@@ -110,7 +105,7 @@ public class UsuarioController {
 	 */
 	@RequestMapping(value = { "/edit-user-{login}" }, method = RequestMethod.GET)
 	public String editUser(@PathVariable String login, ModelMap model) {
-		Usuario user = userService.findUserByLogin(login);
+		Usuario user = usuarioService.findUsuarioByLogin(login);
 		model.addAttribute("user", user);
 		model.addAttribute("edit", true);
 		return "/usuarios/registration";
@@ -121,28 +116,26 @@ public class UsuarioController {
 	 * para atualizar um usuário. Ele também valida os dados fornecidos.
 	 */
 	@RequestMapping(value = { "/edit-user-{login}" }, method = RequestMethod.POST)
-	public String updateUser(@Valid Usuario user, BindingResult result,
-			ModelMap model, @PathVariable String login) {
+	public String updateUser(@Valid Usuario user, BindingResult result, ModelMap model, @PathVariable String login) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("user", user);
 			return "/usuarios/registration";
 		}
 
-		userService.updateUser(user);
+		usuarioService.atualizarUsuario(user);
 
-		model.addAttribute("success", "Usuário " + user.getNome()
-				+ " atualizado com sucesso");
+		model.addAttribute("success", "Usuário " + user.getNome() + " atualizado com sucesso");
 		return "/usuarios/registrationsuccess";
 	}
 
 	/**
-	 * This method will delete an user by it's SSOID value.
+	 * Este método remove um usuário identificado pelo seu login.
 	 */
 	@RequestMapping(value = { "/delete-user-{login}" }, method = RequestMethod.GET)
 	public String deleteUser(@PathVariable String login) {
-		// userService.deleteUserLogin(login);
-		return "redirect:/list";
+		usuarioService.deleteUser(login);
+		return "redirect:/usuarios/list";
 	}
 
 	/**

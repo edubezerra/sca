@@ -12,24 +12,25 @@ import br.cefetrj.sca.dominio.usuarios.Usuario;
 @Service
 @Transactional
 public class UsuarioService {
+
 	@Autowired
 	private UsuarioRepositorio repositorio;
 
-	public void saveUser(Usuario usr) {
+	public void adicionarUsuario(Usuario usr) {
 		repositorio.save(usr);
 	}
 
 	/*
-	 * Since the method is running with Transaction, No need to call hibernate
-	 * update explicitly. Just fetch the entity from db and update it with
-	 * proper values within transaction. It will be updated in db once
-	 * transaction ends.
+	 * Uma vez que o método está sendo executado em um contexto transacional,
+	 * NÃO há necessidade de chamar explicitamente o método save do JPA. Basta
+	 * buscar a entidade a partir de banco de dados e atualizá-lo com valores
+	 * apropriados dentro da transação. Essa entidade será atualizada no db uma
+	 * vez que a transação termine.
 	 */
-	public void updateUser(Usuario user) {
+	public void atualizarUsuario(Usuario user) {
 		Usuario entity = repositorio.findOne(user.getId());
 		if (entity != null) {
 			entity.setLogin(user.getLogin());
-//			entity.setPassword(user.getPassword());
 			entity.setNome(user.getNome());
 			entity.setEmail(user.getEmail());
 			entity.setUserProfiles(user.getUserProfiles());
@@ -40,23 +41,24 @@ public class UsuarioService {
 		return repositorio.findAll();
 	}
 
-	public Usuario create(Usuario user) {
-		return repositorio.save(user);
+//	public Usuario create(Usuario user) {
+//		return repositorio.save(user);
+//	}
+//
+//	public Usuario findUserById(int id) {
+//		return repositorio.findOne(id);
+//	}
+//
+//	public Usuario update(Usuario user) {
+//		return repositorio.save(user);
+//	}
+//
+	public void deleteUser(String login) {
+		Usuario usr = repositorio.findUsuarioByLogin(login);
+		repositorio.delete(usr);
 	}
 
-	public Usuario findUserById(int id) {
-		return repositorio.findOne(id);
-	}
-
-	public Usuario update(Usuario user) {
-		return repositorio.save(user);
-	}
-
-	public void deleteUser(int id) {
-		repositorio.delete(id);
-	}
-
-	public Usuario findUserByLogin(String login) {
+	public Usuario findUsuarioByLogin(String login) {
 		return repositorio.findUsuarioByLogin(login);
 	}
 

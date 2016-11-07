@@ -100,9 +100,9 @@
 		</c:if>
 
 		<div class="table-responsive" align="center">
-			<form
-				action="${pageContext.request.contextPath}/isencaoDisciplina/validaComprovante"
-				enctype="multipart/form-data" method="POST">
+<!-- 			<form -->
+<%-- 				action="${pageContext.request.contextPath}/isencaoDisciplina/validaComprovante" --%>
+<!-- 				enctype="multipart/form-data" method="POST"> -->
 				<label for="inputFile">Anexe um arquivo compactado contendo
 					TODOS os planos de ensino de cada disciplina para a qual você
 					deseja solicitar isenção. matrícula do período atual (Formatos
@@ -123,6 +123,17 @@
 							<tr>
 								<td>${disciplina.codigo}-${disciplina.nome}</td>
 
+							          <td>
+							          	<c:if test="${!disciplina.isSolicitada}">
+											<form style="height:10px;" action="${pageContext.request.contextPath}/isencaoDisciplina/solicitaRegistroAtividade" method="POST">
+								          		<input type="hidden" name="idAtiv" value="${atividade.idAtividade}">
+												<button type="submit" class="btn btn-default" title="Registrar nova atividade">
+													<i class="fa fa-plus"></i></button>
+											</form>
+										</c:if>							          	
+									  </td>
+
+
 								<td><input type="checkbox" name="choice"
 									value="${disciplina.id}"></td>
 							</tr>
@@ -133,7 +144,7 @@
 
 				<button class="btn btn-success custom-width" type="submit"
 					name="matricula">Confirmar</button>
-			</form>
+<!-- 			</form> -->
 		</div>
 		<a class="btn btn-default"
 			href="${pageContext.request.contextPath}/menuPrincipalView"> <i

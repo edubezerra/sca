@@ -27,8 +27,6 @@ public class Pessoa {
 
 	private String cpf;
 	
-	private String senha;
-
 	public Pessoa() {
 	}
 
@@ -112,14 +110,6 @@ public class Pessoa {
 		return cpf;
 	}
 	
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
 	@Override
 	public String toString() {
 		return "Pessoa [nome=" + nome + ", cpf=" + cpf + "]";

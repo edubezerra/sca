@@ -1,13 +1,8 @@
-/**
- * 
- */
 package br.cefetrj.sca.service;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -31,21 +26,4 @@ public class UserServiceTest {
 		assertNotNull(users);
 		assertTrue(!users.isEmpty());
 	}
-
-	@Test
-	public void findUserById() {
-		Usuario user = userService.findUserById(1);
-		assertNotNull(user);
-	}
-
-	@Test(expected = javax.validation.ConstraintViolationException.class)
-	public void createUser() {
-		Usuario user = new Usuario("Eduardo Bezerra", "bezerra", "1506449",
-				"edubezerra@gmail.com", new Date());
-		Usuario savedUser = userService.create(user);
-		Usuario newUser = userService.findUserById(savedUser.getId());
-		assertEquals("Eduardo", newUser.getNome());
-		assertEquals("edubezerra@gmail.com", newUser.getLogin());
-	}
-
 }

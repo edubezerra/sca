@@ -31,6 +31,7 @@ import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositories.PedidoIsencaoDisciplinasRepositorio;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.IsencaoDisciplinaService;
+import br.cefetrj.sca.service.util.FichaIsencaoDisciplinas;
 
 @Controller
 @RequestMapping("/isencaoDisciplina")
@@ -85,12 +86,10 @@ public class RegistrarIsencaoDisciplinaController {
 
 		try {
 
-			Aluno aluno = service.findAlunoByMatricula(matricula);
+			FichaIsencaoDisciplinas ficha = service.findFichaIsencao(matricula);
 
-			List<Disciplina> disciplinas = service.findDisciplinas(aluno
-					.getVersaoCurso());
-			model.addAttribute("aluno", aluno);
-			model.addAttribute("disciplinas", disciplinas);
+			model.addAttribute("aluno", ficha.getAluno());
+			model.addAttribute("itensIsencao", ficha.getItens());
 
 			return "/isencaoDisciplina/aluno/escolheDisciplinasParaIsentar";
 

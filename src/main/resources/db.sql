@@ -6,7 +6,7 @@ INSERT INTO USERS (id, dob, login, nome, matricula, email) VALUES
  (1,NULL,'01604711','Rafael Castaneda Ribeiro','01604711', 'admin@email.com'),
  (2,NULL,'1506449','Eduardo Bezerra da Silva','1506449', 'edubezerra@gmail.com'),
  (3,NULL,'1328864','Natalia Pujol Pacheco Silveira','1328864', 'natalia@email.com.br'),
- (6,NULL,'1111111','Belmiro Filho','1111111', 'belmiro@cefet-rj.br'),
+ (6,NULL,'0390698','Belmiro Fernandes Pereira Filho','0390698', 'belmirofpfilho@gmail.com'),
  (7,NULL,'1311057BCC','Jonathan Christian Silva Iqueda','1311057BCC', 'jonathaniqueda@me.com'),
  (8,NULL,'1821071','Gustavo Paiva Guedes e Silva','1821071', 'gpgs1978@gmail.com');
  
