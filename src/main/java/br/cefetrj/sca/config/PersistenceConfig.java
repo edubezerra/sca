@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -116,7 +117,11 @@ public class PersistenceConfig {
 			p.setMinEvictableIdleTimeMillis(30000);
 			p.setMinIdle(10);
 			p.setLogAbandoned(true);
-			p.setRemoveAbandoned(true);
+			
+			p.setRemoveAbandoned(false);
+			
+//			ResetAbandonedTimer r;
+			
 			p.setJdbcInterceptors("org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"
 					+ "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
 			DataSource datasource = new DataSource();

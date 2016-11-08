@@ -35,6 +35,9 @@ public class ImportadorTudo {
 	ImportadorUsuariosAlunosUsandoMatriculaComoLogin importadorUsuariosAlunos;
 
 	@Autowired
+	ImportadorUsuariosProfessoresUsandoMatriculaComoLogin importadorUsuariosProfessores;
+
+	@Autowired
 	ImportadorProfessores importadorProfessores;
 
 	@Autowired
@@ -80,12 +83,15 @@ public class ImportadorTudo {
 			importadorUsuariosAlunos.run();
 
 			importadorProfessores.run();
+
+			importadorUsuariosProfessores.run();
+
 			importadorDepartamentos.run();
 
 			// Agora essa importação é feita pela aplicação WEB.
 			//			 importadorAtividadesComp.run();
 
-			 importadorHistoricoEscolar.run();
+//			 importadorHistoricoEscolar.run();
 
 			 importadorAlocacoesProfessoresEmTurmas.run();
 			 importadorHabilitacoesParaProfessor.run();
