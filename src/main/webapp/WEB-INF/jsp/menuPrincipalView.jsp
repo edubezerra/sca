@@ -3,7 +3,7 @@
 <%@ include file="taglib.jsp" %>
 
 <template:mainLayout rootURL="${rootURL}" username="<%=UsuarioController.getCurrentUser().getNome()%>"
-	contextPath="${pageContext.request.contextPath}" title="Principal">
+	contextPath="${pageContext.request.contextPath}" title="Sistema de Controle Acadêmico">
 	
 	<jsp:attribute name="content">
 		

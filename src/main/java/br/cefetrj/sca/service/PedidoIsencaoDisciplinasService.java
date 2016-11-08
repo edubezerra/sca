@@ -10,16 +10,16 @@ import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.VersaoCurso;
+import br.cefetrj.sca.dominio.isencoes.FichaIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.isencoes.ItemPedidoIsencaoDisciplina;
 import br.cefetrj.sca.dominio.isencoes.PedidoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositories.PedidoIsencaoDisciplinasRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
-import br.cefetrj.sca.service.util.FichaIsencaoDisciplinas;
 
 @Service
-public class IsencaoDisciplinaService {
+public class PedidoIsencaoDisciplinasService {
 
 	@Autowired
 	private AlunoRepositorio alunoRepo;
@@ -89,7 +89,9 @@ public class IsencaoDisciplinaService {
 	}
 
 	public FichaIsencaoDisciplinas findFichaIsencao(String matricula) {
-		Aluno aluno = this.findAlunoByMatricula(matricula);
-		return new FichaIsencaoDisciplinas(aluno);
+		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo.findByMatriculaAluno(matricula);
+		Aluno aluno = alunoRepo.findAlunoByMatricula(matricula);
+		List<Disciplina> disciplinas = disciplinaRepo.findAllEmVersaoCurso(aluno.getVersaoCurso());
+		return new FichaIsencaoDisciplinas(aluno, pedido, disciplinas);
 	}
 }

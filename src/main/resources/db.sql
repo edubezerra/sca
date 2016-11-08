@@ -1,6 +1,5 @@
 delete from USER_USER_PROFILE;
 delete from USERS;
-delete from USER_PROFILE;
 
 INSERT INTO USERS (id, dob, login, nome, matricula, email) VALUES 
  (1,NULL,'01604711','Rafael Castaneda Ribeiro','01604711', 'admin@email.com'),

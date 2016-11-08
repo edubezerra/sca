@@ -1,7 +1,6 @@
-package br.cefetrj.sca.service.util;
+package br.cefetrj.sca.dominio.isencoes;
 
 import br.cefetrj.sca.dominio.Disciplina;
-import br.cefetrj.sca.dominio.isencoes.ItemPedidoIsencaoDisciplina;
 
 public class ItemFichaIsencaoDisciplina {
 	Disciplina disciplina;

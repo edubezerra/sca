@@ -139,7 +139,6 @@
 						</div>
 					</div>
 				</c:forEach>
-
 			</div>
 			<div>
 				<c:if test="${requestScope.processo.situacao == null }">
@@ -157,11 +156,9 @@
 			<div>
 				<a class="btn btn-success custom-width" type="submit"
 					href="${pageContext.request.contextPath}/isencaoDisciplina/criaProcessoIsencao">
-					<i class="fa fa-arrow-left"> </i> Criar Processo de Isenção
-				</a>
+					Criar Processo de Isenção </a>
 			</div>
 		</c:if>
-
 
 		<a class="btn btn-default"
 			href="${pageContext.request.contextPath}/menuPrincipalView"> <i

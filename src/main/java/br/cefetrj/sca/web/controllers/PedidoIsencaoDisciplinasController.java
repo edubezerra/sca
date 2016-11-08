@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.isencoes.FichaIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.isencoes.ItemPedidoIsencaoDisciplina;
 import br.cefetrj.sca.dominio.isencoes.PedidoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
@@ -30,15 +30,14 @@ import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositories.PedidoIsencaoDisciplinasRepositorio;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
-import br.cefetrj.sca.service.IsencaoDisciplinaService;
-import br.cefetrj.sca.service.util.FichaIsencaoDisciplinas;
+import br.cefetrj.sca.service.PedidoIsencaoDisciplinasService;
 
 @Controller
 @RequestMapping("/isencaoDisciplina")
-public class RegistrarIsencaoDisciplinaController {
+public class PedidoIsencaoDisciplinasController {
 
 	@Autowired
-	IsencaoDisciplinaService service;
+	PedidoIsencaoDisciplinasService service;
 
 	@Autowired
 	PedidoIsencaoDisciplinasRepositorio processoIsencaoRepo;
@@ -95,7 +94,7 @@ public class RegistrarIsencaoDisciplinaController {
 
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "/menuPrincipalView";
+			return "/isencaoDisciplina/visualizarProcessoIsencao";
 		}
 	}
 

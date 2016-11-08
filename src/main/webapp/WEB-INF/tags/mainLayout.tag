@@ -94,11 +94,10 @@ body {
 							<ul class="dropdown-menu">
 								<li><a
 									href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
-										Fornecimento de Grade de Disponibilidades
-										(${requestScope.periodoLetivo})</a></li>
+										Fornecimento de Grade de Disponibilidades</a></li>
 								<li><a
-									href="${pageContext.request.contextPath}//visualizacaoAvaliacaoDiscente/turma">
-										Selecao da Turma (${requestScope.periodoLetivo})</a></li>
+									href="${pageContext.request.contextPath}/visualizacaoAvaliacaoDiscente/turma">
+										Seleção da Turma</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/pastaProfessor/dashboard">
 										Pasta Virtual</a></li>
