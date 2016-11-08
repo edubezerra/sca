@@ -106,7 +106,7 @@ public class PersistenceConfig {
 			p.setJmxEnabled(true);
 			p.setTestWhileIdle(false);
 			p.setTestOnBorrow(true);
-			p.setValidationQuery("SELECT 1");
+			p.setValidationQuery(properties.getProperty("hibernate.connection.validation_query"));
 			p.setTestOnReturn(false);
 			p.setValidationInterval(30000);
 			p.setTimeBetweenEvictionRunsMillis(30000);
@@ -158,10 +158,6 @@ public class PersistenceConfig {
 		System.out.println("**************************" + initDatabase);
 		DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 		dataSourceInitializer.setDataSource(dataSource);
-		// ResourceDatabasePopulator databasePopulator = new
-		// ResourceDatabasePopulator();
-		// databasePopulator.addScript(new ClassPathResource("db.sql"));
-		// dataSourceInitializer.setDatabasePopulator(databasePopulator);
 		dataSourceInitializer.setEnabled(Boolean.parseBoolean(initDatabase));
 		return dataSourceInitializer;
 	}
