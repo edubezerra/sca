@@ -3,26 +3,21 @@ package br.cefetrj.sca.infra.cargadados;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import br.cefetrj.sca.config.PersistenceConfig;
 import br.cefetrj.sca.dominio.PesquisaAvaliacao;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
 import br.cefetrj.sca.dominio.avaliacaoturma.Quesito;
+import br.cefetrj.sca.dominio.repositories.PesquisaAvaliacaoRepositorio;
 
+@Component
 public class ImportadorQuestionarioEgresso {
-	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-			PersistenceConfig.class);
 
-	private static EntityManagerFactory emf = (EntityManagerFactory) context
-			.getBean("entityManagerFactory");
+	@Autowired
+	PesquisaAvaliacaoRepositorio pesquisaAvaliacaoRepositorio;
 
-	public static EntityManager em = emf.createEntityManager();
-
-	public static void run() {
+	public void run() {
 
 		System.out.println("ImportadorQuestionarioEgresso.main()");
 
@@ -148,8 +143,6 @@ public class ImportadorQuestionarioEgresso {
 		q16.adicionarAlternativa(new Alternativa(
 				"Stricto Sensu (mestrado, doutorado)"));
 
-		em.getTransaction().begin();
-
 		List<Alternativa> todasAlternativas = new ArrayList<Alternativa>();
 		todasAlternativas.addAll(q1.getAlternativas());
 		todasAlternativas.addAll(q2.getAlternativas());
@@ -168,12 +161,6 @@ public class ImportadorQuestionarioEgresso {
 		todasAlternativas.addAll(q15.getAlternativas());
 		todasAlternativas.addAll(q16.getAlternativas());
 
-		em.persist(formGrad);
-
-		for (Alternativa alternativa : todasAlternativas) {
-			em.persist(alternativa);
-		}
-
 		Quesito[] questoes = new Quesito[] { q1, q2, q3, q4, q5, q6, q7, q8,
 				q9, q10, q11, q12, q13, q14, q15, q16 };
 
@@ -181,11 +168,7 @@ public class ImportadorQuestionarioEgresso {
 			formGrad.adicionarQuesito(quesito);
 		}
 
-		em.persist(formGrad);
-
-		em.getTransaction().commit();
-
-		em.close();
+		pesquisaAvaliacaoRepositorio.save(formGrad);
 
 		System.out
 				.println("Questionário de informações sobre egressos importado com sucesso!!");
