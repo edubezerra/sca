@@ -23,6 +23,7 @@ public class ImportadorQuestionarioEgresso {
 
 		PesquisaAvaliacao formGrad = new PesquisaAvaliacao("Egresso",
 				"Avaliação do Egresso");
+
 		Quesito q1 = new Quesito("Atualmente o(a) Sr.(a) está:");
 		q1.adicionarAlternativa(new Alternativa("Trabalhando (vá para 2)"));
 		q1.adicionarAlternativa(new Alternativa(
