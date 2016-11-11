@@ -52,15 +52,11 @@ public class VisualizacaoAvaliacaoDiscenteController {
 
 		List<AvaliacaoTurma> at = discenteService.selecionarTurma(t);
 		System.out.println(at.size());
-		try {
-			discenteService.conversaoRespospa(at);
-			mv.addObject("turma", t);
-			return mv;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return new ModelAndView("/menuPrincipalView");
-		
+
+		List<String> resp = discenteService.conversaoRespospa(at);
+		mv.addObject("turma", t);
+		mv.addObject("Respostas", resp);
+		return mv;
 
 	}
 

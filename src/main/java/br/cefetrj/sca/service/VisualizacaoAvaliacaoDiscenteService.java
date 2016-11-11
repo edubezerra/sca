@@ -47,12 +47,15 @@ public class VisualizacaoAvaliacaoDiscenteService {
 		return tAvaliadas;
 	}
 
-	public void conversaoRespospa(List<AvaliacaoTurma> avaliacaoTurma) throws IOException {	
-		
-		String arquivoCSV = "C:/Users/Joao/git/sca/src/main/webapp/data.csv";
-		BufferedWriter strW = new BufferedWriter(new FileWriter(arquivoCSV));
-		strW.write(
-				"Pergunta,Insuficiente(s) ou Ruim(ns),Suficiente(s) ou Regular(es),Bom(ns) ou Boa(s),Otimo(s) ou Otima(s)\n");
+	public List<String> conversaoRespospa(List<AvaliacaoTurma> avaliacaoTurma) {
+
+		List<String> respAvaliacao = new ArrayList<>();
+		respAvaliacao.add("Pergunta");
+		respAvaliacao.add("Insuficiente(s) ou Ruim(ns)");
+		respAvaliacao.add("Suficiente(s) ou Regular(es)");
+		respAvaliacao.add("Bom(ns) ou Boa(s)");
+		respAvaliacao.add("Otimo(s) ou Otima(s)");
+
 		List<Alternativa> resp = new ArrayList<>();
 		for (int i = 0; i < avaliacaoTurma.size(); i++) {
 			AvaliacaoTurma a = avaliacaoTurma.get(i);
@@ -80,15 +83,19 @@ public class VisualizacaoAvaliacaoDiscenteService {
 			}
 			posicao += 8;
 			if (posicao >= resp.size()) {
-				strW.write(PerguntasAvaliacao[posicaoPerg] + "," + valorRespostas[3] + "," + valorRespostas[2] + ","
-						+ valorRespostas[1] + "," + valorRespostas[0] + "\n");
+				respAvaliacao.add(PerguntasAvaliacao[posicaoPerg]);
+				respAvaliacao.add("" + valorRespostas[3]);
+				respAvaliacao.add("" + valorRespostas[2]);
+				respAvaliacao.add("" + valorRespostas[1]);
+				respAvaliacao.add("" + valorRespostas[0]);
+
 				posicaoPerg += 1;
 				posicao = posicaoPerg;
 				valorRespostas = new int[4];
 			}
 		}
 
-		strW.close();
+		return respAvaliacao;
 
 	}
 }

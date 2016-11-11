@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
@@ -44,10 +47,20 @@ tr:nth-child(even) {
 		});
 		
 		
-		d3.csv("${pageContext.request.contextPath}/data.csv", function(error, data) {
-			if (error)
-				throw error;
-
+			
+		var data = [
+		         {"${Respostas[0]}" : "${Respostas[5]}","${Respostas[1]}" : "${Respostas[6]}","${Respostas[2]}" : "${Respostas[7]}","${Respostas[3]}" : "${Respostas[8]}","${Respostas[4]}" : "${Respostas[9]}"},
+		         {"${Respostas[0]}" : "${Respostas[10]}","${Respostas[1]}" : "${Respostas[11]}","${Respostas[2]}" : "${Respostas[12]}","${Respostas[3]}" : "${Respostas[13]}","${Respostas[4]}" : "${Respostas[14]}"},
+		         {"${Respostas[0]}" : "${Respostas[15]}","${Respostas[1]}" : "${Respostas[16]}","${Respostas[2]}" : "${Respostas[17]}","${Respostas[3]}" : "${Respostas[18]}","${Respostas[4]}" : "${Respostas[19]}"},
+		         {"${Respostas[0]}" : "${Respostas[20]}","${Respostas[1]}" : "${Respostas[21]}","${Respostas[2]}" : "${Respostas[22]}","${Respostas[3]}" : "${Respostas[23]}","${Respostas[4]}" : "${Respostas[24]}"},
+		         {"${Respostas[0]}" : "${Respostas[25]}","${Respostas[1]}" : "${Respostas[26]}","${Respostas[2]}" : "${Respostas[27]}","${Respostas[3]}" : "${Respostas[28]}","${Respostas[4]}" : "${Respostas[29]}"},
+		         {"${Respostas[0]}" : "${Respostas[30]}","${Respostas[1]}" : "${Respostas[31]}","${Respostas[2]}" : "${Respostas[32]}","${Respostas[3]}" : "${Respostas[33]}","${Respostas[4]}" : "${Respostas[34]}"},
+		         {"${Respostas[0]}" : "${Respostas[35]}","${Respostas[1]}" : "${Respostas[36]}","${Respostas[2]}" : "${Respostas[37]}","${Respostas[3]}" : "${Respostas[38]}","${Respostas[4]}" : "${Respostas[39]}"},
+		         {"${Respostas[0]}" : "${Respostas[40]}","${Respostas[1]}" : "${Respostas[41]}","${Respostas[2]}" : "${Respostas[42]}","${Respostas[3]}" : "${Respostas[43]}","${Respostas[4]}" : "${Respostas[44]}"}
+		         
+			      ]		
+		
+		function grafico(){
 			color.domain(d3.keys(data[0]).filter(function(key) {
 				return key !== "Pergunta";
 			}));
@@ -140,8 +153,9 @@ tr:nth-child(even) {
 					return a - 90;
 				}
 			}
-
-		});
+			
+			
+		}		
 	</script>
 	<h1 style="font-size: 15">${turma.disciplina}</h1>
 
@@ -183,4 +197,10 @@ tr:nth-child(even) {
 			<td>De forma geral, a pontualidade do professor pode ser avaliada como...</td>
 		</tr>
 	</table>
+	
+	<script>grafico() </script>
+
+	
+	
+	
 </body>
