@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 
-@Component
 public class FichaIsencaoDisciplinas {
 
 	List<ItemFichaIsencaoDisciplina> itens = new ArrayList<>();
