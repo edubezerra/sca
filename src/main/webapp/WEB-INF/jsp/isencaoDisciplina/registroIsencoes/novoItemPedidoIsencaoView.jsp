@@ -20,39 +20,13 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
 	rel="stylesheet">
 
-<link
-	href="${pageContext.request.contextPath}/resources/bootstrap/css/fileinput.css"
-	media="all" rel="stylesheet" type="text/css" />
-
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css">
 
-<!-- canvas-to-blob.min.js is only needed if you wish to resize images before upload.
-     This must be loaded before fileinput.min.js -->
-<script
-	src="${pageContext.request.contextPath}/resources/bootstrap/js/plugins/canvas-to-blob.min.js"
-	type="text/javascript"></script>
-<!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.
-     This must be loaded before fileinput.min.js -->
-<script
-	src="${pageContext.request.contextPath}/resources/bootstrap/js/plugins/sortable.min.js"
-	type="text/javascript"></script>
-<!-- purify.min.js is only needed if you wish to purify HTML content in your preview for HTML files.
-     This must be loaded before fileinput.min.js -->
-<script
-	src="${pageContext.request.contextPath}/resources/bootstrap/js/plugins/purify.min.js"
-	type="text/javascript"></script>
-
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-<script
-	src="${pageContext.request.contextPath}/resources/bootstrap/js/fileinput.js"></script>
-
-<script
-	src="${pageContext.request.contextPath}/resources/bootstrap/js/locales/pt-BR.js"></script>
 
 <link
 	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
@@ -75,6 +49,25 @@
 		}
 	}
 </script>
+
+<script
+	src="${pageContext.request.contextPath}/resources/jquery/vendor/jquery.ui.widget.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/jquery/jquery.iframe-transport.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/jquery/jquery.fileupload.js"></script>
+
+<!-- bootstrap just to have good looking page -->
+<!-- <script src="bootstrap/js/bootstrap.min.js"></script> -->
+<!-- <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" /> -->
+
+<!-- we code these -->
+<link
+	href="${pageContext.request.contextPath}/resources/css/dropzone.css"
+	type="text/css" rel="stylesheet" />
+<script
+	src="${pageContext.request.contextPath}/resources/jquery/myuploadfunction.js"></script>
+
 </head>
 
 <body class="inclusao-disciplina">
@@ -162,6 +155,30 @@
 					<span class="label label-danger" id="tamanhoGrande"
 						style="display: none;"></span>
 				</div>
+
+
+				<div style="width: 500px; padding: 20px">
+
+					<input id="fileupload" type="file" name="files[]"
+						data-url="rest/controller/upload" multiple>
+
+					<div id="dropzone">Drop files here</div>
+
+					<div id="progress">
+						<div style="width: 0%;"></div>
+					</div>
+
+					<table id="uploaded-files">
+						<tr>
+							<th>File Name</th>
+							<th>File Size</th>
+							<th>File Type</th>
+							<th>Download</th>
+						</tr>
+					</table>
+
+				</div>
+
 
 				<br />
 				<div class="row">
