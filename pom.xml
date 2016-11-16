@@ -312,18 +312,18 @@
 		</dependency>
 
 		<!-- Driver JDBC do DB2 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.db2jcc4</groupId>
 			<artifactId>db2jcc4</artifactId>
 			<version>4.0</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- Biblioteca de criptografia da AVMB -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>br.com.avmb</groupId>
 			<artifactId>libsilegacy-crypto</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
 

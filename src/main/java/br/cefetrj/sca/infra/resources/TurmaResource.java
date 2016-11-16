@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.EncontroPresencial;
 import br.cefetrj.sca.dominio.Inscricao;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
@@ -60,5 +61,15 @@ public class TurmaResource {
 			return null;
 		}
 
+	}
+	
+	@RequestMapping(value = "/salvarEncontroPresencialTurma/{turmaws}/{encontrows}", method = RequestMethod.POST)
+	public void salvarEncontroPresencialTurma(@PathVariable TurmaWS turmaws, @PathVariable EncontroPresencialWS encontrows) {
+		     Turma turma = turmaRepo.findTurmaById(turmaws.getId());
+		     EncontroPresencial encontro = new EncontroPresencial();
+		     encontro.setData(encontro.getData());
+		     encontro.setAlunos(encontro.getAlunos());
+		     turma.adicionarEncontro(encontro);
+             turmaRepo.saveAndFlush(turma);
 	}
 }
