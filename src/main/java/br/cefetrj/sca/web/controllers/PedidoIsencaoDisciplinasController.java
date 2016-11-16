@@ -155,38 +155,38 @@ public class PedidoIsencaoDisciplinasController {
 	 * Invocado quando da submissão do form com detalhes das disciplinas
 	 * externas.
 	 */
-	@RequestMapping(value = "/relacaoMateriaExterna", method = RequestMethod.POST)
-	public String registroMateriaExterna(
-			Model model,
-			HttpServletRequest request,
-			@RequestParam("aluno") String matricula,
-			@RequestParam("itemIsencaoByProcessoIsencao") List<String> itemIsencao,
-			@RequestParam("disciplinaAssociada") List<String> disciplinaAssociada) {
-
-		System.out
-				.println("RegistrarIsencaoDisciplinaController.registroMateriaExterna()");
-
-		try {
-			Aluno aluno = service.findAlunoByMatricula(matricula);
-			PedidoIsencaoDisciplinas processo = processoIsencaoRepo
-					.findByAluno(aluno);
-
-			for (int i = 0; i < itemIsencao.size(); i++) {
-				processo.getItens()
-						.get(i)
-						.setDescritorDisciplinaExterna(
-								disciplinaAssociada.get(i));
-			}
-
-			processoIsencaoRepo.save(processo);
-
-			return visualizarProcessoIsencao(model, request);
-
-		} catch (Exception exc) {
-			model.addAttribute("error", exc.getMessage());
-			return "/menuPrincipalView";
-		}
-	}
+//	@RequestMapping(value = "/relacaoMateriaExterna", method = RequestMethod.POST)
+//	public String registroMateriaExterna(
+//			Model model,
+//			HttpServletRequest request,
+//			@RequestParam("aluno") String matricula,
+//			@RequestParam("itemIsencaoByProcessoIsencao") List<String> itemIsencao,
+//			@RequestParam("disciplinaAssociada") List<String> disciplinaAssociada) {
+//
+//		System.out
+//				.println("RegistrarIsencaoDisciplinaController.registroMateriaExterna()");
+//
+//		try {
+//			Aluno aluno = service.findAlunoByMatricula(matricula);
+//			PedidoIsencaoDisciplinas processo = processoIsencaoRepo
+//					.findByAluno(aluno);
+//
+//			for (int i = 0; i < itemIsencao.size(); i++) {
+//				processo.getItens()
+//						.get(i)
+//						.setDescritorDisciplinaExterna(
+//								disciplinaAssociada.get(i));
+//			}
+//
+//			processoIsencaoRepo.save(processo);
+//
+//			return visualizarProcessoIsencao(model, request);
+//
+//		} catch (Exception exc) {
+//			model.addAttribute("error", exc.getMessage());
+//			return "/menuPrincipalView";
+//		}
+//	}
 
 	/***
 	 * 

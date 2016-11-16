@@ -27,7 +27,7 @@ import br.cefetrj.sca.service.util.VersoesCursoSearchCriteria;
 @Controller
 @SessionAttributes("login")
 @RequestMapping("/analiseAtividades")
-public class AnaliseRegistrosAtividadeComplementarController {
+public class AnalisarAtividadeComplementarController {
 	
 	@Autowired
 	AnaliseRegistrosAtividadeService service;

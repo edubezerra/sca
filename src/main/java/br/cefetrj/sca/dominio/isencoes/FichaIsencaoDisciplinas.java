@@ -3,8 +3,6 @@ package br.cefetrj.sca.dominio.isencoes;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 
@@ -25,11 +23,11 @@ public class FichaIsencaoDisciplinas {
 			}
 		}
 
-		for (Disciplina disciplina : disciplinas) {
-			if (!itens.contains(disciplina)) {
-				itens.add(new ItemFichaIsencaoDisciplina(disciplina));
-			}
-		}
+//		for (Disciplina disciplina : disciplinas) {
+//			if (!itens.contains(disciplina)) {
+//				itens.add(new ItemFichaIsencaoDisciplina(disciplina));
+//			}
+//		}
 	}
 
 	public Aluno getAluno() {
