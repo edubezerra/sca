@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Departamento;
+import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.matriculaforaprazo.ItemMatriculaForaPrazo;
@@ -17,25 +18,23 @@ public class FichaMatriculaForaPrazo {
 		int opcao;
 		private Long idTurma;
 		private String codigoTurma;
-		private String codigoDisciplina;
-		private String nomeDisciplina;
+		private Disciplina disciplina;
 		private String observacao;
 
 		public ItemRequerimentoInfo(Long idTurma, String codigoTurma,
-				String codigoDisciplina, String nomeDisciplina,
-				String siglaDepartamento, int opcao, String observacao) {
+				Disciplina disciplina, String siglaDepartamento, int opcao,
+				String observacao) {
 			super();
 			this.idTurma = idTurma;
 			this.codigoTurma = codigoTurma;
-			this.codigoDisciplina = codigoDisciplina;
-			this.nomeDisciplina = nomeDisciplina;
+			this.disciplina = disciplina;
 			this.siglaDepartamento = siglaDepartamento;
 			this.opcao = opcao;
 			this.observacao = observacao;
 		}
 
-		public String getCodigoDisciplina() {
-			return codigoDisciplina;
+		public Disciplina getDisciplina() {
+			return disciplina;
 		}
 
 		public Long getIdTurma() {
@@ -55,7 +54,7 @@ public class FichaMatriculaForaPrazo {
 		}
 
 		public String getNomeDisciplina() {
-			return nomeDisciplina;
+			return disciplina.getNome();
 		}
 
 		public void setObservacao(String observacao) {
@@ -74,8 +73,7 @@ public class FichaMatriculaForaPrazo {
 		private String siglaDepartamento;
 		private String idDepartamento;
 
-		public DepartamentoInfo(String siglaDepartamento,
-				String idDepartamento) {
+		public DepartamentoInfo(String siglaDepartamento, String idDepartamento) {
 			this.idDepartamento = idDepartamento;
 			this.siglaDepartamento = siglaDepartamento;
 		}
@@ -117,16 +115,16 @@ public class FichaMatriculaForaPrazo {
 	}
 
 	public void adicionarItemRequerimento(Long idTurma, String codigoTurma,
-			String codigoDisciplina, String nomeDisciplina,
-			String siglaDepartamento, int opcao, String observacao) {
-		if (isSolicitacaoRepetida(codigoTurma, codigoDisciplina)) {
+			Disciplina disciplina, String siglaDepartamento, int opcao,
+			String observacao) {
+		if (isSolicitacaoRepetida(codigoTurma, disciplina)) {
 			throw new IllegalArgumentException(
 					"Erro: já existe uma solicitação para a turma/disciplina "
-							+ codigoTurma + "/" + codigoDisciplina);
+							+ codigoTurma + "/" + disciplina);
 		} else {
 			ItemRequerimentoInfo item = new ItemRequerimentoInfo(idTurma,
-					codigoTurma, codigoDisciplina, nomeDisciplina,
-					siglaDepartamento, opcao, observacao);
+					codigoTurma, disciplina, siglaDepartamento, opcao,
+					observacao);
 			itensRequerimento.add(item);
 		}
 	}
@@ -149,23 +147,20 @@ public class FichaMatriculaForaPrazo {
 		for (ItemMatriculaForaPrazo item : itensSolicitacao) {
 			String siglaDepartamento = item.getDepartamento().getSigla();
 			int opcao = item.getOpcao();
-			String nomeDisciplina = item.getTurma().getNomeDisciplina();
-			String codigoDisciplina = item.getTurma().getDisciplina()
-					.getCodigo();
+			Disciplina disciplina = item.getTurma().getDisciplina();
 			String codigoTurma = item.getTurma().getCodigo();
 			ItemRequerimentoInfo itemreq = new ItemRequerimentoInfo(item
-					.getTurma().getId(), codigoTurma, codigoDisciplina,
-					nomeDisciplina, siglaDepartamento, opcao,
-					item.getObservacao());
+					.getTurma().getId(), codigoTurma, disciplina,
+					siglaDepartamento, opcao, item.getObservacao());
 			itensRequerimento.add(itemreq);
 		}
 	}
 
 	public boolean isSolicitacaoRepetida(String codigoTurma,
-			String codigoDisciplina) {
+			Disciplina disciplina) {
 		for (ItemRequerimentoInfo item : itensRequerimento) {
 			if (item.getCodigoTurma().equals(codigoTurma)
-					&& item.getCodigoDisciplina().equals(codigoDisciplina))
+					&& item.getDisciplina().equals(disciplina))
 				return true;
 		}
 		return false;

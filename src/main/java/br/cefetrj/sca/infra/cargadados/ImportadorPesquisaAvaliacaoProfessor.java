@@ -33,10 +33,6 @@ public class ImportadorPesquisaAvaliacaoProfessor {
 
 		Alternativa[] alternativas = new Alternativa[] { alternativa1, alternativa2, alternativa3, alternativa4 };
 
-		// for (Alternativa alternativa : alternativas) {
-		// em.persist(alternativa);
-		// }
-
 		Quesito quest1 = criarQuestao("De forma geral, a apresentação do programa"
 				+ " e dos objetivos dessa disciplina ocorreu de maneira...", alternativas);
 

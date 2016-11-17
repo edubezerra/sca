@@ -25,30 +25,35 @@ public class ImportadorHabilitacoesParaProfessor {
 
 		Professor professor;
 		try {
-			professor = professorRepositorio.findProfessorByMatricula(matricula);
+			professor = professorRepositorio
+					.findProfessorByMatricula(matricula);
 		} catch (NoResultException e) {
 			professor = null;
 		}
 
 		Disciplina d;
-		d = findDisciplinaByCodigo("GCC1520");
+		d = findDisciplinaByCodigo("GCC1520", "BCC", "2012");
 		professor.habilitarPara(d);
 
-		d = findDisciplinaByCodigo("GCC1208");
+		d = findDisciplinaByCodigo("GCC1208", "BCC", "2012");
 		professor.habilitarPara(d);
 
-		d = findDisciplinaByCodigo("GCC1518");
+		d = findDisciplinaByCodigo("GCC1518", "BCC", "2012");
 		professor.habilitarPara(d);
 
 		professorRepositorio.save(professor);
 
-		System.out.println("Foram registradas 3 habilitações para o professor cuja matrícula é " + matricula);
+		System.out
+				.println("Foram registradas 3 habilitações para o professor cuja matrícula é "
+						+ matricula);
 	}
 
-	private Disciplina findDisciplinaByCodigo(String codigo) {
+	private Disciplina findDisciplinaByCodigo(String codigo, String siglaCurso,
+			String numeroVersaoCurso) {
 		Disciplina d;
 		try {
-			d = disciplinaRepositorio.findDisciplinaByCodigo(codigo);
+			d = disciplinaRepositorio.findByCodigoEmVersaoCurso(codigo,
+					siglaCurso, numeroVersaoCurso);
 		} catch (NoResultException e) {
 			d = null;
 		}

@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.cefetrj.sca.config.AppConfig;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
@@ -20,7 +21,9 @@ public class UsuarioRepositorioTest {
 	UsuarioRepositorio usuarioRepositorio;
 
 	@Test
-	public void testFindTurmasLecionadasPorProfessorEmPeriodo() {
+	public void testFindUsuarioByLogin() {
 		assertNotNull("Repositório não definido.", usuarioRepositorio);
+		Usuario usuario = usuarioRepositorio.findUsuarioByLogin("1223216BCC");
+		assertNotNull(usuario);
 	}
 }

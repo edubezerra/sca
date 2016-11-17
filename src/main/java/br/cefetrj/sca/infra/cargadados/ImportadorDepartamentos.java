@@ -19,7 +19,7 @@ public class ImportadorDepartamentos {
 		Departamento dep3 = criar("DEMEC", "Departamento de Engenharia Mecânica");
 		Departamento dep4 = criar("DEPRO", "Departamento de Engenharia de Produção");
 		Departamento dep5 = criar("DEPEC", "Departamento de Engenharia Civil");
-		Departamento dep6 = criar("DEELE", "Departamento de ");
+		Departamento dep6 = criar("DEELE", "Departamento de Engenharia Elétrica");
 		Departamento dep7 = criar("DEPIN", "Departamento de Informática");
 		Departamento dep8 = criar("DEAMB", "Departamento de Engenharia Ambiental");
 		Departamento dep9 = criar("DEFIS", "Departamento de Física");

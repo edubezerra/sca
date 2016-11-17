@@ -39,7 +39,7 @@ public class RelatorioEvasaoService {
 		String periodoMatricula = RelatorioUtil.getPeriodoMatriculaByPeriodoString(strPeriodoLetivo);
 		
 		/* lista de alunos daquele periodo informado pelo coordenador */
-		List<Aluno> alunoList = alunoRepo.getAlunosByCursoEPeriodo(siglaCurso, periodoMatricula);
+		List<Aluno> alunoList = alunoRepo.findAlunosByCursoEPeriodo(siglaCurso, periodoMatricula);
 		
 		for(Aluno aluno: alunoList) {
 			HistoricoEscolar hist = aluno.getHistorico();

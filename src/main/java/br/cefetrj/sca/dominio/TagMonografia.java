@@ -1,20 +1,16 @@
 package br.cefetrj.sca.dominio;
 
-import br.cefetrj.sca.infra.ElasticSearchClientFactory;
+import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
 import com.google.common.util.concurrent.SettableFuture;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
-import org.springframework.security.access.method.P;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * Created by Alexandre Vicente on 04/09/16.
@@ -51,7 +47,7 @@ public class TagMonografia implements Comparable {
     }
 
     static public List<TagMonografia> getTopTags(String[] blacklist) throws IOException {
-        return getTopTags(50, blacklist);
+        return getTopTags(400, blacklist);
     }
 
     static public List<TagMonografia> getTopTags(int amount, String[] blacklist) throws IOException{
@@ -122,5 +118,12 @@ public class TagMonografia implements Comparable {
     @Override
     public String toString() {
         return tag;
+    }
+
+    public String toJSON(){
+        return "{" +
+                    "\"tag\":\"" + tag + "\"," +
+                    "\"ocorrencias\":" + ocorrencias.toString() +
+                "}";
     }
 }

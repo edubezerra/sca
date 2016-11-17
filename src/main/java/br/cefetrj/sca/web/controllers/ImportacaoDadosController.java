@@ -23,8 +23,7 @@ public class ImportacaoDadosController {
 
 	DescritorImportacaoDados descritor = new DescritorImportacaoDados();
 
-	protected Logger logger = Logger.getLogger(ImportacaoDadosController.class
-			.getName());
+	protected Logger logger = Logger.getLogger(ImportacaoDadosController.class.getName());
 
 	@RequestMapping(value = "/{*}", method = RequestMethod.GET)
 	public String get(Model model) {
@@ -33,8 +32,7 @@ public class ImportacaoDadosController {
 	}
 
 	@RequestMapping(value = "/homeImportacaoDados", method = RequestMethod.GET)
-	public String homeImportacaoDados(HttpServletRequest request,
-			Model model) {
+	public String homeImportacaoDados(HttpServletRequest request, Model model) {
 		try {
 			model.addAttribute("descritor", descritor);
 			return "/importacaoDados/homeImportacaoDadosView";
@@ -45,10 +43,39 @@ public class ImportacaoDadosController {
 
 	}
 
+	@RequestMapping(value = "/importacaoTabelaAtividadesComplementares", method = RequestMethod.POST)
+	public String importacaoTabelaAtividadesComplementares(HttpServletRequest request, Model model,
+			@RequestParam("tabAtividadeComplementarFile") MultipartFile file) {
+		try {
+			String response = service.importar(file, 6L);
+			model.addAttribute("response", response);
+			model.addAttribute("descritor", descritor);
+			return "/importacaoDados/homeImportacaoDadosView";
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
+	@RequestMapping(value = "/importacaoProfessores", method = RequestMethod.POST)
+	public String importacaoProfessores(HttpServletRequest request, Model model,
+			@RequestParam("professorFile") MultipartFile file) {
+		try {
+			String response = service.importar(file, 7L);
+			model.addAttribute("response", response);
+			model.addAttribute("descritor", descritor);
+			return "/importacaoDados/homeImportacaoDadosView";
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
 	@RequestMapping(value = "/importacaoDados", method = RequestMethod.POST)
-	public String importacaoDados(HttpServletRequest request,
-			Model model, @RequestParam("historicoFile") MultipartFile file,
-			Long tipoImportacao) {
+	public String importacaoDados(HttpServletRequest request, Model model,
+			@RequestParam("historicoFile") MultipartFile file, Long tipoImportacao) {
 		try {
 			String response = service.importar(file, tipoImportacao);
 			model.addAttribute("response", response);

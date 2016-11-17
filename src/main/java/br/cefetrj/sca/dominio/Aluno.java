@@ -40,9 +40,6 @@ public class Aluno {
 	@Embedded
 	Pessoa pessoa;
 	
-	@OneToOne
-	ProcessoIsencao processoIsencao;
-
 	@OneToOne(cascade = CascadeType.ALL)
 	private HistoricoEscolar historico;
 
@@ -356,14 +353,6 @@ public class Aluno {
 		}
 		
 		return true;
-	}
-
-	public ProcessoIsencao getProcessoIsencao() {
-		return processoIsencao;
-	}
-
-	public void setProcessoIsencao(ProcessoIsencao processoIsencao) {
-		this.processoIsencao = processoIsencao;
 	}
 
 	@Override

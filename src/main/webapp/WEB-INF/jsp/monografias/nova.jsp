@@ -1,32 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+		 pageEncoding="ISO-8859-1"%>
+<%@ include file="../taglib.jsp" %>
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SCA - Monografias</title>
 
-	<link href="<c:url value='/resources/bootstrap/css/bootstrap.css' />" rel="stylesheet" />
+<template:mainLayout rootURL="${rootURL}" username="${username}"
+					 contextPath="${pageContext.request.contextPath}" title="Nova monografia"
+					 anonymous="${UsuarioController.getCurrentUser()==null}">
 
-</head>
-
-<body>
-	<div class="generic-container">
-		<div class="panel panel-default">
-			<!-- Default panel contents -->
-			<div class="panel-heading">
-				<span class="lead">Nova monografia</span>
-			</div>
-		</div>
-
-		<div style="padding: 0 20px 0 20px; max-width: 800px;">
+	<jsp:attribute name="content">
+		<div>
 			<form id="form" enctype="multipart/form-data" method="POST" action="/monografias/salvar/">
                 <input type="hidden" name="id" value="${monografia.id}">
+				<div class="form-group" id="autoresDiv">
+					<label for="autores">Autores</label>
+					<input type="hidden" id="autores" name="autores">
+					<c:forEach var="autor" items="${monografia.autores}">
+                        <input type="text" class="form-control" data-provide="typeahead" value="${autor}">
+                    </c:forEach>
+					<input type="text" class="form-control">
+				</div>
 				<div class="form-group">
 					<label for="titulo">Título</label>
-					<input type="text" class="form-control" name="titulo" id="titulo" value="${monografia.titulo}">
+					<input type="text" class="form-control" id="titulo" name="titulo" value="${monografia.titulo}">
 				</div>
 				<div class="form-group">
 					<label for="orientador">Orientador</label>
@@ -38,7 +33,7 @@
 				</div>
 				<div class="form-group">
 					<label for="membrosBanca">Membros da banca</label>
-					<input type="hidden" id="membrosBanca" name="membrosBanca"
+					<input type="hidden" id="membrosBanca" name="membrosBanca">
                     <c:forEach var="membro" items="${monografia.membrosBanca}">
                         <input type="text" class="form-control" value="${membro}">
                     </c:forEach>
@@ -79,10 +74,11 @@
 			</form>
 		</div>
 
-		<script src="<c:url value='/resources/jquery/jquery-1.10.2.js' />"></script>
+		<script src="<c:url value='/resources/monografias/typeahead.js' />"></script>
 		<script>
 			$(function(){
 				var membroBancaDiv = $("#membrosBanca").parent();
+				var autoresDiv = $("#autoresDiv");
 				var membroInput = function(e){
 					var $this = $(this);
 					var parent = $this.parent();
@@ -90,6 +86,14 @@
 						if($this.val() != ""){
 							var newInput = $('<input type="text" class="form-control">');
 							newInput.on("input", membroInput);
+							if($this.parent().attr("id") == "autoresDiv"){
+								newInput.typeahead({
+									source: function(callback){
+										$.getJSON("/rest/alunos/", {q: $this.val().toUpperCase()}, callback);
+									},
+									autoSelect: true
+								});
+							}
 							parent.append(newInput);
 						}
 					} else {
@@ -97,15 +101,29 @@
 							$this.remove();
 						}
 					}
-				}
+				};
 				membroBancaDiv.find("input[type='text']").on("input", membroInput);
+				autoresDiv.find("input[type='text']").on("input", membroInput);
+				autoresDiv.find("input[type='text']").each(function(){
+					var $this = $(this);
+					$this.typeahead({
+						source: function(query, callback){
+							$.getJSON("/rest/alunos/", {q: query.toUpperCase()}, callback);
+						},
+						autoSelect: true
+					});
+				});
 				$("#form").submit(function(){
 					$("#membrosBanca").val(
 						membroBancaDiv.find("input[type='text']:not(:last)").map(function(){
 							return $(this).val();
 						}).toArray().join("\n")
 					);
-
+					$("#autores").val(
+							autoresDiv.find("input[type='text']:not(:last)").map(function(){
+								return $(this).val();
+							}).toArray().join("\n")
+					);
 					$(".uploadArquivo input").each(function(i, input){
 						$(input).attr("name", "arquivos[" + i + "]");
 					});
@@ -147,10 +165,5 @@
 
 			});
 		</script>
-		
-		<div class="well">
-            <a href="<c:url value='/monografias/' />" onclick="history.back(); return false">Voltar</a>
-		</div>
-	</div>
-</body>
-</html>
+	</jsp:attribute>
+</template:mainLayout>

@@ -171,7 +171,7 @@ public class ImportadorTurmasComInscricoes {
 			IOException {
 
 		reiniciarEstruturasArmazenamento();
-		
+
 		File inputWorkbook = new File(inputFile);
 		String mensagens = importarPlanilha(inputWorkbook);
 		System.out.println(mensagens);
@@ -305,7 +305,7 @@ public class ImportadorTurmasComInscricoes {
 
 				Turma turma = turmaRepositorio
 						.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma,
-								codigoDisciplina, periodo);
+								disciplina, periodo);
 				if (turma == null) {
 					turma = new Turma(disciplina, codTurma, capacidadeMaxima,
 							periodo);

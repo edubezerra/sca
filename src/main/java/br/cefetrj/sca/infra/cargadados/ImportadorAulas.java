@@ -56,55 +56,48 @@ public class ImportadorAulas {
 
 	private void gravarDadosImportados() {
 
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("SCAPU");
-
-		EntityManager em = emf.createEntityManager();
-
-		em.getTransaction().begin();
-
-		Set<String> aulasIt = turma_aulas.keySet();
-
-		for (String cod_turma : aulasIt) {
-
-			Query query;
-			Turma turma = null;
-
-			try {
-				query = em
-						.createQuery("from Turma t where t.codigo = :codigoTurma");
-				query.setParameter("codigoTurma", cod_turma);
-				turma = (Turma) query.getSingleResult();
-			} catch (NoResultException e) {
-				System.out.println("Turma nao encontrada: " + cod_turma);
-				turma = null;
-			}
-
-			if (turma != null) {
-				Aula aula = turma_aulas.get(cod_turma);
-				try {
-					query = em
-							.createQuery("from LocalAula la where la.descricao = :descricaoTurma");
-					query.setParameter("descricaoTurma", aula.getLocal()
-							.getDescricao());
-					LocalAula local = (LocalAula) query.getSingleResult();
-					turma.adicionarAula(aula.getDia().toString(),
-							aula.getHoraInicio(), aula.getHoraTermino(), local);
-				} catch (NoResultException e) {
-					System.out.println("Local não encontrado: "
-							+ aula.getLocal().getDescricao());
-					turma.adicionarAula(aula.getDia().toString(),
-							aula.getHoraInicio(), aula.getHoraTermino(), null);
-				}
-				System.out.println("Atualizando turma de código "
-						+ turma.getCodigo());
-				em.merge(turma);
-			}
-		}
-
-		em.getTransaction().commit();
-
-		em.close();
+//		Set<String> aulasIt = turma_aulas.keySet();
+//
+//		for (String cod_turma : aulasIt) {
+//
+//			Query query;
+//			Turma turma = null;
+//
+//			try {
+//				query = em
+//						.createQuery("from Turma t where t.codigo = :codigoTurma");
+//				query.setParameter("codigoTurma", cod_turma);
+//				turma = (Turma) query.getSingleResult();
+//			} catch (NoResultException e) {
+//				System.out.println("Turma nao encontrada: " + cod_turma);
+//				turma = null;
+//			}
+//
+//			if (turma != null) {
+//				Aula aula = turma_aulas.get(cod_turma);
+//				try {
+//					query = em
+//							.createQuery("from LocalAula la where la.descricao = :descricaoTurma");
+//					query.setParameter("descricaoTurma", aula.getLocal()
+//							.getDescricao());
+//					LocalAula local = (LocalAula) query.getSingleResult();
+//					turma.adicionarAula(aula.getDia().toString(),
+//							aula.getHoraInicio(), aula.getHoraTermino(), local);
+//				} catch (NoResultException e) {
+//					System.out.println("Local não encontrado: "
+//							+ aula.getLocal().getDescricao());
+//					turma.adicionarAula(aula.getDia().toString(),
+//							aula.getHoraInicio(), aula.getHoraTermino(), null);
+//				}
+//				System.out.println("Atualizando turma de código "
+//						+ turma.getCodigo());
+//				em.merge(turma);
+//			}
+//		}
+//
+//		em.getTransaction().commit();
+//
+//		em.close();
 	}
 
 	public void importarPlanilha(String inputFile) throws BiffException,

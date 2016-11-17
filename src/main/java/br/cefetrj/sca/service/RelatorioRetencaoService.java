@@ -34,7 +34,7 @@ public class RelatorioRetencaoService {
 		String periodoMatricula = RelatorioUtil.getPeriodoMatriculaByPeriodoString(strPeriodoLetivo);
 		
 		/* lista de alunos daquele periodo informado pelo coordenador */
-		List<Aluno> alunosList = alunoRepo.getAlunosByCursoEPeriodo(siglaCurso, periodoMatricula);
+		List<Aluno> alunosList = alunoRepo.findAlunosByCursoEPeriodo(siglaCurso, periodoMatricula);
 		
 		/* ano e periodo escolhido pelo coordenador */
         PeriodoLetivo periodoMinimo = RelatorioUtil.getPeriodoLetivoByPeriodoString(strPeriodoLetivo);

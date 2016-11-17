@@ -1,0 +1,1 @@
+na funcionalidade de alocação de disciplinas a deptos, adicionar possibilidade de filtrar por curso

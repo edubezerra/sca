@@ -1,25 +1,28 @@
 package br.cefetrj.sca.web.controllers;
 
+import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.ArquivosMultipart;
 import br.cefetrj.sca.dominio.Monografia;
+import br.cefetrj.sca.dominio.TagMonografia;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.MonografiaService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -37,7 +40,7 @@ public class MonografiaController {
     @RequestMapping(value = "/{*}", method = RequestMethod.GET)
     public String get(Model model) {
         model.addAttribute("error", "Erro: página não encontrada.");
-        return "/homeView";
+        return "/menuPrincipalView";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -49,8 +52,25 @@ public class MonografiaController {
                 model.addAttribute("queryResults", results);
                 model.addAttribute("q", query);
             } else {
-                model.addAttribute("tags", service.obterTags());
+                Collection<TagMonografia> tags = service.obterTags();
+                String[] jsonStrings = new String[tags.size()];
+                int i = 0;
+
+                for(TagMonografia tag : tags){
+                    jsonStrings[i++] = tag.toJSON();
+                }
+
+                String tagsJSON = "[" + StringUtils.join(jsonStrings, ',') + "]";
+
+                model.addAttribute("tagsJSON", tagsJSON);
             }
+
+            try {
+                model.addAttribute("username", UsuarioController.getCurrentUser().getNome());
+            } catch(Exception e){
+                model.addAttribute("username", "Convidado");
+            }
+
             return "/monografias/index";
 
         } catch (Exception exc) {
@@ -64,8 +84,9 @@ public class MonografiaController {
     @RequestMapping(value = "/minhas/", method = RequestMethod.GET)
     public String formMinhasMonografias(HttpServletRequest request, Model model) {
         try {
+            String matricula = UsuarioController.getCurrentUser().getMatricula();
 
-            List<Monografia> monografias = service.buscarMonografias("idAutor:\"-1\"");
+            List<Monografia> monografias = service.minhasMonografias(matricula);
 
             if(monografias.size() != 0){
                 request.setAttribute("monografias", monografias);
@@ -76,8 +97,7 @@ public class MonografiaController {
         } catch (Exception exc) {
 
             model.addAttribute("error", exc.getMessage());
-            return "/homeView";
-
+            return "/menuPrincipalView";
         }
     }
 
@@ -89,8 +109,7 @@ public class MonografiaController {
         } catch (Exception exc) {
 
             model.addAttribute("error", exc.getMessage());
-            return "/homeView";
-
+            return "/menuPrincipalView";
         }
     }
 
@@ -106,8 +125,7 @@ public class MonografiaController {
         } catch (Exception exc) {
 
             model.addAttribute("error", exc.getMessage());
-            return "/homeView";
-
+            return "/menuPrincipalView";
         }
     }
 
@@ -123,8 +141,7 @@ public class MonografiaController {
         } catch (Exception exc) {
 
             model.addAttribute("error", exc.getMessage());
-            return "/homeView";
-
+            return "/menuPrincipalView";
         }
     }
 
@@ -160,7 +177,7 @@ public class MonografiaController {
     }
 
     @RequestMapping(value = "/salvar/", method = RequestMethod.POST)
-    public String salvarMonograia(HttpServletRequest request, String id, String titulo,
+    public String salvarMonograia(HttpServletRequest request, String id, String autores, String titulo,
                                   String orientador, String presidenteBanca,
                                   String membrosBanca, String resumoLinguaEstrangeira,
                                   String resumoPortugues, String arquivosRemovidos,
@@ -168,8 +185,7 @@ public class MonografiaController {
         try {
             Monografia monografia = service.obterMonografia(
                     id,
-                    -1L,
-                    "Autor de teste",
+                    autores.split("\n"),
                     orientador,
                     presidenteBanca,
                     membrosBanca.split("\n"),
@@ -179,7 +195,8 @@ public class MonografiaController {
             );
             monografia.removerArquivos(Arrays.asList(arquivosRemovidos.split("\n")));
             monografia.adicionarArquivos(arquivos);
-            monografia.salvar();
+            monografia.salvar(request.getServletContext());
+            service.obterTags();
 
             request.setAttribute("monografia", monografia);
             response.sendRedirect("/monografias/visualizar/?id="+monografia.getId());
@@ -189,10 +206,39 @@ public class MonografiaController {
         } catch (Exception exc) {
 
             model.addAttribute("error", exc.getMessage());
-            return "/homeView";
-
+            return "/menuPrincipalView";
         }
     }
 
+    @RequestMapping(value = "/blacklist/", method = RequestMethod.GET)
+    public String blacklistMonografia(HttpServletRequest request, Model model, HttpServletResponse response) {
+        try {
+            service.adminOnly(UsuarioController.getCurrentUser());
+            request.setAttribute("blacklist", service.getBlacklist());
+
+            return "/monografias/blacklist";
+
+        } catch (Exception exc) {
+
+            model.addAttribute("error", exc.getMessage());
+            return "/menuPrincipalView";
+        }
+    }
+
+    @RequestMapping(value = "/blacklist/", method = RequestMethod.POST)
+    public String salvarBlacklistMonografia(HttpServletRequest request, String blacklist, Model model, HttpServletResponse response) {
+        try {
+            service.adminOnly(UsuarioController.getCurrentUser());
+            service.setBlacklist(blacklist);
+            response.sendRedirect("/monografias/");
+
+            return "/monografias/blacklist";
+
+        } catch (Exception exc) {
+
+            model.addAttribute("error", exc.getMessage());
+            return "/menuPrincipalView";
+        }
+    }
 
 }

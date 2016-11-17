@@ -42,12 +42,62 @@
 		});
 
 	});
+
+	$(document).ready(function() {
+		$("#formAC").validate({
+			rules : {
+				tabAtividadeComplementarFile : {
+					required : true,
+					extension : "xls"
+				}
+			},
+			messages : {
+				tabAtividadeComplementarFile : {
+					required : "Escolha um arquivo.",
+					extension : "É necessário que o formato seja xls."
+				}
+			},
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+
+		$("#tabAtividadeComplementarFile").change(function() {
+			$("#uploadFileAC").val($("#tabAtividadeComplementarFile").prop('files')[0]['name']);
+		});
+
+	});
+
+	$(document).ready(function() {
+		$("#formProfessor").validate({
+			rules : {
+				professorFile : {
+					required : true,
+					extension : "xls"
+				}
+			},
+			messages : {
+				professorFile : {
+					required : "Escolha um arquivo.",
+					extension : "É necessário que o formato seja xls."
+				}
+			},
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+
+		$("#professorFile").change(function() {
+			$("#uploadFileProfessor").val($("#professorFile").prop('files')[0]['name']);
+		});
+
+	});
 </script>
 
 <body>
 
 	<div class="content">
-		<h1 class="text-center">Importação de Dados </h1>
+		<h1 class="text-center">Importação de Dados</h1>
 		<hr />
 		<br />
 
@@ -80,15 +130,16 @@
 				</c:choose>
 			</c:if>
 		</div>
+	</div>
 
+	<div class="content">
 		<form id="formHistorico"
 			action="${pageContext.request.contextPath}/importacaoDados/importacaoDados"
 			method="post" enctype="multipart/form-data">
 
 			<br /> <br />
 			<div class="col-md-6 col-md-offset-2">
-				<label for="tipoImportacao">Tipo importação:</label> 
-				<select
+				<label for="tipoImportacao">Tipo importação:</label> <select
 					data-title="testando..." class="form-control" name="tipoImportacao"
 					id="tipoImportacao" required>
 					<option value="" label="Escolha o tipo de importação desejado"
@@ -111,6 +162,54 @@
 			<br /> <br />
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Importar
 				Histórico</button>
+		</form>
+	</div>
+
+
+	<hr />
+
+	<div class="content">
+		<h2 class="text-center">Importação de Tabela de Atividades
+			Complementares</h2>
+
+		<form id="formAC"
+			action="${pageContext.request.contextPath}/importacaoDados/importacaoTabelaAtividadesComplementares"
+			method="post" enctype="multipart/form-data">
+
+			<input type="hidden" name="tipoImportacao" value="6"> <br />
+			<br /> <input id="uploadFileAC"
+				value="Nenhum arquivo selecionado..." disabled="disabled"
+				class="uploadedFile" />
+			<div class="fileUpload btn btn-primary">
+				<span>Procurar...</span> <input name="tabAtividadeComplementarFile"
+					id="tabAtividadeComplementarFile" type="file" class="upload" />
+			</div>
+
+			<br /> <br />
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Importar</button>
+		</form>
+	</div>
+
+	<hr />
+
+	<div class="content">
+		<h2 class="text-center">Importação de Professores</h2>
+
+		<form id="formProfessor"
+			action="${pageContext.request.contextPath}/importacaoDados/importacaoProfessores"
+			method="post" enctype="multipart/form-data">
+
+			<input type="hidden" name="tipoImportacao" value="7"> <br />
+			<br /> <input id="uploadFileProfessor"
+				value="Nenhum arquivo selecionado..." disabled="disabled"
+				class="uploadedFile" />
+			<div class="fileUpload btn btn-primary">
+				<span>Procurar...</span> <input name="professorFile"
+					id="professorFile" type="file" class="upload" />
+			</div>
+
+			<br /> <br />
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Importar</button>
 		</form>
 	</div>
 </body>

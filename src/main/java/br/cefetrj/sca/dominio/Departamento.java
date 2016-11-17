@@ -20,7 +20,10 @@ public class Departamento {
 	private String nome;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private Set<Professor> professores = new HashSet<Professor>();
+	private Set<Professor> professores = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<Disciplina> disciplinas = new HashSet<>();
 
 	@SuppressWarnings("unused")
 	private Departamento() {
@@ -51,12 +54,28 @@ public class Departamento {
 		this.professores.add(professor);
 	}
 
+	public void addDisciplina(Disciplina disciplina) {
+		this.disciplinas.add(disciplina);
+	}
+
 	public Set<Professor> getProfessores() {
 		return professores;
 	}
 
+	public Set<Disciplina> getDisciplinas() {
+		return disciplinas;
+	}
+
 	public String toString() {
 		return "sigla: " + getSigla() + ", nome: " + getNome();
+	}
+
+	public void removerProfessor(Professor professor) {
+		this.professores.remove(professor);
+	}
+
+	public void removerDisciplina(Disciplina disciplina) {
+		this.disciplinas.remove(disciplina);
 	}
 
 }

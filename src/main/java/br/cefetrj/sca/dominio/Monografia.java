@@ -1,9 +1,9 @@
 package br.cefetrj.sca.dominio;
 
+import br.cefetrj.sca.infra.monografia.TagExtractor;
 import com.google.common.util.concurrent.SettableFuture;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
@@ -24,9 +24,9 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.cefetrj.sca.infra.ElasticSearchClientFactory;
-import org.xml.sax.SAXException;
+import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
 
+import javax.servlet.ServletContext;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.UnknownHostException;
@@ -37,8 +37,7 @@ import java.util.*;
  */
 public class Monografia {
     private String id;
-    private Long idAutor;
-    private String autor;
+    private String[] autores;
     private String orientador;
     private String presidenteBanca;
     private String[] membrosBanca;
@@ -48,10 +47,9 @@ public class Monografia {
     private Set<Arquivo> arquivos = new HashSet<Arquivo>();
     private List<Object> cacheArquivos;
 
-    public Monografia(String id, Long idAutor, String autor, String orientador, String presidenteBanca, String[] membrosBanca, String titulo, String resumoLinguaEstrangeira, String resumoPortugues) {
+    public Monografia(String id, String[] autores, String orientador, String presidenteBanca, String[] membrosBanca, String titulo, String resumoLinguaEstrangeira, String resumoPortugues) {
         this.id = id;
-        this.idAutor = idAutor;
-        this.autor = autor;
+        this.autores = autores;
         this.orientador = orientador;
         this.presidenteBanca = presidenteBanca;
         this.membrosBanca = membrosBanca;
@@ -118,8 +116,10 @@ public class Monografia {
             return Base64.getDecoder().decode((String) cacheArquivos.get(this.index));
         }
 
-        public String getTextoPuro() throws IOException {
+        public String getTags(ServletContext servletContext) throws IOException {
             InputStream inputStream = null;
+            String text = "";
+
             if (arquivoMultipart != null) {
                 inputStream = arquivoMultipart.getInputStream();
             } else {
@@ -132,17 +132,17 @@ public class Monografia {
 
             AutoDetectParser parser = new AutoDetectParser();
             Metadata metadata = new Metadata();
+
             try {
                 parser.parse(inputStream, handler, metadata);
-            } catch (SAXException e) {
-                e.printStackTrace();
-                return "";
-            } catch (TikaException e) {
-                e.printStackTrace();
-                return "";
-            }
-            return handler.toString();
+                String rawText = handler.toString();
+                text = TagExtractor.getInstance(servletContext).getTags(rawText);
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return text;
         }
 
         @Override
@@ -167,8 +167,12 @@ public class Monografia {
         return id;
     }
 
-    public String getAutor() {
-        return autor;
+    public String[] getAutores() {
+        return autores;
+    }
+
+    public String getAutoresString() {
+        return org.apache.commons.lang.StringUtils.join(autores, "; ");
     }
 
     public String getTitulo() {
@@ -181,10 +185,6 @@ public class Monografia {
 
     public String getResumoPortugues() {
         return resumoPortugues;
-    }
-
-    public Long getIdAutor() {
-        return idAutor;
     }
 
     public String getOrientador() {
@@ -211,8 +211,8 @@ public class Monografia {
         return arquivos;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setAutores(String[] autores) {
+        this.autores = autores;
     }
 
     public void setOrientador(String orientador) {
@@ -263,7 +263,6 @@ public class Monografia {
         GetRequestBuilder getRequestBuilder = client.prepareGet("monografias", "monografia", id);
         getRequestBuilder.setFields(
                 "titulo",
-                "idAutor",
                 "autor",
                 "orientador",
                 "presidenteBanca",
@@ -286,10 +285,16 @@ public class Monografia {
             membrosBanca[i] = (String) (membrosBancaObject.get(i));
         }
 
+        List<Object> autores = response.getField("autor").getValues();
+        String[] autoresArray = new String[autores.size()];
+
+        for (int i = 0; i < autoresArray.length; i++) {
+            autoresArray[i] = (String) (autores.get(i));
+        }
+
         Monografia monografia = new Monografia(
                 response.getId(),
-                (Long) (response.getField("idAutor").getValue()),
-                (String) (response.getField("autor").getValue()),
+                autoresArray,
                 (String) (response.getField("orientador").getValue()),
                 (String) (response.getField("presidenteBanca").getValue()),
                 membrosBanca,
@@ -319,7 +324,7 @@ public class Monografia {
         return monografia;
     }
 
-    public IndexResponse salvar() throws IOException {
+    public IndexResponse salvar(ServletContext servletContext) throws IOException {
         TransportClient client = ElasticSearchClientFactory.createClient();
 
         if(id.isEmpty()){
@@ -330,9 +335,8 @@ public class Monografia {
 
         XContentBuilder contentBuilder = XContentFactory.jsonBuilder().startObject();
 
-        contentBuilder.field("idAutor", idAutor);
         contentBuilder.field("titulo", titulo);
-        contentBuilder.field("autor", autor);
+        contentBuilder.array("autor", autores);
         contentBuilder.field("orientador", orientador);
         contentBuilder.field("presidenteBanca", presidenteBanca);
         contentBuilder.array("membrosBanca", membrosBanca);
@@ -347,7 +351,7 @@ public class Monografia {
             map.put("nome", arquivo.nome);
             map.put("tamanho", arquivo.tamanho);
             map.put("conteudo", arquivo.getConteudoBase64());
-            textoPuro += arquivo.getTextoPuro();
+            textoPuro += arquivo.getTags(servletContext);
 
             listaArquivos.add(map);
         }
@@ -446,7 +450,6 @@ public class Monografia {
         searchRequestBuilder.setQuery(queryBuilder);
         searchRequestBuilder.addFields(
                 "titulo",
-                "idAutor",
                 "autor",
                 "orientador",
                 "presidenteBanca",
@@ -460,28 +463,48 @@ public class Monografia {
             public void onResponse(SearchResponse searchResponse) {
                 SearchHits hits = searchResponse.getHits();
                 List<Monografia> results = new ArrayList<Monografia>(Math.toIntExact(hits.getTotalHits()));
-                
+
                 for(SearchHit hit : hits){
-                    List<Object> membrosBancaObject = hit.field("membrosBanca").getValues();
-                    String[] membrosBanca = new String[membrosBancaObject.size()];
+                    try{
+                        List<Object> membrosBancaObject = hit.field("membrosBanca").getValues();
+                        String[] membrosBanca;
+                        if(membrosBancaObject != null){
+                            membrosBanca = new String[membrosBancaObject.size()];
 
-                    for (int i = 0; i < membrosBanca.length; i++) {
-                        membrosBanca[i] = (String) (membrosBancaObject.get(i));
+                            for (int i = 0; i < membrosBanca.length; i++) {
+                                membrosBanca[i] = (String) (membrosBancaObject.get(i));
+                            }
+                        } else {
+                            membrosBanca = new String[0];
+                        }
+
+                        List<Object> autores = hit.field("autor").getValues();
+                        String[] autoresArray;
+                        if(autores != null){
+                            autoresArray = new String[autores.size()];
+
+                            for (int i = 0; i < autoresArray.length; i++) {
+                                autoresArray[i] = (String) (autores.get(i));
+                            }
+                        } else {
+                            autoresArray = new String[0];
+                        }
+
+                        Monografia monografia = new Monografia(
+                                hit.getId(),
+                                autoresArray,
+                                (String) (hit.field("orientador").getValue()),
+                                (String) (hit.field("presidenteBanca").getValue()),
+                                membrosBanca,
+                                (String) (hit.field("titulo").getValue()),
+                                (String) (hit.field("resumoLinguaEstrangeira").getValue()),
+                                (String) (hit.field("resumoPortugues").getValue())
+                        );
+
+                        results.add(monografia);
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
-
-                    Monografia monografia = new Monografia(
-                            hit.getId(),
-                            Long.parseLong(hit.field("idAutor").getValue().toString()),
-                            (String) (hit.field("autor").getValue()),
-                            (String) (hit.field("orientador").getValue()),
-                            (String) (hit.field("presidenteBanca").getValue()),
-                            membrosBanca,
-                            (String) (hit.field("titulo").getValue()),
-                            (String) (hit.field("resumoLinguaEstrangeira").getValue()),
-                            (String) (hit.field("resumoPortugues").getValue())
-                    );
-
-                    results.add(monografia);
                 }
 
                 synchronized (future){
@@ -515,72 +538,7 @@ public class Monografia {
         return response;
     }
 
-    public static void main(String args[]) throws Throwable {
-        String filesNamesConcat = "./47/SSRN-id584037.pdf\n./58/Do-it-Yoursef-Textbook Publishing.pdf\n./60/SSRN-id1966115.pdf\n./61/SSRN-id1966115.pdf\n./63/1-s2.0-S1877042812036191-main.pdf\n./67/Storming-the-gatekeepers-Digital-Disintermediation-in-the-market-for-books_2015_Information-Economics-and-Policy.pdf\n./69/Superstars-and-outsiders-in-online-markets-An-empirical-analysis-of-electronic-books_2013_Electronic-Commerce-Research-and-Applications.pdf\n./71/Digitisation-of-publishing-Exploration-based-on-existing-business-models_2014_Technological-Forecasting-and-Social-Change.pdf\n./73/Authors-Publishers-and-Readers-in-Publishing-Supply-Chain-The-Contingency-Model-of-Digital-Contents-Production-Distribution-and-Consump.pdf\n./75/Building-Your-Book-for-Kindle.pdf\n./76/UserGuide.pdf\n./79/1128951.pdf\n./81/13804.pdf\n./85/AppInvetor-Tutorial.pdf\n./86/smashwords-style-guide.pdf";
-        filesNamesConcat = filesNamesConcat.replaceAll("\\.\\/", "/Users/xandy/OneDrive/CEFET/2015.1/Metodologia Científica/Projeto LaTeX/Minha biblioteca/files/");
-        String[] names = filesNamesConcat.split("\\n");
-        for(String name : names) {
-            File file = new File(name);
-
-            BodyContentHandler handler = new BodyContentHandler();
-
-            AutoDetectParser parser = new AutoDetectParser();
-            Metadata metadata = new Metadata();
-            try {
-                parser.parse(new FileInputStream(file), handler, metadata);
-            } catch (SAXException e) {
-                e.printStackTrace();
-                continue;
-            } catch (TikaException e) {
-                e.printStackTrace();
-                continue;
-            }
-
-            TransportClient client = ElasticSearchClientFactory.createClient();
-
-            IndexRequestBuilder indexRequestBuilder = client.prepareIndex("monografias", "monografia", null);
-
-            XContentBuilder contentBuilder = XContentFactory.jsonBuilder().startObject();
-
-            contentBuilder.field("textoPuro", handler.toString());
-
-            indexRequestBuilder.setSource(contentBuilder);
-
-            SettableFuture<IndexResponse> future = SettableFuture.create();
-
-            indexRequestBuilder.execute(new ActionListener<IndexResponse>() {
-                @Override
-                public void onResponse(IndexResponse indexResponse) {
-                    synchronized (future) {
-                        future.set(indexResponse);
-                        future.notifyAll();
-                    }
-                }
-
-                @Override
-                public void onFailure(Throwable throwable) {
-                    synchronized (future) {
-                        future.setException(throwable);
-                        future.notifyAll();
-                    }
-                }
-            });
-
-            IndexResponse response;
-
-            try {
-                synchronized (future) {
-                    future.wait();
-                    response = future.get();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-            client.close();
-        }
-    }
+}
 
     /*
 PUT /monografias
@@ -591,9 +549,6 @@ PUT /monografias
   "mappings": {
     "monografia": {
       "properties": {
-        "idAutor": {
-          "type": "long"
-        },
         "autor": {
           "type": "string"
         },
@@ -615,7 +570,7 @@ PUT /monografias
         "resumoPortugues": {
           "type": "string"
         },
-        "textoPuro": {
+        "tags": {
             "type": "string",
             "term_vector": "with_positions_offsets"
         },
@@ -657,4 +612,4 @@ PUT /monografias
   }
 }
  */
-}
+
