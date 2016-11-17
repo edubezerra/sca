@@ -2,42 +2,14 @@
 	contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html data-ng-app="inclusaoDisciplina"
-	data-ng-controller="inclusaoController">
+
+<html>
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <title>SCA - Adição de Item de Pedido de Isenção de Disciplina</title>
 
-<link
-	href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-	rel="stylesheet">
-
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-	rel="stylesheet">
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css">
-
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-<link
-	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
-	media="screen" rel="stylesheet" type="text/css" />
-
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/app.js"></script>
 <script>
 	function textCounter(field, field2, maxlimit) {
 		var countfield = document.getElementById(field2);
@@ -51,20 +23,30 @@
 </script>
 
 <script
+	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
+
+<script
 	src="${pageContext.request.contextPath}/resources/jquery/vendor/jquery.ui.widget.js"></script>
+
 <script
 	src="${pageContext.request.contextPath}/resources/jquery/jquery.iframe-transport.js"></script>
+
 <script
 	src="${pageContext.request.contextPath}/resources/jquery/jquery.fileupload.js"></script>
 
 <!-- bootstrap just to have good looking page -->
-<!-- <script src="bootstrap/js/bootstrap.min.js"></script> -->
-<!-- <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" /> -->
+<script
+	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+
+<link
+	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
+	type="text/css" rel="stylesheet" />
 
 <!-- we code these -->
 <link
 	href="${pageContext.request.contextPath}/resources/css/dropzone.css"
 	type="text/css" rel="stylesheet" />
+
 <script
 	src="${pageContext.request.contextPath}/resources/jquery/myuploadfunction.js"></script>
 
