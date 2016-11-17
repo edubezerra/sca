@@ -1,10 +1,11 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 
-<%@ attribute name="title" required="true" rtexprvalue="true"%>
-<%@ attribute name="rootURL" required="true" rtexprvalue="true"%>
-<%@ attribute name="username" required="true" rtexprvalue="true"%>
-<%@ attribute name="contextPath" required="true" rtexprvalue="true"%>
-<%@ attribute name="content" fragment="true"%>
+<%@ attribute name="title" required="true" rtexprvalue="true" %>
+<%@ attribute name="rootURL" required="true" rtexprvalue="true" %>
+<%@ attribute name="username" required="true" rtexprvalue="true" %>
+<%@ attribute name="contextPath" required="true" rtexprvalue="true" %>
+<%@ attribute name="content" fragment="true" %>
+<%@ attribute name="anonymous" required="false" rtexprvalue="true" %>
 
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
@@ -84,6 +85,9 @@ body {
 								<li><a
 									href="${pageContext.request.contextPath}/registroIsencoes/registroIsencoes">
 										Isenção de Disciplinas </a></li>
+								<li>
+									<a href="${pageContext.request.contextPath}/monografias/">
+										Monografias </a></li>
 							</ul></li>
 
 					</sec:authorize>
@@ -101,6 +105,9 @@ body {
 								<li><a
 									href="${pageContext.request.contextPath}/pastaProfessor/dashboard">
 										Pasta Virtual</a></li>
+								<li>
+									<a href="${pageContext.request.contextPath}/monografias/">
+										Monografias </a></li>
 							</ul></li>
 
 					</sec:authorize>
@@ -130,6 +137,9 @@ body {
 								<li><a
 									href="${pageContext.request.contextPath}/pastaProfessor/dashboard">
 										Pasta Virtual</a></li>
+								<li>
+									<a href="${pageContext.request.contextPath}/monografias/">
+										Monografias </a></li>
 							</ul></li>
 					</sec:authorize>
 
@@ -162,13 +172,25 @@ body {
 								<li><a
 									href="${pageContext.request.contextPath}/importacaoDados/homeImportacaoDados">
 										Importar Dados</a></li>
+								<li>
+									<a href="${pageContext.request.contextPath}/monografias/">
+										Monografias </a></li>
+								<li>
+									<a href="${pageContext.request.contextPath}/monografias/blacklist/">
+										Blacklist de tags em monografias </a></li>
 							</ul></li>
 					</sec:authorize>
 
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a>${username}</a></li>
-					<li><a href="${pageContext.request.contextPath}/logout">Logout</a>
+					<li>
+						<c:if test='${anonymous=="true"}'>
+							<a href="/">Login</a>
+						</c:if>
+						<c:if test='${anonymous!="true"}'>
+							<a href="${pageContext.request.contextPath}/logout">Logout</a>
+						</c:if>
 					</li>
 				</ul>
 			</div>

@@ -25,6 +25,9 @@ public interface AlunoRepositorio extends JpaRepository<Aluno, Serializable> {
 			+ " AND a.matricula LIKE ?2% ORDER BY a.pessoa.nome")
 	List<Aluno> findAlunosByCursoEPeriodo(String siglaCurso, String periodo);
 
+	@Query("SELECT a from Aluno a WHERE a.pessoa.nome LIKE ?1% ORDER BY a.pessoa.nome")
+	List<Aluno> findAlunosByNome(String nome);
+
 	@Query("SELECT distinct a from Aluno a JOIN a.historico h JOIN a.historico.itens i WHERE i.disciplina.codigo = ?1")
 	List<Aluno> findAlunosByDisciplinasCursadas(String codigoDisciplina);
 
