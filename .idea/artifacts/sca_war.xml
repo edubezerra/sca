@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="sca:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="sca.war">
-      <element id="artifact" artifact-name="sca:war exploded" />
-    </root>
-  </artifact>
-</component>
