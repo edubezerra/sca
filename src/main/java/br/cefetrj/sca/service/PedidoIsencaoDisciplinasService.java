@@ -10,6 +10,7 @@ import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.VersaoCurso;
+import br.cefetrj.sca.dominio.isencoes.FichaIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.isencoes.ItemPedidoIsencaoDisciplina;
 import br.cefetrj.sca.dominio.isencoes.PedidoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
@@ -18,7 +19,7 @@ import br.cefetrj.sca.dominio.repositories.PedidoIsencaoDisciplinasRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
 @Service
-public class IsencaoDisciplinaService {
+public class PedidoIsencaoDisciplinasService {
 
 	@Autowired
 	private AlunoRepositorio alunoRepo;
@@ -60,15 +61,14 @@ public class IsencaoDisciplinaService {
 		return pedidoIsencaoDisciplinasRepo.findItemIsencaoById(solicitacaoId);
 	}
 
-	public List<ItemPedidoIsencaoDisciplina> findItensIsencaoByDepartamentoAndAluno(
-			Long idDepartamento, String matriculaAluno) {
+	public List<ItemPedidoIsencaoDisciplina> findItensIsencaoByDepartamentoAndAluno(Long idDepartamento,
+			String matriculaAluno) {
 
 		Aluno aluno = alunoRepo.findAlunoByMatricula(matriculaAluno);
 
 		List<ItemPedidoIsencaoDisciplina> itensIsencao = new ArrayList<>();
 
-		PedidoIsencaoDisciplinas processo = pedidoIsencaoDisciplinasRepo
-				.findByAluno(aluno);
+		PedidoIsencaoDisciplinas processo = pedidoIsencaoDisciplinasRepo.findByAluno(aluno);
 
 		// DivisorIsencoesDisciplinasService
 		itensIsencao.addAll(processo.getItens());
@@ -76,18 +76,22 @@ public class IsencaoDisciplinaService {
 		return itensIsencao;
 	}
 
-	public void registrarRespostaParaItem(String idItemPedidoIsencao,
-			String matriculaAluno, String matriculaProfessor,
+	public void registrarRespostaParaItem(String idItemPedidoIsencao, String matriculaAluno, String matriculaProfessor,
 			String novaSituacao, String observacao) {
 		Aluno alunoSolicitante = this.findAlunoByMatricula(matriculaAluno);
-		Professor professorResponsavel = this
-				.findProfessorByMatricula(matriculaProfessor);
+		Professor professorResponsavel = this.findProfessorByMatricula(matriculaProfessor);
 
-		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo
-				.findByAluno(alunoSolicitante);
-		
+		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo.findByAluno(alunoSolicitante);
+
 		pedido.analisarItem(idItemPedidoIsencao, professorResponsavel, novaSituacao, observacao);
-		
+
 		pedidoIsencaoDisciplinasRepo.save(pedido);
+	}
+
+	public FichaIsencaoDisciplinas findFichaIsencao(String matricula) {
+		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo.findByMatriculaAluno(matricula);
+		Aluno aluno = alunoRepo.findAlunoByMatricula(matricula);
+		List<Disciplina> disciplinas = disciplinaRepo.findAllEmVersaoCurso(aluno.getVersaoCurso());
+		return new FichaIsencaoDisciplinas(aluno, pedido, disciplinas);
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -61,8 +62,9 @@ public class Turma {
 
 	/**
 	 * Inscrições realizadas nesta turma.
+	 * FetchType.EAGER necessário para recuperar as incrições de uma turma no método do webservice
 	 */
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "TURMA_ID", referencedColumnName = "ID")
 	private Set<Inscricao> inscricoes = new HashSet<>();
 
@@ -352,3 +354,4 @@ public class Turma {
 	}
 
 }
+

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.StringUtils;
 
+
 @Entity
 public class Disciplina {
 	@Id

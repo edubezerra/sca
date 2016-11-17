@@ -16,6 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.cefetrj.sca.dominio.atividadecomplementar.AtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.TabelaAtividadesComplementares;
 
@@ -31,31 +36,31 @@ public final class VersaoCurso {
 	@Id
 	@GeneratedValue
 	Long id;
-
+	
 	private final String numero;
-
+	
 	@ManyToOne
 	private Curso curso;
 
-	@OneToMany(mappedBy = "versaoCurso", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
 	List<Disciplina> disciplinas;
-
+	
 	@OneToMany
 	Set<TabelaEquivalencias> tabelasEquivalencias;
-
+	
 	/**
 	 * Inteiro contendo a quantidade de periodos minimos para um curso.
 	 */
 	private Integer qtdPeriodoMinimo;
-
+	
 	@Transient
 	private Integer periodoMaximo;
-
+	
 	/**
 	 * Carga horária mínima de disciplinas optativas.
 	 */
 	private Duration cargaHorariaMinOptativas = Duration.ofHours(0);
-
+	
 	/**
 	 * Carga horária mínima de atividades complementares.
 	 */
@@ -66,14 +71,15 @@ public final class VersaoCurso {
 	 */
 	@OneToOne(cascade = CascadeType.ALL)
 	private TabelaAtividadesComplementares atividades = null;
-
+	
+	
 	@SuppressWarnings("unused")
 	private VersaoCurso() {
 		numero = null;
 	}
 
 	public VersaoCurso(String numero, Curso curso) {
-
+		
 		if (curso == null) {
 			throw new IllegalArgumentException("Curso não fornecido!");
 		}
@@ -83,19 +89,17 @@ public final class VersaoCurso {
 		this.curso = curso;
 		this.numero = numero;
 	}
+	
+	public VersaoCurso(String numero, Curso curso,Duration chMinOpt,Duration chaMinAitv) {
 
-	public VersaoCurso(String numero, Curso curso, Duration chMinOpt, Duration chaMinAitv) {
-
-		this(numero, curso);
+		this(numero,curso);
 		if (chMinOpt == null || chMinOpt.isNegative()) {
-			throw new IllegalArgumentException(
-					"Carga horária mínima de disciplinas optativas não pode ser nula e deve ser maior ou igual a zero.");
+			throw new IllegalArgumentException("Carga horária mínima de disciplinas optativas não pode ser nula e deve ser maior ou igual a zero.");
 		}
 		if (chaMinAitv == null || chaMinAitv.isNegative()) {
-			throw new IllegalArgumentException(
-					"Carga horária mínima de atividades complementares não pode ser nula e deve ser maior ou igual a zero.");
+			throw new IllegalArgumentException("Carga horária mínima de atividades complementares não pode ser nula e deve ser maior ou igual a zero.");
 		}
-
+	
 		this.cargaHorariaMinOptativas = chMinOpt;
 		this.cargaHorariaMinAitvComp = chaMinAitv;
 	}
@@ -103,18 +107,17 @@ public final class VersaoCurso {
 	public Long getId() {
 		return id;
 	}
-
+	
 	public TabelaAtividadesComplementares getTabelaAtividades() {
 		return this.atividades;
 	}
-
+	
 	public List<Disciplina> getDisciplinas() {
 		return Collections.unmodifiableList(this.disciplinas);
 	}
 
 	/**
 	 * Adiciona uma tabela de equivalencia de disciplinas na versao do curso.
-	 * 
 	 * @param tabelasEquivalencias
 	 */
 	public void setTabelasEquivalencias(Set<TabelaEquivalencias> tabelasEquivalencias) {
@@ -127,36 +130,37 @@ public final class VersaoCurso {
 	public void setTabelaAtividades(TabelaAtividadesComplementares tabelaAtiv) {
 		this.atividades = tabelaAtiv;
 	}
-
+	
 	/**
-	 * Adiciona uma atividade complementar à tabela de atividades complementares
-	 * desta grade. Caso a tabela de atividades complementares desta grade for
-	 * nula, uma nova instância de TabelaAtividadesComplementares é criada
-	 * contendo a atividade complementar passada como parâmetro.
+	 * Adiciona uma atividade complementar à tabela de atividades complementares desta grade.
+	 * Caso a tabela de atividades complementares desta grade for nula, uma nova instância de
+	 * TabelaAtividadesComplementares é criada contendo a atividade complementar passada como
+	 * parâmetro. 
 	 */
 	public void adicionaAtividade(AtividadeComplementar ativ) {
-		if (this.atividades == null)
+		if(this.atividades == null)
 			setTabelaAtividades(new TabelaAtividadesComplementares());
 		this.atividades.adicionarAtividade(ativ);
 	}
-
+		
 	/**
 	 * Adiciona uma disciplina nesta grade.
 	 */
 	public void adicionarDisciplina(Disciplina d) {
 		if (disciplinas.contains(d)) {
-			throw new IllegalArgumentException("Esta disciplina já está associada a esta grade.");
+			throw new IllegalArgumentException(
+					"Esta disciplina já está associada a esta grade.");
 		}
 		this.disciplinas.add(d);
 	}
-
+	
 	public void adicionarTabelaEquivalencia(TabelaEquivalencias t) {
-		if (this.tabelasEquivalencias == null)
+		if(this.tabelasEquivalencias == null) 
 			setTabelasEquivalencias(new HashSet<>());
-
+		
 		this.tabelasEquivalencias.add(t);
 	}
-
+		
 	public String getNumero() {
 		return numero;
 	}
@@ -168,7 +172,7 @@ public final class VersaoCurso {
 	public Duration getCargaHorariaMinAitvComp() {
 		return cargaHorariaMinAitvComp;
 	}
-
+	
 	public void setCargaHorariaMinOptativas(Duration cargaHorariaMinOptativas) {
 		this.cargaHorariaMinOptativas = cargaHorariaMinOptativas;
 	}
@@ -180,16 +184,16 @@ public final class VersaoCurso {
 	public Curso getCurso() {
 		return curso;
 	}
-
+	
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "VersaoCurso [numero=" + this.numero + ", siglaCurso: " + this.curso.getSigla() + "]";
+		return "VersaoCurso [numero=" + numero + "]";
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -230,9 +234,9 @@ public final class VersaoCurso {
 	}
 
 	public void setQtdPeriodoMinimo(Integer qtdPeriodoMinimo) {
-		if (qtdPeriodoMinimo == null || qtdPeriodoMinimo < 0)
+		if(qtdPeriodoMinimo == null || qtdPeriodoMinimo < 0)
 			throw new IllegalArgumentException("Valor invalido para o período mínimo de término de um curso.");
-
+		
 		this.qtdPeriodoMinimo = qtdPeriodoMinimo;
 		this.periodoMaximo = (2 * qtdPeriodoMinimo) - 1;
 	}

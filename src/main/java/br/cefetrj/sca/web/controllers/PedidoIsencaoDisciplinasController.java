@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Departamento;
-import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.isencoes.FichaIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.isencoes.ItemPedidoIsencaoDisciplina;
 import br.cefetrj.sca.dominio.isencoes.PedidoIsencaoDisciplinas;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
@@ -30,14 +30,14 @@ import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositories.PedidoIsencaoDisciplinasRepositorio;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
-import br.cefetrj.sca.service.IsencaoDisciplinaService;
+import br.cefetrj.sca.service.PedidoIsencaoDisciplinasService;
 
 @Controller
 @RequestMapping("/isencaoDisciplina")
-public class RegistrarIsencaoDisciplinaController {
+public class PedidoIsencaoDisciplinasController {
 
 	@Autowired
-	IsencaoDisciplinaService service;
+	PedidoIsencaoDisciplinasService service;
 
 	@Autowired
 	PedidoIsencaoDisciplinasRepositorio processoIsencaoRepo;
@@ -85,18 +85,16 @@ public class RegistrarIsencaoDisciplinaController {
 
 		try {
 
-			Aluno aluno = service.findAlunoByMatricula(matricula);
+			FichaIsencaoDisciplinas ficha = service.findFichaIsencao(matricula);
 
-			List<Disciplina> disciplinas = service.findDisciplinas(aluno
-					.getVersaoCurso());
-			model.addAttribute("aluno", aluno);
-			model.addAttribute("disciplinas", disciplinas);
+			model.addAttribute("aluno", ficha.getAluno());
+			model.addAttribute("itensIsencao", ficha.getItens());
 
 			return "/isencaoDisciplina/aluno/escolheDisciplinasParaIsentar";
 
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "/menuPrincipalView";
+			return "/isencaoDisciplina/visualizarProcessoIsencao";
 		}
 	}
 
@@ -157,38 +155,38 @@ public class RegistrarIsencaoDisciplinaController {
 	 * Invocado quando da submissão do form com detalhes das disciplinas
 	 * externas.
 	 */
-	@RequestMapping(value = "/relacaoMateriaExterna", method = RequestMethod.POST)
-	public String registroMateriaExterna(
-			Model model,
-			HttpServletRequest request,
-			@RequestParam("aluno") String matricula,
-			@RequestParam("itemIsencaoByProcessoIsencao") List<String> itemIsencao,
-			@RequestParam("disciplinaAssociada") List<String> disciplinaAssociada) {
-
-		System.out
-				.println("RegistrarIsencaoDisciplinaController.registroMateriaExterna()");
-
-		try {
-			Aluno aluno = service.findAlunoByMatricula(matricula);
-			PedidoIsencaoDisciplinas processo = processoIsencaoRepo
-					.findByAluno(aluno);
-
-			for (int i = 0; i < itemIsencao.size(); i++) {
-				processo.getItens()
-						.get(i)
-						.setDescritorDisciplinaExterna(
-								disciplinaAssociada.get(i));
-			}
-
-			processoIsencaoRepo.save(processo);
-
-			return visualizarProcessoIsencao(model, request);
-
-		} catch (Exception exc) {
-			model.addAttribute("error", exc.getMessage());
-			return "/menuPrincipalView";
-		}
-	}
+//	@RequestMapping(value = "/relacaoMateriaExterna", method = RequestMethod.POST)
+//	public String registroMateriaExterna(
+//			Model model,
+//			HttpServletRequest request,
+//			@RequestParam("aluno") String matricula,
+//			@RequestParam("itemIsencaoByProcessoIsencao") List<String> itemIsencao,
+//			@RequestParam("disciplinaAssociada") List<String> disciplinaAssociada) {
+//
+//		System.out
+//				.println("RegistrarIsencaoDisciplinaController.registroMateriaExterna()");
+//
+//		try {
+//			Aluno aluno = service.findAlunoByMatricula(matricula);
+//			PedidoIsencaoDisciplinas processo = processoIsencaoRepo
+//					.findByAluno(aluno);
+//
+//			for (int i = 0; i < itemIsencao.size(); i++) {
+//				processo.getItens()
+//						.get(i)
+//						.setDescritorDisciplinaExterna(
+//								disciplinaAssociada.get(i));
+//			}
+//
+//			processoIsencaoRepo.save(processo);
+//
+//			return visualizarProcessoIsencao(model, request);
+//
+//		} catch (Exception exc) {
+//			model.addAttribute("error", exc.getMessage());
+//			return "/menuPrincipalView";
+//		}
+//	}
 
 	/***
 	 * 

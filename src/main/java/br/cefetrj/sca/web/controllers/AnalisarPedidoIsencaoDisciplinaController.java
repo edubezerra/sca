@@ -26,8 +26,8 @@ import br.cefetrj.sca.service.util.VersoesCursoSearchCriteria;
 
 @Controller
 @SessionAttributes("login")
-@RequestMapping("/analiseAtividades")
-public class AnaliseRegistrosAtividadeComplementarController {
+@RequestMapping("/analiseIsencoes")
+public class AnalisarPedidoIsencaoDisciplinaController {
 	
 	@Autowired
 	AnaliseRegistrosAtividadeService service;
@@ -56,10 +56,10 @@ public class AnaliseRegistrosAtividadeComplementarController {
 			String matricula = usr.getMatricula();
 			model.addAttribute("dadosAnaliseAtividades", 
 					service.homeAnaliseAtividades(matricula));				
-			return "/atividadeComplementar/analiseAtividades/analiseRegistrosView";
+			return "/isencaoDisciplina/analiseIsencoes/analiseRegistrosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "forward:/analiseAtividades/menuPrincipal";
+			return "forward:/analiseIsencoes/menuPrincipal";
 		}
 	}
 	
@@ -126,10 +126,10 @@ public class AnaliseRegistrosAtividadeComplementarController {
 			String matricula = usr.getMatricula();
 			model.addAttribute("dadosAnaliseAtividades", 
 					service.homeAnaliseAtividades(matricula));
-			return "/atividadeComplementar/analiseAtividades/analiseRegistrosView";
+			return "/isencaoDisciplina/analiseIsencoes/analiseRegistrosView";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "forward:/analiseAtividades/menuPrincipal";
+			return "forward:/analiseIsencoes/menuPrincipal";
 		}
 	}
 	

@@ -12,3 +12,4 @@ app.log
 libs/
 src/main/java/br/cefetrj/sca/infra/auth/EstrategiaAutenticacaoSIE.java
 .idea
+application.properties.MySQL

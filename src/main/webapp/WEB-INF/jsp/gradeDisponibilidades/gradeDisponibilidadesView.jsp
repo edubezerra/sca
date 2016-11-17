@@ -66,12 +66,10 @@ body {
 
 </head>
 
-<t:wrapper>
-	<jsp:attribute name="header">
-		<h1>SCA - Fornecer Grade de Disponibilidades</h1>
-    </jsp:attribute>
+<h1>SCA - Fornecer Grade de Disponibilidades</h1>
 
-	<jsp:body>
+
+<body>
 
 	<c:if test="${requestScope.error != null}">
 		<div>
@@ -84,12 +82,12 @@ body {
 			<p class="info">${requestScope.info}</p>
 		</div>
 	</c:if>
-    
+
 	<div class="table">
-	
+
 		<form class="row"
-				action="${rootUrl}gradedisponibilidades/validarProfessor"
-				method="post">
+			action="${rootUrl}gradedisponibilidades/validarProfessor"
+			method="post">
 
 
 			<div class="field">
@@ -97,7 +95,7 @@ body {
 			</div>
 			<div class="field">
 				<input type="text" name="matriculaProfessor" value="" size="30"
-						maxlength="16" />
+					maxlength="16" />
 			</div>
 			<br />
 			<div class="field">
@@ -108,5 +106,4 @@ body {
 
 	<div id="footer"></div>
 
-    </jsp:body>
-</t:wrapper>
+</body>
