@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,7 +20,7 @@ public class EncontroPresencial {
 
 	private Date data;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name = "FREQUENCIA_ALUNOS", joinColumns = { @JoinColumn(name = "ENCONTRO_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "ALUNO_ID", referencedColumnName = "ID") })
 	private List<Aluno> alunos = new ArrayList<>();
 
