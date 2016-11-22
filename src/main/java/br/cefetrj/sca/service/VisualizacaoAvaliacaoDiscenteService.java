@@ -1,15 +1,11 @@
 package br.cefetrj.sca.service;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.avaliacaoturma.Alternativa;
@@ -43,7 +39,6 @@ public class VisualizacaoAvaliacaoDiscenteService {
 
 	public List<AvaliacaoTurma> selecionarTurma(Turma t) {
 		List<AvaliacaoTurma> tAvaliadas = repositorio2.findAvaliacoesTurmaLista(t.getId());
-		System.out.println("service--" + tAvaliadas.size());
 		return tAvaliadas;
 	}
 
@@ -61,8 +56,6 @@ public class VisualizacaoAvaliacaoDiscenteService {
 			AvaliacaoTurma a = avaliacaoTurma.get(i);
 			resp.addAll(a.getRespostas());
 		}
-
-		System.out.println("Service" + resp.size());
 
 		int[] valorRespostas = new int[4];
 		int posicao = 0;

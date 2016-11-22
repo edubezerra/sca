@@ -38,7 +38,6 @@ public class VisualizacaoAvaliacaoDiscenteController {
 		Professor professor = repositorio.findProfessorByMatricula(matricula);
 
 		List<Turma> t = discenteService.listarTurmaLecionadas(professor);
-		System.out.println(t.size());
 
 		mv.addObject("turmas", t);
 		return mv;
@@ -50,12 +49,14 @@ public class VisualizacaoAvaliacaoDiscenteController {
 		ModelAndView mv = new ModelAndView("visualizarAvaliacoesDocentes/GraficoAvaliacoes");
 		Turma t = turmaRepositorio.findTurmaById(cod);
 
+		String titulo = t.getNomeDisciplina() + " " + t.getCodigo();
+
 		List<AvaliacaoTurma> at = discenteService.selecionarTurma(t);
-		System.out.println(at.size());
 
 		List<String> resp = discenteService.conversaoRespospa(at);
 		mv.addObject("turma", t);
 		mv.addObject("Respostas", resp);
+		mv.addObject("titulo", titulo);
 		return mv;
 
 	}
