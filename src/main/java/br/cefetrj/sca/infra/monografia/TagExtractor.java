@@ -33,7 +33,7 @@ public class TagExtractor {
     POSTaggerME englishTagger;
     POSTaggerME portugueseTagger;
 
-    enum Language {
+    private enum Language {
         english,
         portuguese
     }

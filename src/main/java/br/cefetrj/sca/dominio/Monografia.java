@@ -151,7 +151,7 @@ public class Monografia {
         }
     }
 
-    private void carregarCacheArquivos() throws UnknownHostException {
+    private void carregarCacheArquivos() throws IOException {
         if (cacheArquivos == null) {
             TransportClient client = ElasticSearchClientFactory.createClient();
             GetRequestBuilder getRequestBuilder = client.prepareGet("monografias", "monografia", id);
@@ -258,7 +258,7 @@ public class Monografia {
         }
     }
 
-    public static Monografia get(String id) throws UnknownHostException {
+    public static Monografia get(String id) throws IOException {
         TransportClient client = ElasticSearchClientFactory.createClient();
         GetRequestBuilder getRequestBuilder = client.prepareGet("monografias", "monografia", id);
         getRequestBuilder.setFields(
