@@ -11,7 +11,7 @@
 <script type="text/javascript"
 	src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript" src="${rootURL}resources/js/app.js"></script>
-<title>Form egresso</title>
+<title>Perfil do Egresso</title>
 </head>
 <body>
 	<form method="POST"

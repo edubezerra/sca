@@ -21,7 +21,7 @@ public class ImportadorQuestionarioEgresso {
 
 		System.out.println("ImportadorQuestionarioEgresso.main()");
 
-		PesquisaAvaliacao formGrad = new PesquisaAvaliacao("Egresso",
+		PesquisaAvaliacao formGrad = new PesquisaAvaliacao("AvaliacaoEgresso",
 				"Avaliação do Egresso");
 
 		Quesito q1 = new Quesito("Atualmente o(a) Sr.(a) está:");
