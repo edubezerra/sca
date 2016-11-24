@@ -33,9 +33,9 @@
 
 	<ul>
 		<li><a
-			href="${rootUrl}/avaliacaoEgresso/questionarioMedio">
+			href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioMedio">
 				Avaliação Egresso Médio/Técnico </a></li>
-		<li><a href="${rootUrl}/avaliacaoEgresso/questionarioGraduacao">
+		<li><a href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioGraduacao">
 				Avaliar Egresso Graduação</a></li>
 	</ul>
 </body>

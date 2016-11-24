@@ -33,17 +33,17 @@ public class AvaliacaoEgressoService {
 	@Autowired
 	private AvaliacaoEgressoRepositorio egressoRepo;
 	
-	private Aluno getAlunoPorCPF(String cpf) {
-		if (cpf == null || cpf.trim().equals("")) {
-			throw new IllegalArgumentException("CPF deve ser fornecido!");
+	private Aluno getAlunoPorMatricula(String matricula) {
+		if (matricula == null || matricula.trim().equals("")) {
+			throw new IllegalArgumentException("Matrícula deve ser fornecida!");
 		}
 
 		Aluno aluno = null;
 
 		try {
-			aluno = alunoRepo.findAlunoByCpf(cpf);
+			aluno = alunoRepo.findAlunoByMatricula(matricula);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Aluno não encontrado (" + cpf
+			throw new IllegalArgumentException("Aluno não encontrado (" + matricula
 					+ ")", e);
 		}
 
@@ -52,11 +52,11 @@ public class AvaliacaoEgressoService {
 	
 	
 	
-	public void avaliaEgresso(String cpf, List<Integer> respostas, String especialidade, 
+	public void avaliaEgresso(String matricula, List<Long> respostas, String especialidade, 
 			String questao10Outro, String questao15Area) {
 		
 		PesquisaAvaliacao form = faRepo.findByDescritor("AvaliacaoEgresso");
-		Aluno aluno = getAlunoPorCPF(cpf);
+		Aluno aluno = getAlunoPorMatricula(matricula);
 		List<Alternativa> alternativas = new ArrayList<Alternativa>();
 		
 		for(int i = 0; i < respostas.size(); i++){	

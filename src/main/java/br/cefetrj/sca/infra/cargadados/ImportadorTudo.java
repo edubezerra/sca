@@ -67,6 +67,9 @@ public class ImportadorTudo {
 	@Autowired
 	ImportadorEquivalenciasDisciplinas importadorEquivalenciaDisciplinas;
 
+	@Autowired
+	ImportadorQuestionarioEgresso importadorQuestionarioEgresso;
+	
 	public static void main(String[] args) {
 		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
 		importador.run();
@@ -75,6 +78,8 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
+			importadorQuestionarioEgresso.run();
+			
 			importadorQuestionarioAvaliacaoTurmas.run();
 			importadorGradesCurriculares.run();
 			importadorTurmasComInscricoes.run();
@@ -94,7 +99,7 @@ public class ImportadorTudo {
 			// Agora essa importação é feita pela aplicação WEB.
 			//			 importadorAtividadesComp.run();
 
-//			 importadorHistoricoEscolar.run();
+			 importadorHistoricoEscolar.run();
 
 			 importadorAlocacoesProfessoresEmTurmas.run();
 			 importadorHabilitacoesParaProfessor.run();
