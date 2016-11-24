@@ -38,6 +38,9 @@ public class ImportadorTudo {
 	ImportadorUsuariosProfessoresUsandoMatriculaComoLogin importadorUsuariosProfessores;
 
 	@Autowired
+	ImportadorUsuariosDemaisPerfis importadorUsuariosDemaisPerfis;
+
+	@Autowired
 	ImportadorProfessores importadorProfessores;
 
 	@Autowired
@@ -80,11 +83,11 @@ public class ImportadorTudo {
 
 			importadorAlunos.run();
 
-			importadorUsuariosAlunos.run();
-
 			importadorProfessores.run();
 
+			importadorUsuariosAlunos.run();
 			importadorUsuariosProfessores.run();
+			importadorUsuariosDemaisPerfis.run();
 
 			importadorDepartamentos.run();
 
