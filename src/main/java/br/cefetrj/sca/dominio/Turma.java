@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -61,8 +62,9 @@ public class Turma {
 
 	/**
 	 * Inscrições realizadas nesta turma.
+	 * FetchType.EAGER necessário para recuperar as incrições de uma turma no método do webservice
 	 */
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "TURMA_ID", referencedColumnName = "ID")
 	private Set<Inscricao> inscricoes = new HashSet<>();
 
@@ -77,10 +79,13 @@ public class Turma {
 	}
 
 	/**
-	 * Cria uma turma com disciplina e código fornecidos como parâmetros. A
-	 * capacidade máxima da turma criada é igual a
-	 * <code>CAPACIDADE_PRESUMIDA</code>. O semestre letvo da turma criada é
-	 * <code>SemestreLetivo.SEMESTRE_LETIVO_CORRENTE</code>.
+	 * Cria uma turma com disciplina e código fornecidos como parâmetros.
+	 * 
+	 * A capacidade máxima da turma criada é igual a
+	 * <code>CAPACIDADE_PRESUMIDA</code>.
+	 * 
+	 * O período letivo da turma criada é
+	 * <code>PeriodoLetivo.SEMESTRE_LETIVO_CORRENTE</code>.
 	 * 
 	 * @param disciplina
 	 *            disciplina para a qual esta turma é criada.
@@ -108,8 +113,9 @@ public class Turma {
 	}
 
 	/**
-	 * Cria uma turma com disciplina, código, número de vagas e semestre letivo
+	 * Cria uma turma com disciplina, código, número de vagas e período letivo
 	 * fornecidos como parâmetros. A capacidade máxima da turma criada é igual a
+	 * <code>numeroVagas</code>.
 	 * 
 	 * @param disciplina
 	 *            disciplina para a qual a turma é aberta
@@ -123,7 +129,8 @@ public class Turma {
 	 * @param periodo
 	 *            período letivo em que a turma é ofertada
 	 */
-	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas, PeriodoLetivo periodo) {
+	public Turma(Disciplina disciplina, String codigo, Integer numeroVagas,
+			PeriodoLetivo periodo) {
 
 		this(disciplina, codigo);
 
@@ -131,7 +138,8 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas indefinido!");
 		}
 		if (numeroVagas <= 0) {
-			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException(
+					"Número de vagas deve ser positivo.");
 		}
 		this.capacidadeMaxima = numeroVagas;
 
@@ -170,7 +178,7 @@ public class Turma {
 	}
 
 	/**
-	 * Inscreve o aluno passado como parâmetro nesta turma.
+	 * Inscreve um aluno (passado como parâmetro) nesta turma.
 	 * 
 	 * RN02: Uma turma não pode ter mais alunos inscritos do que a capacidade
 	 * máxima definida para ela.
@@ -181,12 +189,15 @@ public class Turma {
 	public void inscreverAluno(Aluno aluno) {
 		if (inscricoes.size() + 1 > capacidadeMaxima) {
 			throw new IllegalStateException(
-					"Inscrição não realizada. Limite de vagas já alcançado (" + capacidadeMaxima + ")");
+					"Inscrição não realizada. Limite de vagas já alcançado ("
+							+ capacidadeMaxima + ")");
 		} else {
 			Inscricao inscricao = new Inscricao(aluno);
 			for (Inscricao umaInscricao : inscricoes) {
-				if (umaInscricao.getAluno().getMatricula().equals(aluno.getMatricula())) {
-					throw new IllegalArgumentException("Aluno já inscrito na turma.");
+				if (umaInscricao.getAluno().getMatricula()
+						.equals(aluno.getMatricula())) {
+					throw new IllegalArgumentException(
+							"Aluno já inscrito na turma.");
 				}
 			}
 			this.inscricoes.add(inscricao);
@@ -209,10 +220,12 @@ public class Turma {
 			throw new IllegalArgumentException("Número de vagas é obrigatório.");
 		}
 		if (capacidadeMaxima <= 0) {
-			throw new IllegalArgumentException("Número de vagas deve ser positivo.");
+			throw new IllegalArgumentException(
+					"Número de vagas deve ser positivo.");
 		}
 		if (capacidadeMaxima < inscricoes.size()) {
-			throw new IllegalArgumentException("Há mais inscritos do que a capacidade máxima fornecida.");
+			throw new IllegalArgumentException(
+					"Há mais inscritos do que a capacidade máxima fornecida.");
 		}
 		this.capacidadeMaxima = capacidadeMaxima;
 	}
@@ -254,8 +267,10 @@ public class Turma {
 		this.professor = professor;
 	}
 
-	public void adicionarAula(String diaSemana, String horarioInicio, String horarioTermino, LocalAula local) {
-		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio, horarioTermino, local);
+	public void adicionarAula(String diaSemana, String horarioInicio,
+			String horarioTermino, LocalAula local) {
+		Aula a = new Aula(EnumDiaSemana.valueOf(diaSemana), horarioInicio,
+				horarioTermino, local);
 		this.aulas.add(a);
 	}
 
@@ -278,13 +293,15 @@ public class Turma {
 				inscricao.lancarAvaliacao(item);
 			} catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException(
-						"Lançamento inválido para aluno de matrícula " + item.matriculaAluno + ": " + e.getMessage());
+						"Lançamento inválido para aluno de matrícula "
+								+ item.matriculaAluno + ": " + e.getMessage());
 			}
 		}
 	}
 
 	private void verificarFaltas(Integer qtdFaltas) {
-		if (qtdFaltas != null && (qtdFaltas < 0 || qtdFaltas > this.getQtdAulas())) {
+		if (qtdFaltas != null
+				&& (qtdFaltas < 0 || qtdFaltas > this.getQtdAulas())) {
 			throw new IllegalArgumentException("Quantidade de faltas inválida!");
 		}
 	}
@@ -332,8 +349,9 @@ public class Turma {
 
 	@Override
 	public String toString() {
-		return "Turma [codigo=" + codigo + ", disciplina=" + disciplina + ", periodo=" + periodo + "]";
+		return "Turma [codigo=" + codigo + ", disciplina=" + disciplina
+				+ ", periodo=" + periodo + "]";
 	}
-	
-	
+
 }
+

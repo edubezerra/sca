@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.EnumDiaSemana;
+import br.cefetrj.sca.dominio.GradeHorarios;
+import br.cefetrj.sca.dominio.IntervaloTemporal;
 import br.cefetrj.sca.dominio.ItemHorario;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Professor;
@@ -31,7 +33,9 @@ public class GradeDisponibilidade implements Cloneable {
 	private Professor professor;
 
 	@ManyToMany
-	@JoinTable(name = "GRADEDISPONIBILIDADE_DISCIPLINA", joinColumns = { @JoinColumn(name = "GRADE_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
+	@JoinTable(name = "GRADEDISPONIBILIDADE_DISCIPLINA", joinColumns = {
+			@JoinColumn(name = "GRADE_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
 	private Set<Disciplina> disciplinas = new HashSet<Disciplina>();
 
 	@OneToMany(fetch = FetchType.EAGER)
@@ -84,10 +88,9 @@ public class GradeDisponibilidade implements Cloneable {
 		}
 		if (!this.professor.estaHabilitado(disciplina)) {
 			throw new IllegalArgumentException(
-					"Professor não está habilitado para disciplina \""
-							+ disciplina.getNome() + "\".");
+					"Professor não está habilitado para disciplina \"" + disciplina.getNome() + "\".");
 		}
-		if(this.disciplinas.contains(disciplina)){
+		if (this.disciplinas.contains(disciplina)) {
 			throw new IllegalArgumentException("Habilitação já registrada.");
 		}
 		this.disciplinas.add(disciplina);
@@ -98,10 +101,25 @@ public class GradeDisponibilidade implements Cloneable {
 		disciplinas.remove(disciplina);
 	}
 
+	/**
+	 * Realiza a cópia do objeto <code>this</code> e a posterior definição do
+	 * atributo <code>semestre</code> usando o parâmetro <code>period</code>
+	 * 
+	 * @param periodo
+	 *            período letivo a ser definido no objeto resultante da
+	 *            clonagem.
+	 * 
+	 * @return grade de disponbilidade clonada.
+	 */
+	public GradeDisponibilidade clone(PeriodoLetivo periodo) {
+		GradeDisponibilidade grade = this.clone();
+		grade.semestre = periodo;
+		return grade;
+	}
+
 	@Override
 	public GradeDisponibilidade clone() {
-		GradeDisponibilidade copia = new GradeDisponibilidade(this.professor,
-				(PeriodoLetivo) this.semestre);
+		GradeDisponibilidade copia = new GradeDisponibilidade(this.professor, (PeriodoLetivo) this.semestre);
 		copia.setDisciplinas(this.disciplinas);
 		for (ItemHorario item : itensDisponibilidade) {
 			copia.itensDisponibilidade.add((ItemHorario) item);
@@ -113,24 +131,32 @@ public class GradeDisponibilidade implements Cloneable {
 		this.disciplinas = disciplinas;
 	}
 
-	public void adicionarItemHorario(String diaStr, String fim, String inicio) {
+	public void adicionarItemHorario(String diaStr, String horaInicial, String horaFinal) {
 		EnumDiaSemana dia = EnumDiaSemana.findByText(diaStr);
-		ItemHorario itemFornecido = getItemHorario(dia, inicio, fim);
+		this.adicionarItemHorario(dia, horaInicial, horaFinal);
+	}
+
+	public void adicionarItemHorario(EnumDiaSemana dia, String horaInicial, String horaFinal) {
+		ItemHorario itemFornecido = getItemHorario(dia, horaInicial, horaFinal);
+		if (itemFornecido == null) {
+			throw new IllegalArgumentException("Item de horário inexistente!");
+		}
 		for (ItemHorario item : itensDisponibilidade) {
 			if (itemFornecido.equals(item)) {
-				throw new IllegalArgumentException("Item já inserido.");
-			} else if (itemFornecido.colide(item)) {
-				throw new IllegalArgumentException("Colisão de horários");
+				throw new IllegalArgumentException("Item de horário duplicado!");
 			}
 		}
 		itensDisponibilidade.add(itemFornecido);
 	}
 
 	private ItemHorario getItemHorario(EnumDiaSemana dia, String inicio, String fim) {
-		ItemHorario item = new ItemHorario(dia, fim, inicio);
-		for (ItemHorario itemHorario : itensDisponibilidade) {
-			if (itemHorario.equals(item)) {
-				return itemHorario;
+		IntervaloTemporal intervalo = GradeHorarios.getItem(inicio, fim);
+		if (intervalo != null) {
+			ItemHorario item = new ItemHorario(dia, intervalo);
+			for (ItemHorario itemHorario : itensDisponibilidade) {
+				if (itemHorario.equals(item)) {
+					return itemHorario;
+				}
 			}
 		}
 		return null;
@@ -146,18 +172,11 @@ public class GradeDisponibilidade implements Cloneable {
 			buffer.append(disciplina.getNome() + "\n");
 		}
 
-		buffer.append("Hor�rios:\n");
+		buffer.append("Horários:\n");
 		for (ItemHorario item : this.itensDisponibilidade) {
-			buffer.append(item.getInicio() + " �s " + item.getFim() + "\n");
+			buffer.append(item.getInicio() + " - " + item.getFim() + "\n");
 		}
 		return buffer.toString();
-	}
-
-	public void adicionarItemHorario(EnumDiaSemana dia, String horaInicial,
-			String horaFinal) {
-		ItemHorario item;
-		item = new ItemHorario(dia, horaInicial, horaFinal);
-		this.itensDisponibilidade.add(item);
 	}
 
 	public int getQuantidadeDisciplinas() {

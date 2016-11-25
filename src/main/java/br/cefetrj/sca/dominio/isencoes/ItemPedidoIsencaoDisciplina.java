@@ -1,5 +1,6 @@
 package br.cefetrj.sca.dominio.isencoes;
 
+import java.time.Duration;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -29,7 +30,7 @@ import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 @Entity
 public class ItemPedidoIsencaoDisciplina {
 	public enum SituacaoItem {
-		INDEFINIDO("INDEFINIDO"), DEFERIDO("DEFERIDO"), INDEFERIDO("INDEFERIDO");
+		SUBMETIDO("SUBMETIDO"), DEFERIDO("DEFERIDO"), INDEFERIDO("INDEFERIDO");
 
 		private String value;
 
@@ -86,13 +87,29 @@ public class ItemPedidoIsencaoDisciplina {
 
 	private String motivoIndeferimento;
 
+	private Date dataCriacao;
+
 	@SuppressWarnings("unused")
 	private ItemPedidoIsencaoDisciplina() {
 	}
 
 	public ItemPedidoIsencaoDisciplina(Disciplina disciplina) {
 		this.disciplina = disciplina;
-		this.situacao = "INDEFINIDO";
+		this.situacao = "SUBMETIDO";
+	}
+
+	public ItemPedidoIsencaoDisciplina(Date time, Disciplina disciplina,
+			String nomeDisciplinaExterna, String notaFinalDisciplinaExterna,
+			Duration ofHours, String observacao, Comprovante doc) {
+
+		this.dataCriacao = time;
+		this.disciplina = disciplina;
+		this.descritorDisciplinaExterna = nomeDisciplinaExterna;
+		// this.notaFinalDisciplinaExterna = notaFinalDisciplinaExterna;
+		// this.cargaHorariaDisciplinaExterna = ofHours;
+		this.observacao = observacao;
+		this.comprovante = doc;
+		this.situacao = "SUBMETIDO";
 	}
 
 	public String getSituacao() {
@@ -104,7 +121,7 @@ public class ItemPedidoIsencaoDisciplina {
 			throw new IllegalArgumentException(
 					"Professor responsável pela análise deve ser informado!");
 		}
-		if (!this.situacao.equals("INDEFINIDO"))
+		if (!this.situacao.equals("SUBMETIDO"))
 			throw new IllegalStateException(
 					"Apenas itens não analisados podem ser deferidos.");
 		this.professor = professor;
@@ -116,7 +133,7 @@ public class ItemPedidoIsencaoDisciplina {
 			throw new IllegalArgumentException(
 					"Professor responsável pela análise deve ser informado!");
 		}
-		if (!this.situacao.equals("INDEFINIDO"))
+		if (!this.situacao.equals("SUBMETIDO"))
 			throw new IllegalStateException(
 					"Apenas itens não analisados podem ser indeferidos.");
 		this.professor = professor;
@@ -124,17 +141,9 @@ public class ItemPedidoIsencaoDisciplina {
 		this.motivoIndeferimento = motivoIndeferimento;
 	}
 
-	// public void setSituacao(String situacao) {
-	// this.situacao = situacao;
-	// }
-
 	public Date getDataAnalise() {
 		return dataAnalise;
 	}
-
-	// public void setDataAnalise(Date dataAnalise) {
-	// this.dataAnalise = dataAnalise;
-	// }
 
 	public Disciplina getDisciplina() {
 		return disciplina;
@@ -168,19 +177,12 @@ public class ItemPedidoIsencaoDisciplina {
 		return observacao;
 	}
 
-	// public void setObservacao(String observacao) {
-	// this.observacao = observacao;
-	// }
-
 	public String getDescritorDisciplinaExterna() {
 		return descritorDisciplinaExterna;
 	}
 
-	public void setDescritorDisciplinaExterna(String descritor) {
-		this.descritorDisciplinaExterna = descritor;
-	}
-
-	public void analisar(Professor professor, String valor, String motivoIndeferimento) {
+	public void analisar(Professor professor, String valor,
+			String motivoIndeferimento) {
 		if (valor.equals("DEFERIDO")) {
 			this.deferir(professor);
 		} else if (valor.equals("INDEFERIDO")) {
@@ -192,8 +194,13 @@ public class ItemPedidoIsencaoDisciplina {
 	Professor getProfessorResponsavel() {
 		return professor;
 	}
-	
+
 	public String getMotivoIndeferimento() {
 		return motivoIndeferimento;
+	}
+
+	public Date getDataSolicitacao() {
+		// TODO: criar atributo para armazenar a data.
+		return new Date();
 	}
 }

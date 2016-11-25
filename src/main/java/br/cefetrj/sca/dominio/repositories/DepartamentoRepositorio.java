@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.cefetrj.sca.dominio.Departamento;
+import br.cefetrj.sca.dominio.Professor;
 
 public interface DepartamentoRepositorio extends JpaRepository<Departamento, Serializable> {
 

@@ -26,7 +26,7 @@ public class Pessoa {
 	private Date dataNascimento;
 
 	private String cpf;
-
+	
 	public Pessoa() {
 	}
 
@@ -109,7 +109,7 @@ public class Pessoa {
 	public String getCpf() {
 		return cpf;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Pessoa [nome=" + nome + ", cpf=" + cpf + "]";

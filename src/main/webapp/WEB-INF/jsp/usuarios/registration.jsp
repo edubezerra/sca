@@ -26,7 +26,7 @@
 					<label class="col-md-3 control-lable" for="nome">Nome</label>
 					<div class="col-md-7">
 						<form:input type="text" path="nome" id="nome"
-							class="form-control input-sm" />
+							class="form-control input-sm"/>
 						<div class="has-error">
 							<form:errors path="nome" class="help-inline" />
 						</div>
@@ -73,7 +73,7 @@
 					<label class="col-md-3 control-lable" for="userProfiles">Perfis</label>
 					<div class="col-md-7">
 						<form:select path="userProfiles" items="${roles}" multiple="true"
-							itemValue="id" itemLabel="type" class="form-control input-sm" />
+							itemValue="id" itemLabel="type" class="form-control" />
 						<div class="has-error">
 							<form:errors path="userProfiles" class="help-inline" />
 						</div>

@@ -16,6 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.cefetrj.sca.dominio.atividadecomplementar.AtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.TabelaAtividadesComplementares;
 
@@ -37,7 +42,7 @@ public final class VersaoCurso {
 	@ManyToOne
 	private Curso curso;
 
-	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
 	List<Disciplina> disciplinas;
 	
 	@OneToMany

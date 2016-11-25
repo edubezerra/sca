@@ -135,4 +135,13 @@ public class Professor {
 	public void habilitarPara(Disciplina d) {
 		this.habilitacoes.add(d);
 	}
+
+	public String getEmail() {
+		if (pessoa.getEmail() != null) {
+			return pessoa.getEmail().toString();
+		} else {
+			return null;
+		}
+	}
+	
 }

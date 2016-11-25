@@ -42,35 +42,14 @@ public class ImportadorAtividadesComplementares {
 
 	private HashMap<String, TabelaAtividadesComplementares> tabAtividades = new HashMap<>();
 
-	public void run() {
-		System.out.println("ImportadorAtividadesComp.run()");
-		try {
-			String arquivoPlanilha = "./planilhas/grades-curriculares/AtividadesCompBCC.xls";
-			this.importarPlanilha(arquivoPlanilha);
-			this.gravarDadosImportados();
-
-			versoesCursos.clear();
-			tiposAtividades.clear();
-			tabAtividades.clear();
-
-			arquivoPlanilha = "./planilhas/grades-curriculares/AtividadesCompCSTSI.xls";
-			this.importarPlanilha(arquivoPlanilha);
-			this.gravarDadosImportados();
-		} catch (BiffException | IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		System.out.println("Feito!");
-	}
-
-	private void gravarDadosImportados() {
+	private StringBuilder gravarDadosImportados(StringBuilder response) {
 
 		/**
 		 * Realiza a persistência dos objetos
 		 * <code>TipoAtividadeComplementar</code>.
 		 */
 		for (TipoAtividadeComplementar tipoAtiv : tiposAtividades) {
-			System.out.println("Gravando tipo de atividade complementar: " + tipoAtiv);
+			response.append("Gravando tipo de atividade complementar: " + tipoAtiv);
 			tipoAtividadeComplementarRepositorio.save(tipoAtiv);
 		}
 
@@ -81,27 +60,32 @@ public class ImportadorAtividadesComplementares {
 		Set<String> versoesIt = versoesCursos.keySet();
 		for (String numeroMaisSigla : versoesIt) {
 			VersaoCurso versaoCurso = versoesCursos.get(numeroMaisSigla);
-			System.out.println("Gravando atividades em " + versaoCurso);
+			VersaoCurso versaoExistente = versaoCursoRepositorio.findByNumeroEmCurso(versaoCurso.getNumero(),
+					versaoCurso.getCurso().getSigla());
+			if (versaoExistente != null) {
+				versaoCurso = versaoExistente;
+				if (versaoCurso.getTabelaAtividades() != null) {
+
+				}
+			}
+			response.append("Gravando atividades em " + versaoCurso + ";");
 			TabelaAtividadesComplementares tab = tabAtividades.get(numeroMaisSigla);
 			versaoCurso.setTabelaAtividades(tab);
 			versaoCursoRepositorio.save(versaoCurso);
 		}
 
-		// em.getTransaction().commit();
-
 		for (String numeroMaisSigla : versoesIt) {
 			VersaoCurso versaoCurso = versoesCursos.get(numeroMaisSigla);
-			System.out.println("Foram importadas " + tabAtividades.get(numeroMaisSigla).getQtdAtividades()
-					+ " atividades complementares em " + versaoCurso);
+			response.append("Foram importadas " + tabAtividades.get(numeroMaisSigla).getQtdAtividades()
+					+ " atividades complementares em " + versaoCurso + ";");
 		}
+
+		return response;
 	}
 
-	private void importarPlanilha(String inputFile) throws BiffException, IOException {
-		File inputWorkbook = new File(inputFile);
-		importarPlanilha(inputWorkbook);
-	}
+	public String importarPlanilha(File arquivoPlanilha) throws BiffException, IOException {
+		StringBuilder response = new StringBuilder();
 
-	private void importarPlanilha(File arquivoPlanilha) throws BiffException, IOException {
 		Workbook w;
 
 		System.err.println("Abrindo planilha " + arquivoPlanilha);
@@ -112,17 +96,21 @@ public class ImportadorAtividadesComplementares {
 		w = Workbook.getWorkbook(arquivoPlanilha, ws);
 		Sheet sheet = w.getSheet(0);
 
-		importarVersoesCursos(colunasList, sheet);
-		importarTiposAtividadesComp(colunasList, sheet);
-		importarAtividadesComp(colunasList, sheet);
+		importarVersoesCursos(colunasList, sheet, response);
+		importarTiposAtividadesComp(colunasList, sheet, response);
+		importarAtividadesComp(colunasList, sheet, response);
+
+		response = gravarDadosImportados(response);
+
+		return response.toString();
 	}
 
 	private VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
 		return versaoCursoRepositorio.findByNumeroEmCurso(numeroVersao, siglaCurso);
 	}
 
-	private void importarVersoesCursos(List<String> colunasList, Sheet sheet) {
-		System.out.println("Iniciando importação de dados relativos a versões de cursos...");
+	private void importarVersoesCursos(List<String> colunasList, Sheet sheet, StringBuilder response) {
+		response.append("Iniciando importação de dados relativos a versões de cursos...;");
 		for (int i = 1; i < sheet.getRows(); i++) {
 			String codCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
@@ -130,18 +118,20 @@ public class ImportadorAtividadesComplementares {
 			if (versoesCursos.get(codCurso + numVersao) == null) {
 				VersaoCurso versao = getVersaoCurso(codCurso, numVersao);
 
-				Duration chAtiv = Duration.ofHours(Long.parseLong(chMinAtividades));
-				versao.setCargaHorariaMinAitvComp(chAtiv);
-
-				versoesCursos.put(codCurso + numVersao, versao);
+				if (versao != null) {
+					Duration chAtiv = Duration.ofHours(Long.parseLong(chMinAtividades));
+					versao.setCargaHorariaMinAitvComp(chAtiv);
+					versoesCursos.put(codCurso + numVersao, versao);
+				} else {
+					throw new IllegalArgumentException("Versão de curso não encontrada: " + codCurso + "/" + numVersao);
+				}
 			}
-
 		}
-		System.out.println("Foram encontradas " + versoesCursos.size() + " versões de cursos.");
+		response.append("Foram encontradas " + versoesCursos.size() + " versões de cursos.;");
 	}
 
-	private void importarTiposAtividadesComp(List<String> colunasList, Sheet sheet) {
-		System.out.println("Iniciando importação de dados relativos a tipos de atividade complementar...");
+	private void importarTiposAtividadesComp(List<String> colunasList, Sheet sheet, StringBuilder response) {
+		response.append("Iniciando importação de dados relativos a tipos de atividade complementar...;");
 		for (int i = 1; i < sheet.getRows(); i++) {
 			String descrAtividade = sheet.getCell(colunasList.indexOf("DESCRICAO_ATIVIDADE"), i).getContents();
 			String categoria = sheet.getCell(colunasList.indexOf("CATEGORIA_ATIVIDADE"), i).getContents();
@@ -155,14 +145,24 @@ public class ImportadorAtividadesComplementares {
 			}
 
 			if (!tipoAtividadeJaExiste) {
-				TipoAtividadeComplementar tipoAtiv = new TipoAtividadeComplementar(descrAtividade,
-						EnumTipoAtividadeComplementar.findByText(categoria));
+				TipoAtividadeComplementar tipoAtivExistente = tipoAtividadeComplementarRepositorio
+						.findByDescricaoAndCategoria(descrAtividade,
+								EnumTipoAtividadeComplementar.findByText(categoria));
+
+				TipoAtividadeComplementar tipoAtiv;
+				if (tipoAtivExistente != null) {
+					tipoAtiv = tipoAtivExistente;
+				} else {
+					tipoAtiv = new TipoAtividadeComplementar(descrAtividade,
+							EnumTipoAtividadeComplementar.findByText(categoria));
+				}
 
 				tiposAtividades.add(tipoAtiv);
 			} else {
-				System.err.println("Já existe tipo de atividade complementar com esta descricao " + descrAtividade);
+				response.append("Já existe tipo de atividade complementar com esta descricão " + descrAtividade + ";");
 			}
 		}
+
 	}
 
 	private TipoAtividadeComplementar getTipoAtividadeComp(String descrAtividade, String categoria) {
@@ -175,8 +175,8 @@ public class ImportadorAtividadesComplementares {
 		return null;
 	}
 
-	private void importarAtividadesComp(List<String> colunasList, Sheet sheet) {
-		System.out.println("Iniciando importação de dados relativos à tabela de atividades complementares...");
+	private void importarAtividadesComp(List<String> colunasList, Sheet sheet, StringBuilder response) {
+		response.append("Iniciando importação de dados relativos à tabela de atividades complementares...;");
 		for (int i = 1; i < sheet.getRows(); i++) {
 			String descrAtividade = sheet.getCell(colunasList.indexOf("DESCRICAO_ATIVIDADE"), i).getContents();
 			String categoria = sheet.getCell(colunasList.indexOf("CATEGORIA_ATIVIDADE"), i).getContents();
@@ -213,7 +213,7 @@ public class ImportadorAtividadesComplementares {
 
 					tabAtividades.get(numeroMaisSigla).adicionarAtividade(ativ);
 				} else {
-					System.err.println("Já existe atividade complementar com esta descricao " + descrAtividade);
+					response.append("Já existe atividade complementar com esta descricao " + descrAtividade + ";");
 				}
 			}
 		}

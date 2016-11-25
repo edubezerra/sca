@@ -130,4 +130,8 @@ public class ImportadorAlunos {
 		}
 		System.out.println("Dados lidos com sucesso!");
 	}
+
+	public static void main(String[] args){
+		new ImportadorAlunos().run();
+	}
 }

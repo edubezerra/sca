@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 @Entity
 public class PedidoIsencaoDisciplinas {
@@ -172,5 +173,23 @@ public class PedidoIsencaoDisciplinas {
 			throw new IllegalArgumentException(
 					"Valor inválido para nova situação do item de isenção.");
 		}
+	}
+
+	public void removerItem(Long idItem) {
+		for (ItemPedidoIsencaoDisciplina item : this.itens) {
+			if (item.getId().equals(idItem)) {
+				this.itens.remove(item);
+			}
+			break;
+		}
+	}
+
+	public Comprovante getComprovanteDoItem(Long idItem) {
+		for (ItemPedidoIsencaoDisciplina item : this.itens) {
+			if (item.getId().equals(idItem)) {
+				return item.getComprovante();
+			}
+		}
+		return null;
 	}
 }

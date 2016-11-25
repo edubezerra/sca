@@ -3,7 +3,7 @@ package br.cefetrj.sca.service.util;
 import java.util.List;
 
 public class ValidacaoHelper {
-	public ValidacaoResponse validaRespostasEgresso(List<Integer> respostas, String questionarioTipo){
+	public ValidacaoResponse validaRespostasEgresso(List<Long> respostas, String questionarioTipo){
 		
 		if (questionarioTipo.equals("Graduacao")) {
 			if (respostas.contains(3) || respostas.contains(4)) {

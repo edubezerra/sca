@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-
+    
 	<!-- Configure the multipart resolver -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -45,19 +45,6 @@
 
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider ref="customAuthenticationProvider" />
-<!-- 		<authentication-provider user-service-ref="customUserDetailsService" /> -->
 	</authentication-manager>
-
-	<!-- <authentication-manager> -->
-	<!-- <authentication-provider> -->
-	<!-- <jdbc-user-service id="userDetailsService" -->
-	<!-- data-source-ref="dataSource" -->
-	<!-- users-by-username-query="select login, password, true from users where 
-		login = ?" -->
-	<!-- authorities-by-username-query="select u.login, up.type from USERS u, 
-		USER_PROFILE up, USER_USER_PROFILE uup where u.login = ? and u.id = uup.USER_ID 
-		and p.id = uup.USER_PROFILE_ID" /> -->
-	<!-- </authentication-provider> -->
-	<!-- </authentication-manager> -->
 
 </beans:beans>

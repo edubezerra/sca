@@ -29,19 +29,18 @@ public class PesquisaAvaliacao {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FORMULARIO_ID", referencedColumnName = "ID")
-	List<Quesito> quesitos;
-	
-	public PesquisaAvaliacao(){
-	
+	List<Quesito> quesitos = new ArrayList<>();
+
+	public PesquisaAvaliacao() {
 	}
-	
+
 	public PesquisaAvaliacao(String descritor, String nome) {
 		this.descritor = descritor;
 		this.nome = nome;
 	}
 
 	public void adicionarQuesito(Quesito quesito) {
-		if(quesitos == null){
+		if (quesitos == null) {
 			quesitos = new ArrayList<Quesito>();
 		}
 		this.quesitos.add(quesito);
@@ -50,12 +49,12 @@ public class PesquisaAvaliacao {
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public String getDescritor() {
 		return descritor;
 	}
-	
-	public List<Quesito> getQuesitos(){
+
+	public List<Quesito> getQuesitos() {
 		return quesitos;
 	}
 }
