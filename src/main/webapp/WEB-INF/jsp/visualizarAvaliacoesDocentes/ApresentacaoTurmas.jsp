@@ -6,9 +6,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>SCA - Seleção das Turmas</title>
+<style>
+div.div_RootBody {
+	position: relative;
+	border: 2px solid White;
+	border-radius: 7px;
+	background: WhiteSmoke;
+	font: normal 14px Arial;
+	font-family: Arial, Helvetica, sans-serif;
+	color: Black;
+	padding: 0px 1em;
+	text-align: left;
+}
+</style>
 </head>
 <body>
-
+<dir>
 	<form
 		action="<%=request.getContextPath()%>/visualizacaoAvaliacaoDiscente/Escolhaturma"
 		method="get">
@@ -24,7 +37,7 @@
 		</a>
 
 	</form>
-
+</dir>
 
 </body>
 </html>

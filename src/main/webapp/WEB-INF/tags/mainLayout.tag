@@ -101,7 +101,7 @@ body {
 										Fornecimento de Grade de Disponibilidades</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/visualizacaoAvaliacaoDiscente/turma">
-										Seleção da Turma</a></li>
+										Visualização das Respostas dos Questionarios</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/pastaProfessor/dashboard">
 										Pasta Virtual</a></li>
