@@ -1,8 +1,5 @@
 package br.cefetrj.sca.service;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,76 +21,74 @@ public class VisualizacaoAvaliacaoDiscenteService {
 	@Autowired
 	private AvaliacaoTurmaRepositorio repositorio2;
 
+	private String[] PerguntasAvaliacao = { "Primeira", "Segunda", "Terceira", "Quarta", "Quinta", "Sexta", "Setima",
+			"Oitava" };
+
 	public List<Turma> listarTurmaLecionadas(Professor p) {
 		List<Turma> t = repositorio.findTurmasLecionadasPorProfessor(p.getMatricula());
 		List<Turma> turmasAvaliadas = new ArrayList<>();
 
-		// listaAvaliacoes = repositorio2.findAll();
-
 		for (Turma turma : t) {
-			System.out.println(turma.getDisciplina() + "-" + turma.getCodigo() + " - " + turma.getPeriodo());
 			List<AvaliacaoTurma> a = repositorio2.findAvaliacoesTurmaLista(turma.getId());
 			if (a.size() != 0) {
-				System.out.println("service" + a.size());
 				turmasAvaliadas.add(turma);
 			}
-
 		}
-
 		return turmasAvaliadas;
-
 	}
 
 	public List<AvaliacaoTurma> selecionarTurma(Turma t) {
 		List<AvaliacaoTurma> tAvaliadas = repositorio2.findAvaliacoesTurmaLista(t.getId());
-		System.out.println("service--" + tAvaliadas.size());
 		return tAvaliadas;
 	}
 
-	public void conversaoRespospa(List<AvaliacaoTurma> avaliacaoTurma) throws IOException {
-		BufferedWriter strW = new BufferedWriter(new FileWriter("C:/Users/Joao/git/sca/tabela.csv"));
-		strW.write(
-				"Pergunta,Insuficiente(s) ou Ruim(ns),Suficiente(s) ou Regular(es),Bom(ns) ou Boa(s),Ótimo(s) ou Ótima(s)\n");
+	public List<String> conversaoRespospa(List<AvaliacaoTurma> avaliacaoTurma) {
+
+		List<String> respAvaliacao = new ArrayList<>();
+		respAvaliacao.add("Pergunta");
+		respAvaliacao.add("Insuficiente(s) ou Ruim(ns)");
+		respAvaliacao.add("Suficiente(s) ou Regular(es)");
+		respAvaliacao.add("Bom(ns) ou Boa(s)");
+		respAvaliacao.add("Otimo(s) ou Otima(s)");
+
 		List<Alternativa> resp = new ArrayList<>();
 		for (int i = 0; i < avaliacaoTurma.size(); i++) {
 			AvaliacaoTurma a = avaliacaoTurma.get(i);
 			resp.addAll(a.getRespostas());
 		}
 
-		System.out.println("Service" + resp.size());
-
 		int[] valorRespostas = new int[4];
 		int posicao = 0;
 		int posicaoPerg = 0;
 		for (int i = 0; i < resp.size(); i++) {
-			int valorResp = 0;
+			int valorResp = 1;
 			if (resp.get(posicao).getDescritor().equals("Insuficiente(s) ou Ruim(ns)")) {
-				valorResp = 1;
 				valorRespostas[3] += valorResp;
 			}
 			if (resp.get(posicao).getDescritor().equals("Suficiente(s) ou Regular(es)")) {
-				valorResp = 2;
 				valorRespostas[2] += valorResp;
 			}
 			if (resp.get(posicao).getDescritor().equals("Bom(ns) ou Boa(s)")) {
-				valorResp = 3;
 				valorRespostas[1] += valorResp;
 			}
 			if (resp.get(posicao).getDescritor().equals("Ótimo(s) ou Ótima(s)")) {
-				valorResp = 4;
 				valorRespostas[0] += valorResp;
 			}
 			posicao += 8;
 			if (posicao >= resp.size()) {
-				strW.write(posicaoPerg + "," + valorRespostas[3] + "," + valorRespostas[2] + "," + valorRespostas[1]
-						+ "," + valorRespostas[0] + "\n");
+				respAvaliacao.add(PerguntasAvaliacao[posicaoPerg]);
+				respAvaliacao.add("" + valorRespostas[3]);
+				respAvaliacao.add("" + valorRespostas[2]);
+				respAvaliacao.add("" + valorRespostas[1]);
+				respAvaliacao.add("" + valorRespostas[0]);
+
 				posicaoPerg += 1;
 				posicao = posicaoPerg;
 				valorRespostas = new int[4];
 			}
 		}
 
-		strW.close();
+		return respAvaliacao;
 
 	}
 }
