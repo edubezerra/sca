@@ -1,42 +1,56 @@
+<%@ page language="java" pageEncoding="UTF-8"
+	contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page session="false" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <html>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SCA - Home</title>
+<title>SCA - Acompanhamento do Egresso</title>
 
-<link href="${rootURL}resources/bootstrap/css/bootstrap.css"
+<link
+	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
 	media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript"
-	src="${rootURL}resources/jquery/jquery-1.10.2.js"></script>
+	src="${pageContext.request.contextPath}/resources/jquery/jquery-1.10.2.js"></script>
 <script type="text/javascript"
-	src="${rootURL}resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="${rootURL}resources/js/app.js"></script>
+	src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 
 </head>
+
 <body class="basic-grey">
 
-	<h1>Menu Principal</h1>
+	<div class="container">
 
-	<c:if test="${requestScope.error != null}">
-		<div>
-			<p class="error">${requestScope.error}</p>
-		</div>
-	</c:if>
+		<h1>Acompanhamento do Egresso</h1>
 
-	<c:if test="${requestScope.info != null}">
-		<div>
-			<p class="info">${requestScope.info}</p>
-		</div>
-	</c:if>
+		<c:if test="${requestScope.error != null}">
+			<div>
+				<p class="error">${requestScope.error}</p>
+			</div>
+		</c:if>
 
-	<ul>
-		<li><a
-			href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioMedio">
-				Avaliação Egresso Médio/Técnico </a></li>
-		<li><a href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioGraduacao">
-				Avaliar Egresso Graduação</a></li>
-	</ul>
+		<c:if test="${requestScope.info != null}">
+			<div>
+				<p class="info">${requestScope.info}</p>
+			</div>
+		</c:if>
+
+		<h3>Este programa visa a acompanhar o o desenvolvimento acadêmico
+			e profissional dos egressos do Bacharelado em Ciência da Computação
+			durante os dois primeiros anos de sua atuação profissional.</h3>
+
+		<hr>
+
+		<ul>
+			<li><a
+				href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioMedio">
+					Egresso de Curso Médio/Técnico </a></li>
+			<li><a
+				href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioGraduacao">
+					Egresso de Curso de Graduação</a></li>
+		</ul>
+	</div>
 </body>
 </html>

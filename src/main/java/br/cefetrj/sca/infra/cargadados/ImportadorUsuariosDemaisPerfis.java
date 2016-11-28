@@ -24,6 +24,13 @@ public class ImportadorUsuariosDemaisPerfis {
 
 		StringBuilder response = new StringBuilder();
 
+		PerfilUsuario perfilEgresso = perfilUsuarioRepositorio
+				.getPerfilUsuarioByNome("ROLE_EGRESSO");
+		if (perfilEgresso == null) {
+			perfilEgresso = new PerfilUsuario("ROLE_EGRESSO");
+			perfilUsuarioRepositorio.save(perfilEgresso);
+		}
+
 		PerfilUsuario perfilAdmin = perfilUsuarioRepositorio
 				.getPerfilUsuarioByNome("ROLE_ADMIN");
 		if (perfilAdmin == null) {
@@ -53,9 +60,17 @@ public class ImportadorUsuariosDemaisPerfis {
 			perfilUsuarioRepositorio.save(perfilCoordenadorAC);
 		}
 
-		String login = "1506449";
+		String login = "1223216BCC";
 		Usuario usuario = usuarioRepositorio.findUsuarioByLogin(login);
 		if (usuario != null) {
+			usuario.getUserProfiles().add(perfilEgresso);
+			usuarioRepositorio.save(usuario);
+		}
+
+		login = "1506449";
+		usuario = usuarioRepositorio.findUsuarioByLogin(login);
+		if (usuario != null) {
+			usuario.getUserProfiles().add(perfilEgresso);
 			usuario.getUserProfiles().add(perfilAdmin);
 			usuario.getUserProfiles().add(perfilCoordenadorCurso);
 			usuario.getUserProfiles().add(perfilSECAD);

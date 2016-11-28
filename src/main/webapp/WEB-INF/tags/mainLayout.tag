@@ -63,22 +63,30 @@ body {
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
+					<sec:authorize access="hasRole('ROLE_EGRESSO')">
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Aluno Egresso</a>
+							<ul class="dropdown-menu">
+								<li><a
+									href="${pageContext.request.contextPath}/avaliacaoEgresso/questionarioGraduacao">
+										Acompanhamento</a></li>
+							</ul></li>
+
+					</sec:authorize>
+
 					<sec:authorize access="hasRole('ROLE_ALUNO')">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Aluno</a>
 							<ul class="dropdown-menu">
 								<li><a
 									href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
-										Avaliação de Professores </a></li>
+										Avaliação de Docentes</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/registroAtividades/registroAtividades">
 										Atividades Complementares </a></li>
 								<!-- 				<li><a -->
 								<%-- 					href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos"> --%>
 								<!-- 						Matrícula Fora de Prazo</a></li> -->
-								<li><a
-									href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
-										Avaliação de Curso por Egresso </a></li>
 								<!-- 				<li><a -->
 								<%-- 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao"> --%>
 								<!-- 						Realização de Inscriçôes</a></li> -->

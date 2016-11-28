@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.PeriodoAvaliacoesTurmas;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.AvaliacaoEgressoService;
@@ -23,7 +24,8 @@ import br.cefetrj.sca.service.util.ValidacaoResponse;
 @RequestMapping("/avaliacaoEgresso")
 public class AvaliacaoEgressoController {
 
-	protected Logger logger = Logger.getLogger(AvaliacaoEgressoController.class.getName());
+	protected Logger logger = Logger.getLogger(AvaliacaoEgressoController.class
+			.getName());
 
 	@Autowired
 	private AvaliacaoEgressoService service;
@@ -38,13 +40,22 @@ public class AvaliacaoEgressoController {
 	public String solicitaAvaliacaoGraduacao(Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
-		try {
-			SolicitaAvaliacaoEgressoResponse resp = service.retornaQuestoes();
-			model.addAttribute("questoes", resp);
-			model.addAttribute("matricula", matricula);
-			return "/avaliacaoEgresso/questionarioGraduacao";
-		} catch (Exception exc) {
-			model.addAttribute("error", exc.getMessage());
+		Aluno aluno = service.findAlunoByMatricula(matricula);
+		if (aluno != null) {
+			try {
+				SolicitaAvaliacaoEgressoResponse resp = service
+						.retornaQuestoes();
+				model.addAttribute("questoes", resp);
+				model.addAttribute("matricula", matricula);
+				model.addAttribute("nomeCurso", aluno.getVersaoCurso()
+						.getCurso());
+				return "/avaliacaoEgresso/questionarioGraduacao";
+			} catch (Exception exc) {
+				model.addAttribute("error", exc.getMessage());
+				return "/homeView";
+			}
+		} else {
+			model.addAttribute("error", "Aluno não encontrado!");
 			return "/homeView";
 		}
 	}
@@ -54,7 +65,8 @@ public class AvaliacaoEgressoController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		try {
-			SolicitaAvaliacaoEgressoResponse quesitos = service.retornaQuestoes();
+			SolicitaAvaliacaoEgressoResponse quesitos = service
+					.retornaQuestoes();
 			quesitos.remove(quesitos.size() - 1);
 			model.addAttribute("questoes", quesitos);
 			model.addAttribute("matricula", matricula);
@@ -93,8 +105,10 @@ public class AvaliacaoEgressoController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		if (matricula != null) {
-			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas.getInstance();
-			model.addAttribute("periodoLetivo", periodoAvaliacao.getPeriodoLetivo());
+			PeriodoAvaliacoesTurmas periodoAvaliacao = PeriodoAvaliacoesTurmas
+					.getInstance();
+			model.addAttribute("periodoLetivo",
+					periodoAvaliacao.getPeriodoLetivo());
 			return "/avaliacaoTurma/menuPrincipalView";
 		} else {
 			return "/homeView";
@@ -112,6 +126,12 @@ public class AvaliacaoEgressoController {
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
+
+		if (matricula == null || matricula.isEmpty()) {
+			model.addAttribute("error",
+					"Erro: O usuário não está ativo na sessão.");
+			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
+		}
 
 		if (parameters.containsKey("resp-especialidade")) {
 			especialidade = parameters.get("resp-especialidade")[0];
@@ -134,40 +154,45 @@ public class AvaliacaoEgressoController {
 			}
 
 			if (respostas.size() == 0) {
-				model.addAttribute("error", "Erro: o formulário deve ser preenchido.");
+				model.addAttribute("error",
+						"Erro: o formulário deve ser preenchido.");
 				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 			}
 
-			if (matricula == null || matricula.isEmpty()) {
-				model.addAttribute("error", "Erro: O usuário não está ativo na sessão.");
-				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
-			}
-
-			if (respostas.size() > 5 && (especialidade == null || especialidade == "")) {
-				model.addAttribute("error", "Erro: A pergunta 7 sobre sua especialidade deve ser respondida.");
+			if (respostas.size() > 5
+					&& (especialidade == null || especialidade == "")) {
+				model.addAttribute("error",
+						"Erro: A pergunta 7 sobre sua especialidade deve ser respondida.");
 				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 			}
 
 			ValidacaoHelper helper = new ValidacaoHelper();
-			ValidacaoResponse validacao = helper.validaRespostasEgresso(respostas, "Graduacao");
+			ValidacaoResponse validacao = helper.validaRespostasEgresso(
+					respostas, "Graduacao");
 			if (!validacao.isValid()) {
-				model.addAttribute("error", "Erro: Houve um ou mais erros de validação das respostas: "
-						+ validacao.message() + " Leia atentamente as questões e responda corretamente.");
+				model.addAttribute(
+						"error",
+						"Erro: Houve um ou mais erros de validação das respostas: "
+								+ validacao.message()
+								+ " Leia atentamente as questões e responda corretamente.");
 				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 			}
 		} catch (Exception exc) {
-			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
+			model.addAttribute("error",
+					"Erro: Respostas com conteúdo inválido.");
 			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		}
 
 		try {
-			service.avaliaEgresso(matricula, respostas, especialidade, questao10Outro, questao15Area);
-			model.addAttribute("info",
-					"Seu formulário foi enviado com sucesso! Obrigado por responder o questionário.");
+			service.avaliaEgresso(matricula, respostas, especialidade,
+					questao10Outro, questao15Area);
+			model.addAttribute(
+					"info",
+					"O formulário foi enviado com sucesso! "
+							+ "Obrigado por colaborar com o acompanhamento de egressos do CEFET/RJ.");
 			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-
 			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		}
 	}
@@ -205,35 +230,46 @@ public class AvaliacaoEgressoController {
 			}
 
 			if (respostas.size() == 0) {
-				model.addAttribute("error", "Erro: o formulário deve ser preenchido.");
+				model.addAttribute("error",
+						"Erro: o formulário deve ser preenchido.");
 				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 			}
 
 			if (matricula == null || matricula.isEmpty()) {
-				model.addAttribute("error", "Erro: usuário não está ativo na sessão.");
+				model.addAttribute("error",
+						"Erro: usuário não está ativo na sessão.");
 				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 			}
 
-			if (respostas.size() > 5 && (especialidade == null || especialidade == "")) {
-				model.addAttribute("error", "Erro: A pergunta 7 sobre sua especialidade deve ser respondida.");
+			if (respostas.size() > 5
+					&& (especialidade == null || especialidade == "")) {
+				model.addAttribute("error",
+						"Erro: A pergunta 7 sobre sua especialidade deve ser respondida.");
 				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 			}
 
 			ValidacaoHelper helper = new ValidacaoHelper();
-			ValidacaoResponse validacao = helper.validaRespostasEgresso(respostas, "Medio");
+			ValidacaoResponse validacao = helper.validaRespostasEgresso(
+					respostas, "Medio");
 			if (!validacao.isValid()) {
-				model.addAttribute("error", "Erro: Houve um ou mais erros de validação das respostas: "
-						+ validacao.message() + " Leia atentamente as questões e responda corretamente.");
+				model.addAttribute(
+						"error",
+						"Erro: Houve um ou mais erros de validação das respostas: "
+								+ validacao.message()
+								+ " Leia atentamente as questões e responda corretamente.");
 				return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 			}
 		} catch (Exception exc) {
-			model.addAttribute("error", "Erro: Respostas com conteúdo inválido.");
+			model.addAttribute("error",
+					"Erro: Respostas com conteúdo inválido.");
 			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		}
 
 		try {
-			service.avaliaEgresso(matricula, respostas, especialidade, questao10Outro, questao15Area);
-			model.addAttribute("info",
+			service.avaliaEgresso(matricula, respostas, especialidade,
+					questao10Outro, questao15Area);
+			model.addAttribute(
+					"info",
 					"Seu formulário foi enviado com sucesso! Obrigado por responder o questionário.");
 			return "forward:/avaliacaoEgresso/confirmacaoEnvio";
 		} catch (Exception exc) {

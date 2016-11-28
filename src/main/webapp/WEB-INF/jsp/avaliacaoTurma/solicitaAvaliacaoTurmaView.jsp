@@ -58,7 +58,8 @@
 						varStatus="j">
 
 						<div class="radio">
-							<label> <input type="radio" name="quesito${i.index}"
+							<label> 
+							<input type="radio" name="quesito${i.index}"
 								value="${j.index}"
 								<c:set var="oldQuesitoVarName" value="oldQuesito${i.index}"/>
 								<c:if test="${requestScope[oldQuesitoVarName] == j.index}"> checked="checked"</c:if> />
@@ -86,7 +87,7 @@
 
 				<br />
 
-				<button type="submit" class="btn btn-default">Submeter</button>
+				<button type="submit" class="btn btn-primary">Submeter</button>
 				<a class="btn btn-default"
 					href="${pageContext.request.contextPath}/avaliacaoTurma/solicitaNovamenteAvaliacaoTurma">
 					<input type="button" value="Voltar" />
