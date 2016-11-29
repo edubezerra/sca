@@ -1,6 +1,5 @@
 package br.cefetrj.sca.web.controllers;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +53,15 @@ public class VisualizacaoAvaliacaoDiscenteController {
 		List<AvaliacaoTurma> at = discenteService.selecionarTurma(t);
 
 		List<String> resp = discenteService.conversaoRespospa(at);
+
+		List<String> respPos = discenteService.obterRespostasPos(at);
+
+		List<String> respNeg = discenteService.obterRespostasNeg(at);
+
 		mv.addObject("turma", t);
 		mv.addObject("Respostas", resp);
+		mv.addObject("respPos", respPos);
+		mv.addObject("respNeg", respNeg);
 		mv.addObject("titulo", titulo);
 		return mv;
 
