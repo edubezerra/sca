@@ -91,4 +91,27 @@ public class VisualizacaoAvaliacaoDiscenteService {
 		return respAvaliacao;
 
 	}
+
+	public List<String> obterRespostasPos(List<AvaliacaoTurma> avaliacaoTurma) {
+
+		List<String> respAvaliacao = new ArrayList<>();
+
+		for (int i = 0; i < avaliacaoTurma.size(); i++) {
+			AvaliacaoTurma a = avaliacaoTurma.get(i);
+			respAvaliacao.add(a.getAspectosPositivos());
+		}
+		return respAvaliacao;
+
+	}
+	public List<String> obterRespostasNeg(List<AvaliacaoTurma> avaliacaoTurma) {
+
+		List<String> respAvaliacao = new ArrayList<>();
+
+		for (int i = 0; i < avaliacaoTurma.size(); i++) {
+			AvaliacaoTurma a = avaliacaoTurma.get(i);
+			respAvaliacao.add(a.getAspectosNegativos());
+		}
+		return respAvaliacao;
+
+	}
 }

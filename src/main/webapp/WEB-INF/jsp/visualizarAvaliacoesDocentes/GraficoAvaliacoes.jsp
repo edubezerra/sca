@@ -8,14 +8,62 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
 <script type="text/javascript">
-	var dataSet1 = [{"${Respostas[0]}" : "${Respostas[5]}","${Respostas[1]}" : "${Respostas[6]}","${Respostas[2]}" : "${Respostas[7]}","${Respostas[3]}" : "${Respostas[8]}","${Respostas[4]}" : "${Respostas[9]}"} ];
-	var dataSet2 = [{"${Respostas[0]}" : "${Respostas[10]}","${Respostas[1]}" : "${Respostas[11]}","${Respostas[2]}" : "${Respostas[12]}","${Respostas[3]}" : "${Respostas[13]}","${Respostas[4]}" : "${Respostas[14]}"} ];
-	var dataSet3 = [{"${Respostas[0]}" : "${Respostas[15]}","${Respostas[1]}" : "${Respostas[16]}","${Respostas[2]}" : "${Respostas[17]}","${Respostas[3]}" : "${Respostas[18]}","${Respostas[4]}" : "${Respostas[19]}"} ];
-	var dataSet4 = [{"${Respostas[0]}" : "${Respostas[20]}","${Respostas[1]}" : "${Respostas[21]}","${Respostas[2]}" : "${Respostas[22]}","${Respostas[3]}" : "${Respostas[23]}","${Respostas[4]}" : "${Respostas[24]}"}  ];
-	var dataSet5 = [{"${Respostas[0]}" : "${Respostas[25]}","${Respostas[1]}" : "${Respostas[26]}","${Respostas[2]}" : "${Respostas[27]}","${Respostas[3]}" : "${Respostas[28]}","${Respostas[4]}" : "${Respostas[29]}"}];
-	var dataSet6 = [{"${Respostas[0]}" : "${Respostas[30]}","${Respostas[1]}" : "${Respostas[31]}","${Respostas[2]}" : "${Respostas[32]}","${Respostas[3]}" : "${Respostas[33]}","${Respostas[4]}" : "${Respostas[34]}"}  ];
-	var dataSet7 = [{"${Respostas[0]}" : "${Respostas[35]}","${Respostas[1]}" : "${Respostas[36]}","${Respostas[2]}" : "${Respostas[37]}","${Respostas[3]}" : "${Respostas[38]}","${Respostas[4]}" : "${Respostas[39]}"} ];
-	var dataSet8 = [{"${Respostas[0]}" : "${Respostas[40]}","${Respostas[1]}" : "${Respostas[41]}","${Respostas[2]}" : "${Respostas[42]}","${Respostas[3]}" : "${Respostas[43]}","${Respostas[4]}" : "${Respostas[44]}"}  ];
+	var dataSet1 = [ {
+		"${Respostas[0]}" : "${Respostas[5]}",
+		"${Respostas[1]}" : "${Respostas[6]}",
+		"${Respostas[2]}" : "${Respostas[7]}",
+		"${Respostas[3]}" : "${Respostas[8]}",
+		"${Respostas[4]}" : "${Respostas[9]}"
+	} ];
+	var dataSet2 = [ {
+		"${Respostas[0]}" : "${Respostas[10]}",
+		"${Respostas[1]}" : "${Respostas[11]}",
+		"${Respostas[2]}" : "${Respostas[12]}",
+		"${Respostas[3]}" : "${Respostas[13]}",
+		"${Respostas[4]}" : "${Respostas[14]}"
+	} ];
+	var dataSet3 = [ {
+		"${Respostas[0]}" : "${Respostas[15]}",
+		"${Respostas[1]}" : "${Respostas[16]}",
+		"${Respostas[2]}" : "${Respostas[17]}",
+		"${Respostas[3]}" : "${Respostas[18]}",
+		"${Respostas[4]}" : "${Respostas[19]}"
+	} ];
+	var dataSet4 = [ {
+		"${Respostas[0]}" : "${Respostas[20]}",
+		"${Respostas[1]}" : "${Respostas[21]}",
+		"${Respostas[2]}" : "${Respostas[22]}",
+		"${Respostas[3]}" : "${Respostas[23]}",
+		"${Respostas[4]}" : "${Respostas[24]}"
+	} ];
+	var dataSet5 = [ {
+		"${Respostas[0]}" : "${Respostas[25]}",
+		"${Respostas[1]}" : "${Respostas[26]}",
+		"${Respostas[2]}" : "${Respostas[27]}",
+		"${Respostas[3]}" : "${Respostas[28]}",
+		"${Respostas[4]}" : "${Respostas[29]}"
+	} ];
+	var dataSet6 = [ {
+		"${Respostas[0]}" : "${Respostas[30]}",
+		"${Respostas[1]}" : "${Respostas[31]}",
+		"${Respostas[2]}" : "${Respostas[32]}",
+		"${Respostas[3]}" : "${Respostas[33]}",
+		"${Respostas[4]}" : "${Respostas[34]}"
+	} ];
+	var dataSet7 = [ {
+		"${Respostas[0]}" : "${Respostas[35]}",
+		"${Respostas[1]}" : "${Respostas[36]}",
+		"${Respostas[2]}" : "${Respostas[37]}",
+		"${Respostas[3]}" : "${Respostas[38]}",
+		"${Respostas[4]}" : "${Respostas[39]}"
+	} ];
+	var dataSet8 = [ {
+		"${Respostas[0]}" : "${Respostas[40]}",
+		"${Respostas[1]}" : "${Respostas[41]}",
+		"${Respostas[2]}" : "${Respostas[42]}",
+		"${Respostas[3]}" : "${Respostas[43]}",
+		"${Respostas[4]}" : "${Respostas[44]}"
+	} ];
 
 	function drawPie(data, selectString, margin, outerRadius, innerRadius,
 			sortArcs) {
@@ -147,6 +195,18 @@ div.div_RootBody {
 	padding: 0px 1em;
 	text-align: left;
 }
+div.div_RootBodyAspect {
+	position: relative;
+	border: 2px solid White;
+	border-radius: 7px;
+	background: WhiteSmoke;
+	font: normal 14px Arial;
+	font-family: Arial, Helvetica, sans-serif;
+	color: Black;
+	padding: 0px 1em;
+	text-align: left;
+	
+}
 </STYLE>
 
 </head>
@@ -201,10 +261,26 @@ div.div_RootBody {
 			professor pode ser avaliada como...</h3>
 		<div class="chart"></div>
 	</div>
+	<div class="div_RootBodyAspect">
+		<h3 class="h3_Body">Aspectos Positivos</h3>
+		<textarea readonly disabled rows="10" cols="100">
+		<c:forEach items="${respPos}" var="i">
+		 ${i}
+		</c:forEach>
+	</textarea>
+	</div>
+	<div class="div_RootBodyAspect">
+		<h3 class="h3_Body">Aspectos Negativo</h3>
+		<textarea readonly disabled rows="10" cols="100">
+		<c:forEach items="${respNeg}" var="i">
+		 ${i}
+		</c:forEach>
+	</textarea>
+	</div>
 	<a class="btn btn-default"
-					href="${pageContext.request.contextPath}/visualizacaoAvaliacaoDiscente/turma">
-					<input type="button" value="Voltar" />
-				</a>
+		href="${pageContext.request.contextPath}/visualizacaoAvaliacaoDiscente/turma">
+		<input type="button" value="Voltar" />
+	</a>
 
 
 	<script type="text/javascript">
