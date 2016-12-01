@@ -6,12 +6,11 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
@@ -21,6 +20,9 @@ import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class TurmaResource {
@@ -67,12 +69,12 @@ public class TurmaResource {
 
 	}
 	
-	@RequestMapping(value = "/salvarEncontroPresencialTurma/{turmaws}/{encontrows}", method = RequestMethod.POST)
-	public void salvarEncontroPresencialTurma(@PathVariable TurmaWS turmaws, @PathVariable EncontroPresencialWS encontrows) {
+	@RequestMapping(value = "/salvarEncontroPresencialTurma/", method = RequestMethod.POST)
+	public void salvarEncontroPresencialTurma(@RequestBody TurmaWS turmaws) {
 		     Turma turma = turmaRepo.findTurmaById(turmaws.getId());
 		     EncontroPresencial encontro = new EncontroPresencial();
-		     encontro.setData(encontrows.getData());
-		     for(PessoaWS aluno: encontrows.getAlunos())
+		     encontro.setData(turmaws.getEncontro().getData());
+		     for(PessoaWS aluno: turmaws.getEncontro().getAlunos())
 		     {
 		    	 Aluno a = alunoRepo.findAlunoByMatricula(aluno.getMatricula());
 			     encontro.adicionarAluno(a);
@@ -80,4 +82,5 @@ public class TurmaResource {
 		     turma.adicionarEncontro(encontro);
              turmaRepo.saveAndFlush(turma);
 	}
+	
 }

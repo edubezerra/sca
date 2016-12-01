@@ -3,8 +3,6 @@ package br.cefetrj.sca.infra.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.cefetrj.sca.dominio.EncontroPresencial;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,8 +20,8 @@ public class TurmaWS {
 	@JsonProperty("alunos")
 	private List<PessoaWS> alunos;
 	
-	@JsonProperty("encontros")
-	private List<EncontroPresencialWS> encontros;
+	@JsonProperty("")
+	private EncontroPresencialWS encontro;
 	 
 	@JsonCreator
 	public TurmaWS(Long id, String codigo, DisciplinaWS disciplina) {
@@ -58,14 +56,14 @@ public class TurmaWS {
 		return alunos;
 	}
 
-	@JsonProperty("encontros")
-	public List<EncontroPresencialWS> getEncontros() {
-		return encontros;
+	@JsonProperty("encontro")
+	public EncontroPresencialWS getEncontro() {
+		return encontro;
 	}
 
-	@JsonProperty("encontros")
-	public void setEncontros(List<EncontroPresencialWS> encontros) {
-		this.encontros = encontros;
+	@JsonProperty("encontro")
+	public void setEncontro(EncontroPresencialWS encontro) {
+		this.encontro = encontro;
 	}
 	
 }
