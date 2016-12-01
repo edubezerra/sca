@@ -9,6 +9,7 @@ log
 app.log
 /bin/
 /props-files/
+/planilhas
 libs/
 src/main/java/br/cefetrj/sca/infra/auth/EstrategiaAutenticacaoSIE.java
 .idea
