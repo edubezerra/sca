@@ -27,7 +27,7 @@ import br.cefetrj.sca.service.util.EnumEstadoSolicitacao;
 import br.cefetrj.sca.service.util.SolicitaRegistroAtividadesResponse;
 
 @Component
-public class AnaliseRegistrosAtividadeService {
+public class AnalisePedidoIsencaoService {
 
 	@Autowired
 	private AlunoRepositorio alunoRepo;
@@ -185,7 +185,7 @@ public class AnaliseRegistrosAtividadeService {
 
 	private Aluno getAlunoPorMatricula(String matriculaAluno) {
 		if (matriculaAluno == null || matriculaAluno.trim().equals("")) {
-			throw new IllegalArgumentException("Matrícula deve ser fornecida!");
+			throw new IllegalArgumentException("Matrícula do aluno deve ser fornecida!");
 		}
 
 		Aluno aluno = null;

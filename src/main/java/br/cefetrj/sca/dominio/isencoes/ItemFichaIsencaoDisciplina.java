@@ -10,7 +10,6 @@ public class ItemFichaIsencaoDisciplina {
 	private boolean temDocumento;
 	private Long idItem;
 	private String dataSolicitacao;
-	private boolean podeSerCancelado;
 	private String dataAnalise;
 	private Long idAvaliador;
 	private String matriculaAvaliador;
@@ -65,7 +64,10 @@ public class ItemFichaIsencaoDisciplina {
 	}
 
 	public boolean getPodeSerCancelado() {
-		return this.podeSerCancelado;
+		if(this.estado.equals("SUBMETIDO")) {
+			return true;
+		}
+		return false;
 	}
 
 	public String getDataAnalise() {

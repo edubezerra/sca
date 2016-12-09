@@ -21,8 +21,7 @@ import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 @Entity
 public class PedidoIsencaoDisciplinas {
 	public enum Situacao {
-		EM_PREPARACAO("EM PREPARAÇÃO"), SUBMETIDO("SUBMETIDO"), ANALISADO(
-				"ANALISADO");
+		EM_PREPARACAO("EM PREPARAÇÃO"), SUBMETIDO("SUBMETIDO"), ANALISADO("ANALISADO");
 
 		private String value;
 
@@ -108,8 +107,7 @@ public class PedidoIsencaoDisciplinas {
 
 	public void submeterParaAnalise() {
 		if (!this.situacao.equals("EM PREPARAÇÃO"))
-			throw new IllegalStateException(
-					"Apenas pedidos em preparação podem ser submetidos para análise.");
+			throw new IllegalStateException("Apenas pedidos em preparação podem ser submetidos para análise.");
 		this.situacao = "SUBMETIDO";
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -124,10 +122,22 @@ public class PedidoIsencaoDisciplinas {
 		return aluno;
 	}
 
-	public void comMaisUmItem(Disciplina disciplina) {
-		ItemPedidoIsencaoDisciplina item = new ItemPedidoIsencaoDisciplina(
-				disciplina);
-		this.itens.add(item);
+	public void comMaisUmItem(Disciplina disciplina, String nomeDisciplinaExterna, String notaFinalDisciplinaExterna,
+			String cargaHoraria, String observacao, Comprovante doc) {
+		boolean isencaoJaFoiSolicitadaParaDisciplina = false;
+		for (ItemPedidoIsencaoDisciplina umItem : this.itens) {
+			if (umItem.getDisciplina().equals(disciplina)) {
+				isencaoJaFoiSolicitadaParaDisciplina = true;
+				break;
+			}
+		}
+		if (!isencaoJaFoiSolicitadaParaDisciplina) {
+			ItemPedidoIsencaoDisciplina item = new ItemPedidoIsencaoDisciplina(disciplina, nomeDisciplinaExterna,
+					notaFinalDisciplinaExterna, cargaHoraria, observacao, doc);
+			this.itens.add(item);
+		} else {
+			throw new IllegalArgumentException("Isenção já solicitada para discilina: " + disciplina.getNome());
+		}
 	}
 
 	public void deferirItem(Long idItem, Professor professor) {
@@ -139,8 +149,7 @@ public class PedidoIsencaoDisciplinas {
 		}
 	}
 
-	public void indeferirItem(Long idItem, Professor professor,
-			String observacao) {
+	public void indeferirItem(Long idItem, Professor professor, String observacao) {
 		for (int i = 0; i < this.getItens().size(); i++) {
 			if (this.getItens().get(i).getId().equals(idItem)) {
 				this.getItens().get(i).indeferir(professor, observacao);
@@ -149,20 +158,16 @@ public class PedidoIsencaoDisciplinas {
 		}
 	}
 
-	public void analisarItem(String idItemPedidoIsencao,
-			Professor professorResponsavel, String novaSituacao,
+	public void analisarItem(String idItemPedidoIsencao, Professor professorResponsavel, String novaSituacao,
 			String observacao) {
 		if (novaSituacao == null || novaSituacao.isEmpty()) {
-			throw new IllegalArgumentException(
-					"Nova situação do item de isenção deve ser informada.");
+			throw new IllegalArgumentException("Nova situação do item de isenção deve ser informada.");
 		}
 		if (idItemPedidoIsencao == null || idItemPedidoIsencao.isEmpty()) {
-			throw new IllegalArgumentException(
-					"Idenfiticação do item de isenção deve ser informada.");
+			throw new IllegalArgumentException("Idenfiticação do item de isenção deve ser informada.");
 		}
 		if (professorResponsavel == null) {
-			throw new IllegalArgumentException(
-					"Professor responsável pela análise deve ser informado.");
+			throw new IllegalArgumentException("Professor responsável pela análise deve ser informado.");
 		}
 		Long idItem = Long.parseLong(idItemPedidoIsencao);
 		if (novaSituacao.equals("DEFERIDO")) {
@@ -170,8 +175,7 @@ public class PedidoIsencaoDisciplinas {
 		} else if (novaSituacao.equals("INDEFERIDO")) {
 			this.indeferirItem(idItem, professorResponsavel, observacao);
 		} else {
-			throw new IllegalArgumentException(
-					"Valor inválido para nova situação do item de isenção.");
+			throw new IllegalArgumentException("Valor inválido para nova situação do item de isenção.");
 		}
 	}
 
@@ -179,8 +183,8 @@ public class PedidoIsencaoDisciplinas {
 		for (ItemPedidoIsencaoDisciplina item : this.itens) {
 			if (item.getId().equals(idItem)) {
 				this.itens.remove(item);
+				break;
 			}
-			break;
 		}
 	}
 

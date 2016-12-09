@@ -1,11 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" pageEncoding="UTF-8"
+	contentType="text/html; charset=UTF-8"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>SCA - Lista de Usuários</title>
+
+<title>SCA - Lista de UsuÃ¡rios</title>
 
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="<c:url value='/resources/bootstrap/css/bootstrap.css' />"
@@ -79,7 +81,7 @@
 
 	<div class="container">
 		<div class="row text-center">
-			<h3>Alocação de Coordenadores de Atividades Complementares</h3>
+			<h3>AlocaÃ§Ã£o de Coordenadores de Atividades Complementares</h3>
 		</div>
 		<hr/>
 		<c:if test="${requestScope.sucesso != null}">
@@ -123,7 +125,7 @@
 								 		<c:forEach items="${requestScope.dadosCoordenacaoAtividades.coordenacaoCursoProf}" var="coordenacao">
 											<c:if test="${coordenacao.key == curso.key}">
 												<c:if test="${coordenacao.value != null}">
-													<option value="${coordenacao.value}" label="" selected disabled>${requestScope.dadosCoordenacaoAtividades.professores[coordenacao.value]} (Matrícula:${coordenacao.value})</option>
+													<option value="${coordenacao.value}" label="" selected disabled>${requestScope.dadosCoordenacaoAtividades.professores[coordenacao.value]} (MatrÃ­cula:${coordenacao.value})</option>
 												</c:if>
 												<c:if test="${coordenacao.value == null}">
 													<option value="" class="form-control" label="Selecionar..."
@@ -133,7 +135,7 @@
 										</c:forEach>
 										
 										<c:forEach items="${requestScope.dadosCoordenacaoAtividades.professores}" var="professor">
-											<option value="${professor.key}">${professor.value} (Matrícula:${professor.key})</option>
+											<option value="${professor.key}">${professor.value} (MatrÃ­cula:${professor.key})</option>
 										</c:forEach>
 									</select>
 								</td>

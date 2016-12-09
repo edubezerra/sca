@@ -195,6 +195,7 @@ div.div_RootBody {
 	padding: 0px 1em;
 	text-align: left;
 }
+
 div.div_RootBodyAspect {
 	position: relative;
 	border: 2px solid White;
@@ -205,7 +206,6 @@ div.div_RootBodyAspect {
 	color: Black;
 	padding: 0px 1em;
 	text-align: left;
-	
 }
 </STYLE>
 
@@ -263,19 +263,19 @@ div.div_RootBodyAspect {
 	</div>
 	<div class="div_RootBodyAspect">
 		<h3 class="h3_Body">Aspectos Positivos</h3>
-		<textarea readonly disabled rows="10" cols="100">
-		<c:forEach items="${respPos}" var="i">
-		 ${i}
-		</c:forEach>
-	</textarea>
+		<ul>
+			<c:forEach items="${respPos}" var="i">
+				<li>${i}</li>
+			</c:forEach>
+		</ul>
 	</div>
 	<div class="div_RootBodyAspect">
-		<h3 class="h3_Body">Aspectos Negativo</h3>
-		<textarea readonly disabled rows="10" cols="100">
-		<c:forEach items="${respNeg}" var="i">
-		 ${i}
-		</c:forEach>
-	</textarea>
+		<h3 class="h3_Body">Aspectos Negativos</h3>
+		<ul>
+			<c:forEach items="${respNeg}" var="i">
+				<li>${i}</li>
+			</c:forEach>
+		</ul>
 	</div>
 	<a class="btn btn-default"
 		href="${pageContext.request.contextPath}/visualizacaoAvaliacaoDiscente/turma">

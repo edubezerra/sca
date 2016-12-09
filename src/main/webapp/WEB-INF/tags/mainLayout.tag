@@ -129,7 +129,7 @@ body {
 										Matrícula Fora do Prazo</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/isencaoDisciplina/visualizaAlunosSolicitantes">
-										Isenção de Disciplinas </a></li>
+										Análise de Pedidos de Isenção de Disciplinas </a></li>
 
 								<li><a
 									href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">

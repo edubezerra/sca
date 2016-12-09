@@ -78,38 +78,36 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
-			importadorQuestionarioEgresso.run();
-			
-			importadorQuestionarioAvaliacaoTurmas.run();
-			importadorGradesCurriculares.run();
+//			importadorQuestionarioEgresso.run();
+//			importadorQuestionarioAvaliacaoTurmas.run();
+//			importadorGradesCurriculares.run();
 			importadorTurmasComInscricoes.run();
-
-			importadorPreReqs.run();
+//
+//			importadorPreReqs.run();
 
 			importadorAlunos.run();
 
-			importadorProfessores.run();
+//			importadorProfessores.run();
 
 			importadorUsuariosAlunos.run();
-			importadorUsuariosProfessores.run();
-			importadorUsuariosDemaisPerfis.run();
+//			importadorUsuariosProfessores.run();
+//			importadorUsuariosDemaisPerfis.run();
 
-			importadorDepartamentos.run();
+//			importadorDepartamentos.run();
 
 			// Agora essa importação é feita pela aplicação WEB.
 			//			 importadorAtividadesComp.run();
-
-			 importadorHistoricoEscolar.run();
+//			 importadorHistoricoEscolar.run();
 
 			 importadorAlocacoesProfessoresEmTurmas.run();
-			 importadorHabilitacoesParaProfessor.run();
-			 importadorPerMinVersaoCurso.run();
-			
-			 importadorAlocacoesProfessoresEmDepartamentos.run();
-			
-			 importadorAlocacoesDisciplinasEmDepartamentos.run();
-			
-			 importadorEquivalenciaDisciplinas.run();
+//			 importadorHabilitacoesParaProfessor.run();
+//			 importadorPerMinVersaoCurso.run();
+//			
+//			 importadorAlocacoesProfessoresEmDepartamentos.run();
+//			
+//			 importadorAlocacoesDisciplinasEmDepartamentos.run();
+//			
+//			 importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

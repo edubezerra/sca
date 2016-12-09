@@ -310,7 +310,7 @@
 										</c:set> <span class="${classeStatus}"><b>${registro.estado}</b>
 											<c:if test="${registro.podeSerCancelado}">
 												<form style="height: 10px;"
-													action="${pageContext.request.contextPath}/registroIsencoes/removeRegistroAtividade"
+													action="${pageContext.request.contextPath}/registroIsencoes/removeRegistroItem"
 													method="POST">
 													<input type="hidden" name="idReg"
 														value="${registro.idItem}">
