@@ -196,10 +196,10 @@ $(document)
 
 $(document)
     .on(
-                "click",
-                "#fileSubmit",
-                function() {
-                processUpload();
+		"click",
+		"#fileSubmit",
+		function() {
+			processUpload();
     })
 
 	function processUpload()

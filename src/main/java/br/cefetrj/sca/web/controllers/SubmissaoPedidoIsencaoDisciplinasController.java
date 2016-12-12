@@ -84,26 +84,24 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 	}
 
 	@RequestMapping(value = "/anexarHistoricoEscolar", method = RequestMethod.POST)
-	public @ResponseBody String anexarHistoricoEscolar(@RequestParam("file") MultipartFile file, Model model)
-			throws IOException {
-
+	public @ResponseBody String anexarHistoricoEscolar(@RequestParam("file") MultipartFile file, Model model) {
 		System.out.println(".anexarHistoricoEscolar()");
 
-		Usuario usr = UsuarioController.getCurrentUser();
-		String matricula = usr.getMatricula();
 		try {
-			service.anexarHistoricoEscolar(matricula, file);
-			
 			String mapAsJson;
+			Usuario usr = UsuarioController.getCurrentUser();
+			String matricula = usr.getMatricula();
 			try {
+				service.anexarHistoricoEscolar(matricula, file);
+
 				mapAsJson = new ObjectMapper().writeValueAsString(file.getName());
 				return mapAsJson;
-			} catch (JsonProcessingException e) {
-				return null;
+			} catch (Exception exc) {
+				mapAsJson = new ObjectMapper().writeValueAsString(exc.getMessage());
+				return mapAsJson;
 			}
-		} catch (Exception exc) {
-			model.addAttribute("error", exc.getMessage());
-			return "forward:/registroIsencoes/registroIsencoes";
+		} catch (JsonProcessingException e) {
+			return null;
 		}
 	}
 
