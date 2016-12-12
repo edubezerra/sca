@@ -55,6 +55,13 @@ public class PedidoIsencaoDisciplinas {
 	@OneToMany(cascade = CascadeType.ALL)
 	List<ItemPedidoIsencaoDisciplina> itens = new ArrayList<>();
 
+	/**
+	 * Cada pedido de isenção de disciplinas deve conter o histórico escolar do
+	 * aluno na sua instituição de origem.
+	 */
+	@OneToOne(cascade = { CascadeType.ALL })
+	Comprovante historicoEscolar;
+
 	@SuppressWarnings("unused")
 	private PedidoIsencaoDisciplinas() {
 	}
@@ -75,10 +82,6 @@ public class PedidoIsencaoDisciplinas {
 	public Date getDataRegistro() {
 		return dataRegistro;
 	}
-
-	// public void setDataRegistro(Date dataRegistro) {
-	// this.dataRegistro = dataRegistro;
-	// }
 
 	public List<ItemPedidoIsencaoDisciplina> getItens() {
 		return itens;
@@ -101,20 +104,20 @@ public class PedidoIsencaoDisciplinas {
 		return "ANALISADO";
 	}
 
-	// public void setSituacao(String situacao) {
-	// this.situacao = situacao;
-	// }
-
 	public void submeterParaAnalise() {
 		if (!this.situacao.equals("EM PREPARAÇÃO"))
 			throw new IllegalStateException("Apenas pedidos em preparação podem ser submetidos para análise.");
-		this.situacao = "SUBMETIDO";
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			this.dataRegistro = sdf.parse(sdf.format(new Date()));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else if (this.historicoEscolar == null) {
+			throw new IllegalStateException("O histórico escolar da instituição de origem deve ser anexado.");
+		} else {
+			this.situacao = "SUBMETIDO";
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				this.dataRegistro = sdf.parse(sdf.format(new Date()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -136,7 +139,7 @@ public class PedidoIsencaoDisciplinas {
 					notaFinalDisciplinaExterna, cargaHoraria, observacao, doc);
 			this.itens.add(item);
 		} else {
-			throw new IllegalArgumentException("Isenção já solicitada para discilina: " + disciplina.getNome());
+			throw new IllegalArgumentException("Isenção já solicitada para disciplina: " + disciplina.getNome());
 		}
 	}
 
@@ -196,4 +199,13 @@ public class PedidoIsencaoDisciplinas {
 		}
 		return null;
 	}
+
+	public Comprovante getHistoricoEscolar() {
+		return historicoEscolar;
+	}
+
+	public void anexarHistoricoEscolar(Comprovante doc) {
+		this.historicoEscolar = doc;
+	}
+
 }

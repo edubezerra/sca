@@ -131,7 +131,7 @@
 				<div class="row">
 					<label for="inputFile">Anexar comprovante de aprovação e
 						programa da disciplina externa usada nesta isenção. Nos documentos
-						aqui apensado, devem obrigatoriamente constar o nome da disciplina
+						aqui apensados, devem obrigatoriamente constar o nome da disciplina
 						externa e a nota final obtida, exatamente conforme informados
 						acima (Formatos aceitos: PDF, JPEG ou PNG. Tamanho Máximo: 10mb)</label> <input
 						class="file" type="file" name="file" id="inputFile" required>
@@ -140,27 +140,27 @@
 				</div>
 
 
-				<div style="width: 500px; padding: 20px">
+<!-- 				<div style="width: 500px; padding: 20px"> -->
 
-					<input id="fileupload" type="file" name="files[]"
-						data-url="rest/controller/upload" multiple>
+<!-- 					<input id="fileupload" type="file" name="files[]" -->
+<!-- 						data-url="rest/controller/upload" multiple> -->
 
-					<div id="dropzone">Drop files here</div>
+<!-- 					<div id="dropzone">Drop files here</div> -->
 
-					<div id="progress">
-						<div style="width: 0%;"></div>
-					</div>
+<!-- 					<div id="progress"> -->
+<!-- 						<div style="width: 0%;"></div> -->
+<!-- 					</div> -->
 
-					<table id="uploaded-files">
-						<tr>
-							<th>File Name</th>
-							<th>File Size</th>
-							<th>File Type</th>
-							<th>Download</th>
-						</tr>
-					</table>
+<!-- 					<table id="uploaded-files"> -->
+<!-- 						<tr> -->
+<!-- 							<th>File Name</th> -->
+<!-- 							<th>File Size</th> -->
+<!-- 							<th>File Type</th> -->
+<!-- 							<th>Download</th> -->
+<!-- 						</tr> -->
+<!-- 					</table> -->
 
-				</div>
+<!-- 				</div> -->
 
 
 				<br />

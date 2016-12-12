@@ -11,6 +11,9 @@
 
 <title>SCA - Pedido de Isenção de Disciplinas</title>
 
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+
 <link
 	href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
 	rel="stylesheet">
@@ -171,15 +174,59 @@
 		});
   	</script>
 
-<script>		
-		function downloadComprovante(IdReg) {			
-			var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/registroIsencoes/downloadFile' method='POST' target='_blank'>");
-            form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
-            $('body').append(form);
-            form.submit();
-            $('body').remove('#downloadForm');
-		}
-	</script>
+<script>
+	function downloadComprovante(IdReg) {			
+		var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/registroIsencoes/downloadFile' method='POST' target='_blank'>");
+           form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
+           $('body').append(form);
+           form.submit();
+           $('body').remove('#downloadForm');
+	}
+</script>
+
+<script>
+var files = [];
+$(document)
+    .on(
+                "change",
+                "#fileLoader",
+                function(event) {
+                 files=event.target.files;
+    })
+
+$(document)
+    .on(
+                "click",
+                "#fileSubmit",
+                function() {
+                processUpload();
+    })
+
+	function processUpload()
+    {
+              var oMyForm = new FormData();
+              oMyForm.append("file", files[0]);
+             $
+                .ajax({dataType : 'json',
+
+					url : "${pageContext.request.contextPath}/registroIsencoes/anexarHistoricoEscolar",
+
+                    data : oMyForm,
+                    type : "POST",
+                    enctype: 'multipart/form-data',
+                    processData: false, 
+                    contentType:false,
+                    success : function(result) {
+                    	alert('SUCESSO');
+                        //...;
+                    },
+                    error : function(result){
+                    	alert('ERRO');
+                        //...;
+                    }
+                });
+    }
+</script>
 
 </head>
 <body>
@@ -232,12 +279,35 @@
 				</div>
 			</c:if>
 			<c:if test="${!requestScope.dadosAluno.temAtividadesSuficientes}">
-				<div class="row text-center">
-					<span class="label label-warning"> <i class="fa fa-warning"></i>
-						Você ainda não cumpriu atividades complementares suficientes para
-						se formar.
-					</span>
+				<h4>
+					<b>Histórico(s) escolar(es):</b>
+				</h4>
+				<div>
+					<i class="fa fa-warning"></i> Você deve anexar um arquivo contendo
+					cada histórico escolar necessário para a análise do seu pedido.
+					Nesse arquivo, devem obrigatoriamente constar código e nome de cada
+					disciplina externa utilizada no pedido de isenção, assim como a
+					nota final obtida e sua respectiva carga horária, exatamente
+					conforme informados nesse pedido. No caso de haver mais de um
+					histórico escolar, anexe um arquivo compactado (formato ZIP) que
+					contenha todos os históricos escolares necessários para a análise
+					desse pedido. No caso de haver apenas um histórico, anexe um
+					arquivo em formato PDF. O tamanho máximo do arquivo a anexar deve
+					ser 10MB. Formatos aceitos: PDF, ZIP.
 				</div>
+
+				<form id="formUploadHE"
+					action="${pageContext.request.contextPath}/registroIsencoes/uploadHistoricoEscolar"
+					method="POST" enctype="multipart/form-data">
+
+					<input type="file" name="file" id="fileLoader" /> 
+					<input type="button" id="fileSubmit" value="Upload"/>
+
+				</form>
+
+				<br />
+				<div id="result"></div>
+				<br />
 			</c:if>
 		</div>
 
@@ -269,7 +339,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${requestScope.itensPedidoIsencao}" var="registro">
+								<c:forEach items="${requestScope.itensPedidoIsencao}"
+									var="registro">
 									<c:choose>
 										<c:when test="${registro.estado ne 'SUBMETIDO'}">
 											<tr class="tablesorter-hasChildRow toggle"

@@ -5,6 +5,8 @@ package br.cefetrj.sca.config;
 
 import java.util.Properties;
 
+import javax.servlet.MultipartConfigElement;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -21,7 +23,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@ComponentScan(basePackages = { "br.cefetrj.sca" }, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = { "br.cefetrj.sca.web.*" }))
+@ComponentScan(basePackages = {
+		"br.cefetrj.sca" }, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = {
+				"br.cefetrj.sca.web.*" }) )
 @PropertySource(value = { "classpath:application.properties" })
 @EnableScheduling
 @EnableAspectJAutoProxy
@@ -58,4 +62,12 @@ public class AppConfig {
 
 		return mailSenderImpl;
 	}
+
+//	@Bean
+//	public MultipartConfigElement multipartConfigElement() {
+//		MultipartConfigFactory factory = new MultipartConfigFactory();
+//		factory.setMaxFileSize("128KB");
+//		factory.setMaxRequestSize("128KB");
+//		return factory.createMultipartConfig();
+//	}
 }

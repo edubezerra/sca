@@ -88,8 +88,8 @@ public class PedidoIsencaoDisciplinasService {
 			validaComprovante(file);
 			Comprovante doc = new Comprovante(file.getContentType(), file.getBytes(), file.getOriginalFilename());
 
-			pedido.comMaisUmItem(disciplina, nomeDisciplinaExterna,
-					notaFinalDisciplinaExterna, cargaHoraria, observacao, doc);
+			pedido.comMaisUmItem(disciplina, nomeDisciplinaExterna, notaFinalDisciplinaExterna, cargaHoraria,
+					observacao, doc);
 
 			processoIsencaoRepo.save(pedido);
 		}
@@ -144,7 +144,7 @@ public class PedidoIsencaoDisciplinasService {
 		}
 	}
 
-	public Comprovante getComprovante(String matriculaAluno, Long idItem) {
+	public Comprovante getComprovanteParaDisciplina(String matriculaAluno, Long idItem) {
 
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 
@@ -185,6 +185,18 @@ public class PedidoIsencaoDisciplinasService {
 		disciplinas.removeAll(disciplinasJaSolicitadas);
 
 		return disciplinas;
+	}
+
+	public void anexarHistoricoEscolar(String matricula, MultipartFile file) throws IOException {
+		Aluno aluno = getAlunoPorMatricula(matricula);
+		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
+		if (pedido == null) {
+			pedido = new PedidoIsencaoDisciplinas(aluno);
+		}
+		validaComprovante(file);
+		Comprovante doc = new Comprovante(file.getContentType(), file.getBytes(), file.getOriginalFilename());
+		pedido.anexarHistoricoEscolar(doc);
+		pedidoIsencaoDisciplinasRepo.save(pedido);
 	}
 
 }
