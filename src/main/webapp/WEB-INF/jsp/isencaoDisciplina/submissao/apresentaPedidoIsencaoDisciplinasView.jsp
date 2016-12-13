@@ -175,8 +175,8 @@
   	</script>
 
 <script>
-	function downloadComprovante(IdReg) {			
-		var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/registroIsencoes/downloadFile' method='POST' target='_blank'>");
+	function downloadConteudoProgramatico(IdReg) {			
+		var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/submissaoIsencoes/downloadConteudoProgramatico' method='POST' target='_blank'>");
            form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
            $('body').append(form);
            form.submit();
@@ -209,7 +209,7 @@ $(document)
              $
                 .ajax({dataType : 'json',
 
-					url : "${pageContext.request.contextPath}/registroIsencoes/anexarHistoricoEscolar",
+					url : "${pageContext.request.contextPath}/submissaoIsencoes/anexarHistoricoEscolar",
 
                     data : oMyForm,
                     type : "POST",
@@ -239,18 +239,18 @@ $(document)
 		<div class="row">
 			<h5>
 				<b>Aluno:</b>
-				<c:out value="${requestScope.dadosAluno.nomeAluno}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.nomeAluno}"></c:out>
 				(Matrícula:
 				<c:out value="${requestScope.matricula}"></c:out>
 				)
 			</h5>
 			<h5>
 				<b>Curso:</b>
-				<c:out value="${requestScope.dadosAluno.curso.sigla}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.siglaCurso}"></c:out>
 				-
-				<c:out value="${requestScope.dadosAluno.curso.nome}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.nomeCurso}"></c:out>
 				(Grade:
-				<c:out value="${requestScope.dadosAluno.versaoCurso}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.descritorVersaoCurso}"></c:out>
 				)
 			</h5>
 		</div>
@@ -272,13 +272,13 @@ $(document)
 		</c:if>
 
 		<div class="row">
-			<c:if test="${requestScope.dadosAluno.temAtividadesSuficientes}">
+			<c:if test="${requestScope.fichaIsencaoDisciplinas.temHistoricoEscolarAnexado}">
 				<div class="row text-center">
 					<span class="label label-success">Parabéns! Você cumpriu
 						atividades complementares suficientes para se formar.</span>
 				</div>
 			</c:if>
-			<c:if test="${!requestScope.dadosAluno.temAtividadesSuficientes}">
+			<c:if test="${!requestScope.fichaIsencaoDisciplinas.temHistoricoEscolarAnexado}">
 				<h4>
 					<b>Histórico(s) escolar(es):</b>
 				</h4>
@@ -297,7 +297,7 @@ $(document)
 				</div>
 
 				<form id="formUploadHE"
-					action="${pageContext.request.contextPath}/registroIsencoes/uploadHistoricoEscolar"
+					action="${pageContext.request.contextPath}/submissaoIsencoes/uploadHistoricoEscolar"
 					method="POST" enctype="multipart/form-data">
 
 					<input type="file" name="file" id="fileLoader" /> 
@@ -318,7 +318,7 @@ $(document)
 			<c:choose>
 				<c:when test="${fn:length(requestScope.itensPedidoIsencao) eq 0}">
 					<div class="vcenter well">
-						<p>Não há itens de pedido de isenção</p>
+						<p>Não há itens registrados nesse pedido de isenção de disciplinas.</p>
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -340,9 +340,9 @@ $(document)
 							</thead>
 							<tbody>
 								<c:forEach items="${requestScope.itensPedidoIsencao}"
-									var="registro">
+									var="item">
 									<c:choose>
-										<c:when test="${registro.estado ne 'SUBMETIDO'}">
+										<c:when test="${item.estado ne 'SUBMETIDO'}">
 											<tr class="tablesorter-hasChildRow toggle"
 												style="cursor: pointer; cursor: hand;">
 										</c:when>
@@ -350,41 +350,41 @@ $(document)
 											<tr>
 										</c:otherwise>
 									</c:choose>
-									<td class='text-left'>${registro.disciplina.nome}</td>
+									<td class='text-left'>${item.disciplina.nome}</td>
 									<td class='text-left'>
 										<div style='overflow: auto; width: 100%; height: 50px;'>
-											${registro.disciplina.codigo}</div>
+											${item.disciplina.codigo}</div>
 									</td>
-									<td>${registro.disciplina.quantidadeCreditos}</td>
-									<td><c:if test="${registro.temDocumento}">
+									<td>${item.disciplina.quantidadeCreditos}</td>
+									<td><c:if test="${item.temDocumento}">
 											<button class="btn btn-default" title="Download"
-												onClick="downloadComprovante(${registro.idItem})">
+												onClick="downloadConteudoProgramatico(${item.idItem})">
 												<i class="fa fa-download"></i>
 											</button>
 										</c:if></td>
-									<td>${registro.dataSolicitacao}</td>
+									<td>${item.dataSolicitacao}</td>
 									<td><c:set var="classeStatus" scope="page">
 											<c:choose>
-												<c:when test="${registro.estado eq 'INDEFERIDO'}">
+												<c:when test="${item.estado eq 'INDEFERIDO'}">
 													text-danger
 												</c:when>
-												<c:when test="${registro.estado eq 'DEFERIDO'}">
+												<c:when test="${item.estado eq 'DEFERIDO'}">
 													text-success
 												</c:when>
-												<c:when test="${registro.estado eq 'EM_ANÁLISE'}">
+												<c:when test="${item.estado eq 'EM_ANÁLISE'}">
 													text-warning
 												</c:when>
-												<c:when test="${registro.estado eq 'SUBMETIDO'}">
+												<c:when test="${item.estado eq 'SUBMETIDO'}">
 													text-primary
 												</c:when>
 											</c:choose>
-										</c:set> <span class="${classeStatus}"><b>${registro.estado}</b>
-											<c:if test="${registro.podeSerCancelado}">
+										</c:set> <span class="${classeStatus}"><b>${item.estado}</b>
+											<c:if test="${item.podeSerCancelado}">
 												<form style="height: 10px;"
-													action="${pageContext.request.contextPath}/registroIsencoes/removeRegistroItem"
+													action="${pageContext.request.contextPath}/submissaoIsencoes/removeRegistroItem"
 													method="POST">
 													<input type="hidden" name="idReg"
-														value="${registro.idItem}">
+														value="${item.idItem}">
 													<button type="submit" class="btn btn-default"
 														data-toggle='confirmation'
 														data-confirm-title='Confirmação'
@@ -401,14 +401,14 @@ $(document)
 											<table class="table text-center">
 												<tr>
 													<td class="text-left"><b>Professor Avaliador:</b>
-														${registro.nomeAvaliador}</td>
+														${item.nomeAvaliador}</td>
 													<td class="text-left"><b>Data de Análise:</b>
-														${registro.dataAnalise}</td>
+														${item.dataAnalise}</td>
 												</tr>
-												<c:if test="${registro.estado eq 'INDEFERIDO'}">
+												<c:if test="${item.estado eq 'INDEFERIDO'}">
 													<tr>
 														<td colspan="2" class="text-left"><b>Justificativa:</b>
-															${registro.justificativa}</td>
+															${item.justificativa}</td>
 													</tr>
 												</c:if>
 											</table>
@@ -458,7 +458,7 @@ $(document)
 
 		<div class="row">
 			<form style="height: 10px;"
-				action="${pageContext.request.contextPath}/registroIsencoes/solicitaRegistroItem"
+				action="${pageContext.request.contextPath}/submissaoIsencoes/solicitaRegistroItem"
 				method="POST">
 				<button type="submit" class="btn btn-default"
 					title="Registrar novo item">
@@ -471,7 +471,7 @@ $(document)
 
 		<div class="row">
 			<a class="btn btn-default"
-				href="${pageContext.request.contextPath}/registroIsencoes/menuPrincipal">
+				href="${pageContext.request.contextPath}/submissaoIsencoes/menuPrincipal">
 				<i class="fa fa-arrow-left"> </i> Voltar
 			</a>
 		</div>

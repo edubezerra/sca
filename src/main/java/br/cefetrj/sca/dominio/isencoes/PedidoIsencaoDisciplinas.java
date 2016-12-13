@@ -21,7 +21,8 @@ import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 @Entity
 public class PedidoIsencaoDisciplinas {
 	public enum Situacao {
-		EM_PREPARACAO("EM PREPARAÇÃO"), SUBMETIDO("SUBMETIDO"), ANALISADO("ANALISADO");
+		EM_PREPARACAO("EM PREPARAÇÃO"), SUBMETIDO("SUBMETIDO"), ANALISADO(
+				"ANALISADO");
 
 		private String value;
 
@@ -67,6 +68,10 @@ public class PedidoIsencaoDisciplinas {
 	}
 
 	public PedidoIsencaoDisciplinas(Aluno aluno) {
+		if (aluno == null) {
+			throw new IllegalArgumentException(
+					"Pedido de isenção não pode ser criado sem um aluno.");
+		}
 		this.aluno = aluno;
 		this.situacao = "EM PREPARAÇÃO";
 	}
@@ -106,9 +111,11 @@ public class PedidoIsencaoDisciplinas {
 
 	public void submeterParaAnalise() {
 		if (!this.situacao.equals("EM PREPARAÇÃO"))
-			throw new IllegalStateException("Apenas pedidos em preparação podem ser submetidos para análise.");
+			throw new IllegalStateException(
+					"Apenas pedidos em preparação podem ser submetidos para análise.");
 		else if (this.historicoEscolar == null) {
-			throw new IllegalStateException("O histórico escolar da instituição de origem deve ser anexado.");
+			throw new IllegalStateException(
+					"O histórico escolar da instituição de origem deve ser anexado.");
 		} else {
 			this.situacao = "SUBMETIDO";
 			try {
@@ -125,7 +132,8 @@ public class PedidoIsencaoDisciplinas {
 		return aluno;
 	}
 
-	public void comMaisUmItem(Disciplina disciplina, String nomeDisciplinaExterna, String notaFinalDisciplinaExterna,
+	public void comMaisUmItem(Disciplina disciplina,
+			String nomeDisciplinaExterna, String notaFinalDisciplinaExterna,
 			String cargaHoraria, String observacao, Comprovante doc) {
 		boolean isencaoJaFoiSolicitadaParaDisciplina = false;
 		for (ItemPedidoIsencaoDisciplina umItem : this.itens) {
@@ -135,11 +143,14 @@ public class PedidoIsencaoDisciplinas {
 			}
 		}
 		if (!isencaoJaFoiSolicitadaParaDisciplina) {
-			ItemPedidoIsencaoDisciplina item = new ItemPedidoIsencaoDisciplina(disciplina, nomeDisciplinaExterna,
+			ItemPedidoIsencaoDisciplina item = new ItemPedidoIsencaoDisciplina(
+					disciplina, nomeDisciplinaExterna,
 					notaFinalDisciplinaExterna, cargaHoraria, observacao, doc);
 			this.itens.add(item);
 		} else {
-			throw new IllegalArgumentException("Isenção já solicitada para disciplina: " + disciplina.getNome());
+			throw new IllegalArgumentException(
+					"Isenção já solicitada para disciplina: "
+							+ disciplina.getNome());
 		}
 	}
 
@@ -152,7 +163,8 @@ public class PedidoIsencaoDisciplinas {
 		}
 	}
 
-	public void indeferirItem(Long idItem, Professor professor, String observacao) {
+	public void indeferirItem(Long idItem, Professor professor,
+			String observacao) {
 		for (int i = 0; i < this.getItens().size(); i++) {
 			if (this.getItens().get(i).getId().equals(idItem)) {
 				this.getItens().get(i).indeferir(professor, observacao);
@@ -161,16 +173,20 @@ public class PedidoIsencaoDisciplinas {
 		}
 	}
 
-	public void analisarItem(String idItemPedidoIsencao, Professor professorResponsavel, String novaSituacao,
+	public void analisarItem(String idItemPedidoIsencao,
+			Professor professorResponsavel, String novaSituacao,
 			String observacao) {
 		if (novaSituacao == null || novaSituacao.isEmpty()) {
-			throw new IllegalArgumentException("Nova situação do item de isenção deve ser informada.");
+			throw new IllegalArgumentException(
+					"Nova situação do item de isenção deve ser informada.");
 		}
 		if (idItemPedidoIsencao == null || idItemPedidoIsencao.isEmpty()) {
-			throw new IllegalArgumentException("Idenfiticação do item de isenção deve ser informada.");
+			throw new IllegalArgumentException(
+					"Idenfiticação do item de isenção deve ser informada.");
 		}
 		if (professorResponsavel == null) {
-			throw new IllegalArgumentException("Professor responsável pela análise deve ser informado.");
+			throw new IllegalArgumentException(
+					"Professor responsável pela análise deve ser informado.");
 		}
 		Long idItem = Long.parseLong(idItemPedidoIsencao);
 		if (novaSituacao.equals("DEFERIDO")) {
@@ -178,7 +194,8 @@ public class PedidoIsencaoDisciplinas {
 		} else if (novaSituacao.equals("INDEFERIDO")) {
 			this.indeferirItem(idItem, professorResponsavel, observacao);
 		} else {
-			throw new IllegalArgumentException("Valor inválido para nova situação do item de isenção.");
+			throw new IllegalArgumentException(
+					"Valor inválido para nova situação do item de isenção.");
 		}
 	}
 

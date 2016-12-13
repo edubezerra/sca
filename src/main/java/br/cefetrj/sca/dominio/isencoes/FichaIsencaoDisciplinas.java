@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.cefetrj.sca.dominio.Aluno;
-import br.cefetrj.sca.dominio.Disciplina;
 
 public class FichaIsencaoDisciplinas {
 
@@ -12,7 +11,14 @@ public class FichaIsencaoDisciplinas {
 
 	Aluno aluno;
 
-	public FichaIsencaoDisciplinas(Aluno aluno, PedidoIsencaoDisciplinas pedido, List<Disciplina> disciplinas) {
+	boolean temHistoricoEscolarAnexado = false;
+
+	public FichaIsencaoDisciplinas(Aluno aluno, PedidoIsencaoDisciplinas pedido) {
+
+		if (aluno == null) {
+			throw new IllegalArgumentException(
+					"Ficha de isenções de disciplinas não pode ser criada sem aluno!");
+		}
 
 		this.aluno = aluno;
 
@@ -21,13 +27,11 @@ public class FichaIsencaoDisciplinas {
 			for (ItemPedidoIsencaoDisciplina itemPedido : itensPedido) {
 				itens.add(new ItemFichaIsencaoDisciplina(itemPedido));
 			}
-		}
 
-//		for (Disciplina disciplina : disciplinas) {
-//			if (!itens.contains(disciplina)) {
-//				itens.add(new ItemFichaIsencaoDisciplina(disciplina));
-//			}
-//		}
+			if (pedido.getHistoricoEscolar() != null) {
+				temHistoricoEscolarAnexado = true;
+			}
+		}
 	}
 
 	public Aluno getAluno() {
@@ -38,4 +42,27 @@ public class FichaIsencaoDisciplinas {
 		return itens;
 	}
 
+	public boolean temHistoricoEscolarAnexado() {
+		return true;
+	}
+
+	public String getNomeAluno() {
+		return this.aluno.getNome();
+	}
+
+	public String getMatriculaAluno() {
+		return this.aluno.getNome();
+	}
+
+	public String getDescritorVersaoCurso() {
+		return this.aluno.getVersaoCurso().getNumero();
+	}
+
+	public String getSiglaCurso() {
+		return this.aluno.getVersaoCurso().getCurso().getSigla();
+	}
+
+	public String getNomeCurso() {
+		return this.aluno.getVersaoCurso().getCurso().getNome();
+	}
 }
