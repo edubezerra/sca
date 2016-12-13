@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,9 +29,7 @@ import br.cefetrj.sca.service.PedidoIsencaoDisciplinasService;
 @RequestMapping("/submissaoIsencoes")
 public class SubmissaoPedidoIsencaoDisciplinasController {
 
-	protected Logger logger = Logger
-			.getLogger(SubmissaoPedidoIsencaoDisciplinasController.class
-					.getName());
+	protected Logger logger = Logger.getLogger(SubmissaoPedidoIsencaoDisciplinasController.class.getName());
 
 	@Autowired
 	private PedidoIsencaoDisciplinasService service;
@@ -52,19 +51,16 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 		}
 	}
 
-	@RequestMapping(value = "/registroIsencoes", method = RequestMethod.GET)
-	public String apresentaPedidoIsencaoDisciplinas(HttpSession session,
-			Model model) {
+	@RequestMapping(value = "/apresentaPedidoIsencaoDisciplinas", method = RequestMethod.GET)
+	public String apresentaPedidoIsencaoDisciplinas(HttpSession session, Model model) {
 
 		System.out.println(".solicitaRegistroAtividades()");
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		try {
-			model.addAttribute("fichaIsencaoDisciplinas",
-					service.criarFichaIsencaoDisciplinas(matricula));
-			model.addAttribute("itensPedidoIsencao", service
-					.criarFichaIsencaoDisciplinas(matricula).getItens());
+			model.addAttribute("fichaIsencaoDisciplinas", service.criarFichaIsencaoDisciplinas(matricula));
+			model.addAttribute("itensPedidoIsencao", service.criarFichaIsencaoDisciplinas(matricula).getItens());
 			model.addAttribute("matricula", matricula);
 			return "/isencaoDisciplina/submissao/apresentaPedidoIsencaoDisciplinasView";
 		} catch (Exception exc) {
@@ -78,10 +74,8 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		try {
-			model.addAttribute("fichaIsencaoDisciplinas",
-					service.criarFichaIsencaoDisciplinas(matricula));
-			model.addAttribute("disciplinas",
-					service.getDisciplinasPossiveisParaIsencao(matricula));
+			model.addAttribute("fichaIsencaoDisciplinas", service.criarFichaIsencaoDisciplinas(matricula));
+			model.addAttribute("disciplinas", service.getDisciplinasPossiveisParaIsencao(matricula));
 			model.addAttribute("matricula", matricula);
 			return "/isencaoDisciplina/submissao/novoItemPedidoIsencaoView";
 		} catch (Exception exc) {
@@ -91,8 +85,7 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 	}
 
 	@RequestMapping(value = "/anexarHistoricoEscolar", method = RequestMethod.POST)
-	public @ResponseBody String anexarHistoricoEscolar(
-			@RequestParam("file") MultipartFile file, Model model) {
+	public @ResponseBody String anexarHistoricoEscolar(@RequestParam("file") MultipartFile file, Model model) {
 		System.out.println(".anexarHistoricoEscolar()");
 
 		try {
@@ -102,12 +95,10 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 			try {
 				service.anexarHistoricoEscolar(matricula, file);
 
-				mapAsJson = new ObjectMapper().writeValueAsString(file
-						.getName());
+				mapAsJson = new ObjectMapper().writeValueAsString(file.getName());
 				return mapAsJson;
 			} catch (Exception exc) {
-				mapAsJson = new ObjectMapper().writeValueAsString(exc
-						.getMessage());
+				mapAsJson = new ObjectMapper().writeValueAsString(exc.getMessage());
 				return mapAsJson;
 			}
 		} catch (JsonProcessingException e) {
@@ -115,24 +106,20 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 		}
 	}
 
-	@RequestMapping(value = "/registraItem", method = RequestMethod.POST)
-	public String registraItem(HttpSession session,
-			@RequestParam String idDisciplina,
-			@RequestParam String nomeDisciplinaExterna,
-			@RequestParam String notaFinalDisciplinaExterna,
-			@RequestParam String cargaHoraria, @RequestParam String observacao,
-			@RequestParam MultipartFile file, Model model) throws IOException {
+	@RequestMapping(value = "/adicionarItemNoPedido", method = RequestMethod.POST)
+	public String adicionarItemNoPedido(@RequestParam String idDisciplina, @RequestParam String nomeDisciplinaExterna,
+			@RequestParam String notaFinalDisciplinaExterna, @RequestParam String cargaHoraria,
+			@RequestParam String observacao, @RequestParam MultipartFile file, Model model) throws IOException {
 
-		System.out.println(".registraItem()");
+		System.out.println(".adicionarItemNoPedido()");
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		try {
 			Long id = Long.parseLong(idDisciplina);
-			service.adicionarItemNoPedido(matricula, id, nomeDisciplinaExterna,
-					notaFinalDisciplinaExterna, cargaHoraria, observacao, file);
-			model.addAttribute("info",
-					"Item do pedido de isenção submetido com sucesso.");
+			service.adicionarItemNoPedido(matricula, id, nomeDisciplinaExterna, notaFinalDisciplinaExterna,
+					cargaHoraria, observacao, file);
+			model.addAttribute("info", "Item do pedido de isenção submetido com sucesso.");
 			return "forward:/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -140,19 +127,17 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 		}
 	}
 
-	@RequestMapping(value = "/removeRegistroItem", method = RequestMethod.POST)
-	public String removeRegistroAtividade(HttpSession session,
-			@RequestParam String idReg, Model model) {
+	@RequestMapping(value = "/removerItemDoPedido", method = RequestMethod.POST)
+	public String removerItemDoPedido(HttpSession session, @RequestParam String idReg, Model model) {
 
-		System.out.println(".removeRegistroAtividade()");
+		System.out.println(".removerItemDoPedido()");
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		try {
 			Long id = Long.parseLong(idReg);
 			service.removerItemDoPedido(matricula, id);
-			model.addAttribute("info",
-					"Submissão de registro de isenção cancelada.");
+			model.addAttribute("info", "Submissão de registro de isenção cancelada.");
 			return "forward:/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
@@ -168,10 +153,8 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		try {
-			model.addAttribute("fichaIsencaoDisciplinas",
-					service.criarFichaIsencaoDisciplinas(matricula));
-			model.addAttribute("itensPedidoIsencao", service
-					.criarFichaIsencaoDisciplinas(matricula).getItens());
+			model.addAttribute("fichaIsencaoDisciplinas", service.criarFichaIsencaoDisciplinas(matricula));
+			model.addAttribute("itensPedidoIsencao", service.criarFichaIsencaoDisciplinas(matricula).getItens());
 			model.addAttribute("matricula", matricula);
 			return "/isencaoDisciplina/submissao/apresentaPedidoIsencaoDisciplinasView";
 		} catch (Exception exc) {
@@ -183,6 +166,8 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 	/**
 	 * Realiza o dowload do arquivo contendo o(s) conteúdo(s) programático(s) de
 	 * uma ou mais disciplinas externas usadas em um item do pedido de isenção.
+	 * Esses conteúdo(s) programático(s) são posteriormente usados como
+	 * comprovantes, durante a análise do pedido de isenção.
 	 * 
 	 * Pode ser que mais de uma disciplina externa seja usada na solicitação de
 	 * isenção de uma mesma disciplina interna. Nesse caso, esse arquivo está no
@@ -194,8 +179,7 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 	 *            <code>ItemPedidoIsencaoDisciplina</code> correspondente.
 	 */
 	@RequestMapping(value = "/downloadConteudoProgramatico", method = RequestMethod.POST)
-	public void downloadConteudoProgramatico(@RequestParam String IdReg,
-			HttpServletResponse response) {
+	public void downloadConteudoProgramatico(@RequestParam String IdReg, HttpServletResponse response) {
 
 		System.out.println(".downloadConteudoProgramatico()");
 
@@ -203,11 +187,48 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 		String matricula = usr.getMatricula();
 		try {
 			Long id = Long.parseLong(IdReg);
-			Comprovante comprovante = service.getComprovanteParaDisciplina(
-					matricula, id);
+			Comprovante comprovante = service.getComprovanteParaDisciplina(matricula, id);
 			GerenteArquivos.downloadFile(response, comprovante);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "/downloadHistoricoEscolar", method = RequestMethod.POST)
+	public void downloadHistoricoEscolar(@RequestParam String nomeArquivo, HttpServletResponse response) {
+
+		System.out.println(".downloadHistoricoEscolar()");
+
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matricula = usr.getMatricula();
+		try {
+			Comprovante comprovante = service.getComprovanteParaDisciplina(matricula, id);
+			GerenteArquivos.downloadFile(response, comprovante);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = { "/submeterPedidoParaAnalise-{matricula}" }, method = RequestMethod.GET)
+	public String submeterPedidoParaAnalise(@PathVariable String matricula, Model model) {
+
+		System.out.println(".submeterPedidoParaAnalise()");
+
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matriculaAlunoLogado = usr.getMatricula();
+
+		try {
+			/**
+			 * Permite a submissão do pedido de isenção apenas se o aluno
+			 * solicitante (da submissão) for o mesmo que montou o pedido.
+			 */
+			if (matriculaAlunoLogado.equals(matricula)) {
+				service.submeterPedidoParaAnalise(matricula);
+			}
+			return "forward:/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "forward:/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes";
 		}
 	}
 }

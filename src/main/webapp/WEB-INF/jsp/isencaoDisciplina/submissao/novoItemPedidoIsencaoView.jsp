@@ -62,18 +62,18 @@
 		<div class="row">
 			<h5>
 				<b>Aluno:</b>
-				<c:out value="${requestScope.dadosAluno.nomeAluno}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.nomeAluno}"></c:out>
 				(Matrícula:
 				<c:out value="${requestScope.matricula}"></c:out>
 				)
 			</h5>
 			<h5>
 				<b>Curso:</b>
-				<c:out value="${requestScope.dadosAluno.curso.sigla}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.siglaCurso}"></c:out>
 				-
-				<c:out value="${requestScope.dadosAluno.curso.nome}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.nomeCurso}"></c:out>
 				(Grade:
-				<c:out value="${requestScope.dadosAluno.versaoCurso}"></c:out>
+				<c:out value="${requestScope.fichaIsencaoDisciplinas.descritorVersaoCurso}"></c:out>
 				)
 			</h5>
 		</div>
@@ -86,7 +86,7 @@
 		<hr />
 		<div class="row">
 			<form
-				action="${pageContext.request.contextPath}/registroIsencoes/registraItem"
+				action="${pageContext.request.contextPath}/submissaoIsencoes/adicionarItemNoPedido"
 				method="post" enctype="multipart/form-data">
 
 				<hr />
@@ -139,34 +139,10 @@
 						style="display: none;"></span>
 				</div>
 
-
-<!-- 				<div style="width: 500px; padding: 20px"> -->
-
-<!-- 					<input id="fileupload" type="file" name="files[]" -->
-<!-- 						data-url="rest/controller/upload" multiple> -->
-
-<!-- 					<div id="dropzone">Drop files here</div> -->
-
-<!-- 					<div id="progress"> -->
-<!-- 						<div style="width: 0%;"></div> -->
-<!-- 					</div> -->
-
-<!-- 					<table id="uploaded-files"> -->
-<!-- 						<tr> -->
-<!-- 							<th>File Name</th> -->
-<!-- 							<th>File Size</th> -->
-<!-- 							<th>File Type</th> -->
-<!-- 							<th>Download</th> -->
-<!-- 						</tr> -->
-<!-- 					</table> -->
-
-<!-- 				</div> -->
-
-
 				<br />
 				<div class="row">
 					<label for="observacao">(Opcional) Forneça quaisquer
-						oservações que achar relevantes para a análise:</label>
+						observações que achar relevantes para a análise de seu pedido:</label>
 					<textarea name="observacao" class="form-control" rows="2"
 						id="observacao" maxlength="144"
 						placeholder="(opcional, max 144 caracteres)"
@@ -193,7 +169,7 @@
 			</form>
 		</div>
 		<br /> <a class="btn btn-default"
-			href="${pageContext.request.contextPath}/registroIsencoes/solicitaNovamenteRegistroIsencoes">
+			href="${pageContext.request.contextPath}/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes">
 			<i class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>

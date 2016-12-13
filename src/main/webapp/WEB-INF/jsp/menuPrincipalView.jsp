@@ -12,7 +12,7 @@
 			<div class="col-md-12">
 				<div class="jumbotron">
 					<h3>
-						Bem-vindo,
+						Olá,
 						${UsuarioController.getCurrentUser().getNome()}!
 					</h3>
 					

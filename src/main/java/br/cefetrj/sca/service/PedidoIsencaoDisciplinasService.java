@@ -48,10 +48,8 @@ public class PedidoIsencaoDisciplinasService {
 	 *         pedido de isenções.
 	 * 
 	 */
-	public FichaIsencaoDisciplinas criarFichaIsencaoDisciplinas(
-			String matriculaAluno) {
-		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo
-				.findByMatriculaAluno(matriculaAluno);
+	public FichaIsencaoDisciplinas criarFichaIsencaoDisciplinas(String matriculaAluno) {
+		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo.findByMatriculaAluno(matriculaAluno);
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 		return new FichaIsencaoDisciplinas(aluno, pedido);
 	}
@@ -71,17 +69,15 @@ public class PedidoIsencaoDisciplinasService {
 	// return dadosAluno;
 	// }
 
-	public void adicionarItemNoPedido(String matriculaAluno,
-			Long idDisciplinaInterna, String nomeDisciplinaExterna,
-			String notaFinalDisciplinaExterna, String cargaHoraria,
-			String observacao, MultipartFile file) throws IOException {
+	public void adicionarItemNoPedido(String matriculaAluno, Long idDisciplinaInterna, String nomeDisciplinaExterna,
+			String notaFinalDisciplinaExterna, String cargaHoraria, String observacao, MultipartFile file)
+					throws IOException {
 
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 
 		if (aluno != null) {
 
-			PedidoIsencaoDisciplinas pedido = processoIsencaoRepo
-					.findByAluno(aluno);
+			PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
 
 			if (pedido == null) {
 				pedido = new PedidoIsencaoDisciplinas(aluno);
@@ -90,11 +86,10 @@ public class PedidoIsencaoDisciplinasService {
 			Disciplina disciplina = disciplinaRepo.findOne(idDisciplinaInterna);
 
 			validaComprovante(file);
-			Comprovante doc = new Comprovante(file.getContentType(),
-					file.getBytes(), file.getOriginalFilename());
+			Comprovante doc = new Comprovante(file.getContentType(), file.getBytes(), file.getOriginalFilename());
 
-			pedido.comMaisUmItem(disciplina, nomeDisciplinaExterna,
-					notaFinalDisciplinaExterna, cargaHoraria, observacao, doc);
+			pedido.comMaisUmItem(disciplina, nomeDisciplinaExterna, notaFinalDisciplinaExterna, cargaHoraria,
+					observacao, doc);
 
 			processoIsencaoRepo.save(pedido);
 		}
@@ -106,12 +101,10 @@ public class PedidoIsencaoDisciplinasService {
 
 		if (aluno != null) {
 
-			PedidoIsencaoDisciplinas pedido = processoIsencaoRepo
-					.findByAluno(aluno);
+			PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
 
 			if (idItem == null || idItem <= 0) {
-				throw new IllegalArgumentException(
-						"Erro: id de item de pedido de isenção inválido.");
+				throw new IllegalArgumentException("Erro: id de item de pedido de isenção inválido.");
 			}
 
 			pedido.removerItem(idItem);
@@ -130,8 +123,7 @@ public class PedidoIsencaoDisciplinasService {
 		try {
 			aluno = alunoRepo.findAlunoByMatricula(matriculaAluno);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Aluno não encontrado ("
-					+ matriculaAluno + ")", e);
+			throw new IllegalArgumentException("Aluno não encontrado (" + matriculaAluno + ")", e);
 		}
 
 		return aluno;
@@ -139,30 +131,24 @@ public class PedidoIsencaoDisciplinasService {
 
 	public void validaComprovante(MultipartFile file) {
 		if (file == null || file.isEmpty()) {
-			throw new IllegalArgumentException(
-					"Erro: Comprovante não fornecido. "
-							+ "Por favor, forneça o arquivo com o comprovante necessário para a isenção.");
+			throw new IllegalArgumentException("Erro: Comprovante não fornecido. "
+					+ "Por favor, forneça o arquivo com o comprovante necessário para a isenção.");
 		}
 
 		if (file.getSize() > TAMANHO_MAXIMO_COMPROVANTE) {
-			throw new IllegalArgumentException(
-					"O arquivo de comprovante deve ter 10mb no máximo");
+			throw new IllegalArgumentException("O arquivo de comprovante deve ter 10mb no máximo");
 		}
-		String[] tiposAceitos = { "application/pdf", "application/zip",
-				"application/octet-stream" };
+		String[] tiposAceitos = { "application/pdf", "application/zip", "application/octet-stream" };
 		if (ArrayUtils.indexOf(tiposAceitos, file.getContentType()) < 0) {
-			throw new IllegalArgumentException(
-					"O arquivo de comprovante deve ser no formato PDF ou ZIP");
+			throw new IllegalArgumentException("O arquivo de comprovante deve ser no formato PDF ou ZIP");
 		}
 	}
 
-	public Comprovante getComprovanteParaDisciplina(String matriculaAluno,
-			Long idItem) {
+	public Comprovante getComprovanteParaDisciplina(String matriculaAluno, Long idItem) {
 
 		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
 
-		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo
-				.findByAluno(aluno);
+		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
 
 		if (pedido != null) {
 			Comprovante comprovante = pedido.getComprovanteDoItem(idItem);
@@ -183,8 +169,7 @@ public class PedidoIsencaoDisciplinasService {
 		Aluno aluno = getAlunoPorMatricula(matricula);
 		VersaoCurso versaoCurso = aluno.getVersaoCurso();
 
-		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo
-				.findByAluno(aluno);
+		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
 
 		List<Disciplina> disciplinasJaSolicitadas = new ArrayList<>();
 
@@ -195,27 +180,31 @@ public class PedidoIsencaoDisciplinasService {
 			}
 		}
 
-		List<Disciplina> disciplinas = disciplinaRepo
-				.findAllEmVersaoCurso(versaoCurso);
+		List<Disciplina> disciplinas = disciplinaRepo.findAllEmVersaoCurso(versaoCurso);
 
 		disciplinas.removeAll(disciplinasJaSolicitadas);
 
 		return disciplinas;
 	}
 
-	public void anexarHistoricoEscolar(String matricula, MultipartFile file)
-			throws IOException {
+	public void anexarHistoricoEscolar(String matricula, MultipartFile file) throws IOException {
 		Aluno aluno = getAlunoPorMatricula(matricula);
-		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo
-				.findByAluno(aluno);
+		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
 		if (pedido == null) {
 			pedido = new PedidoIsencaoDisciplinas(aluno);
 		}
 		validaComprovante(file);
-		Comprovante doc = new Comprovante(file.getContentType(),
-				file.getBytes(), file.getOriginalFilename());
+		Comprovante doc = new Comprovante(file.getContentType(), file.getBytes(), file.getOriginalFilename());
 		pedido.anexarHistoricoEscolar(doc);
 		pedidoIsencaoDisciplinasRepo.save(pedido);
+	}
+
+	public void submeterPedidoParaAnalise(String matriculaAlunoSolicitante) {
+		Aluno aluno = getAlunoPorMatricula(matriculaAlunoSolicitante);
+		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
+		if (pedido != null) {
+			pedido.submeterParaAnalise();
+		}
 	}
 
 }

@@ -83,7 +83,7 @@ public class PedidoIsencaoDisciplinasServiceDEPRECATED {
 
 		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo.findByAluno(alunoSolicitante);
 
-		pedido.analisarItem(idItemPedidoIsencao, professorResponsavel, novaSituacao, observacao);
+		pedido.registrarRespostaParaItem(idItemPedidoIsencao, professorResponsavel, novaSituacao, observacao);
 
 		pedidoIsencaoDisciplinasRepo.save(pedido);
 	}
@@ -91,7 +91,6 @@ public class PedidoIsencaoDisciplinasServiceDEPRECATED {
 	public FichaIsencaoDisciplinas findFichaIsencao(String matricula) {
 		PedidoIsencaoDisciplinas pedido = pedidoIsencaoDisciplinasRepo.findByMatriculaAluno(matricula);
 		Aluno aluno = alunoRepo.findAlunoByMatricula(matricula);
-		List<Disciplina> disciplinas = disciplinaRepo.findAllEmVersaoCurso(aluno.getVersaoCurso());
-		return new FichaIsencaoDisciplinas(aluno, pedido, disciplinas);
+		return new FichaIsencaoDisciplinas(aluno, pedido);
 	}
 }

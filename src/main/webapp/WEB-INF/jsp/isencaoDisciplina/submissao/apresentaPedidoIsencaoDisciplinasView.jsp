@@ -175,13 +175,21 @@
   	</script>
 
 <script>
-	function downloadConteudoProgramatico(IdReg) {			
-		var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/submissaoIsencoes/downloadConteudoProgramatico' method='POST' target='_blank'>");
-           form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
-           $('body').append(form);
-           form.submit();
-           $('body').remove('#downloadForm');
-	}
+function downloadConteudoProgramatico(IdReg) {			
+	var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/submissaoIsencoes/downloadConteudoProgramatico' method='POST' target='_blank'>");
+       form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
+       $('body').append(form);
+       form.submit();
+       $('body').remove('#downloadForm');
+}
+
+function downloadHistoricoEscolar(nomeArquivo) {			
+	var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/submissaoIsencoes/downloadHistoricoEscolar' method='POST' target='_blank'>");
+       form.append($("<input type='hidden' name='nomeArquivo' value='"+nomeArquivo+"'>"));
+       $('body').append(form);
+       form.submit();
+       $('body').remove('#downloadForm');
+}
 </script>
 
 <script>
@@ -228,6 +236,20 @@ $(document)
     }
 </script>
 
+<script>
+$(document).ready(function() {
+	//add more file components if Add is clicked
+	$('#addFile').click(function() {
+		var fileIndex = $('#fileTable tr').children().length - 1;
+		$('#fileTable').append(
+				'<tr><td>'+
+				'	<input type="file" name="files['+ fileIndex +']" />'+
+				'</td></tr>');
+	});
+	
+});
+</script>
+
 </head>
 <body>
 
@@ -250,18 +272,19 @@ $(document)
 				-
 				<c:out value="${requestScope.fichaIsencaoDisciplinas.nomeCurso}"></c:out>
 				(Grade:
-				<c:out value="${requestScope.fichaIsencaoDisciplinas.descritorVersaoCurso}"></c:out>
+				<c:out
+					value="${requestScope.fichaIsencaoDisciplinas.descritorVersaoCurso}"></c:out>
 				)
 			</h5>
 		</div>
 		<br />
 		<c:if test="${requestScope.sucesso != null}">
-			<div class="row">
+			<div class="row text-center">
 				<span class="label label-success">${requestScope.sucesso}</span>
 			</div>
 		</c:if>
 		<c:if test="${requestScope.error != null}">
-			<div class="row">
+			<div class="row text-center">
 				<span class="label label-danger">${requestScope.error}</span>
 			</div>
 		</c:if>
@@ -271,45 +294,62 @@ $(document)
 			</div>
 		</c:if>
 
+		<br />
+
 		<div class="row">
-			<c:if test="${requestScope.fichaIsencaoDisciplinas.temHistoricoEscolarAnexado}">
-				<div class="row text-center">
-					<span class="label label-success">Parabéns! Você cumpriu
-						atividades complementares suficientes para se formar.</span>
-				</div>
-			</c:if>
-			<c:if test="${!requestScope.fichaIsencaoDisciplinas.temHistoricoEscolarAnexado}">
-				<h4>
-					<b>Histórico(s) escolar(es):</b>
-				</h4>
+			<h4>
+				<b>Histórico(s) escolar(es):</b>
+			</h4>
+
+			<div class="vcenter well">
+
 				<div>
-					<i class="fa fa-warning"></i> Você deve anexar um arquivo contendo
-					cada histórico escolar necessário para a análise do seu pedido.
-					Nesse arquivo, devem obrigatoriamente constar código e nome de cada
-					disciplina externa utilizada no pedido de isenção, assim como a
-					nota final obtida e sua respectiva carga horária, exatamente
-					conforme informados nesse pedido. No caso de haver mais de um
-					histórico escolar, anexe um arquivo compactado (formato ZIP) que
-					contenha todos os históricos escolares necessários para a análise
-					desse pedido. No caso de haver apenas um histórico, anexe um
-					arquivo em formato PDF. O tamanho máximo do arquivo a anexar deve
-					ser 10MB. Formatos aceitos: PDF, ZIP.
+					<i class="fa fa-warning"></i> Nesse pedido de isenções, deve ser
+					anexado cada histórico escolar necessário para a análise. Atente
+					para o fato de que esses históricos são usados como comprovantes
+					durante a análise de seu pedido. Portanto, cada disciplina externa
+					utilizada nesse pedido de isenção, devem obrigatoriamente constar
+					código, nome, nota final obtida e carga horária, exatamente
+					conforme informado nesse pedido. O tamanho máximo de cada arquivo
+					relativo a um histórico escolar deve ser 10MB. Formatos aceitos:
+					PDF, ZIP.
 				</div>
 
-				<form id="formUploadHE"
-					action="${pageContext.request.contextPath}/submissaoIsencoes/uploadHistoricoEscolar"
-					method="POST" enctype="multipart/form-data">
+				<c:if
+					test="${!(fn:length(requestScope.fichaIsencaoDisciplinas.historicosEscolares) eq 0)}">
+					<h5>Históricos já anexados a este pedido:</h5>
+					<ol>
+						<c:forEach
+							items="${requestScope.fichaIsencaoDisciplinas.historicosEscolares}"
+							var="file">
 
-					<input type="file" name="file" id="fileLoader" /> 
-					<input type="button" id="fileSubmit" value="Upload"/>
+							<li>
+								<button class="btn btn-default" title="Download"
+									onClick="downloadHistoricoEscolar(${file.nome})">
+									<i class="fa fa-download"></i>
+								</button> ${file.nome}
+							</li>
 
-				</form>
 
-				<br />
-				<div id="result"></div>
-				<br />
-			</c:if>
+						</c:forEach>
+					</ol>
+				</c:if>
+
+				<c:if
+					test="${!requestScope.fichaIsencaoDisciplinas.submissaoJaRealizada}">
+					<h5>Adicione novo histórico:</h5>
+					<form id="formUploadHE"
+						action="${pageContext.request.contextPath}/submissaoIsencoes/uploadHistoricoEscolar"
+						method="POST" enctype="multipart/form-data">
+
+						<input type="file" name="file" id="fileLoader" /> <input
+							type="button" id="fileSubmit" value="Upload" />
+					</form>
+				</c:if>
+			</div>
 		</div>
+
+		<br>
 
 		<div class="row">
 			<h4>
@@ -318,7 +358,8 @@ $(document)
 			<c:choose>
 				<c:when test="${fn:length(requestScope.itensPedidoIsencao) eq 0}">
 					<div class="vcenter well">
-						<p>Não há itens registrados nesse pedido de isenção de disciplinas.</p>
+						<p>Não há itens registrados nesse pedido de isenção de
+							disciplinas.</p>
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -339,8 +380,7 @@ $(document)
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${requestScope.itensPedidoIsencao}"
-									var="item">
+								<c:forEach items="${requestScope.itensPedidoIsencao}" var="item">
 									<c:choose>
 										<c:when test="${item.estado ne 'SUBMETIDO'}">
 											<tr class="tablesorter-hasChildRow toggle"
@@ -378,13 +418,12 @@ $(document)
 													text-primary
 												</c:when>
 											</c:choose>
-										</c:set> <span class="${classeStatus}"><b>${item.estado}</b>
-											<c:if test="${item.podeSerCancelado}">
+										</c:set> <span class="${classeStatus}"><b>${item.estado}</b> <c:if
+												test="${!requestScope.fichaIsencaoDisciplinas.submissaoJaRealizada}">
 												<form style="height: 10px;"
-													action="${pageContext.request.contextPath}/submissaoIsencoes/removeRegistroItem"
+													action="${pageContext.request.contextPath}/submissaoIsencoes/removerItemDoPedido"
 													method="POST">
-													<input type="hidden" name="idReg"
-														value="${item.idItem}">
+													<input type="hidden" name="idReg" value="${item.idItem}">
 													<button type="submit" class="btn btn-default"
 														data-toggle='confirmation'
 														data-confirm-title='Confirmação'
@@ -394,7 +433,7 @@ $(document)
 														<i class="fa fa-trash-o"></i>
 													</button>
 												</form>
-											</c:if></span></td>
+											</c:if> </span></td>
 									</tr>
 									<tr class="tablesorter-childRow">
 										<td colspan="6">
@@ -468,6 +507,41 @@ $(document)
 		</div>
 
 		<br />
+		<hr />
+
+		<div class="row">
+			<c:if
+				test="${requestScope.fichaIsencaoDisciplinas.submissaoJaRealizada}">
+				<div class="row text-center">
+					<span class="label label-success">Seu pedido de isenções em
+						disciplinas está em análise.</span>
+				</div>
+			</c:if>
+			<c:if
+				test="${!requestScope.fichaIsencaoDisciplinas.submissaoJaRealizada}">
+				<div>
+					<i class="fa fa-warning"></i> Se pedido de isenções está em
+					preparação. Enquanto seu pedido estiver em preparação, você pode
+					adicionar e remover itens nele. Os itens solicitados nesse pedido
+					começam a ser analisados apenas após a <b>submissão do pedido</b> .
+					Use o botão abaixo para submeter seu pedido para análise. <br /> <font
+						color="red">ATENÇÃO</font>: após a submissão, você não mais poderá
+					editar seu pedido; apenas poderá visualizar o andamento da análise
+					de cada um dos itens.
+				</div>
+
+				<br />
+
+				<div class="text-center">
+					<a
+						href="<c:url value='/submissaoIsencoes/submeterPedidoParaAnalise-${requestScope.matricula}' />"
+						class="btn btn-default"><i class="fa fa-level-up"
+						aria-hidden="true"></i> Submeter Isenções para Análise</a>
+				</div>
+
+				<br />
+			</c:if>
+		</div>
 
 		<div class="row">
 			<a class="btn btn-default"

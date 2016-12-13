@@ -111,47 +111,47 @@
 			<version>${spring-data-jpa.version}</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.18.2-GA</version>
-        </dependency>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.18.2-GA</version>
+		</dependency>
 
-        <dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>javassist</artifactId>
-                    <groupId>org.javassist</groupId>
-                </exclusion>
-            </exclusions>
+			<exclusions>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>org.javassist</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
-<dependency>
-    <groupId>org.apache.tomcat</groupId>
-    <artifactId>tomcat-jdbc</artifactId>
-    <version>8.0.23</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>8.0.23</version>
+		</dependency>
 
-<dependency>
-    <groupId>org.apache.tomcat</groupId>
-    <artifactId>tomcat-juli</artifactId>
-    <version>8.0.23</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-juli</artifactId>
+			<version>8.0.23</version>
+		</dependency>
 
-<dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-dbcp2</artifactId>
-    <version>2.1</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.1</version>
+		</dependency>
 
-<dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-pool2</artifactId>
-    <version>2.4.2</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.4.2</version>
+		</dependency>
 
 
 		<!-- SpringSecurity dependencies -->
@@ -324,18 +324,18 @@
 		</dependency>
 
 		<!-- Driver JDBC do DB2 -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.db2jcc4</groupId>
 			<artifactId>db2jcc4</artifactId>
 			<version>4.0</version>
-		</dependency> -->
+		</dependency>
 
 		<!-- Biblioteca de criptografia da AVMB -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>br.com.avmb</groupId>
 			<artifactId>libsilegacy-crypto</artifactId>
 			<version>1.0</version>
-		</dependency> -->
+		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -361,11 +361,11 @@
 			<version>1.13</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.apache.opennlp</groupId>
-            <artifactId>opennlp-tools</artifactId>
-            <version>1.6.0</version>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-tools</artifactId>
+			<version>1.6.0</version>
+		</dependency>
 
 	</dependencies>
 

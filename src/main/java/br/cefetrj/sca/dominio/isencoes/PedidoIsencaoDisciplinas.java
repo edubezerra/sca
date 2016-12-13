@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -20,9 +21,22 @@ import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 
 @Entity
 public class PedidoIsencaoDisciplinas {
+	/**
+	 * 
+	 * Diferentes estados em que um objeto <code>PedidoIsencaoDisciplinas</code>
+	 * pode se encontrar.
+	 * 
+	 * "EM PREPARAÇÃO" --> pedido ainda está em preparação pelo aluno.
+	 * 
+	 * "SUBMETIDO" --> pedido foi submetido (pelo aluno) para ser analisado.
+	 * enquanto houver algum item desse pedido no estado SUMETIDO, o próprio
+	 * pedido permanecer no estado SUBMETIDO.
+	 * 
+	 * "ANALISADO" --> TODOS os itens do pedido foram analisados (i.e.,
+	 * deferidos ou indeferidos).
+	 */
 	public enum Situacao {
-		EM_PREPARACAO("EM PREPARAÇÃO"), SUBMETIDO("SUBMETIDO"), ANALISADO(
-				"ANALISADO");
+		EM_PREPARACAO("EM PREPARAÇÃO"), SUBMETIDO("SUBMETIDO"), ANALISADO("ANALISADO");
 
 		private String value;
 
@@ -49,19 +63,20 @@ public class PedidoIsencaoDisciplinas {
 	@OneToOne
 	Aluno aluno;
 
-	private String situacao;
+	private Situacao situacao;
 
 	private Date dataRegistro;
 
 	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "PEDIDO_ISENCAO_ID", referencedColumnName = "ID")
 	List<ItemPedidoIsencaoDisciplina> itens = new ArrayList<>();
 
 	/**
 	 * Cada pedido de isenção de disciplinas deve conter o histórico escolar do
 	 * aluno na sua instituição de origem.
 	 */
-	@OneToOne(cascade = { CascadeType.ALL })
-	Comprovante historicoEscolar;
+	@OneToMany(cascade = { CascadeType.ALL })
+	List<Comprovante> historicosEscolares = new ArrayList<>();
 
 	@SuppressWarnings("unused")
 	private PedidoIsencaoDisciplinas() {
@@ -69,11 +84,10 @@ public class PedidoIsencaoDisciplinas {
 
 	public PedidoIsencaoDisciplinas(Aluno aluno) {
 		if (aluno == null) {
-			throw new IllegalArgumentException(
-					"Pedido de isenção não pode ser criado sem um aluno.");
+			throw new IllegalArgumentException("Pedido de isenção não pode ser criado sem um aluno.");
 		}
 		this.aluno = aluno;
-		this.situacao = "EM PREPARAÇÃO";
+		this.situacao = Situacao.EM_PREPARACAO;
 	}
 
 	public Long getId() {
@@ -94,30 +108,36 @@ public class PedidoIsencaoDisciplinas {
 
 	/**
 	 * 
-	 * @return situação do processo de isenção ("EM PREPARAÇÃO", "SUBMETIDO" ou
-	 *         "ANALISADO")
+	 * @return situação em que o pedido de isenção se encontra ("EM PREPARAÇÃO",
+	 *         "SUBMETIDO" ou "ANALISADO")
+	 * 
+	 * @see <code>Situacao</code>
 	 */
-	public String getSituacao() {
-		if (this.situacao.equals("EM PREPARAÇÃO")) {
-			return this.situacao;
+	public String getDescritorSituacao() {
+		if (this.situacao == Situacao.EM_PREPARACAO) {
+			return this.situacao.getValue();
 		}
 		for (int i = 0; i < this.getItens().size(); i++) {
-			if (this.getItens().get(i).getSituacao().equals("INDEFINIDO")) {
-				return "SUBMETIDO";
+			if (this.getItens().get(i).getSituacao().equals("SUBMETIDO")) {
+				return Situacao.SUBMETIDO.getValue();
 			}
 		}
-		return "ANALISADO";
+		return Situacao.ANALISADO.getValue();
+	}
+
+	public Situacao getSituacao() {
+		return situacao;
 	}
 
 	public void submeterParaAnalise() {
-		if (!this.situacao.equals("EM PREPARAÇÃO"))
-			throw new IllegalStateException(
-					"Apenas pedidos em preparação podem ser submetidos para análise.");
-		else if (this.historicoEscolar == null) {
-			throw new IllegalStateException(
-					"O histórico escolar da instituição de origem deve ser anexado.");
+		if (this.situacao != Situacao.EM_PREPARACAO)
+			throw new IllegalStateException("Apenas pedidos em preparação podem ser submetidos para análise.");
+		else if (this.historicosEscolares.size() == 0) {
+			throw new IllegalStateException("Ao menos um histórico escolar deve ser anexado ao pedido.");
+		} else if (this.itens == null || this.itens.isEmpty()) {
+			throw new IllegalStateException("O pedido deve conter pelo menos um item de isenção.");
 		} else {
-			this.situacao = "SUBMETIDO";
+			this.situacao = Situacao.SUBMETIDO;
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				this.dataRegistro = sdf.parse(sdf.format(new Date()));
@@ -132,8 +152,7 @@ public class PedidoIsencaoDisciplinas {
 		return aluno;
 	}
 
-	public void comMaisUmItem(Disciplina disciplina,
-			String nomeDisciplinaExterna, String notaFinalDisciplinaExterna,
+	public void comMaisUmItem(Disciplina disciplina, String nomeDisciplinaExterna, String notaFinalDisciplinaExterna,
 			String cargaHoraria, String observacao, Comprovante doc) {
 		boolean isencaoJaFoiSolicitadaParaDisciplina = false;
 		for (ItemPedidoIsencaoDisciplina umItem : this.itens) {
@@ -143,14 +162,11 @@ public class PedidoIsencaoDisciplinas {
 			}
 		}
 		if (!isencaoJaFoiSolicitadaParaDisciplina) {
-			ItemPedidoIsencaoDisciplina item = new ItemPedidoIsencaoDisciplina(
-					disciplina, nomeDisciplinaExterna,
+			ItemPedidoIsencaoDisciplina item = new ItemPedidoIsencaoDisciplina(disciplina, nomeDisciplinaExterna,
 					notaFinalDisciplinaExterna, cargaHoraria, observacao, doc);
 			this.itens.add(item);
 		} else {
-			throw new IllegalArgumentException(
-					"Isenção já solicitada para disciplina: "
-							+ disciplina.getNome());
+			throw new IllegalArgumentException("Isenção já solicitada para disciplina: " + disciplina.getNome());
 		}
 	}
 
@@ -163,8 +179,7 @@ public class PedidoIsencaoDisciplinas {
 		}
 	}
 
-	public void indeferirItem(Long idItem, Professor professor,
-			String observacao) {
+	public void indeferirItem(Long idItem, Professor professor, String observacao) {
 		for (int i = 0; i < this.getItens().size(); i++) {
 			if (this.getItens().get(i).getId().equals(idItem)) {
 				this.getItens().get(i).indeferir(professor, observacao);
@@ -173,20 +188,16 @@ public class PedidoIsencaoDisciplinas {
 		}
 	}
 
-	public void analisarItem(String idItemPedidoIsencao,
-			Professor professorResponsavel, String novaSituacao,
-			String observacao) {
+	public void registrarRespostaParaItem(String idItemPedidoIsencao, Professor professorResponsavel,
+			String novaSituacao, String observacao) {
 		if (novaSituacao == null || novaSituacao.isEmpty()) {
-			throw new IllegalArgumentException(
-					"Nova situação do item de isenção deve ser informada.");
+			throw new IllegalArgumentException("Nova situação do item de isenção deve ser informada.");
 		}
 		if (idItemPedidoIsencao == null || idItemPedidoIsencao.isEmpty()) {
-			throw new IllegalArgumentException(
-					"Idenfiticação do item de isenção deve ser informada.");
+			throw new IllegalArgumentException("Idenfiticação do item de isenção deve ser informada.");
 		}
 		if (professorResponsavel == null) {
-			throw new IllegalArgumentException(
-					"Professor responsável pela análise deve ser informado.");
+			throw new IllegalArgumentException("Professor responsável pela análise deve ser informado.");
 		}
 		Long idItem = Long.parseLong(idItemPedidoIsencao);
 		if (novaSituacao.equals("DEFERIDO")) {
@@ -194,8 +205,7 @@ public class PedidoIsencaoDisciplinas {
 		} else if (novaSituacao.equals("INDEFERIDO")) {
 			this.indeferirItem(idItem, professorResponsavel, observacao);
 		} else {
-			throw new IllegalArgumentException(
-					"Valor inválido para nova situação do item de isenção.");
+			throw new IllegalArgumentException("Valor inválido para nova situação do item de isenção.");
 		}
 	}
 
@@ -217,12 +227,12 @@ public class PedidoIsencaoDisciplinas {
 		return null;
 	}
 
-	public Comprovante getHistoricoEscolar() {
-		return historicoEscolar;
+	public List<Comprovante> getHistoricosEscolares() {
+		return this.historicosEscolares;
 	}
 
 	public void anexarHistoricoEscolar(Comprovante doc) {
-		this.historicoEscolar = doc;
+		this.historicosEscolares.add(doc);
 	}
 
 }
