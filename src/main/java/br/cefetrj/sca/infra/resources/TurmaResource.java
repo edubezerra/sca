@@ -6,15 +6,19 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.EncontroPresencial;
 import br.cefetrj.sca.dominio.Inscricao;
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,6 +29,9 @@ public class TurmaResource {
 
 	@Autowired
 	TurmaRepositorio turmaRepo;
+	
+	@Autowired
+	AlunoRepositorio alunoRepo;
 
 	@RequestMapping(value = "/getTurmasProfessor/{matriculaProfessor}", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
 	public String getTurmasProfessor(@PathVariable String matriculaProfessor) {
@@ -61,4 +68,19 @@ public class TurmaResource {
 		}
 
 	}
+	
+	@RequestMapping(value = "/salvarEncontroPresencialTurma/", method = RequestMethod.POST)
+	public void salvarEncontroPresencialTurma(@RequestBody TurmaWS turmaws) {
+		     Turma turma = turmaRepo.findTurmaById(turmaws.getId());
+		     EncontroPresencial encontro = new EncontroPresencial();
+		     encontro.setData(turmaws.getEncontro().getData());
+		     for(PessoaWS aluno: turmaws.getEncontro().getAlunos())
+		     {
+		    	 Aluno a = alunoRepo.findAlunoByMatricula(aluno.getMatricula());
+			     encontro.adicionarAluno(a);
+		     }
+		     turma.adicionarEncontro(encontro);
+             turmaRepo.saveAndFlush(turma);
+	}
+	
 }
