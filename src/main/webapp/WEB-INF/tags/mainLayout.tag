@@ -91,7 +91,7 @@ body {
 								<%-- 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao"> --%>
 								<!-- 						Realização de Inscriçôes</a></li> -->
 								<li><a
-									href="${pageContext.request.contextPath}/registroIsencoes/registroIsencoes">
+									href="${pageContext.request.contextPath}/isencaoDisciplina/registroIsencoes">
 										Isenção de Disciplinas </a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/monografias/">
