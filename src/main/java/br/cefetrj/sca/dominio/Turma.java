@@ -67,6 +67,11 @@ public class Turma {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "TURMA_ID", referencedColumnName = "ID")
 	private Set<Inscricao> inscricoes = new HashSet<>();
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "TURMA_ID", referencedColumnName = "ID")
+	private List<EncontroPresencial> encontros = new ArrayList<>();
 
 	/**
 	 * Semestre letivo em que esta turma é ofertada.
@@ -175,6 +180,18 @@ public class Turma {
 
 	public Set<Inscricao> getInscricoes() {
 		return Collections.unmodifiableSet(this.inscricoes);
+	}
+	
+	public List<EncontroPresencial> getEncontros() {
+		return encontros;
+	}
+
+	public void setEncontros(List<EncontroPresencial> encontros) {
+		this.encontros = encontros;
+	}
+	
+	public void adicionarEncontro(EncontroPresencial encontro){
+		this.encontros.add(encontro);
 	}
 
 	/**

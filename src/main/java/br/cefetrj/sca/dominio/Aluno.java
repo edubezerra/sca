@@ -18,9 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.cefetrj.sca.dominio.atividadecomplementar.AtividadeComplementar;
-import br.cefetrj.sca.dominio.atividadecomplementar.EnumEstadoAtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.EnumTipoAtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.RegistroAtividadeComplementar;
+import br.cefetrj.sca.service.util.EnumEstadoSolicitacao;
 
 @Entity
 public class Aluno {
@@ -185,7 +185,7 @@ public class Aluno {
 	/**
 	 * Retorna os registros deste aluno que se encontram no estado passado como parâmetro.
 	 */
-	public Set<RegistroAtividadeComplementar> getRegistrosAtiv(EnumEstadoAtividadeComplementar status) {
+	public Set<RegistroAtividadeComplementar> getRegistrosAtiv(EnumEstadoSolicitacao status) {
 		Set<RegistroAtividadeComplementar> regsAtiv = new HashSet<>();
 		for (RegistroAtividadeComplementar reg : registrosAtiv) {
 			if( reg.getEstado().equals(status) )
@@ -283,7 +283,7 @@ public class Aluno {
 	public Duration getCargaHorariaCumpridaAtiv() {
 		Duration sumCargaHoraria = Duration.ofHours(0);
 		for (RegistroAtividadeComplementar reg : registrosAtiv) {
-			if(reg.getEstado() == EnumEstadoAtividadeComplementar.DEFERIDO){
+			if(reg.getEstado() == EnumEstadoSolicitacao.DEFERIDO){
 				sumCargaHoraria = sumCargaHoraria.plus(reg.getCargaHoraria());
 			}
 		}
@@ -297,7 +297,7 @@ public class Aluno {
 		Duration sumCargaHoraria = Duration.ofHours(0);
 		for (RegistroAtividadeComplementar reg : registrosAtiv) {
 			if(reg.getAtividade().equals(atividade) &&
-					reg.getEstado() == EnumEstadoAtividadeComplementar.DEFERIDO){
+					reg.getEstado() == EnumEstadoSolicitacao.DEFERIDO){
 				sumCargaHoraria = sumCargaHoraria.plus(reg.getCargaHoraria());
 			}
 		}

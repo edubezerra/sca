@@ -1,6 +1,8 @@
 package br.cefetrj.sca.dominio.isencoes;
 
+import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -89,7 +91,10 @@ public class ItemPedidoIsencaoDisciplina {
 
 	private Date dataCriacao;
 
-	@SuppressWarnings("unused")
+	private BigDecimal notaFinalDisciplinaExterna;
+
+	private Duration cargaHorariaDisciplinaExterna;
+
 	private ItemPedidoIsencaoDisciplina() {
 	}
 
@@ -98,18 +103,62 @@ public class ItemPedidoIsencaoDisciplina {
 		this.situacao = "SUBMETIDO";
 	}
 
-	public ItemPedidoIsencaoDisciplina(Date time, Disciplina disciplina,
-			String nomeDisciplinaExterna, String notaFinalDisciplinaExterna,
-			Duration ofHours, String observacao, Comprovante doc) {
+	public ItemPedidoIsencaoDisciplina(Disciplina disciplina, String nomeDisciplinaExterna,
+			String notaFinalDisciplinaExterna, String cargaHoraria, String observacao, Comprovante doc) {
 
-		this.dataCriacao = time;
+		if (disciplina == null) {
+			throw new IllegalArgumentException("Erro: disciplina a isentar deve ser fornecida.");
+		}
+
+		if (nomeDisciplinaExterna == null || nomeDisciplinaExterna.trim().isEmpty()) {
+			throw new IllegalArgumentException("Erro: nome da disciplina externa deve ser fornecido.");
+		}
+
+		if (notaFinalDisciplinaExterna == null || notaFinalDisciplinaExterna.trim().isEmpty()) {
+			throw new IllegalArgumentException("Erro: nota final obtida na disciplina externa deve ser fornecida.");
+		}
+
+		Long ch = 0l;
+		try {
+			ch = Long.parseLong(cargaHoraria);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(
+					"Erro: Carga horária inválida. " + "Por favor, forneça um valor válido de carga horária.");
+		}
+		if (ch <= 0) {
+			throw new IllegalArgumentException("Erro: Carga horária inválida. "
+					+ "Por favor, forneça um valor de carga horária maior do que zero.");
+		}
+
+		if (doc == null) {
+			throw new IllegalArgumentException("Erro: comprovante para a isenção deve ser fornecido.");
+		}
+
+		this.dataCriacao = Calendar.getInstance().getTime();
 		this.disciplina = disciplina;
 		this.descritorDisciplinaExterna = nomeDisciplinaExterna;
-		// this.notaFinalDisciplinaExterna = notaFinalDisciplinaExterna;
-		// this.cargaHorariaDisciplinaExterna = ofHours;
+		this.notaFinalDisciplinaExterna = converterParaBigDecimal(notaFinalDisciplinaExterna);
+		this.cargaHorariaDisciplinaExterna = Duration.ofHours(ch);
 		this.observacao = observacao;
 		this.comprovante = doc;
 		this.situacao = "SUBMETIDO";
+	}
+
+	private BigDecimal converterParaBigDecimal(String notaFinalDisciplinaExterna) {
+		BigDecimal notaFinal;
+		try {
+			notaFinal = new BigDecimal(notaFinalDisciplinaExterna.replace(',', '.'));
+			if (notaFinal.compareTo(BigDecimal.ZERO) < 0 || notaFinal.compareTo(BigDecimal.TEN) > 0) {
+				throw new IllegalArgumentException("Erro: Valor inválido para a nota da disciplina externa.");
+			}
+		} catch (NumberFormatException ex) {
+			throw new IllegalArgumentException("Erro: Valor inválido para a nota da disciplina externa.", ex);
+		}
+		return notaFinal;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(new ItemPedidoIsencaoDisciplina().converterParaBigDecimal("10.00"));
 	}
 
 	public String getSituacao() {
@@ -118,24 +167,20 @@ public class ItemPedidoIsencaoDisciplina {
 
 	public void deferir(Professor professor) {
 		if (professor == null) {
-			throw new IllegalArgumentException(
-					"Professor responsável pela análise deve ser informado!");
+			throw new IllegalArgumentException("Professor responsável pela análise deve ser informado!");
 		}
 		if (!this.situacao.equals("SUBMETIDO"))
-			throw new IllegalStateException(
-					"Apenas itens não analisados podem ser deferidos.");
+			throw new IllegalStateException("Apenas itens não analisados podem ser deferidos.");
 		this.professor = professor;
 		this.situacao = "DEFERIDO";
 	}
 
 	public void indeferir(Professor professor, String motivoIndeferimento) {
 		if (professor == null) {
-			throw new IllegalArgumentException(
-					"Professor responsável pela análise deve ser informado!");
+			throw new IllegalArgumentException("Professor responsável pela análise deve ser informado!");
 		}
 		if (!this.situacao.equals("SUBMETIDO"))
-			throw new IllegalStateException(
-					"Apenas itens não analisados podem ser indeferidos.");
+			throw new IllegalStateException("Apenas itens não analisados podem ser indeferidos.");
 		this.professor = professor;
 		this.situacao = "INDEFERIDO";
 		this.motivoIndeferimento = motivoIndeferimento;
@@ -181,8 +226,7 @@ public class ItemPedidoIsencaoDisciplina {
 		return descritorDisciplinaExterna;
 	}
 
-	public void analisar(Professor professor, String valor,
-			String motivoIndeferimento) {
+	public void analisar(Professor professor, String valor, String motivoIndeferimento) {
 		if (valor.equals("DEFERIDO")) {
 			this.deferir(professor);
 		} else if (valor.equals("INDEFERIDO")) {
@@ -200,7 +244,18 @@ public class ItemPedidoIsencaoDisciplina {
 	}
 
 	public Date getDataSolicitacao() {
-		// TODO: criar atributo para armazenar a data.
-		return new Date();
+		return dataCriacao;
+	}
+
+	public BigDecimal getNotaFinalDisciplinaExterna() {
+		return notaFinalDisciplinaExterna;
+	}
+
+	public Long getCargaHorariaDisciplinaExterna() {
+		if (cargaHorariaDisciplinaExterna != null) {
+			return cargaHorariaDisciplinaExterna.toHours();
+		} else {
+			return 0L;
+		}
 	}
 }

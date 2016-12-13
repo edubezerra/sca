@@ -5,8 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DisciplinaWS {
 	
+	@JsonProperty("id")
 	private Long id;
+	
+	@JsonProperty("codigo")  
 	private String codigo;
+	
+	@JsonProperty("nome")
 	private String nome;
 
 	@JsonCreator

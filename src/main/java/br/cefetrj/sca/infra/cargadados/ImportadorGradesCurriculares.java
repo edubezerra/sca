@@ -189,16 +189,15 @@ public class ImportadorGradesCurriculares {
 		for (Disciplina disciplina : disciplinas) {
 			if (disciplinaRepositorio.findByCodigoEmVersaoCurso(disciplina.getCodigo(),
 					disciplina.getVersaoCurso()) == null) {
-				System.out.println("Gravando disciplina: " + disciplina);
-
 				disciplinaRepositorio.save(disciplina);
 				qtdDisciplinas++;
 			}
 		}
 
-		response.append("Foram importados " + qtdCursos + " cursos.; ");
-		response.append("Foram importadas " + qtdVersoesCursos + " versões de cursos.; ");
-		response.append("Foram importadas " + qtdDisciplinas + " disciplinas. ;");
+		response.append("Resumo da importação:\n;");
+		response.append(qtdCursos + " cursos importados.;");
+		response.append(qtdVersoesCursos + " versões de cursos importadas.;");
+		response.append(qtdDisciplinas + " disciplinas importadas.;");
 
 		return response;
 	}

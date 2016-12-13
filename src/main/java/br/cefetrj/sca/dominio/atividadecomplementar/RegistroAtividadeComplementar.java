@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
+import br.cefetrj.sca.service.util.EnumEstadoSolicitacao;
 
 
 /**
@@ -32,7 +33,7 @@ public class RegistroAtividadeComplementar {
 	private Long id;
 
 	@Enumerated(EnumType.ORDINAL)
-	EnumEstadoAtividadeComplementar estado;
+	EnumEstadoSolicitacao estado;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	Comprovante documento;
@@ -73,7 +74,7 @@ public class RegistroAtividadeComplementar {
 		this.atividade = atividade;
 		this.cargaHoraria = ch;
 		this.documento = doc;
-		this.estado = EnumEstadoAtividadeComplementar.SUBMETIDO;
+		this.estado = EnumEstadoSolicitacao.SUBMETIDO;
 	}
 	
 	public RegistroAtividadeComplementar(Date dataSolicitacao, AtividadeComplementar atividade, String descr, Duration ch, Comprovante doc) {
@@ -89,11 +90,11 @@ public class RegistroAtividadeComplementar {
 		return id;
 	}
 
-	public EnumEstadoAtividadeComplementar getEstado() {
+	public EnumEstadoSolicitacao getEstado() {
 		return estado;
 	}
 	
-	public void setEstado(EnumEstadoAtividadeComplementar estado) {
+	public void setEstado(EnumEstadoSolicitacao estado) {
 		this.estado = estado;
 	}
 
@@ -143,7 +144,7 @@ public class RegistroAtividadeComplementar {
 	 * RN08: A submissão do registro só pode ser cancelada se ele estiver com o estado "SUBMETIDO"
 	 */
 	public boolean podeSerCancelado(){
-		if(this.estado != EnumEstadoAtividadeComplementar.SUBMETIDO){
+		if(this.estado != EnumEstadoSolicitacao.SUBMETIDO){
 			return false;
 		}
 		return true;

@@ -14,30 +14,30 @@ public class Comprovante {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String contentType;
-	
+
 	private String nome;
-	
-	public static long TAMANHO_MAXIMO_COMPROVANTE =  10000000;
-	
+
+	public static long TAMANHO_MAXIMO_COMPROVANTE = 10000000;
+
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	private byte[] data;
-	
+
 	@SuppressWarnings("unused")
-	private Comprovante(){
+	private Comprovante() {
 	}
-	
-	public Comprovante(String contentType, byte[] data, String nome){
-		if(contentType == null || data == null || nome == null || nome.isEmpty()){
+
+	public Comprovante(String contentType, byte[] data, String nome) {
+		if (contentType == null || data == null || nome == null || nome.isEmpty()) {
 			throw new IllegalArgumentException("Erro ao importar arquivo");
 		}
-		
+
 		this.contentType = contentType;
 		this.data = data;
 		this.nome = nome;
-		
+
 	}
 
 	public Long getId() {
@@ -47,11 +47,11 @@ public class Comprovante {
 	public String getContentType() {
 		return contentType;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public byte[] getData() {
 		return data;
 	}
@@ -60,8 +60,7 @@ public class Comprovante {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((contentType == null) ? 0 : contentType.hashCode());
+		result = prime * result + ((contentType == null) ? 0 : contentType.hashCode());
 		result = prime * result + Arrays.hashCode(data);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
@@ -96,10 +95,5 @@ public class Comprovante {
 			return false;
 		return true;
 	}
-
-	
-
-	
-	
 
 }

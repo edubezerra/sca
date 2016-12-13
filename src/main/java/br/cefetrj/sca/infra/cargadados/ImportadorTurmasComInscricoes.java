@@ -347,11 +347,10 @@ public class ImportadorTurmasComInscricoes {
 			}
 		}
 
-		response.append("Importação de turmas e matrículas finalizada.;");
-		response.append("Quantidade de turmas importadas: " + qtdTurmas + ";");
-		response.append("Quantidade de inscrições importadas: " + qtdInscricoes
-				+ ";");
-		response.append("Quantidade de alunos importados: " + qtdAlunos + ";");
+		response.append("Resumo da importação:\n;");
+		response.append(qtdTurmas + " turmas importadas;");
+		response.append(qtdInscricoes + " inscrições importadas;");
+		response.append(qtdAlunos + " alunos importados;");
 
 		return response;
 	}

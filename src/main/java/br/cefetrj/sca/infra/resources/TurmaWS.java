@@ -8,10 +8,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TurmaWS {
 	
+	@JsonProperty("id")
 	private Long id;
+	
+	@JsonProperty("codigo")
 	private String codigo;
+	
+	@JsonProperty("disciplina")
 	private DisciplinaWS disciplina;
+	
+	@JsonProperty("alunos")
 	private List<PessoaWS> alunos;
+	
+	@JsonProperty("")
+	private EncontroPresencialWS encontro;
 	 
 	@JsonCreator
 	public TurmaWS(Long id, String codigo, DisciplinaWS disciplina) {
@@ -44,6 +54,16 @@ public class TurmaWS {
 	@JsonProperty("alunos")
 	public List<PessoaWS> getAlunos(){
 		return alunos;
+	}
+
+	@JsonProperty("encontro")
+	public EncontroPresencialWS getEncontro() {
+		return encontro;
+	}
+
+	@JsonProperty("encontro")
+	public void setEncontro(EncontroPresencialWS encontro) {
+		this.encontro = encontro;
 	}
 	
 }
