@@ -151,11 +151,34 @@ public class PedidoIsencaoDisciplinasService {
 		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
 
 		if (pedido != null) {
-			Comprovante comprovante = pedido.getComprovanteDoItem(idItem);
+			Comprovante comprovante = pedido.getComprovanteConteudoProgramatico(idItem);
 			return comprovante;
 		}
 
 		return null;
+	}
+
+	public Comprovante getComprovanteHistoricoEscolar(String matriculaAluno,
+			String nomeArquivo) {
+		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
+
+		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
+
+		if (pedido != null) {
+			Comprovante comprovante = pedido.getComprovanteHistoricoEscolar(nomeArquivo);
+			return comprovante;
+		}
+
+		return null;
+	}
+
+	public void removerComprovanteHistoricoEscolar(String matriculaAluno,
+			String nomeArquivo) {
+		Aluno aluno = getAlunoPorMatricula(matriculaAluno);
+		PedidoIsencaoDisciplinas pedido = processoIsencaoRepo.findByAluno(aluno);
+		if (pedido != null) {
+			pedido.removerComprovanteHistoricoEscolar(nomeArquivo);
+		}
 	}
 
 	/**
@@ -206,5 +229,4 @@ public class PedidoIsencaoDisciplinasService {
 			pedido.submeterParaAnalise();
 		}
 	}
-
 }

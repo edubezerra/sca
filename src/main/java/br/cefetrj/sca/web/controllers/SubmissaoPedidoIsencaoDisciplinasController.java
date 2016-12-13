@@ -128,7 +128,7 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 	}
 
 	@RequestMapping(value = "/removerItemDoPedido", method = RequestMethod.POST)
-	public String removerItemDoPedido(HttpSession session, @RequestParam String idReg, Model model) {
+	public String removerItemDoPedido(@RequestParam String idReg, Model model) {
 
 		System.out.println(".removerItemDoPedido()");
 
@@ -202,10 +202,27 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matricula = usr.getMatricula();
 		try {
-			Comprovante comprovante = service.getComprovanteParaDisciplina(matricula, id);
+			Comprovante comprovante = service.getComprovanteHistoricoEscolar(matricula, nomeArquivo);
 			GerenteArquivos.downloadFile(response, comprovante);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "/removerComprovanteHistoricoEscolar", method = RequestMethod.POST)
+	public String removerComprovanteHistoricoEscolar(@RequestParam String nomeArquivo, Model model) {
+
+		System.out.println(".removerItemDoPedido()");
+
+		Usuario usr = UsuarioController.getCurrentUser();
+		String matricula = usr.getMatricula();
+		try {
+			service.removerComprovanteHistoricoEscolar(matricula, nomeArquivo);
+			model.addAttribute("info", "Comprovante de histórico escolar removido com sucesso.");
+			return "forward:/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "forward:/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes";
 		}
 	}
 

@@ -323,12 +323,26 @@ $(document).ready(function() {
 							items="${requestScope.fichaIsencaoDisciplinas.historicosEscolares}"
 							var="file">
 
-							<li>
+							<li><c:if
+									test="${!requestScope.fichaIsencaoDisciplinas.submissaoJaRealizada}">
+									<form style="height: 10px;"
+										action="${pageContext.request.contextPath}/submissaoIsencoes/removerComprovanteHistoricoEscolar"
+										method="POST">
+										<input type="hidden" name="nomeArquivo" value="${file.nome}">
+										<button type="submit" class="btn btn-default"
+											data-toggle='confirmation' data-confirm-title='Confirmação'
+											data-confirm-content='Remover esse comprovante?'
+											data-confirm-placement='top' data-confirm-yesBtn='Sim'
+											data-confirm-noBtn='Não'>
+											<i class="fa fa-trash-o"></i>
+										</button>
+									</form>
+								</c:if>
+
 								<button class="btn btn-default" title="Download"
 									onClick="downloadHistoricoEscolar(${file.nome})">
 									<i class="fa fa-download"></i>
-								</button> ${file.nome}
-							</li>
+								</button> ${file.nome}</li>
 
 
 						</c:forEach>
