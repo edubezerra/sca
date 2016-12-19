@@ -1,9 +1,9 @@
 package br.cefetrj.sca.infra.auth;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
-import br.cefetrj.sca.dominio.repositories.PerfilUsuarioRepositorio;
-import br.cefetrj.sca.dominio.usuarios.TipoPerfilUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import br.cefetrj.sca.dominio.repositories.PerfilUsuarioRepositorio;
 import br.cefetrj.sca.dominio.repositories.UsuarioRepositorio;
 import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
 import br.cefetrj.sca.dominio.usuarios.Usuario;

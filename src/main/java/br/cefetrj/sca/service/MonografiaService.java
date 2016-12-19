@@ -1,12 +1,9 @@
 package br.cefetrj.sca.service;
 
-import br.cefetrj.sca.dominio.*;
-import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
-import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
-import br.cefetrj.sca.dominio.usuarios.TipoPerfilUsuario;
-import br.cefetrj.sca.dominio.usuarios.Usuario;
-import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
-import com.google.common.util.concurrent.SettableFuture;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -14,14 +11,21 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.springframework.beans.NullValueInNestedPathException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
+import com.google.common.util.concurrent.SettableFuture;
+
+import br.cefetrj.sca.dominio.Aluno;
+import br.cefetrj.sca.dominio.ArquivosMultipart;
+import br.cefetrj.sca.dominio.Monografia;
+import br.cefetrj.sca.dominio.TagMonografia;
+import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
+import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
+import br.cefetrj.sca.dominio.usuarios.TipoPerfilUsuario;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
+import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
 
 /**
  * Created by Alexandre Vicente on 04/09/16.

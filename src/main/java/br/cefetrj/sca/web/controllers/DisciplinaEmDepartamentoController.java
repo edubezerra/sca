@@ -47,6 +47,7 @@ public class DisciplinaEmDepartamentoController {
 			model.addAttribute("departamentos", service.listarDepartamentos());
 			model.addAttribute("disciplinas", service.findDisciplinas());
 			model.addAttribute("lotacoes", service.findAlocacoesDisciplinas());
+			model.addAttribute("versoesCurso", service.findVersoesCurso());
 
 			return "/alocacaoDisciplinaDepartamento/alocaDisciplinaDepartamentoView";
 		} catch (Exception exc) {

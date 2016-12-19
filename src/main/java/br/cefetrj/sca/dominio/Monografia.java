@@ -1,7 +1,20 @@
 package br.cefetrj.sca.dominio;
 
-import br.cefetrj.sca.infra.monografia.TagExtractor;
-import com.google.common.util.concurrent.SettableFuture;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.ServletContext;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.metadata.Metadata;
@@ -10,7 +23,8 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
 import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.get.*;
+import org.elasticsearch.action.get.GetRequestBuilder;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -24,13 +38,10 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
+import com.google.common.util.concurrent.SettableFuture;
 
-import javax.servlet.ServletContext;
-import java.io.*;
-import java.math.BigInteger;
-import java.net.UnknownHostException;
-import java.util.*;
+import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
+import br.cefetrj.sca.infra.monografia.TagExtractor;
 
 /**
  * Created by Alexandre Vicente on 04/09/16.

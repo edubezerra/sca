@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import br.cefetrj.sca.dominio.Aluno;
-
 public class EncontroPresencialWS {
 
 	@JsonProperty("data")

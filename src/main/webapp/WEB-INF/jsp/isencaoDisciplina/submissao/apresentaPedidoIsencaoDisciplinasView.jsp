@@ -175,20 +175,22 @@
   	</script>
 
 <script>
-function downloadConteudoProgramatico(IdReg) {			
+function downloadConteudoProgramatico(IdReg) {
+	alert(IdReg);
 	var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/submissaoIsencoes/downloadConteudoProgramatico' method='POST' target='_blank'>");
-       form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
-       $('body').append(form);
-       form.submit();
-       $('body').remove('#downloadForm');
+	form.append($("<input type='hidden' name='IdReg' value='"+IdReg+"'>"));
+	$('body').append(form);
+	form.submit();
+	$('body').remove('#downloadForm');
 }
 
-function downloadHistoricoEscolar(nomeArquivo) {			
+function downloadHistoricoEscolar(nomeArquivo) {
+	alert('downloadHistoricoEscolar');
 	var form = $("<form id='downloadForm' style='height:10px;' action='${pageContext.request.contextPath}/submissaoIsencoes/downloadHistoricoEscolar' method='POST' target='_blank'>");
-       form.append($("<input type='hidden' name='nomeArquivo' value='"+nomeArquivo+"'>"));
-       $('body').append(form);
-       form.submit();
-       $('body').remove('#downloadForm');
+    form.append($("<input type='hidden' name='nomeArquivo' value='"+nomeArquivo+"'>"));
+	$('body').append(form);
+	form.submit();
+	$('body').remove('#downloadForm');
 }
 </script>
 
@@ -337,13 +339,13 @@ $(document).ready(function() {
 											<i class="fa fa-trash-o"></i>
 										</button>
 									</form>
-								</c:if>
-
+								</c:if> 
+								
 								<button class="btn btn-default" title="Download"
-									onClick="downloadHistoricoEscolar(${file.nome})">
+									onClick="downloadHistoricoEscolar('${file.nome}')">
 									<i class="fa fa-download"></i>
-								</button> ${file.nome}</li>
-
+								</button> ${file.nome}
+							</li>
 
 						</c:forEach>
 					</ol>
@@ -534,7 +536,7 @@ $(document).ready(function() {
 			<c:if
 				test="${!requestScope.fichaIsencaoDisciplinas.submissaoJaRealizada}">
 				<div>
-					<i class="fa fa-warning"></i> Se pedido de isenções está em
+					<i class="fa fa-warning"></i> Seu pedido de isenções está em
 					preparação. Enquanto seu pedido estiver em preparação, você pode
 					adicionar e remover itens nele. Os itens solicitados nesse pedido
 					começam a ser analisados apenas após a <b>submissão do pedido</b> .

@@ -5,8 +5,6 @@ package br.cefetrj.sca.config;
 
 import java.util.Properties;
 
-import javax.servlet.MultipartConfigElement;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

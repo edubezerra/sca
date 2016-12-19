@@ -84,9 +84,9 @@ body {
 								<li><a
 									href="${pageContext.request.contextPath}/registroAtividades/registroAtividades">
 										Atividades Complementares </a></li>
-								<!-- 				<li><a -->
-								<%-- 					href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos"> --%>
-								<!-- 						Matrícula Fora de Prazo</a></li> -->
+								<li><a
+									href="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/visualizarRequerimentos">
+										Matrícula Fora de Prazo</a></li>
 								<!-- 				<li><a -->
 								<%-- 					href="${pageContext.request.contextPath}/realizarInscricao/realizarInscricao"> --%>
 								<!-- 						Realização de Inscriçôes</a></li> -->

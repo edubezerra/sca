@@ -32,36 +32,52 @@
 	}
 
 	function listarDisciplinas(select) {
+		alert('listarDisciplinas1');
+
+		alert($("#formSelecaoVersaoCurso#versoesCurso"));
+
+		alert($("select#versoesCurso"));
+
 		var optionSelected = $(select).find("option:selected");
+
+		alert(optionSelected);
+
+		alert('listarDisciplinas2');
+
 		var idVersaoCurso = optionSelected.val();
+
+		alert('listarDisciplinas3');
+
 		alert(idVersaoCurso);
 
-		$
-		.ajax({
-			type : "POST",
-			contentType : "application/json",
-			url : "${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/filtraDisciplinas",
-			data : JSON.stringify(lotacao),
-			dataType : 'text',
-			timeout : 100000,
-			success : function(data) {
-				console.log("SUCCESS");
-				$("#feedback").html("<b>" + data + "</b>");
-				setTimeout(function() {
-					window.location.reload(true);
-				}, 2000);
+		alert('listarDisciplinas4');
 
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				$("#feedback").html(JSON.stringify(e));
-			},
-			done : function(e) {
-				console.log("DONE");
-				enableSearchButton(false);
-			}
-		});
-		
+		$
+				.ajax({
+					type : "POST",
+					contentType : "application/json",
+					url : "${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/filtraDisciplinas",
+					data : JSON.stringify(lotacao),
+					dataType : 'text',
+					timeout : 100000,
+					success : function(data) {
+						console.log("SUCCESS");
+						$("#feedback").html("<b>" + data + "</b>");
+						setTimeout(function() {
+							window.location.reload(true);
+						}, 2000);
+
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						$("#feedback").html(JSON.stringify(e));
+					},
+					done : function(e) {
+						console.log("DONE");
+						enableSearchButton(false);
+					}
+				});
+
 	}
 </script>
 
@@ -140,15 +156,16 @@
 
 		<div class="row">
 			<form id="formSelecaoVersaoCurso">
-				<select name="versoesCurso" class="form-control input" id="versoesCurso"
-					onchange="listarDisciplinas(this)">
+				<select name="versoesCurso" class="form-control input"
+					id="versoesCurso" onchange="listarDisciplinas(this)">
 					<option value="" class="form-control"
 						label="Selecionar versão de curso..." selected disabled>Selecionar
 						versão de curso</option>
-					<option value="123" class="form-control" label="BCC (2012)">BCC
-						(2012)</option>
+					<!-- 					<option value="123" class="form-control" label="BCC (2012)">BCC -->
+					<!-- 						(2012)</option> -->
 					<c:forEach items="${versoesCurso}" var="versaoCurso">
-						<option value="${versaoCurso.id}">${versaoCurso}</option>
+						<option value="${versaoCurso.id}">${versaoCurso.curso.nome},
+							versão ${versaoCurso.numero}</option>
 					</c:forEach>
 				</select>
 			</form>

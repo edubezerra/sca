@@ -4,16 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.repositories.PerfilUsuarioRepositorio;
-import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import br.cefetrj.sca.dominio.repositories.UsuarioRepositorio;
 import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 
 @Component
 public class ImportadorUsuariosDemaisPerfis {
-	@Autowired
-	private ProfessorRepositorio professorRepositorio;
-
 	@Autowired
 	private UsuarioRepositorio usuarioRepositorio;
 

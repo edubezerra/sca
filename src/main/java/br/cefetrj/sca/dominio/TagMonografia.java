@@ -1,7 +1,9 @@
 package br.cefetrj.sca.dominio;
 
-import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
-import com.google.common.util.concurrent.SettableFuture;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -9,13 +11,14 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 
-import java.io.IOException;
-import java.util.*;
+import com.google.common.util.concurrent.SettableFuture;
+
+import br.cefetrj.sca.infra.monografia.ElasticSearchClientFactory;
 
 /**
  * Created by Alexandre Vicente on 04/09/16.
  */
-public class TagMonografia implements Comparable {
+public class TagMonografia implements Comparable<TagMonografia> {
     private String tag;
     private Long ocorrencias;
 
@@ -33,7 +36,7 @@ public class TagMonografia implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(TagMonografia o) {
         if(o instanceof TagMonografia){
             TagMonografia tag = (TagMonografia) o;
             return ocorrencias.compareTo(tag.getOcorrencias());

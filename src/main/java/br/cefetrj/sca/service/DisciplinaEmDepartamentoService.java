@@ -1,6 +1,5 @@
 package br.cefetrj.sca.service;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.VersaoCurso;
 import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.VersaoCursoRepositorio;
 
 @Service
 public class DisciplinaEmDepartamentoService {
@@ -21,6 +22,9 @@ public class DisciplinaEmDepartamentoService {
 
 	@Autowired
 	DepartamentoRepositorio departamentoRepo;
+
+	@Autowired
+	VersaoCursoRepositorio versaoCursoRepo;
 
 	public void alocarDisciplinas(Map<String, String> lotacoes) {
 		for (String idDisciplina : lotacoes.keySet()) {
@@ -82,5 +86,9 @@ public class DisciplinaEmDepartamentoService {
 			}
 		}
 		return lotacoes;
+	}
+
+	public List<VersaoCurso> findVersoesCurso() {
+		return versaoCursoRepo.findAll();
 	}
 }

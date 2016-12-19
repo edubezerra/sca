@@ -1,1 +1,69 @@
 na funcionalidade de alocação de disciplinas a deptos, adicionar possibilidade de filtrar por curso
+
+select * from ItemPedidoIsencaoDisciplina
+
+delete from ItemPedidoIsencaoDisciplina where id not in (4)
+
+desc ItemPedidoIsencaoDisciplina
+
+alter table PedidoIsencaoDisciplinas add column comprovante_id	bigint(20);
+
+alter table PedidoIsencaoDisciplinas add constraint fk_comprov foreign key (comprovante_id) references Comprovante(id);
+
+desc PedidoIsencaoDisciplinas
+
+select * from PedidoIsencaoDisciplinas
+
+ALTER DATABASE scabd CHARSET = UTF8 COLLATE = utf8_general_ci;
+ 
+ALTER DATABASE scabd CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+ALTER TABLE ItemPedidoIsencaoDisciplina CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+show variables like 'char%';
+
+SELECT CONCAT('ALTER TABLE ',  table_name, ' CHARACTER SET utf8 COLLATE utf8_general_ci;  ', 'ALTER TABLE ',  table_name, ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;  ')
+FROM information_schema.TABLES AS T, information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` AS C
+WHERE C.collation_name = T.table_collation
+AND T.table_schema = 'scabd'
+AND
+(C.CHARACTER_SET_NAME != 'utf8'
+    OR
+ C.COLLATION_NAME not like 'utf8%')
+ 
+ 
+SELECT turma.ano, turma.periodo, disciplina.nome, avaliacaoturma.aspectosPositivos, avaliacaoturma.aspectosnegativos 
+FROM scabd.avaliacaoturma, turma, disciplina 
+where turma.id = scabd.avaliacaoturma.turmaAvaliada_id and turma.disciplina_id = disciplina.id
+order by disciplina.nome
+
+
+
+SELECT turma.ano, turma.periodo, disciplina.nome, avaliacaoturma.aspectosPositivos, avaliacaoturma.aspectosnegativos 
+FROM scabd.avaliacaoturma, turma, disciplina 
+where turma.id = scabd.avaliacaoturma.turmaAvaliada_id and turma.disciplina_id = disciplina.id
+order by disciplina.nome
+
+
+
+select * from ItemPedidoIsencaoDisciplina
+
+delete from ItemPedidoIsencaoDisciplina where id not in (4)
+
+desc ItemPedidoIsencaoDisciplina
+
+alter table PedidoIsencaoDisciplinas add column comprovante_id	bigint(20);
+
+alter table PedidoIsencaoDisciplinas add constraint fk_comprov foreign key (comprovante_id) references Comprovante(id);
+
+desc PedidoIsencaoDisciplinas
+
+select * from PedidoIsencaoDisciplinas
+
+
+delete FROM scabd.pedidoisencaodisciplinas_itempedidoisencaodisciplina where itens_id not in (4)
+
+select * FROM scabd.pedidoisencaodisciplinas_itempedidoisencaodisciplina
+
+SELECT * FROM scabd.itempedidoisencaodisciplina;
+

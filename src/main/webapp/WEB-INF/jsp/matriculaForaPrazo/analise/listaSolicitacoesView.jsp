@@ -48,7 +48,7 @@
 								<b>Departamento:</b> ${itemSolicitacao.departamento.nome}
 							</p>
 							<p>
-								<b>Discipilna solicitada:</b>
+								<b>Disciplina solicitada:</b>
 								${itemSolicitacao.turma.disciplina.codigo} -
 								${itemSolicitacao.turma.disciplina.nome}
 							</p>

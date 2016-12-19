@@ -5,22 +5,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-
+import br.cefetrj.sca.dominio.Aula;
+import br.cefetrj.sca.dominio.EnumDiaSemana;
+import br.cefetrj.sca.dominio.LocalAula;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
-import br.cefetrj.sca.dominio.Aula;
-import br.cefetrj.sca.dominio.EnumDiaSemana;
-import br.cefetrj.sca.dominio.LocalAula;
-import br.cefetrj.sca.dominio.Turma;
 
 public class ImportadorAulas {
 

@@ -64,6 +64,7 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 			model.addAttribute("matricula", matricula);
 			return "/isencaoDisciplina/submissao/apresentaPedidoIsencaoDisciplinasView";
 		} catch (Exception exc) {
+			exc.printStackTrace();
 			model.addAttribute("error", exc.getMessage());
 			return "forward:/submissaoIsencoes/menuPrincipal";
 		}

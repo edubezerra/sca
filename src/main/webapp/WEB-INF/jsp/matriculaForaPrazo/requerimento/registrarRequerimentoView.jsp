@@ -13,7 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>SCA</title>
+<title>SCA - Matrícula Fora do Prazo</title>
 
 <link
 	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.css"
