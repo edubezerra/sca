@@ -22,6 +22,28 @@
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <script>
+	$("#formSelecaoVersaoCurso #versoesCurso").change(
+			function() {
+				var selection = $("#formSelecaoVersaoCurso #versoesCurso")
+						.val();
+				if (selection == "all") {
+					$("#data tr").show();
+				} else {
+					$("#data tr").each(
+							function() {
+								if ($(this).find("th").length == 0) {
+									if ($(this).find("td").eq(0).text()
+											.toLowerCase() == selection)
+										$(this).show();
+									else
+										$(this).hide();
+								}
+							});
+				}
+			});
+</script>
+
+<script>
 	var lotacao = {};
 
 	function editarLotacao(idDisciplina, select) {
@@ -34,19 +56,9 @@
 	function listarDisciplinas(select) {
 		alert('listarDisciplinas1');
 
-		alert($("#formSelecaoVersaoCurso#versoesCurso"));
-
-		alert($("select#versoesCurso"));
-
 		var optionSelected = $(select).find("option:selected");
 
-		alert(optionSelected);
-
-		alert('listarDisciplinas2');
-
 		var idVersaoCurso = optionSelected.val();
-
-		alert('listarDisciplinas3');
 
 		alert(idVersaoCurso);
 
@@ -57,7 +69,7 @@
 					type : "POST",
 					contentType : "application/json",
 					url : "${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/filtraDisciplinas",
-					data : JSON.stringify(lotacao),
+					data : JSON.stringify(idVersaoCurso),
 					dataType : 'text',
 					timeout : 100000,
 					success : function(data) {
@@ -156,13 +168,12 @@
 
 		<div class="row">
 			<form id="formSelecaoVersaoCurso">
-				<select name="versoesCurso" class="form-control input"
-					id="versoesCurso" onchange="listarDisciplinas(this)">
+				<!-- 				<select name="versoesCurso" class="form-control input" -->
+				<!-- 					id="versoesCurso" onchange="listarDisciplinas(this)"> -->
+				<select id="versoesCurso" class="form-control input">
 					<option value="" class="form-control"
 						label="Selecionar versão de curso..." selected disabled>Selecionar
 						versão de curso</option>
-					<!-- 					<option value="123" class="form-control" label="BCC (2012)">BCC -->
-					<!-- 						(2012)</option> -->
 					<c:forEach items="${versoesCurso}" var="versaoCurso">
 						<option value="${versaoCurso.id}">${versaoCurso.curso.nome},
 							versão ${versaoCurso.numero}</option>
@@ -177,26 +188,24 @@
 				<div class="panel-heading">
 					<h3>Lista de Disciplinas</h3>
 				</div>
-				<table class="table table-hover">
+				<table id='data' class="table table-hover">
 					<thead>
 						<tr>
-							<th>Nome</th>
 							<th>Código</th>
+							<th>Nome</th>
 							<th>Departamento</th>
 						</tr>
 					</thead>
-
 					<tbody>
-
 						<c:forEach varStatus="i" items="${disciplinas}" var="disciplina">
-							<input name="id" value="${disciplina.id}" type="hidden" />
+<%-- 							<input name="id" value="${disciplina.id}" type="hidden" /> --%>
 							<tr>
-								<td>${disciplina.nome}</td>
+								<td style="display: none;">${disciplina.versaoCurso.id}</td>
 								<td>${disciplina.codigo}</td>
+								<td>${disciplina.nome}</td>
 
 								<td><select name="departamento" class="form-control input"
 									onchange="editarLotacao('${disciplina.id}',this)">
-
 										<c:forEach items="${lotacoes}" var="lotacao">
 											<c:if test="${lotacao.key == disciplina.id}">
 												<c:if test="${lotacao.value != null}">

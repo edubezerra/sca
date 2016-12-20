@@ -1,5 +1,6 @@
 package br.cefetrj.sca.web.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.DisciplinaEmDepartamentoService;
 
@@ -41,8 +43,8 @@ public class DisciplinaEmDepartamentoController {
 	}
 
 	@RequestMapping(value = { "/", "/homeAlocacaoDisciplinas" }, method = RequestMethod.GET)
-	public String paginaInicialAlocacaoCoordenadorAtividades(
-			HttpServletRequest request, HttpSession session, Model model) {
+	public String paginaInicialAlocacaoCoordenadorAtividades(HttpServletRequest request, HttpSession session,
+			Model model) {
 		try {
 			model.addAttribute("departamentos", service.listarDepartamentos());
 			model.addAttribute("disciplinas", service.findDisciplinas());
@@ -58,8 +60,7 @@ public class DisciplinaEmDepartamentoController {
 
 	@ResponseBody
 	@RequestMapping(value = "/alocaDisciplinas")
-	public String alocaDisciplinas(@RequestBody Map<String, String> lotacoes,
-			Model model) {
+	public String alocaDisciplinas(@RequestBody Map<String, String> lotacoes, Model model) {
 
 		try {
 			service.alocarDisciplinas(lotacoes);
@@ -67,9 +68,23 @@ public class DisciplinaEmDepartamentoController {
 			return "Alocações registradas com sucesso!";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "Erro ao registrar alocações de disciplinas a departamentos!"
-					+ "\n" + exc.getMessage();
+			return "Erro ao registrar alocações de disciplinas a departamentos!" + "\n" + exc.getMessage();
 		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/filtraDisciplinas", method = RequestMethod.GET)
+	public String filtraDisciplinas(@RequestBody String idVersaoCurso, Model model) {
+
+		return "";
+//		try {
+//			List<Disciplina> disciplinas = service.findDisciplinasPorVersaoCurso(idVersaoCurso);
+//			model.addAttribute("sucesso", "Lotações registradas com sucesso!");
+//			return "Alocações registradas com sucesso!";
+//		} catch (Exception exc) {
+//			model.addAttribute("error", exc.getMessage());
+//			return "Erro ao registrar alocações de disciplinas a departamentos!" + "\n" + exc.getMessage();
+//		}
 	}
 
 }

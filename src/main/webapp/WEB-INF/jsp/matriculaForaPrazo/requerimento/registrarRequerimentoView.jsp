@@ -114,7 +114,6 @@
 			</div>
 		</div>
 
-
 		<form role="form"
 			action="${pageContext.request.contextPath}/matriculaForaPrazo/requerimento/confirmarRegistroRequerimento"
 			method="post" id="formularioSolicitacao">

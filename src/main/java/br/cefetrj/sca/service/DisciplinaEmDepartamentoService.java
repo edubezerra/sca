@@ -30,13 +30,12 @@ public class DisciplinaEmDepartamentoService {
 		for (String idDisciplina : lotacoes.keySet()) {
 
 			Long id = Long.parseLong(idDisciplina);
-			
+
 			Disciplina disciplina = disciplinaRepo.findOne(id);
 			String siglaDepartamento = lotacoes.get(idDisciplina);
 			Departamento novaLotacao, antigaLotacao;
 
-			novaLotacao = departamentoRepo
-					.findDepartamentoBySigla(siglaDepartamento);
+			novaLotacao = departamentoRepo.findDepartamentoBySigla(siglaDepartamento);
 
 			List<Departamento> departamentos = departamentoRepo.findAll();
 
@@ -68,6 +67,16 @@ public class DisciplinaEmDepartamentoService {
 		return disciplinaRepo.findAll();
 	}
 
+	/**
+	 * Produz um mapa com a alocação de disciplinas em departamentos. A chave é
+	 * o identificador da disciplina, e o valor a sigla do departamento no qual
+	 * a disciplina está alocada.
+	 * 
+	 * NB: se uma disciplina não está alocada a departamento algum, mesmo assim
+	 * esse mapa terá uma entrada para essa disciplina, com o valor null.
+	 * 
+	 * @return mapa de alocações de disciplinas em departamentos.
+	 */
 	public HashMap<Long, String> findAlocacoesDisciplinas() {
 		HashMap<Long, String> lotacoes = new HashMap<>();
 		List<Disciplina> disciplinas = disciplinaRepo.findAll();
