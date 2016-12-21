@@ -22,35 +22,48 @@
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <script>
-	$("#formSelecaoVersaoCurso #versoesCurso").change(
-			function() {
-				var selection = $("#formSelecaoVersaoCurso #versoesCurso")
-						.val();
-				if (selection == "all") {
-					$("#data tr").show();
-				} else {
-					$("#data tr").each(
-							function() {
-								if ($(this).find("th").length == 0) {
-									if ($(this).find("td").eq(0).text()
-											.toLowerCase() == selection)
-										$(this).show();
-									else
-										$(this).hide();
-								}
-							});
-				}
-			});
-</script>
-
-<script>
 	var lotacao = {};
 
 	function editarLotacao(idDisciplina, select) {
+		alert('editarLotacao');
 		var optionSelected = $(select).find("option:selected");
 		var siglaDepto = optionSelected.val();
 
 		lotacao[idDisciplina] = siglaDepto;
+
+		var associativeArray = {};
+		associativeArray["idDisciplina"] = idDisciplina;
+		associativeArray["siglaDepto"] = siglaDepto;
+		
+        var mystring = JSON.stringify(associativeArray);
+        
+        alert(mystring);
+        
+		$
+		.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url : "${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/alocarDisciplinaEmDepartamento",
+			data : JSON.stringify(associativeArray),
+			dataType : 'text',
+			timeout : 100000,
+			success : function(data) {
+				console.log("SUCCESS");
+				$("#feedback").html("<b>" + data + "</b>");
+				setTimeout(function() {
+					window.location.reload(true);
+				}, 2000);
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				$("#feedback").html(JSON.stringify(e));
+			},
+			done : function(e) {
+				console.log("DONE");
+				enableSearchButton(false);
+			}
+		});
 	}
 
 	function listarDisciplinas(select) {
@@ -256,4 +269,27 @@
 		</a>
 	</div>
 </body>
+
+<script>
+	$("#formSelecaoVersaoCurso #versoesCurso").change(
+			function() {
+				var selection = $("#formSelecaoVersaoCurso #versoesCurso")
+						.val();
+				if (selection == "all") {
+					$("#data tr").show();
+				} else {
+					$("#data tr").each(
+							function() {
+								if ($(this).find("th").length == 0) {
+									if ($(this).find("td").eq(0).text()
+											.toLowerCase() == selection)
+										$(this).show();
+									else
+										$(this).hide();
+								}
+							});
+				}
+			});
+</script>
+
 </html>

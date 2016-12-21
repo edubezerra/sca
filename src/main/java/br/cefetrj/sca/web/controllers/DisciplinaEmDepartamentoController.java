@@ -73,18 +73,34 @@ public class DisciplinaEmDepartamentoController {
 	}
 
 	@ResponseBody
+	@RequestMapping(value = "/alocaDisciplinaEmDepartamento")
+	public String alocaDisciplinaEmDepartamento(@RequestBody Map<String, String> params, Model model) {
+
+		try {
+			service.alocarDisciplinaEmDepartamento(params.get("idDisciplina"), params.get("siglaDepartamento"));
+			model.addAttribute("sucesso", "Lotações registradas com sucesso!");
+			return "Alocações registradas com sucesso!";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "Erro ao registrar alocações de disciplinas a departamentos!" + "\n" + exc.getMessage();
+		}
+	}
+
+	@ResponseBody
 	@RequestMapping(value = "/filtraDisciplinas", method = RequestMethod.GET)
 	public String filtraDisciplinas(@RequestBody String idVersaoCurso, Model model) {
 
 		return "";
-//		try {
-//			List<Disciplina> disciplinas = service.findDisciplinasPorVersaoCurso(idVersaoCurso);
-//			model.addAttribute("sucesso", "Lotações registradas com sucesso!");
-//			return "Alocações registradas com sucesso!";
-//		} catch (Exception exc) {
-//			model.addAttribute("error", exc.getMessage());
-//			return "Erro ao registrar alocações de disciplinas a departamentos!" + "\n" + exc.getMessage();
-//		}
+		// try {
+		// List<Disciplina> disciplinas =
+		// service.findDisciplinasPorVersaoCurso(idVersaoCurso);
+		// model.addAttribute("sucesso", "Lotações registradas com sucesso!");
+		// return "Alocações registradas com sucesso!";
+		// } catch (Exception exc) {
+		// model.addAttribute("error", exc.getMessage());
+		// return "Erro ao registrar alocações de disciplinas a departamentos!"
+		// + "\n" + exc.getMessage();
+		// }
 	}
 
 }

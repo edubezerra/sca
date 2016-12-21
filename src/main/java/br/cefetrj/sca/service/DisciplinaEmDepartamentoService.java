@@ -54,6 +54,45 @@ public class DisciplinaEmDepartamentoService {
 		}
 	}
 
+	public void alocarDisciplinaEmDepartamento(String idDisciplina, String siglaDepartamento) {
+		if (idDisciplina == null || idDisciplina.isEmpty()) {
+			throw new IllegalArgumentException("Id da disciplina deve ser fornecido!");
+		}
+		if (siglaDepartamento == null || siglaDepartamento.isEmpty()) {
+			throw new IllegalArgumentException("Sigla do departamento deve ser fornecida!");
+		}
+
+		try {
+			Long id = Long.parseLong(idDisciplina);
+
+			Disciplina disciplina = disciplinaRepo.findOne(id);
+			Departamento novaLotacao, antigaLotacao;
+
+			novaLotacao = departamentoRepo.findDepartamentoBySigla(siglaDepartamento);
+
+			if (disciplina == null) {
+				throw new IllegalArgumentException("Id da disciplina deve ser fornecido!");
+			}
+
+			List<Departamento> departamentos = departamentoRepo.findAll();
+
+			for (Departamento d : departamentos) {
+				if (d.getDisciplinas().contains(disciplina)) {
+					d.removerDisciplina(disciplina);
+					antigaLotacao = d;
+					departamentoRepo.save(antigaLotacao);
+					break;
+				}
+			}
+
+			novaLotacao.addDisciplina(disciplina);
+
+			departamentoRepo.save(novaLotacao);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Id da disciplina é inválido: " + idDisciplina);
+		}
+	}
+
 	public HashMap<String, String> listarDepartamentos() {
 		List<Departamento> departamentos = departamentoRepo.findAll();
 		HashMap<String, String> mapa = new HashMap<String, String>();
