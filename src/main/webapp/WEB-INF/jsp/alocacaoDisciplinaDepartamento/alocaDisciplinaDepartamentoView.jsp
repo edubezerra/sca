@@ -33,37 +33,37 @@
 
 		var associativeArray = {};
 		associativeArray["idDisciplina"] = idDisciplina;
-		associativeArray["siglaDepto"] = siglaDepto;
-		
-        var mystring = JSON.stringify(associativeArray);
-        
-        alert(mystring);
-        
-		$
-		.ajax({
-			type : "POST",
-			contentType : "application/json",
-			url : "${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/alocarDisciplinaEmDepartamento",
-			data : JSON.stringify(associativeArray),
-			dataType : 'text',
-			timeout : 100000,
-			success : function(data) {
-				console.log("SUCCESS");
-				$("#feedback").html("<b>" + data + "</b>");
-				setTimeout(function() {
-					window.location.reload(true);
-				}, 2000);
+		associativeArray["siglaDepartamento"] = siglaDepto;
 
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				$("#feedback").html(JSON.stringify(e));
-			},
-			done : function(e) {
-				console.log("DONE");
-				enableSearchButton(false);
-			}
-		});
+		var mystring = JSON.stringify(associativeArray);
+
+		alert(mystring);
+
+		$
+				.ajax({
+					type : "POST",
+					contentType : "application/json",
+					url : "${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/alocaDisciplinaEmDepartamento",
+					data : JSON.stringify(associativeArray),
+					dataType : 'text',
+					timeout : 100000,
+					success : function(data) {
+						console.log("SUCCESS");
+						$("#feedback").html("<b>" + data + "</b>");
+// 						setTimeout(function() {
+// 							window.location.reload(true);
+// 						}, 2000);
+
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						$("#feedback").html(JSON.stringify(e));
+					},
+					done : function(e) {
+						console.log("DONE");
+						enableSearchButton(false);
+					}
+				});
 	}
 
 	function listarDisciplinas(select) {
@@ -154,7 +154,7 @@
 
 </head>
 
-<body class="lista-solicitacoes">
+<body class="lista-solicitacoes" onload="teste()">
 
 	<div class="container">
 		<div class="row text-center">
@@ -181,8 +181,6 @@
 
 		<div class="row">
 			<form id="formSelecaoVersaoCurso">
-				<!-- 				<select name="versoesCurso" class="form-control input" -->
-				<!-- 					id="versoesCurso" onchange="listarDisciplinas(this)"> -->
 				<select id="versoesCurso" class="form-control input">
 					<option value="" class="form-control"
 						label="Selecionar versão de curso..." selected disabled>Selecionar
@@ -196,12 +194,12 @@
 		</div>
 
 		<div class="row">
-			<form id="formLotacaoDisciplina">
+			<form id="formLotacaoDisciplina" >
 				<!-- Default panel contents -->
 				<div class="panel-heading">
 					<h3>Lista de Disciplinas</h3>
 				</div>
-				<table id='data' class="table table-hover">
+				<table id='tabelaAlocacoes' class="table table-hover">
 					<thead>
 						<tr>
 							<th>Código</th>
@@ -211,25 +209,30 @@
 					</thead>
 					<tbody>
 						<c:forEach varStatus="i" items="${disciplinas}" var="disciplina">
-<%-- 							<input name="id" value="${disciplina.id}" type="hidden" /> --%>
 							<tr>
 								<td style="display: none;">${disciplina.versaoCurso.id}</td>
-								<td>${disciplina.codigo}</td>
-								<td>${disciplina.nome}</td>
+
+								<c:if test="${lotacoes[disciplina.id] != null}">
+									<td>${disciplina.codigo}</td>
+									<td>${disciplina.nome}</td>
+								</c:if>
+								<c:if test="${lotacoes[disciplina.id] == null}">
+									<td><font color="red">${disciplina.codigo}</font></td>
+									<td><font color="red">${disciplina.nome}</font></td>
+								</c:if>
 
 								<td><select name="departamento" class="form-control input"
 									onchange="editarLotacao('${disciplina.id}',this)">
-										<c:forEach items="${lotacoes}" var="lotacao">
-											<c:if test="${lotacao.key == disciplina.id}">
-												<c:if test="${lotacao.value != null}">
-													<option value="${lotacao.value}" label="" selected disabled>${requestScope.departamentos[lotacao.value]}</option>
-												</c:if>
-												<c:if test="${lotacao.value == null}">
-													<option value="" class="form-control" label="Selecionar..."
-														selected disabled>Selecionar</option>
-												</c:if>
-											</c:if>
-										</c:forEach>
+
+										<c:if test="${lotacoes[disciplina.id] != null}">
+											<option value="${lotacoes[disciplina.id]}" label="" selected
+												disabled>${requestScope.departamentos[lotacoes[disciplina.id]]}</option>
+										</c:if>
+										<c:if test="${lotacoes[disciplina.id] == null}">
+											<option value="" class="form-control" label="Selecionar..."
+												selected disabled>Selecionar</option>
+										</c:if>
+
 										<c:forEach items="${departamentos}" var="departamento">
 											<option value="${departamento.key}">${departamento.value}</option>
 										</c:forEach>
@@ -271,14 +274,16 @@
 </body>
 
 <script>
-	$("#formSelecaoVersaoCurso #versoesCurso").change(
-			function() {
-				var selection = $("#formSelecaoVersaoCurso #versoesCurso")
-						.val();
-				if (selection == "all") {
-					$("#data tr").show();
-				} else {
-					$("#data tr").each(
+	function teste() {
+		var selection = $("#formSelecaoVersaoCurso #versoesCurso").val();
+
+		//alert(selection);
+
+		if (selection == "all") {
+			$("#tabelaAlocacoes tr").hide();
+		} else {
+			$("#tabelaAlocacoes tr")
+					.each(
 							function() {
 								if ($(this).find("th").length == 0) {
 									if ($(this).find("td").eq(0).text()
@@ -288,8 +293,11 @@
 										$(this).hide();
 								}
 							});
-				}
-			});
+		}
+	}
+</script>
+<script>
+	$("#formSelecaoVersaoCurso #versoesCurso").change(teste);
 </script>
 
 </html>

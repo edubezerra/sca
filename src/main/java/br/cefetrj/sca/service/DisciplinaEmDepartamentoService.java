@@ -112,7 +112,8 @@ public class DisciplinaEmDepartamentoService {
 	 * a disciplina está alocada.
 	 * 
 	 * NB: se uma disciplina não está alocada a departamento algum, mesmo assim
-	 * esse mapa terá uma entrada para essa disciplina, com o valor null.
+	 * o mapa produzido terá uma entrada para essa disciplina, com chave igual
+	 * ao id da disciplina e valor igual a null.
 	 * 
 	 * @return mapa de alocações de disciplinas em departamentos.
 	 */

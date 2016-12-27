@@ -78,11 +78,11 @@ public class DisciplinaEmDepartamentoController {
 
 		try {
 			service.alocarDisciplinaEmDepartamento(params.get("idDisciplina"), params.get("siglaDepartamento"));
-			model.addAttribute("sucesso", "Lotações registradas com sucesso!");
-			return "Alocações registradas com sucesso!";
+			model.addAttribute("sucesso", "Alocação registrada com sucesso!");
+			return "Alocação registrada com sucesso!";
 		} catch (Exception exc) {
 			model.addAttribute("error", exc.getMessage());
-			return "Erro ao registrar alocações de disciplinas a departamentos!" + "\n" + exc.getMessage();
+			return "Erro ao registrar alocação de disciplina a departamento!" + exc.getMessage();
 		}
 	}
 
