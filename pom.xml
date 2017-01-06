@@ -25,6 +25,7 @@
 		<jackson-json.version>2.5.3</jackson-json.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
+
 	</properties>
 
 	<build>
@@ -328,6 +329,8 @@
 			<groupId>com.db2jcc4</groupId>
 			<artifactId>db2jcc4</artifactId>
 			<version>4.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/db2jcc4.jar</systemPath>
 		</dependency>
 
 		<!-- Biblioteca de criptografia da AVMB -->
@@ -335,6 +338,8 @@
 			<groupId>br.com.avmb</groupId>
 			<artifactId>libsilegacy-crypto</artifactId>
 			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/libsilegacy-crypto-1.0.jar</systemPath>
 		</dependency>
 
 		<dependency>

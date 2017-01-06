@@ -74,6 +74,25 @@ body {
 
 					</sec:authorize>
 
+					<sec:authorize access="hasRole('ROLE_SECAD')">
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">SECAD</a>
+							<ul class="dropdown-menu">
+								<li><a
+									href="${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/homeAlocacaoDisciplinas">
+										Alocação de Disciplinas a Departamentos</a></li>
+								<li><a
+									href="${pageContext.request.contextPath}/alocacaoProfessorDepartamento/homeAlocacaoProfessores">
+										Alocação de Professores a Departamentos</a></li>
+								<li><a
+									href="${pageContext.request.contextPath}/importacaoDados/homeImportacaoGradeCurricular">
+										Importação de Grade Curricular</a></li>
+								<li><a
+									href="${pageContext.request.contextPath}/analiseIsencoes/apresentaPedidosIsencaoDisciplinas">
+										Isenção de Disciplinas </a></li>
+							</ul></li>
+					</sec:authorize>
+
 					<sec:authorize access="hasRole('ROLE_ALUNO')">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Aluno</a>
@@ -168,12 +187,6 @@ body {
 								<li><a
 									href="${pageContext.request.contextPath}/usuarios/list">
 										Listar usuários </a></li>
-								<li><a
-									href="${pageContext.request.contextPath}/alocacaoDisciplinaDepartamento/homeAlocacaoDisciplinas">
-										Alocar Disciplinas a Departamentos</a></li>
-								<li><a
-									href="${pageContext.request.contextPath}/alocacaoProfessorDepartamento/homeAlocacaoProfessores">
-										Alocar Professores a Departamentos</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/coordenacaoAtividades/homeAlocacaoCoordenadorAtividades">
 										Alocar Coordenadores de Atividades Complementares </a></li>

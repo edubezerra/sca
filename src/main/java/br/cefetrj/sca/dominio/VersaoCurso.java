@@ -8,6 +8,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,15 +24,20 @@ import br.cefetrj.sca.dominio.atividadecomplementar.TabelaAtividadesComplementar
 /**
  * Representa uma versão de grade curricular de um curso.
  * 
- * @author Rebecca Salles
- * 
  */
 @Entity
 public final class VersaoCurso {
 
+	enum Situacao {
+		INATIVO, ATIVO, CORRENTE
+	};
+
 	@Id
 	@GeneratedValue
 	Long id;
+
+	@Enumerated(EnumType.ORDINAL)
+	private Situacao situacao;
 
 	private final String numero;
 
@@ -72,33 +79,48 @@ public final class VersaoCurso {
 		numero = null;
 	}
 
-	public VersaoCurso(String numero, Curso curso) {
+	public VersaoCurso(String numero, Curso curso, String situacao) {
 
 		if (curso == null) {
 			throw new IllegalArgumentException("Curso não fornecido!");
 		}
-		if (numero == null || numero.isEmpty()) {
+		if (numero == null || numero.trim().isEmpty()) {
 			throw new IllegalArgumentException("Início de vigência não fornecida!");
 		}
 		this.curso = curso;
 		this.numero = numero;
+		if (situacao == null || situacao.trim().isEmpty()) {
+			throw new IllegalArgumentException("Situação da versão de curso não fornecida!");
+		}
+		if (situacao.equals("ATIVO")) {
+			this.situacao = Situacao.ATIVO;
+		} else if (situacao.equals("INATIVO")) {
+			this.situacao = Situacao.INATIVO;
+		} else if (situacao.equals("CORRENTE")) {
+			this.situacao = Situacao.CORRENTE;
+		} else {
+			throw new IllegalArgumentException("Situação da versão de curso é inválida!");
+		}
 	}
 
-	public VersaoCurso(String numero, Curso curso, Duration chMinOpt, Duration chaMinAitv) {
-
-		this(numero, curso);
-		if (chMinOpt == null || chMinOpt.isNegative()) {
-			throw new IllegalArgumentException(
-					"Carga horária mínima de disciplinas optativas não pode ser nula e deve ser maior ou igual a zero.");
-		}
-		if (chaMinAitv == null || chaMinAitv.isNegative()) {
-			throw new IllegalArgumentException(
-					"Carga horária mínima de atividades complementares não pode ser nula e deve ser maior ou igual a zero.");
-		}
-
-		this.cargaHorariaMinOptativas = chMinOpt;
-		this.cargaHorariaMinAitvComp = chaMinAitv;
-	}
+	// public VersaoCurso(String numero, Curso curso, Duration chMinOpt,
+	// Duration chaMinAitv) {
+	//
+	// this(numero, curso);
+	// if (chMinOpt == null || chMinOpt.isNegative()) {
+	// throw new IllegalArgumentException(
+	// "Carga horária mínima de disciplinas optativas não pode ser nula e deve
+	// ser maior ou igual a zero.");
+	// }
+	// if (chaMinAitv == null || chaMinAitv.isNegative()) {
+	// throw new IllegalArgumentException(
+	// "Carga horária mínima de atividades complementares não pode ser nula e
+	// deve ser maior ou igual a zero.");
+	// }
+	//
+	// this.cargaHorariaMinOptativas = chMinOpt;
+	// this.cargaHorariaMinAitvComp = chaMinAitv;
+	// }
 
 	public Long getId() {
 		return id;
@@ -235,5 +257,21 @@ public final class VersaoCurso {
 
 		this.qtdPeriodoMinimo = qtdPeriodoMinimo;
 		this.periodoMaximo = (2 * qtdPeriodoMinimo) - 1;
+	}
+
+	public Situacao getSituacao() {
+		return situacao;
+	}
+
+	public void tornarAtiva() {
+		this.situacao = Situacao.ATIVO;
+	}
+
+	public void tornarInativa() {
+		this.situacao = Situacao.INATIVO;
+	}
+
+	public void tornarCorrente() {
+		this.situacao = Situacao.CORRENTE;
 	}
 }

@@ -50,9 +50,11 @@ public class ImportacaoDadosService {
 
 	@Transactional
 	public String importar(MultipartFile file, Long tipoImportacao) {
+		if (tipoImportacao == null) {
+			throw new IllegalArgumentException("Tipo de importação deve ser fornecido.");
+		}
 		try {
-			File tempFile = File.createTempFile("import-planilha", "");
-			file.transferTo(tempFile);
+			File tempFile = criarArquivoTemporario(file);
 
 			switch (tipoImportacao.intValue()) {
 			case 1:
@@ -77,5 +79,34 @@ public class ImportacaoDadosService {
 			return "Erro ao importar a planilha.";
 		}
 		return "Importador não disponível!";
+	}
+
+	private File criarArquivoTemporario(MultipartFile file) {
+		if (file == null) {
+			throw new IllegalArgumentException("Arquivo deve ser fornecido.");
+		}
+		File tempFile;
+		try {
+			tempFile = File.createTempFile("import-planilha", "");
+			file.transferTo(tempFile);
+			return tempFile;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Transactional
+	public String importarGradeCurricular(MultipartFile file) {
+		try {
+			File tempFile = criarArquivoTemporario(file);
+			return importadorGradesCurriculares.importarPlanilha(tempFile);
+		} catch (java.lang.IllegalArgumentException e) {
+			return e.getMessage();
+		} catch (IOException | BiffException e) {
+			e.printStackTrace();
+			return "Erro ao importar a planilha de grade curricular.";
+		}
+
 	}
 }

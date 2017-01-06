@@ -69,7 +69,7 @@ public class ImportadorTudo {
 
 	@Autowired
 	ImportadorQuestionarioEgresso importadorQuestionarioEgresso;
-	
+
 	public static void main(String[] args) {
 		ImportadorTudo importador = context.getBean(ImportadorTudo.class);
 		importador.run();
@@ -78,36 +78,37 @@ public class ImportadorTudo {
 	@Transactional
 	public void run() {
 		try {
+//			importadorDepartamentos.run();
+			
 //			importadorQuestionarioEgresso.run();
 //			importadorQuestionarioAvaliacaoTurmas.run();
 //			importadorGradesCurriculares.run();
-			importadorTurmasComInscricoes.run();
+//			importadorTurmasComInscricoes.run();
 //
 //			importadorPreReqs.run();
-
-			importadorAlunos.run();
-
+//
+//			importadorAlunos.run();
+//
 //			importadorProfessores.run();
-
-			importadorUsuariosAlunos.run();
+//
+//			importadorUsuariosAlunos.run();
 //			importadorUsuariosProfessores.run();
-//			importadorUsuariosDemaisPerfis.run();
-
-//			importadorDepartamentos.run();
-
-			// Agora essa importação é feita pela aplicação WEB.
-			//			 importadorAtividadesComp.run();
-//			 importadorHistoricoEscolar.run();
-
-			 importadorAlocacoesProfessoresEmTurmas.run();
-//			 importadorHabilitacoesParaProfessor.run();
-//			 importadorPerMinVersaoCurso.run();
-//			
-//			 importadorAlocacoesProfessoresEmDepartamentos.run();
-//			
-//			 importadorAlocacoesDisciplinasEmDepartamentos.run();
-//			
-//			 importadorEquivalenciaDisciplinas.run();
+			importadorUsuariosDemaisPerfis.run();
+//
+//			// Agora essa importação é feita pela aplicação WEB.
+//			// importadorAtividadesComp.run();
+//
+//			importadorHistoricoEscolar.run();
+//
+//			importadorAlocacoesProfessoresEmTurmas.run();
+//			importadorHabilitacoesParaProfessor.run();
+//			importadorPerMinVersaoCurso.run();
+//
+//			importadorAlocacoesProfessoresEmDepartamentos.run();
+//
+//			importadorAlocacoesDisciplinasEmDepartamentos.run();
+//
+//			importadorEquivalenciaDisciplinas.run();
 
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

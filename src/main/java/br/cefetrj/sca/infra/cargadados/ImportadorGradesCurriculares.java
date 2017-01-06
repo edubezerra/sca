@@ -24,7 +24,8 @@ import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
 import br.cefetrj.sca.dominio.repositories.VersaoCursoRepositorio;
 
 /**
- * Importa objetos <code>Disciplina</code> e <code>VersaoCurso</code>.
+ * Importa objetos <code>Curso</code> <code>VersaoCurso</code> e
+ * <code>Disciplina</code>.
  * 
  * @author Eduardo Bezerra
  *
@@ -41,9 +42,14 @@ public class ImportadorGradesCurriculares {
 	@Autowired
 	VersaoCursoRepositorio versaoCursoRepositorio;
 
-	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA",
+	static String colunasTemp[] = { "ID_DISCIPLINA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA",
 			"CH_TOTAL", "CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO", "COD_ESTRUTURADO", "NOME_UNIDADE",
 			"SIGLA_UNIDADE", "COD_CURSO", "NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
+
+	static String colunas[] = { "COD_CURSO", "NOME_UNIDADE", "COD_ESTRUTURADO", "COD_DISCIPLINA", "NOME_DISCIPLINA",
+			"PERIODO_IDEAL", "CREDITOS", "CH", "CH_TOTAL", "TIPO_AULA_ITEM", "TIPO_AULA", "TIPO_DISCIPLINA",
+			"NUM_VERSAO", "SIT_VERSAO", "ID_ATIV_CURRIC", "TOTAL_CH", "TOTAL_CR", "SEMESTRE_IDEAL", "NUM_MIN_PERIODOS",
+			"NUM_MAX_PERIODOS", "CH_TOTAL_CURSO", "SIT_ATIV" };
 
 	private HashMap<String, Curso> cursos = new HashMap<>();
 	private HashMap<String, VersaoCurso> versoesCursos = new HashMap<>();
@@ -51,7 +57,7 @@ public class ImportadorGradesCurriculares {
 
 	public void run() {
 		try {
-			String arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
+			String arquivoPlanilha = "./planilhas/grades-curriculares/11.02.01.99.05-GRADs-MAR.xls";
 			this.importarPlanilha(arquivoPlanilha);
 
 			cursos.clear();
@@ -73,19 +79,29 @@ public class ImportadorGradesCurriculares {
 		System.out.println(mensagens);
 	}
 
+	/**
+	 * Esse método é o ponto central da funcionalidade fornecida por esta classe.
+	 * 
+	 * @param arquivoPlanilha
+	 * @return
+	 * @throws BiffException
+	 * @throws IOException
+	 */
 	public String importarPlanilha(File arquivoPlanilha) throws BiffException, IOException {
 		StringBuilder response = new StringBuilder();
 
 		Workbook w;
 
-		System.err
-				.println("Iniciando importação de grade curricular (curso, versões e disciplinas): " + arquivoPlanilha);
+		response.append("Importação de grade curricular...;");
 
 		List<String> colunasList = Arrays.asList(colunas);
+
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
 		w = Workbook.getWorkbook(arquivoPlanilha, ws);
 		Sheet sheet = w.getSheet(0);
+
+		this.verificarExistenciaColunas(colunasList, sheet);
 
 		this.importarCursosComSuasVersoes(colunasList, sheet);
 		this.importarDisciplinas(colunasList, sheet);
@@ -95,20 +111,46 @@ public class ImportadorGradesCurriculares {
 		return response.toString();
 	}
 
+	/**
+	 * A primeira linha da planilha deve conter os nomes de cada coluna de
+	 * dados. Esse método verifica se a planilha fornecida contém realmente as
+	 * colunas na ordem e na quantidade esperadas. Uma exceção é disparada
+	 * quando esse não for o caso.
+	 * 
+	 * @param colunasList
+	 * @param sheet
+	 */
+	private void verificarExistenciaColunas(List<String> colunasList, Sheet sheet) {
+		for (String nomeColuna : colunasList) {
+			if (!sheet.getCell(colunasList.indexOf(nomeColuna), 0).getContents().equals(nomeColuna)) {
+				throw new IllegalArgumentException("Lista de colunas na planilha não é compatível com o esperado.");
+			}
+		}
+	}
+
 	private void importarCursosComSuasVersoes(List<String> colunasList, Sheet sheet) {
 		for (int i = 1; i < sheet.getRows(); i++) {
 			String codCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
 			String nomeCurso = sheet.getCell(colunasList.indexOf("NOME_UNIDADE"), i).getContents();
+			String situacaoVersaoCurso = sheet.getCell(colunasList.indexOf("SIT_VERSAO"), i).getContents();
 
 			Curso curso = cursos.get(codCurso);
 			if (curso == null) {
-				curso = new Curso(codCurso, nomeCurso);
+
+				curso = cursoRepositorio.findCursoBySigla(codCurso);
+				if (curso == null) {
+					curso = new Curso(codCurso, nomeCurso);
+				}
+
 				cursos.put(codCurso, curso);
 			}
 
 			if (versoesCursos.get(codCurso + numVersao) == null) {
-				VersaoCurso versao = new VersaoCurso(numVersao, curso);
+				VersaoCurso versao = versaoCursoRepositorio.findByNumeroEmCurso(numVersao, codCurso);
+				if (versao == null) {
+					versao = new VersaoCurso(numVersao, curso, situacaoVersaoCurso);
+				}
 				versoesCursos.put(codCurso + numVersao, versao);
 			}
 		}

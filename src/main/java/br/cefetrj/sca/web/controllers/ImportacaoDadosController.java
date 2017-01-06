@@ -40,7 +40,31 @@ public class ImportacaoDadosController {
 			model.addAttribute("error", exc.getMessage());
 			return "/homeView";
 		}
+	}
 
+	@RequestMapping(value = "/homeImportacaoGradeCurricular", method = RequestMethod.GET)
+	public String homeImportacaoGradeCurricular(HttpServletRequest request, Model model) {
+		try {
+			return "/importacaoDados/homeImportacaoGradeCurricularView";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
+
+	@RequestMapping(value = "/importacaoGradeCurricular", method = RequestMethod.POST)
+	public String importacaoGradeCurricular(HttpServletRequest request, Model model,
+			@RequestParam("tabGradeCurricularFile") MultipartFile file) {
+		try {
+			String response = service.importarGradeCurricular(file);
+			model.addAttribute("response", response);
+			return "/importacaoDados/homeImportacaoGradeCurricularView";
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
 	}
 
 	@RequestMapping(value = "/importacaoTabelaAtividadesComplementares", method = RequestMethod.POST)

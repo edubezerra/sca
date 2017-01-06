@@ -36,11 +36,12 @@ public class Usuario {
 
 	@NotEmpty
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
+	@JoinTable(name = "USER_USER_PROFILE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "USER_PROFILE_ID") })
 	private Set<PerfilUsuario> userProfiles = new HashSet<PerfilUsuario>();
 
-//	@NotEmpty
-//	@Column(name = "EMAIL", nullable = false)
+	// @NotEmpty
+	// @Column(name = "EMAIL", nullable = false)
 	private String email;
 
 	private String matricula;
@@ -48,8 +49,13 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(String nome, String login, String matricula, String email,
-			Date dob) {
+	public Usuario(String nome, String login, String matricula, String email, Date dob) {
+		if (login == null || login.isEmpty()) {
+			throw new IllegalArgumentException("Login do usuário deve ser fornecido!");
+		}
+		if (nome == null || nome.isEmpty()) {
+			throw new IllegalArgumentException("Nome do usuário deve ser fornecido!");
+		}
 		this.nome = nome;
 		this.login = login;
 		this.matricula = matricula;
@@ -59,8 +65,7 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", nome=" + nome + ", login=" + login
-				+ ", dob=" + dob + "]";
+		return "User [id=" + id + ", nome=" + nome + ", login=" + login + ", dob=" + dob + "]";
 	}
 
 	public int getId() {

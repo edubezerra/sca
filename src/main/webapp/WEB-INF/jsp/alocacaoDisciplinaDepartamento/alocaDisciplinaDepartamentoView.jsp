@@ -25,7 +25,6 @@
 	var lotacao = {};
 
 	function editarLotacao(idDisciplina, select) {
-		alert('editarLotacao');
 		var optionSelected = $(select).find("option:selected");
 		var siglaDepto = optionSelected.val();
 
@@ -37,8 +36,6 @@
 
 		var mystring = JSON.stringify(associativeArray);
 
-		alert(mystring);
-
 		$
 				.ajax({
 					type : "POST",
@@ -49,11 +46,13 @@
 					timeout : 100000,
 					success : function(data) {
 						console.log("SUCCESS");
-						$("#feedback").html("<b>" + data + "</b>");
-// 						setTimeout(function() {
-// 							window.location.reload(true);
-// 						}, 2000);
-
+						
+						var codigo = $( "#tabelaAlocacoes" ).find("#codigo" + idDisciplina).text();
+						$( "#tabelaAlocacoes" ).find("#codigo" + idDisciplina).html(codigo);
+						
+						var nome = $( "#tabelaAlocacoes" ).find("#nome" + idDisciplina).text();
+						$( "#tabelaAlocacoes" ).find("#nome" + idDisciplina).html(nome);
+						
 					},
 					error : function(e) {
 						console.log("ERROR: ", e);
@@ -194,7 +193,7 @@
 		</div>
 
 		<div class="row">
-			<form id="formLotacaoDisciplina" >
+			<form id="formLotacaoDisciplina">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
 					<h3>Lista de Disciplinas</h3>
@@ -217,8 +216,8 @@
 									<td>${disciplina.nome}</td>
 								</c:if>
 								<c:if test="${lotacoes[disciplina.id] == null}">
-									<td><font color="red">${disciplina.codigo}</font></td>
-									<td><font color="red">${disciplina.nome}</font></td>
+									<td id=codigo${disciplina.id}><font color="red">${disciplina.codigo}</font></td>
+									<td id=nome${disciplina.id}><font color="red">${disciplina.nome}</font></td>
 								</c:if>
 
 								<td><select name="departamento" class="form-control input"
@@ -241,10 +240,10 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<div class="text-center">
-					<button id="btn-regLotacao" type="submit" class="btn btn-primary"
-						title="Buscar registros">Registrar Alocações</button>
-				</div>
+<!-- 				<div class="text-center"> -->
+<!-- 					<button id="btn-regLotacao" type="submit" class="btn btn-primary" -->
+<!-- 						title="Buscar registros">Registrar Alocações</button> -->
+<!-- 				</div> -->
 			</form>
 		</div>
 		<hr />

@@ -1,5 +1,7 @@
 package br.cefetrj.sca.infra.cargadados;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,15 +22,13 @@ public class ImportadorUsuariosDemaisPerfis {
 
 		StringBuilder response = new StringBuilder();
 
-		PerfilUsuario perfilEgresso = perfilUsuarioRepositorio
-				.getPerfilUsuarioByNome("ROLE_EGRESSO");
+		PerfilUsuario perfilEgresso = perfilUsuarioRepositorio.getPerfilUsuarioByNome("ROLE_EGRESSO");
 		if (perfilEgresso == null) {
 			perfilEgresso = new PerfilUsuario("ROLE_EGRESSO");
 			perfilUsuarioRepositorio.save(perfilEgresso);
 		}
 
-		PerfilUsuario perfilAdmin = perfilUsuarioRepositorio
-				.getPerfilUsuarioByNome("ROLE_ADMIN");
+		PerfilUsuario perfilAdmin = perfilUsuarioRepositorio.getPerfilUsuarioByNome("ROLE_ADMIN");
 		if (perfilAdmin == null) {
 			perfilAdmin = new PerfilUsuario("ROLE_ADMIN");
 			perfilUsuarioRepositorio.save(perfilAdmin);
@@ -41,8 +41,7 @@ public class ImportadorUsuariosDemaisPerfis {
 			perfilUsuarioRepositorio.save(perfilCoordenadorCurso);
 		}
 
-		PerfilUsuario perfilSECAD = perfilUsuarioRepositorio
-				.getPerfilUsuarioByNome("ROLE_SECAD");
+		PerfilUsuario perfilSECAD = perfilUsuarioRepositorio.getPerfilUsuarioByNome("ROLE_SECAD");
 		if (perfilSECAD == null) {
 			perfilSECAD = new PerfilUsuario("ROLE_SECAD");
 			perfilUsuarioRepositorio.save(perfilSECAD);
@@ -51,8 +50,7 @@ public class ImportadorUsuariosDemaisPerfis {
 		PerfilUsuario perfilCoordenadorAC = perfilUsuarioRepositorio
 				.getPerfilUsuarioByNome("ROLE_COORDENADOR_ATIVIDADES");
 		if (perfilCoordenadorAC == null) {
-			perfilCoordenadorAC = new PerfilUsuario(
-					"ROLE_COORDENADOR_ATIVIDADES");
+			perfilCoordenadorAC = new PerfilUsuario("ROLE_COORDENADOR_ATIVIDADES");
 			perfilUsuarioRepositorio.save(perfilCoordenadorAC);
 		}
 
@@ -73,13 +71,22 @@ public class ImportadorUsuariosDemaisPerfis {
 			usuarioRepositorio.save(usuario);
 		}
 
+		login = "390698";
+		usuario = usuarioRepositorio.findUsuarioByLogin(login);
+		if (usuario == null) {
+			String nome = "Belmiro Fernandes Pereira Filho";
+			Usuario belmiro = new Usuario(nome, login, login, "belmiro.filho@cefet-rj.br", new Date());
+			belmiro.getUserProfiles().add(perfilSECAD);
+			usuarioRepositorio.save(belmiro);
+		}
+
 		login = "1604711";
 		usuario = usuarioRepositorio.findUsuarioByLogin(login);
 		if (usuario != null) {
 			usuario.getUserProfiles().add(perfilCoordenadorAC);
 			usuarioRepositorio.save(usuario);
 		}
-		
+
 		return response.toString();
 	}
 }
