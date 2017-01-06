@@ -1,0 +1,8 @@
+**************************************************************************************************************************
+*
+* Execute os comandos a seguir  para instalar no repositório do maven as bibliotecas proprietárias necessárias ao projeto. 
+*
+**************************************************************************************************************************
+
+mvn install:install-file -Dfile=db2jcc4.jar -DgroupId=com.db2jcc4 -DartifactId=db2jcc4 -Dversion=4.0 -Dpackaging=jar
+mvn install:install-file -Dfile=libsilegacy-crypto-1.0.jar -DgroupId=br.com.avmb -DartifactId=libsilegacy-crypto -Dversion=1.0 -Dpackaging=jar
