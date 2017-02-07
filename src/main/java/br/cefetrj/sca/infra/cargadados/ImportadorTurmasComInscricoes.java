@@ -35,7 +35,7 @@ import jxl.read.biff.BiffException;
  *
  */
 @Component
-public class ImportadorTurmasComInscricoes {
+public class ImportadorTurmasComInscricoes implements ImportadorDados {
 
 	@Autowired
 	AlunoRepositorio alunoRepositorio;
@@ -49,11 +49,9 @@ public class ImportadorTurmasComInscricoes {
 	@Autowired
 	private AlunoFabrica alunoFabrica;
 
-	private final String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF",
-			"DT_SOLICITACAO", "DT_PROCESS", "COD_DISCIPLINA",
-			"NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC",
-			"ORDEM_MATR", "SITUACAO", "COD_TURMA", "COD_CURSO", "VERSAO_CURSO",
-			"MATR_ALUNO", "PERIODO_ATUAL", "SITUACAO_ITEM", "ANO", "PERIODO",
+	private final String colunas[] = { "NOME_UNIDADE", "NOME_PESSOA", "CPF", "DT_SOLICITACAO", "DT_PROCESS",
+			"COD_DISCIPLINA", "NOME_DISCIPLINA", "PERIODO_IDEAL", "PRIOR_TURMA", "PRIOR_DISC", "ORDEM_MATR", "SITUACAO",
+			"COD_TURMA", "COD_CURSO", "VERSAO_CURSO", "MATR_ALUNO", "PERIODO_ATUAL", "SITUACAO_ITEM", "ANO", "PERIODO",
 			"IND_GERADA", "ID_PROCESSAMENTO", "HR_SOLICITACAO" };
 
 	/**
@@ -147,17 +145,13 @@ public class ImportadorTurmasComInscricoes {
 			for (int i = 0; i < listOfFiles.length; i++) {
 				if (listOfFiles[i].isFile()) {
 					if (!listOfFiles[i].getName().startsWith("_")) {
-						System.out
-								.println("Importando inscrições da planilha \""
-										+ listOfFiles[i].getName());
-						String arquivoPlanilha = "./planilhas/matriculas/"
-								+ listOfFiles[i].getName();
+						System.out.println("Importando inscrições da planilha \"" + listOfFiles[i].getName());
+						String arquivoPlanilha = "./planilhas/matriculas/" + listOfFiles[i].getName();
 
 						importarPlanilha(arquivoPlanilha);
 					}
 				} else if (listOfFiles[i].isDirectory()) {
-					System.out
-							.println("Diretório: " + listOfFiles[i].getName());
+					System.out.println("Diretório: " + listOfFiles[i].getName());
 				}
 			}
 		} catch (BiffException | IOException e) {
@@ -167,8 +161,7 @@ public class ImportadorTurmasComInscricoes {
 		}
 	}
 
-	public void importarPlanilha(String inputFile) throws BiffException,
-			IOException {
+	public void importarPlanilha(String inputFile) throws BiffException, IOException {
 
 		reiniciarEstruturasArmazenamento();
 
@@ -188,8 +181,8 @@ public class ImportadorTurmasComInscricoes {
 		mapaTurmasCodigos.clear();
 	}
 
-	public String importarPlanilha(File inputWorkbook) throws BiffException,
-			IOException {
+	@Override
+	public String importarPlanilha(File inputWorkbook) {
 		StringBuilder response = new StringBuilder();
 		Workbook w;
 
@@ -199,80 +192,74 @@ public class ImportadorTurmasComInscricoes {
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
-		w = Workbook.getWorkbook(inputWorkbook, ws);
-		Sheet sheet = w.getSheet(0);
+		try {
+			w = Workbook.getWorkbook(inputWorkbook, ws);
 
-		for (int i = 1; i < sheet.getRows(); i++) {
+			Sheet sheet = w.getSheet(0);
 
-			String aluno_matricula = sheet.getCell(
-					colunasList.indexOf("MATR_ALUNO"), i).getContents();
+			for (int i = 1; i < sheet.getRows(); i++) {
 
-			String disciplina_codigo = sheet.getCell(
-					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
+				String aluno_matricula = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
 
-			String turma_codigo = sheet.getCell(
-					colunasList.indexOf("COD_TURMA"), i).getContents();
+				String disciplina_codigo = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
 
-			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i)
-					.getContents();
+				String turma_codigo = sheet.getCell(colunasList.indexOf("COD_TURMA"), i).getContents();
 
-			String semestre_periodo = sheet.getCell(
-					colunasList.indexOf("PERIODO"), i).getContents();
+				String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i).getContents();
 
-			PeriodoLetivo semestre = UtilsImportacao.getPeriodoLetivo(
-					semestre_ano, semestre_periodo);
+				String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
 
-			/**
-			 * O código associado a uma turma não é único dentro de um período
-			 * letivo. Por exemplo, pode haver várias turmas com código igual a
-			 * "EXTRA" mas de disciplinas diferentes. Por conta disso, tive que
-			 * montar uma chave para identificar unicamente uma turma dentro de
-			 * um período letivo, conforme atribuição a seguir.
-			 */
-			String chaveTurma = turma_codigo + " - " + disciplina_codigo;
+				PeriodoLetivo semestre = UtilsImportacao.getPeriodoLetivo(semestre_ano, semestre_periodo);
 
-			mapaTurmasParaPeriodos.put(chaveTurma, semestre);
-			mapaTurmasDisciplinas.put(chaveTurma, disciplina_codigo);
+				/**
+				 * O código associado a uma turma não é único dentro de um
+				 * período letivo. Por exemplo, pode haver várias turmas com
+				 * código igual a "EXTRA" mas de disciplinas diferentes. Por
+				 * conta disso, tive que montar uma chave para identificar
+				 * unicamente uma turma dentro de um período letivo, conforme
+				 * atribuição a seguir.
+				 */
+				String chaveTurma = turma_codigo + " - " + disciplina_codigo;
 
-			mapaTurmasCodigos.put(chaveTurma, turma_codigo);
+				mapaTurmasParaPeriodos.put(chaveTurma, semestre);
+				mapaTurmasDisciplinas.put(chaveTurma, disciplina_codigo);
 
-			String numVersaoCurso = sheet.getCell(
-					colunasList.indexOf("VERSAO_CURSO"), i).getContents();
-			String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"),
-					i).getContents();
-			mapaTurmasVersoesCurso.put(chaveTurma, numVersaoCurso);
-			mapaTurmasCursos.put(chaveTurma, siglaCurso);
+				mapaTurmasCodigos.put(chaveTurma, turma_codigo);
 
-			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i)
-					.getContents();
+				String numVersaoCurso = sheet.getCell(colunasList.indexOf("VERSAO_CURSO"), i).getContents();
+				String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+				mapaTurmasVersoesCurso.put(chaveTurma, numVersaoCurso);
+				mapaTurmasCursos.put(chaveTurma, siglaCurso);
 
-			if (situacao.equals("Aceita/Matriculada")) {
-				if (!mapaTurmasAlunos.containsKey(chaveTurma)) {
-					mapaTurmasAlunos.put(chaveTurma, new HashSet<String>());
+				String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i).getContents();
+
+				if (situacao.equals("Aceita/Matriculada")) {
+					if (!mapaTurmasAlunos.containsKey(chaveTurma)) {
+						mapaTurmasAlunos.put(chaveTurma, new HashSet<String>());
+					}
+					mapaTurmasAlunos.get(chaveTurma).add(aluno_matricula);
 				}
-				mapaTurmasAlunos.get(chaveTurma).add(aluno_matricula);
+
+				String matricula_aluno = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
+
+				Aluno aluno = alunoRepositorio.findAlunoByMatricula(matricula_aluno);
+				if (aluno == null) {
+					String nome_aluno = sheet.getCell(colunasList.indexOf("NOME_PESSOA"), i).getContents();
+					mapaAlunosNomes.put(matricula_aluno, nome_aluno);
+
+					String cpf_aluno = sheet.getCell(colunasList.indexOf("CPF"), i).getContents();
+					mapaAlunosCPFs.put(matricula_aluno, cpf_aluno);
+				}
+
 			}
 
-			String matricula_aluno = sheet.getCell(
-					colunasList.indexOf("MATR_ALUNO"), i).getContents();
+			response = gravarDadosImportados(response);
 
-			Aluno aluno = alunoRepositorio
-					.findAlunoByMatricula(matricula_aluno);
-			if (aluno == null) {
-				String nome_aluno = sheet.getCell(
-						colunasList.indexOf("NOME_PESSOA"), i).getContents();
-				mapaAlunosNomes.put(matricula_aluno, nome_aluno);
-
-				String cpf_aluno = sheet.getCell(colunasList.indexOf("CPF"), i)
-						.getContents();
-				mapaAlunosCPFs.put(matricula_aluno, cpf_aluno);
-			}
-
+			return response.toString();
+		} catch (BiffException | IOException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Erro ao tentar abrir planilha.");
 		}
-
-		response = gravarDadosImportados(response);
-
-		return response.toString();
 	}
 
 	public StringBuilder gravarDadosImportados(StringBuilder response) {
@@ -296,32 +283,26 @@ public class ImportadorTurmasComInscricoes {
 			String codCurso = mapaTurmasCursos.get(chaveTurma);
 			String codTurma = mapaTurmasCodigos.get(chaveTurma);
 
-			Disciplina disciplina = disciplinaRepositorio
-					.findByCodigoEmVersaoCurso(codigoDisciplina, codCurso,
-							numeroVersaoCurso);
+			Disciplina disciplina = disciplinaRepositorio.findByCodigoEmVersaoCurso(codigoDisciplina, codCurso,
+					numeroVersaoCurso);
 
 			if (disciplina != null) {
 				int capacidadeMaxima = 100;
 
-				Turma turma = turmaRepositorio
-						.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma,
-								disciplina, periodo);
+				Turma turma = turmaRepositorio.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma, disciplina, periodo);
 				if (turma == null) {
-					turma = new Turma(disciplina, codTurma, capacidadeMaxima,
-							periodo);
+					turma = new Turma(disciplina, codTurma, capacidadeMaxima, periodo);
 					qtdTurmas++;
 				}
 
 				if (matriculas != null) {
 					for (String matricula : matriculas) {
-						Aluno aluno = alunoRepositorio
-								.findAlunoByMatricula(matricula);
+						Aluno aluno = alunoRepositorio.findAlunoByMatricula(matricula);
 						if (aluno == null) {
 							String aluno_cpf = mapaAlunosCPFs.get(matricula);
 							String aluno_nome = mapaAlunosNomes.get(matricula);
 
-							aluno = alunoFabrica.criar(aluno_nome, matricula,
-									aluno_cpf, codCurso, numeroVersaoCurso);
+							aluno = alunoFabrica.criar(aluno_nome, matricula, aluno_cpf, codCurso, numeroVersaoCurso);
 
 							alunoRepositorio.save(aluno);
 
@@ -334,8 +315,7 @@ public class ImportadorTurmasComInscricoes {
 							}
 						} catch (IllegalStateException e) {
 							response.append("Importação não pode ser realizada!; ");
-							response.append("Código turma/nome disciplina -->"
-									+ turma.getCodigo() + "/"
+							response.append("Código turma/nome disciplina -->" + turma.getCodigo() + "/"
 									+ turma.getNomeDisciplina() + ";");
 							response.append("Erro: " + e.getMessage());
 							return response;

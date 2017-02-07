@@ -209,7 +209,7 @@ public final class VersaoCurso {
 
 	@Override
 	public String toString() {
-		return "VersaoCurso [numero=" + numero + "]";
+		return "VersaoCurso [numero=" + this.numero + "; curso=" + this.curso.toString() + "]";
 	}
 
 	@Override

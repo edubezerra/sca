@@ -32,8 +32,8 @@ import jxl.read.biff.BiffException;
  *
  */
 @Component
-public class  ImportadorAlocacoesProfessoresEmTurmas {
-	
+public class ImportadorAlocacoesProfessoresEmTurmas  {
+
 	@Autowired
 	private DisciplinaRepositorio disciplinaRepositorio;
 
@@ -43,12 +43,10 @@ public class  ImportadorAlocacoesProfessoresEmTurmas {
 	@Autowired
 	private TurmaRepositorio turmaRepositorio;
 
-	static String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA",
-		"COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO",
-		"HR_FIM", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "NUM_VERSAO", 
-		"ITEM_TABELA", "PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
-		"DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
-		"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
+	static String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA", "COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA",
+			"HR_INICIO", "HR_FIM", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "NUM_VERSAO", "ITEM_TABELA",
+			"PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO", "DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
+			"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
 
 	/**
 	 * Mapeamento de pares (matrícula, nome) de cada aluno.
@@ -73,12 +71,14 @@ public class  ImportadorAlocacoesProfessoresEmTurmas {
 	public void run() {
 		System.out.println("ImportadorAlocacoesProfessoresEmTurmas.run()");
 		try {
-			/*String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
-			this.importarPlanilha(arquivoPlanilha);
-			this.gravarDadosImportados();
-			mapaMatriculasParaNomes.clear();
-			mapaTurmasParaProfessores.clear();
-			mapaTurmasParaPeriodos.clear();*/
+			/*
+			 * String arquivoPlanilha =
+			 * "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.1).xls";
+			 * this.importarPlanilha(arquivoPlanilha);
+			 * this.gravarDadosImportados(); mapaMatriculasParaNomes.clear();
+			 * mapaTurmasParaProfessores.clear();
+			 * mapaTurmasParaPeriodos.clear();
+			 */
 
 			String arquivoPlanilha = "./planilhas/turmas-ofertadas/11.02.03.99.19 (2016.2).xls";
 			this.importarPlanilha(arquivoPlanilha);
@@ -90,7 +90,7 @@ public class  ImportadorAlocacoesProfessoresEmTurmas {
 		}
 		System.out.println("Feito!");
 	}
-	
+
 	private void gravarDadosImportados() {
 
 		int qtdAlocacoes = 0;
@@ -108,15 +108,11 @@ public class  ImportadorAlocacoesProfessoresEmTurmas {
 			PeriodoLetivo periodoLetivo = mapaTurmasParaPeriodos.get(chave);
 
 			try {
-				Disciplina disciplina = disciplinaRepositorio
-						.findByCodigoEmVersaoCurso(codigoDisciplina,
-								siglaCurso, numeroVersaoCurso);
-				turma = turmaRepositorio
-						.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma,
-								disciplina, periodoLetivo);
+				Disciplina disciplina = disciplinaRepositorio.findByCodigoEmVersaoCurso(codigoDisciplina, siglaCurso,
+						numeroVersaoCurso);
+				turma = turmaRepositorio.findTurmaByCodigoAndDisciplinaAndPeriodo(codTurma, disciplina, periodoLetivo);
 			} catch (NoResultException e) {
-				System.err.println("Turma não encontrada: (" + codTurma + ", "
-						+ codigoDisciplina + ")");
+				System.err.println("Turma não encontrada: (" + codTurma + ", " + codigoDisciplina + ")");
 				turma = null;
 			}
 			if (turma != null) {
@@ -124,11 +120,9 @@ public class  ImportadorAlocacoesProfessoresEmTurmas {
 
 				Professor professor = null;
 				try {
-					professor = professorRepositorio
-							.findProfessorByMatricula(matricula);
+					professor = professorRepositorio.findProfessorByMatricula(matricula);
 				} catch (NoResultException e) {
-					System.err.println("Professor não encontrado: "
-							+ mapaTurmasParaProfessores.get(chave));
+					System.err.println("Professor não encontrado: " + mapaTurmasParaProfessores.get(chave));
 				}
 				if (professor != null) {
 					turma.setProfessor(professor);
@@ -138,74 +132,67 @@ public class  ImportadorAlocacoesProfessoresEmTurmas {
 			}
 		}
 
-		System.out.println("Foram importadas " + qtdAlocacoes
-				+ " alocações de professores a turmas.");
+		System.out.println("Foram importadas " + qtdAlocacoes + " alocações de professores a turmas.");
 	}
 
-	private void importarPlanilha(String arquivoPlanilha) throws BiffException,
-			IOException {
+	private void importarPlanilha(String arquivoPlanilha) throws BiffException, IOException {
 		File inputWorkbook = new File(arquivoPlanilha);
 		importarPlanilha(inputWorkbook);
 	}
 
-	private void importarPlanilha(File inputWorkbook) throws BiffException,
-			IOException {
+	public String importarPlanilha(File inputWorkbook) {
+		StringBuilder response = new StringBuilder();
 		Workbook w;
 
 		List<String> colunasList = Arrays.asList(colunas);
-		System.out
-				.println("Iniciando importação de alocações de professores a turmas...");
+		System.out.println("Iniciando importação de alocações de professores a turmas...");
 
 		WorkbookSettings ws = new WorkbookSettings();
 		ws.setEncoding("Cp1252");
-		w = Workbook.getWorkbook(inputWorkbook, ws);
-		Sheet sheet = w.getSheet(0);
+		try {
+			w = Workbook.getWorkbook(inputWorkbook, ws);
+			Sheet sheet = w.getSheet(0);
 
-		for (int i = 1; i < sheet.getRows(); i++) {
+			for (int i = 1; i < sheet.getRows(); i++) {
 
-			/**
-			 * Dados relativos aos docentes.
-			 */
-			String matriculaProfessor = sheet.getCell(
-					colunasList.indexOf("MATR_EXTERNA"), i).getContents();
-			String nomeProfessor = sheet.getCell(
-					colunasList.indexOf("NOME_DOCENTE"), i).getContents();
+				/**
+				 * Dados relativos aos docentes.
+				 */
+				String matriculaProfessor = sheet.getCell(colunasList.indexOf("MATR_EXTERNA"), i).getContents();
+				String nomeProfessor = sheet.getCell(colunasList.indexOf("NOME_DOCENTE"), i).getContents();
 
-			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i)
-					.getContents();
+				String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i).getContents();
 
-			String semestre_periodo = sheet.getCell(
-					colunasList.indexOf("PERIODO"), i).getContents();
+				String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
 
-			PeriodoLetivo semestre = UtilsImportacao.getPeriodoLetivo(
-					semestre_ano, semestre_periodo);
+				PeriodoLetivo semestre = UtilsImportacao.getPeriodoLetivo(semestre_ano, semestre_periodo);
 
-			mapaMatriculasParaNomes.put(matriculaProfessor, nomeProfessor);
+				mapaMatriculasParaNomes.put(matriculaProfessor, nomeProfessor);
 
-			/**
-			 * Colhe dados sobre alocações de turmas a professores e a períodos
-			 * letivos.
-			 */
+				/**
+				 * Colhe dados sobre alocações de turmas a professores e a períodos
+				 * letivos.
+				 */
 
-			String codigoTurma = sheet.getCell(
-					colunasList.indexOf("COD_TURMA"), i).getContents();
+				String codigoTurma = sheet.getCell(colunasList.indexOf("COD_TURMA"), i).getContents();
 
-			String codigoDisciplina = sheet.getCell(
-					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
+				String codigoDisciplina = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
 
-			String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"),
-					i).getContents();
+				String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 
-			String numeroVersaoCurso = sheet.getCell(
-					colunasList.indexOf("NUM_VERSAO"), i).getContents();
+				String numeroVersaoCurso = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
 
-			String chave = codigoTurma + ";" + codigoDisciplina + ";"
-					+ siglaCurso + ";" + numeroVersaoCurso;
+				String chave = codigoTurma + ";" + codigoDisciplina + ";" + siglaCurso + ";" + numeroVersaoCurso;
 
-			mapaTurmasParaProfessores.put(chave, matriculaProfessor);
+				mapaTurmasParaProfessores.put(chave, matriculaProfessor);
 
-			mapaTurmasParaPeriodos.put(chave, semestre);
+				mapaTurmasParaPeriodos.put(chave, semestre);
 
+			}
+		} catch (BiffException | IOException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Erro ao tentar abrir planilha.");
 		}
+		return null;
 	}
 }

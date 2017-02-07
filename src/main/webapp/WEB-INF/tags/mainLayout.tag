@@ -86,7 +86,10 @@ body {
 										Alocação de Professores a Departamentos</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/importacaoDados/homeImportacaoGradeCurricular">
-										Importação de Grade Curricular</a></li>
+										Importação de Grades Curriculares</a></li>
+								<li><a
+									href="${pageContext.request.contextPath}/importacaoDados/homeImportacaoHistoricoEscolar">
+										Importação de Alunos e Históricos Escolares</a></li>
 								<li><a
 									href="${pageContext.request.contextPath}/analiseIsencoes/apresentaPedidosIsencaoDisciplinas">
 										Isenção de Disciplinas </a></li>

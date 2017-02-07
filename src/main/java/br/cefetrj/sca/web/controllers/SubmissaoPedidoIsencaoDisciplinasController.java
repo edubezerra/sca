@@ -123,6 +123,7 @@ public class SubmissaoPedidoIsencaoDisciplinasController {
 			model.addAttribute("info", "Item do pedido de isenção submetido com sucesso.");
 			return "forward:/submissaoIsencoes/solicitaNovamenteSubmissaoIsencoes";
 		} catch (Exception exc) {
+			exc.printStackTrace();
 			model.addAttribute("error", exc.getMessage());
 			return "forward:/submissaoIsencoes/solicitaRegistroItem";
 		}

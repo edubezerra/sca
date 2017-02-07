@@ -221,6 +221,7 @@ public class AnalisePedidoIsencaoDisciplinasController {
 			return "/isencaoDisciplina/professor/visualizaAlunosSolicitantesView";
 
 		} catch (Exception exc) {
+			exc.printStackTrace();
 			model.addAttribute("error", exc.getMessage());
 			return "/menuPrincipalView";
 		}

@@ -80,7 +80,8 @@ public class ImportadorGradesCurriculares {
 	}
 
 	/**
-	 * Esse método é o ponto central da funcionalidade fornecida por esta classe.
+	 * Esse método é o ponto central da funcionalidade fornecida por esta
+	 * classe.
 	 * 
 	 * @param arquivoPlanilha
 	 * @return
@@ -135,6 +136,22 @@ public class ImportadorGradesCurriculares {
 			String nomeCurso = sheet.getCell(colunasList.indexOf("NOME_UNIDADE"), i).getContents();
 			String situacaoVersaoCurso = sheet.getCell(colunasList.indexOf("SIT_VERSAO"), i).getContents();
 
+			if (codCurso == null || codCurso.trim().isEmpty()) {
+				throw new IllegalArgumentException("Valor indefinido para coluna " + "COD_CURSO");
+			}
+
+			if (numVersao == null || numVersao.trim().isEmpty()) {
+				throw new IllegalArgumentException("Valor indefinido para coluna " + "NUM_VERSAO");
+			}
+
+			if (nomeCurso == null || nomeCurso.trim().isEmpty()) {
+				throw new IllegalArgumentException("Valor indefinido para coluna " + "NOME_UNIDADE");
+			}
+
+			if (situacaoVersaoCurso == null || situacaoVersaoCurso.trim().isEmpty()) {
+				throw new IllegalArgumentException("Valor indefinido para coluna " + "SIT_VERSAO");
+			}
+
 			Curso curso = cursos.get(codCurso);
 			if (curso == null) {
 
@@ -166,6 +183,12 @@ public class ImportadorGradesCurriculares {
 			String codCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 			String numVersao = sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
 
+			if (creditos == null || creditos.trim().isEmpty()) {
+				System.err.println("Disciplina não importada, pois qtd. de créditos está indefinida: " + nomeDisciplina
+						+ "(" + codCurso + "," + numVersao + ")");
+				continue;
+			}
+
 			boolean disciplinaJaExiste = false;
 			for (Disciplina disciplina : disciplinas) {
 				if (disciplina.equals(codigoDisciplina)) {
@@ -179,7 +202,8 @@ public class ImportadorGradesCurriculares {
 				disciplina.alocarEmVersao(versaoCurso);
 				disciplinas.add(disciplina);
 			} else {
-				System.err.println("Já existe disciplina com código " + codigoDisciplina);
+				System.err.println("Disciplina não importada, pois já existe disciplina com código " + codigoDisciplina
+						+ " na versão de curso " + "(" + codCurso + "," + numVersao + ")");
 			}
 		}
 	}

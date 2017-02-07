@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.cefetrj.sca.infra.cargadados.ImportadorAlocacoesProfessoresEmTurmas;
 import br.cefetrj.sca.infra.cargadados.ImportadorAtividadesComplementares;
 import br.cefetrj.sca.infra.cargadados.ImportadorGradesCurriculares;
 import br.cefetrj.sca.infra.cargadados.ImportadorHistoricosEscolares;
@@ -47,6 +48,9 @@ public class ImportacaoDadosService {
 
 	@Autowired
 	ImportadorProfessores importadorProfessores;
+
+	@Autowired
+	ImportadorAlocacoesProfessoresEmTurmas importadorAlocacoesProfessoresEmTurmas;
 
 	@Transactional
 	public String importar(MultipartFile file, Long tipoImportacao) {
@@ -97,7 +101,21 @@ public class ImportacaoDadosService {
 	}
 
 	@Transactional
-	public String importarGradeCurricular(MultipartFile file) {
+	public String importarHistoricosEscolares(MultipartFile file) {
+		try {
+			File tempFile = criarArquivoTemporario(file);
+			return importadorHistoricosEscolares.importarPlanilha(tempFile);
+		} catch (java.lang.IllegalArgumentException e) {
+			return e.getMessage();
+		} catch (IOException | BiffException e) {
+			e.printStackTrace();
+			return "Erro ao importar a planilha de alunos e históricos escolares.";
+		}
+
+	}
+
+	@Transactional
+	public String importarGradesCurriculares(MultipartFile file) {
 		try {
 			File tempFile = criarArquivoTemporario(file);
 			return importadorGradesCurriculares.importarPlanilha(tempFile);
@@ -105,7 +123,17 @@ public class ImportacaoDadosService {
 			return e.getMessage();
 		} catch (IOException | BiffException e) {
 			e.printStackTrace();
-			return "Erro ao importar a planilha de grade curricular.";
+			return "Erro ao importar a planilha de grades curriculares.";
+		}
+
+	}
+
+	public String importarAlocacoesProfessoresEmTurmas(MultipartFile file) {
+		try {
+			File tempFile = criarArquivoTemporario(file);
+			return importadorAlocacoesProfessoresEmTurmas.importarPlanilha(tempFile);
+		} catch (java.lang.IllegalArgumentException e) {
+			return e.getMessage();
 		}
 
 	}

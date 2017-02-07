@@ -73,20 +73,20 @@ public class Disciplina {
 	private Disciplina(String nome, String codigo, String quantidadeCreditos) {
 		super();
 		if (StringUtils.isBlank(nome)) {
-			throw new IllegalArgumentException("Valor inválido para nome.");
+			throw new IllegalArgumentException("Valor inválido para nome da disciplina.");
 		}
 		this.nome = nome;
 		if (StringUtils.isBlank(codigo)) {
-			throw new IllegalArgumentException("Valor inválido para código.");
+			throw new IllegalArgumentException("Valor inválido para código da disciplina.");
 		}
 		this.codigo = codigo;
 		try {
 			this.quantidadeCreditos = Integer.parseInt(quantidadeCreditos);
 			if (this.quantidadeCreditos < 0) {
-				throw new IllegalArgumentException("Valor inválido para quantidade de créditos.");
+				throw new IllegalArgumentException("Valor negativo para quantidade de créditos: " + this.quantidadeCreditos);
 			}
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("Valor inválido para quantidade de créditos.");
+			throw new IllegalArgumentException("Valor inválido para quantidade de créditos: " + quantidadeCreditos);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class Disciplina {
 	}
 
 	public void setQuantidadeCreditos(Integer quantidadeCreditos) {
-		if (this.quantidadeCreditos < 0) {
+		if (quantidadeCreditos == null || quantidadeCreditos < 0) {
 			throw new IllegalArgumentException("Valor inválido para quantidade de créditos: " + quantidadeCreditos);
 		}
 		this.quantidadeCreditos = quantidadeCreditos;

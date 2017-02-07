@@ -52,12 +52,11 @@ public class ImportacaoDadosController {
 		}
 	}
 
-
 	@RequestMapping(value = "/importacaoGradeCurricular", method = RequestMethod.POST)
 	public String importacaoGradeCurricular(HttpServletRequest request, Model model,
 			@RequestParam("tabGradeCurricularFile") MultipartFile file) {
 		try {
-			String response = service.importarGradeCurricular(file);
+			String response = service.importarGradesCurriculares(file);
 			model.addAttribute("response", response);
 			return "/importacaoDados/homeImportacaoGradeCurricularView";
 		} catch (Exception exc) {
@@ -67,6 +66,56 @@ public class ImportacaoDadosController {
 		}
 	}
 
+	@RequestMapping(value = "/homeImportacaoHistoricoEscolar", method = RequestMethod.GET)
+	public String homeImportacaoHistoricoEscolar(HttpServletRequest request, Model model) {
+		try {
+			return "/importacaoDados/homeImportacaoHistoricoEscolarView";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
+	@RequestMapping(value = "/importacaoHistoricoEscolar", method = RequestMethod.POST)
+	public String importacaoHistoricoEscolar(HttpServletRequest request, Model model,
+			@RequestParam("tabHistoricoEscolar") MultipartFile file) {
+		try {
+			String response = service.importarHistoricosEscolares(file);
+			model.addAttribute("response", response);
+			return "/importacaoDados/homeImportacaoHistoricoEscolarView";
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
+///
+
+	@RequestMapping(value = "/homeImportacaoAlocacoesProfessoresEmTurmas", method = RequestMethod.GET)
+	public String homeImportacaoAlocacoesProfessoresEmTurmas(HttpServletRequest request, Model model) {
+		try {
+			return "/importacaoDados/homeImportacaoAlocacoesProfessoresEmTurmasView";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
+	@RequestMapping(value = "/importacaoAlocacoesProfessoresEmTurmas", method = RequestMethod.POST)
+	public String importacaoAlocacoesProfessoresEmTurmas(HttpServletRequest request, Model model,
+			@RequestParam("tabHistoricoEscolar") MultipartFile file) {
+		try {
+			String response = service.importarAlocacoesProfessoresEmTurmas(file);
+			model.addAttribute("response", response);
+			return "/importacaoDados/homeImportacaoAlocacoesProfessoresEmTurmasView";
+		} catch (Exception exc) {
+			exc.printStackTrace();
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+///	
 	@RequestMapping(value = "/importacaoTabelaAtividadesComplementares", method = RequestMethod.POST)
 	public String importacaoTabelaAtividadesComplementares(HttpServletRequest request, Model model,
 			@RequestParam("tabAtividadeComplementarFile") MultipartFile file) {

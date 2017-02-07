@@ -26,9 +26,9 @@ import jxl.read.biff.BiffException;
  * Faz a importação dos históricos escolares dos alunos.
  * 
  * Essa classe pode também realizar a inserção de objetos <code>Aluno</code> que
- * esteja na planilha, mas que ainda não esteja no mecanismo persistente. Nesse
- * caso, a inserção é realizada apenas se houver CPF definido para esse aluno na
- * planilha usada como entrada.
+ * estejam na planilha, mas que ainda não estejam no mecanismo persistente.
+ * Nesse caso, a inserção é realizada apenas se houver CPF definido para esse
+ * aluno na planilha usada como entrada.
  * 
  * @author Eduardo Bezerra
  *
@@ -45,10 +45,9 @@ public class ImportadorHistoricosEscolares {
 	@Autowired
 	private AlunoFabrica alunoFabrica;
 
-	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF",
-			"MATR_ALUNO", "NOME_PESSOA", "FORMA_EVASAO", "COD_TURMA",
-			"COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO",
-			"CH_TOTAL", "CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
+	static String colunas[] = { "COD_CURSO", "CURSO", "VERSAO_CURSO", "CPF", "MATR_ALUNO", "NOME_PESSOA",
+			"FORMA_EVASAO", "COD_TURMA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "ANO", "PERIODO", "SITUACAO", "CH_TOTAL",
+			"CREDITOS", "MEDIA_FINAL", "NUM_FALTAS" };
 
 	public void run() {
 		File folder = new File("./planilhas/historicos-escolares");
@@ -59,8 +58,7 @@ public class ImportadorHistoricosEscolares {
 			if (listOfFiles[i].isFile()) {
 				int resposta = 1;
 				if (resposta == 1) {
-					String arquivoPlanilha = "./planilhas/historicos-escolares/"
-							+ listOfFiles[i].getName();
+					String arquivoPlanilha = "./planilhas/historicos-escolares/" + listOfFiles[i].getName();
 					run(arquivoPlanilha);
 				}
 			} else if (listOfFiles[i].isDirectory()) {
@@ -81,15 +79,13 @@ public class ImportadorHistoricosEscolares {
 		System.out.println("Feito!");
 	}
 
-	private void importarPlanilha(String inputFile) throws BiffException,
-			IOException {
+	private void importarPlanilha(String inputFile) throws BiffException, IOException {
 		File inputWorkbook = new File(inputFile);
 		String resultado = importarPlanilha(inputWorkbook);
 		System.out.println(resultado);
 	}
 
-	public String importarPlanilha(File inputWorkbook) throws BiffException,
-			IOException {
+	public String importarPlanilha(File inputWorkbook) throws BiffException, IOException {
 		StringBuilder response = new StringBuilder();
 		int repetido = 0, importado = 0, erro = 0, codigoTrancamento = 0;
 		Workbook w;
@@ -104,27 +100,19 @@ public class ImportadorHistoricosEscolares {
 
 		for (int i = 1; i < sheet.getRows(); i++) {
 
-			String cod_curso = sheet.getCell(colunasList.indexOf("COD_CURSO"),
-					i).getContents();
+			String cod_curso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
 
-			String versao_curso = sheet.getCell(
-					colunasList.indexOf("VERSAO_CURSO"), i).getContents();
+			String versao_curso = sheet.getCell(colunasList.indexOf("VERSAO_CURSO"), i).getContents();
 
-			String aluno_matricula = sheet.getCell(
-					colunasList.indexOf("MATR_ALUNO"), i).getContents();
-			String aluno_nome = sheet.getCell(
-					colunasList.indexOf("NOME_PESSOA"), i).getContents();
-			String aluno_cpf = sheet.getCell(colunasList.indexOf("CPF"), i)
-					.getContents();
+			String aluno_matricula = sheet.getCell(colunasList.indexOf("MATR_ALUNO"), i).getContents();
+			String aluno_nome = sheet.getCell(colunasList.indexOf("NOME_PESSOA"), i).getContents();
+			String aluno_cpf = sheet.getCell(colunasList.indexOf("CPF"), i).getContents();
 
-			String cod_disciplina = sheet.getCell(
-					colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
+			String cod_disciplina = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
 
-			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i)
-					.getContents();
+			String semestre_ano = sheet.getCell(colunasList.indexOf("ANO"), i).getContents();
 
-			String semestre_periodo = sheet.getCell(
-					colunasList.indexOf("PERIODO"), i).getContents();
+			String semestre_periodo = sheet.getCell(colunasList.indexOf("PERIODO"), i).getContents();
 
 			int ano = Integer.parseInt(semestre_ano);
 			PeriodoLetivo.EnumPeriodo periodo;
@@ -137,8 +125,7 @@ public class ImportadorHistoricosEscolares {
 
 			PeriodoLetivo semestre = new PeriodoLetivo(ano, periodo);
 
-			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i)
-					.getContents();
+			String situacao = sheet.getCell(colunasList.indexOf("SITUACAO"), i).getContents();
 
 			EnumSituacaoAvaliacao situacaoFinal = null;
 			if (situacao.equals("Aprovado")) {
@@ -168,8 +155,7 @@ public class ImportadorHistoricosEscolares {
 			} else if (situacao.equals("Reprovado com Dependencia")) {
 				situacaoFinal = EnumSituacaoAvaliacao.REAPROVADO_COM_DEPENDENCIA;
 			} else {
-				response.append("ERRO GRAVE: Valor inválido para a situação final de avaliação! "
-						+ situacao + ";");
+				response.append("ERRO GRAVE: Valor inválido para a situação final de avaliação! " + situacao + ";");
 				return response.toString();
 			}
 
@@ -184,66 +170,51 @@ public class ImportadorHistoricosEscolares {
 				continue;
 			}
 
-			Aluno aluno = alunoRepositorio.findAlunoByInfoHistoricoEscolar(
-					aluno_matricula, semestre, situacaoFinal, cod_disciplina,
-					versao_curso, cod_curso);
+			Aluno aluno = alunoRepositorio.findAlunoByInfoHistoricoEscolar(aluno_matricula, semestre, situacaoFinal,
+					cod_disciplina, versao_curso, cod_curso);
 
 			if (aluno != null) {
 				repetido++;
 				continue;
 			} else {
-				Disciplina disciplina = disciplinaRepositorio
-						.findByCodigoEmVersaoCurso(cod_disciplina, cod_curso,
-								versao_curso);
+				Disciplina disciplina = disciplinaRepositorio.findByCodigoEmVersaoCurso(cod_disciplina, cod_curso,
+						versao_curso);
 
 				if (disciplina != null) {
-					aluno = alunoRepositorio
-							.findAlunoByMatricula(aluno_matricula);
+					aluno = alunoRepositorio.findAlunoByMatricula(aluno_matricula);
 
 					if (aluno == null) {
 						if (aluno_cpf != null && !aluno_cpf.isEmpty()) {
-							System.err
-									.println("Criando novo aluno. Matrícula: "
-											+ aluno_matricula);
-							aluno = alunoFabrica.criar(aluno_nome,
-									aluno_matricula, aluno_cpf, cod_curso,
-									versao_curso);
+							System.err.println("Criando novo aluno. Matrícula: " + aluno_matricula);
+							aluno = alunoFabrica.criar(aluno_nome, aluno_matricula, aluno_cpf, cod_curso, versao_curso);
 						} else {
-							System.err
-									.println("Aluno sem CPF; não pode ser registrado. Matrícula: "
-											+ aluno_matricula);
+							System.err.println("Aluno sem CPF; não pode ser registrado. Matrícula: " + aluno_matricula);
 							erro++;
 						}
 					}
 
 					if (aluno != null) {
 						importado++;
-						aluno.registrarNoHistoricoEscolar(disciplina,
-								situacaoFinal, semestre);
+						aluno.registrarNoHistoricoEscolar(disciplina, situacaoFinal, semestre);
 						alunoRepositorio.save(aluno);
 
-						System.out
-								.println("Lançada disciplina "
-										+ disciplina.toString()
-										+ " no histórico escolar do aluno de matrícula "
-										+ aluno.getMatricula());
+						System.out.println("Lançada disciplina " + disciplina.toString()
+								+ " no histórico escolar do aluno de matrícula " + aluno.getMatricula());
 					}
 				} else {
 					erro++;
-					System.err.println("Disciplina não encontrada (código): "
-							+ cod_disciplina);
+					System.err.println("Disciplina não encontrada: código= " + cod_disciplina + "; codCurso= "
+							+ cod_curso + "; numVersao= " + versao_curso);
 				}
 			}
 		}
 
 		response.append("Importação de históricos finalizada.;");
-		response.append("Quantidade total de registros da planilha: "
-				+ (sheet.getRows() - 1) + ";");
+		response.append("Quantidade total de registros da planilha: " + (sheet.getRows() - 1) + ";");
 		response.append("Quantidade repetida: " + repetido + ";");
 		response.append("Quantidade importada: " + importado + ";");
 		response.append("Quantidade não importada por erros: " + erro + ";");
-		response.append("Quantidade de códigos de trancamento: "
-				+ codigoTrancamento);
+		response.append("Quantidade de códigos de trancamento: " + codigoTrancamento);
 
 		return response.toString();
 	}
